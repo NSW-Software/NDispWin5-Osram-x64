@@ -1,0 +1,3224 @@
+﻿NDisp5Win Osram
+
+Known issues - none
+In Prog, after DO_REF not found, camera cannot live
+
+
+Ver 5.6.3 - KN - 20240124 - Gitted 20240206
+[Changes] TaskDisp.LoadSetup() EPreference default to EPreference.Osram.
+[BugFix] Corrected frmOptions Save/Load messages
+
+Ver 5.6.2 - KN - 20240111
+[Hsekeep] Removed TaskRight bgw.
+[Changes] SendPnlComplete(string PanelID) set PanelID to "0" if PanelID is blank, suspect VC cannot decode blank and unable to continue. 
+
+Ver 5.6.1 - KN - 20231225 - Gitted
+[Feature] Added DispCount to Auto page.
+[Feature] Added Valve Expiry Timer.
+
+Ver 5.6.0 - KN -  20230922
+[Feature] Added configurable TEMessage, Message, TCMessages repalacing TError 
+[Feature] Added configurable TETLStatus, TwrLight, TCTwrLight replacing TTLState and IO
+[Feature] Removed EVolumeOfstProtocol.Lmds_WebService and Lmds_COBTester
+
+Ver 5.5.9 - KN -  20230624 - No Released - Gitted
+[BugFix] TProcessCamera create directory for rootfolder.
+
+Ver 5.5.8 - KN -  20230624 - Release at Osram Wuxi
+[BugFix] TProcessCamera add folder definition.
+[Changes] OsramSCC added Panel ID to DMDISC
+[Changes] OsramSCC DMDP trim send Pump1 and Pump2 data
+[Reverse] MVC_GenTL uses ImageBox Added Disp Setting>Meas_Weight, set different MeasWeight.
+
+Ver 5.5.5 - KN -  20230624 - Release at Osram Wuxi
+[Improve] Retry EMos SendMapRequest 5s after timeout.
+[Changes] Remove TOutputMap.Execute from ECmd.BD_READY, prevent double EMOS purge map execution.
+[Changes] MVC_GenTL uses ImageBox Added Disp Setting>Meas_Weight, set different MeasWeight.
+[Changes] Added Disp Setting>Meas_Weight, set different MeasWeight.
+
+Ver 5.5.4 - KN -  20230622 - Release at Osram Wuxi
+[Feature] Switch off lighting during run
+[BugFix] WeightCal_Execute corrected Pump2 Density calculation using correct Volume and BSuck values.
+[Improve] Added Do_Height to edit frmHeightFailMsg
+[Changes] Write RunMode on every line. Added to WriteProcessLog.
+[Updates from 5.4.8] Update to latest ProcessLog
+[Improve] TEMPLOGGER_LOG log only dispensed units, prevent accessive log
+
+Ver 5.5.2 - KN - 20230523 - Test UI Hang
+[Changes] frmDispProg2 invoke frmCamera and frmMVCGenTLCamera.
+[Changes] DispProg current Invoke for frmCamera to include frmMVCGenTLCamera 
+
+Ver 5.5.1 - KN - 20230418 - Test UI Hang
+[Copied from 5.4.0] Removed CLaser dependencies and added MEDAQ.cs
+[Copied from 5.4.0] Added ILD1900 support
+[XXX not updated] MVC_GenTL change PictureBox to ImageBox, change Thread.Join to Thread.Abort
+[Copied from 5.4.0] Editable density of WeightAdjust for >= Engineer Level
+[Copied from 5.4.0] Change enum PP_VOL_SET_SPEED = 592 to group PP commands.
+[Copied from 5.4.0] Added PP_SET_WEIGHT execute PP_SetWeight to update current PP Volumne
+[Copied from 5.4.0] Added Options_ClstrColZOfst to offset cluster 2 z position.
+[Copied from 5.4.0] Set TaskDisp.OsramSCC.PreMapNo = 0 at EndBoard
+[Copied from 5.4.0] Corrected frmMap edited when maximizing. 
+[Refactor] TaskDisp.PP_SetWeight(W, true) remove unnecassary parameter
+
+Ver 5.5.0 - KN - 20230418
+Branched from 5.3.27
+Aborting 5.4.8 due to UI Hang.
+
+Ver 5.3.27 - KN - 20220531 - Release to Osram Wuxi
+Weight Calibration uses average of last 3 densities as final density.
+Added LeastSquareFitting function, TFMatrix, generalize DoHeight func
+frmDispProg_DoRef execute Test All according to no of ref points.
+Removed TaskDisp.EVolumeOfstProtocol.Lextar_FrontTestCloseLoop and references.
+Corrected frmJogControl tpXY2 step click.
+
+Ver 5.3.26 - KN - 20220312 - Release to Osram Wuxi
+26 MVC_GenTL ReceiveThreadProcess() add exception info and free buffer
+Ver 5.3.25 - KN - 20220312 - Release to Osram Wuxi
+Correct VIDEO_STOP at beginning of loop.
+*24 MVC_GenTL ReceiveThreadProcess() and ReceiveProcess() remove mGrab false and add Sleep(10);
+*24 Improve VIDEO_STOP at end of loop.
+
+*23 Dispose frmMsgBox to prevent invalid handle that cause hang by windows WM_SETTINGCHANGE 
+*23 Single instance frmCAmera
+
+Ver 5.3.22 - KN - 20220228 - Release to Osram Wuxi
+22 LoadLastRecipe
+22 Fix frmDispCore_WeightSetting.btn_Jog calling old from, prevent exception error.
+22 Weight Measure Path from Data\Weight to Data\WeightMeas to standardize with previous version
+21 Added Options UseTimerAutoRun -> test suspected task or threading deadlock at Osram(login Domain)
+21 frmDispCoreJogGantryVision.Load update MVCGenTL Camera Grab then SelectCamera(0)
+
+Ver 5.3.20 - KN - 20220228 - Release to Osram Wuxi
+ StartGrab after ReadID
+*MHS Out.CheckPsnt add retry
+DispProg.Run add finally to update IsBusy and IsRunning -> suspect UI hang due to this status not clear
+
+Ver 5.3.19 - KN - 20220224 - Release to Osram Wuxi
+*19 Remove GenTL Invoke
+*18 frmDoHeight.Test stop grab
+17 Added DispProg.TR_CancelNoClearMap() to GDefine.RunDispConv()
+*17 Single instance frmMVCGenTLCamera
+*16 Added Point Grey Camera
+*15 Improve Camera Handling frmDispProg refer frmGenTLCamera to TaskVision
+
+Ver 5.3.14 - KN - 20220220
+*14 Save frmMonCamera position to config
+*14 BDCapture Line scan speed change from combox to userentry
+*14 TaskDisp.CtrlWaitReady(bool DispA, bool DispB) check pump ready before checking pump error code to prevent timing error
+*14 Reassign error message to reflect correct controller and pump
+  DISPCTRL_NOT_READY = DISPCTRL + 57,
+  DISPCTRL_READY_TIMEOUT = DISPCTRL + 62,
+  DISPCTRL_RESPONSE_TIMEOUT = DISPCTRL + 63,
+  DISPCTRL_COMPLETE_TIMEOUT = DISPCTRL + 79,
+
+Ver 5.3.13 - KN - 20220219
+*13 Added MonCamera support. frmConfig, frmMonCamera, frmMonCameraSetting
+12 Corrected MVC_GenTL post line scan exposure 
+12 open DispProg check camera is connected
+
+Ver 5.3.10 - KN - 20220217
+- frmConfig connect camera using GenTL based on Camera Serial No
+- Added MVC_GentL Line Scan and Board Scan
+- frmDispProg_MoveLine btn_OfstAll apply to current FOR_LAYOUT group only.
+- Update frmMHSMain InitElev according to config.
+
+Ver 5.3.9 - KN - 20220213
+- Improve GControl ComboBox update
+- TaskGantry LoadDeviceConfig Input and Output limits the max AxisPort no
+
+Ver 5.3.7 - KN - 20220210
+- Added OP_PROMPR_LOGIN to event
+- Remove DO_ARC thread controller communication
+
+Ver 5.3.6 - KN - ??
+Added MVC_GenTL, HikRobot MachineVisionCamera Generic Transport Layer to support Flir and HikRobot Camera
+Added frmMVCGenTLCamera for display
+Updated frmSystemConfig
+
+Ver 5.3.5 - KN - ??
+- Set TaskWeight.LoadDefault.CurrentCal to 1 of < 0.
+- Check TaskWeight.WeightCal_Execute.CurrentCal[HeadNo - 1] > 0 as pass result.
+
+Ver 5.3.4 - KN - 20220117 - Released to TZ OOS/WUXI
+- BdReady to update TOutputMap.Execute 
+- Added Manual_Load logs
+
+Ver 5.3.3 - KN - Released to KX OOS/KULIM
+- DO_BDCAPTURE Live Cam0 after BoardScan
+
+Ver 5.3.2 - KN - Released to KX OOS/KULIM
+- Uses Spinnaker 1.10
+- Corrected TaskVolOfsst_Custom.Osram_SCC.Client_FrameEndReceivedEvent() VC_NEW_LOT
+- ProcessLog actual Z1 and Z2 for Dot,Move and Line, DotP, DotMulti
+- Add HeadOffset to ProcessLog DoHeight, DoRef
+- Disp.DoHeight ProcessLog as delta Height
+
+Ver 5.3.1 - KN
+- Uses Spinnaker 1.19.0.22 - Temp version
+
+Ver 5.3.0 - KN
+- Branched from 5.2.42
+
+
+Ver 5.2.42 - KN - Gitted
+42 1213 Added GOTO command. Need to uses with LAYOUT_PREMAP to clear map
+41 1213 Check DispProg.Run Lastline not out of range
+40 1211 Check DispProg.Run Lastline not out of range
+40 1211 Change DispProg.UnitComplete PurgeStage counter from Unit.Count to Disp.Count, count on dispensed unit
+
+Ver 5.2.39 - KN
+39 Added SetOrigin and SetZ to para change
+38.2 Update PurgeDot, Dot, iIne, PathExec VolumeAdjust
+38.1 Added GControl.LogForm(this) to all froms
+37.4  Add ExMsg to Event
+37.3  DispSEtup_PP auto select dual head if Sync
+37.2 Added TaskDisp.Option_DrawOfstAdjustRate
+37.1 DispProg Script set Line to Move command, prevent continual execution of Line crash.
+
+Rev 5.2.29
+29.1 Added Axis.Para.HomeMode
+28.1 Update Osram SetDispVolume for PurgeDot
+27.1 Update frmLotEntryLumileds common TaskDisp.Lmds_LotEnd
+27.2 Added Options.EnableEventDebugLog
+26.1 Added App and version to Close Event log.
+26.2 Camera.GetFrame set IsGrabbing to false on exception.
+25.1 Increase Max Temp from 150C to 180C.
+25.2 Added MHS2 Config Enable Conv2
+24 Allow ElevDoorSense = None. Preferecene Lumileds Force Stop.
+
+
+
+
+Lumileds Lot Start 
+Off Press on goto
+Bugfix Conveyor Vacuum low check if InProcess
+removed oos DispVol 
+
+
+The ones that definitely cause deadlock are 
+DataGridView, 
+NumericUpDown, 
+x-DomainUpDown, 
+ToolStrip+MenuStrip and the 
+ToolStripItem derived classes. 
+
+The true cure is to not create UI on a worker thread. It is never necessary, the UI thread of your program is already capable of handling any number of windows.
+
+
+
+- Relocate Initialize fix running of DoWorkAsyncInfinite10s_Temp after load config
+- frmOptions force enable DoorSense for Lumileds
+- Remove frmMHS2Config Enable DoorSense and DoorLock
+
+Notes 5.0.164 - 20210706 KN
+- Change DoRef angle from 5 to 10
+
+Notes 5.0.162 - 20210706 KN
+- Return on busy of Thread_SetDispSpeed_Run, Thread_SetDispVolume_Run, Thread_SetBSuckVoume_Run
+- Added Thread status to the Pressure Controller log
+- Added Thread status to the log
+
+Notes 20210624 KN
+
+
+
+
+Revision History
+
+Lumileds A252 SN X2017-A252-01 
+
+Todo
+Needle Cal Cancel cannot continue.
+- Logi, Encd Offset
+
+[Known Issue] frmJogGantry2 load editor error
+
+[Cannot repro] NDispWin Sensor connect failure log file still logging on each pooling event.
+Unisem Vision Accuracy Method
+Unisem Upload Map Recovery
+NDispWin load prog check pressure check pressue
+NDispWin study if pressure check response
+NDispWin Stop and TR_Start logging
+
+
+focus level for trace 
+disp prog show vision overlay
+dorefedge parameters - auto run
+
+
+Todo
+- Consolidate single DoHeight function
+X- [Improve] Replace erratic frm_DispCore_JogGantry2 with frmJogGantry frm_DispProg2, frmMotorDiag
+
+5.0.147 - Gitted - KN
+
+5.0.145 - 20210518 - KN - Released to David for Unisem
+  - [BugFix] Corrected DO_VISION_CHECK not referenced in switch.
+  - [Feature] Added frmVisionFailMsg2 rtbMessage.
+  - [Changes] (Lumileds) StopInput = false when successful BoardReverseSendOut
+
+5.0.143 - 20210513 - KN - Released to QQ for Lumileds
+- [Changes] (Lumileds) Swap and update Smema2 assignments
+
+5.0.139 - 20210511 - KN - Released to David for Unisem
+- [Feature] (Unisem) Added DO_REF_CHECK and DO_VISION_CHECK to verify location. Detect offset.
+- [Changes] Remove LogLevel saving. Prevent excessive file logging.
+- [HseKeep] Removed TR_StopRun() redundant waiting for conveyor and disp completion for door unlock. Door unlock handled at TR_RunDisp().
+- [Enhance] Check TaskRunKick with TaskStatus instead of local flag. Improve stability. 
+- [Enhance] Replace Backgroundworker with Task for RunLevelAsync(). Simpler and manageable code.
+- [Enhance] Replace BlowSuck to timer based. Time define in conveyor. Manageable off time for structured activation.
+- [Hsekeep] Removed frm_Main.CmdSendReq(NDispWin.Intf.CmdEventArgs Data), reverts direct
+- [Hsekeep] Removed Removed TaskMHS.CmdSet, TaskMHS.CmdGet; reverts direct
+- [Hsekeep] Removed Removed Intf.OnCmdSend, Inft.CmdGet; reverts direct
+- [Hsekeep] Removed Intf.SelectPreMap, reverts DispProg.UsePreMap, residue from NDisp3Win DispCore merging
+- [Hsekeep] Removed ERunMode RunMode, reverts to DispProg.RunMode, residue from NDisp3Win DispCore merging
+- [Hsekeep] Removed ERunStationNo, reverts to DispProg.rt_StationNo, residue from NDisp3Win DispCore merging
+- [Feature] Added bWaitingBoardReverseSend and Run_ReverseSendOut
+- [Enhance] TaskDisp.FPressCtrl.Thread restructure Pressure Setting and separate channels.
+- [Feature] GDefine_Run.TR_RunDisp() check conveyor station type none set to psnt. Allow pass through function.
+
+5.0.137 - 20210430 - KN - Released to David for Unisem
+  - [Enhance] Added Control Limit Editor for Vermes
+  - [Enhance] Merged Vermes.dll 2.0.7 functions to ease maintenance.
+  - [Enhance] TaskDisp change Thread to Threading.Task for SetDispVolume, SetBackSuckVolume, SetDispSpeed, CheckIsFilling
+  - [Enhance] Use Task.Run for GDefine.DoWorkAsyncInfinite10s_CopyLog() and GDefine.DoWorkAsyncInfinite10s_TempPool()
+
+5.0.135 - 20210428 - KN - Released to David for Unisem
+  - [Feature] Added sgc2.Timeout, longer timeout to accomodate slow server
+  - [Enhance] Change DO_VIS_INSP bin updates. Set to VVING if fail VVI.
+  - [BugFix] Corrected CMControl.cs EMO Logic buffer length from 8 to 4.
+
+5.0.131 - 20210426 - KN - Released to David for Unisem
+  - [Feature] (Unisem) SECSGEMConnect2.OnFrameEndReceivedEvent() Prompt message when receive SERVER_DISCONNECT.
+  - [Enhance] DispSetupPP added MouseLeave event for RemoveAir and BarrelPress
+  - [Enhance] (Lumileds) TaskGantry.SvCleanVac PostVacTime run parallel. No waiting. 
+
+5.0.129 - 20210422 - KN - Released to David for Unisem
+  - [Feature] ErrCode.WEIGHT_PROG_HEAD_OP_SINGLE_SELECTED for frm_DispCore_WeightMeasure and frm_DispCore_WeightCal
+  - [BugFix] (Unisem) Corrected Camera_ZSensor_LightRGB
+  - [Feature] (Unisem) Added sgc.UseFreshMap. Apply fresh map for E142 Mapping. 
+  - [Feature] (Lumileds) Added Retry for Thread_SetDispVolume_Wait(). Unknown random failure.
+  - [Temp] Added BetaAutoRun Options
+  - [Feature] DoHeight.RefHeight uses absolete value if TaskDisp.Laser_CalValue == 0
+
+5.0.127 - 20210414 - KN - Released to David for Unisem
+  - [Changes] Removed WGH_Series.dll checking.
+  - [Feature] Added frmMsgBox smbYes and smbNo, update layout. Add more options
+  - [Feature] Recovery Upload change from standard message to MsgBox
+
+5.0.125 - 20210408 - KN
+  - [Changes] Removed WGH_Series.dll that is no longer used checking.
+  - [BugFix] (Unisem) Download original map for before upload for TaskDisp.Preference == TaskDisp.EPreference.Unisem && TaskDisp.SECSGEMProtocol == TaskDisp.ESECSGEMProtocol.SECSGEMConnect2 && GDefine.sgc2.EnableStripMapE142
+    E142 map requires data be be appended to original map
+  - [Changes] (Analog) Change FlowRateCal.TargetFlowRate max from 10 to 100. Change FlowRateCal.TargetFlowRateTol from 1 to 10.
+
+5.0.123 - 20210407 - KN
+  - [BugFix] TaskDisp.TP.TP_Shot(time_s) added dummy delay (affect P1285 only)
+  - [BugFix] TaskWeight.ExecuteMeas standarize unit to s
+    - Corrected measure unit from s to ms.
+    - EnableTargetWeight corrected measure unit from ms to s.
+    - TaskFlowRate.ExecuteCal standarize unit to s
+  - [BugFix] Delete Uploaded Map for TaskDisp.Preference == TaskDisp.EPreference.Unisem && TaskDisp.SECSGEMProtocol == TaskDisp.ESECSGEMProtocol.SECSGEMConnect2 && GDefine.sgc2.EnableStripMapE142
+  - [BugFix] Corrected Map.LoadInProcess TaskDisp.Preference == TaskDisp.EPreference.Unisem && TaskDisp.SECSGEMProtocol == TaskDisp.ESECSGEMProtocol.SECSGEMConnect2 && GDefine.sgc2.EnableStripMapE142
+    - Change default from ByPass to None for 
+    - Corrected convert bin array value
+  - [Feature] Added Option.EditMapLock
+  - [Improve] Force Auto Panel Map view-only
+  - [Feature] Added DefineSafety.DoorLock_Conv = true to Task.TR_RunDispAsync() after run, set door open if not TR_IsRunning after dispense thread ends
+
+5.0.117 - 20210330 - KN
+  - [BugFix] Added frmAuto.DoorUnlock funtion 
+  - [Enhance] Merged WGH_Series.dll 1.0.2.2 weights functions to ease maintenance.
+  - [Feature] Added TEWeight.EWEightType.Simulator; simulate weight function w/o weight.
+  
+5.0.115 - 20210325 - KN
+  - [BugFix] GROUP_DISP Add PostWait to Dot (affect on P1245 only)
+  - [BugFix] Disable GUAxis to prevent axis alarm. Solve DOT_P not working because axis 4 error (affect on P1245 only)
+  - [BugFix] TaskDisp.TP.TP_Shot use small values for (affect P1285 only)
+  
+5.0.113 - 20210317 - KN
+  - [Feature] Save Inprocess Map for TaskDisp.Preference == TaskDisp.EPreference.Unisem && TaskDisp.SECSGEMProtocol == TaskDisp.ESECSGEMProtocol.SECSGEMConnect2 && GDefine.sgc2.EnableStripMapE142
+  - [Feature] Upload Prompt at Disp Run if recovery map exist
+  - [Improve] Remove public bool HwInvert. Introduce hardware invert for all
+  - [Improve] Remove CControl2.InvertPulse. Motion Output Pulse Inversion managed by hardware
+  - [HseKeep] Removed DispProg.PathAddDelay(TLine Line, double Delay) replace with CommonMotion.
+
+5.0.109 - 20210313 - KN
+  - [HseKeep] frm_DispProg2 removed non-used tsbtn_ShowJog, tsbtn_ShowCamera and tsbtn_Close
+  - [Improve] Added Jog to frmImageSelectBox
+  - [Feature] Added Test function for HeightSet
+  - [Feature] DoRefEdge
+    Added AcceptTol = 5
+    Added AlignAll
+  - [BugFix] TaskMHS.Left.PushIn() add wait for InPsnt or async not busy
+  - [BugFix] TaskMHS.Left.RunKickAsync() corrected busy flag
+
+5.0.107 - 20210308  - KN
+  - [Feature] Increase TCmdList.MAX_CMD from 255 to 512 (55)
+  - [Feature] Added AcceptTol for DoRefEdge (55)
+
+5.0.105 - 20210308  - KN
+  - [BugFix] Fix DoRefCircle roundness value check (55)
+  - [BugFix] Fix ROI overlap and selection (55)
+  - [Change] DO_VIS_INSP show Skip button (Unisem)
+
+5.0.103 - 20210306  - KN
+  - [Feature] Disable Software Limit for hardware homing (55)
+  - [BugFix] DOT_P Dispense in Normal Mode and Disp only (55)
+  - [BugFix] DO_HEIGHT corrected layout selection (55)
+  - [BugFix] TaskMHS Stop Conveyor for Pusher Type2 and 3 error. Prevent conveyor cont move. (Unisem)
+  - [BugFix] TaskMHS Remove redundant while loop waiting pusher not fulfill at error cause indefinite task. (Unisem)
+  - [BugFix] UpdateAxis update SwLmtN and P in hardware mode, config will overwrite hardware
+
+5.0.101 - 20210206 - KN
+  - [Feature] Added GDefine.EHeightSensorType IFD2422 with limited function as IFD2421 
+
+5.0.99 - 20210208 - KN
+  - [BugFix] Corrected frmDispProgDoRefEdge Learn ToolType
+  - [HseKeep] Use DirectoryInfo for GDefine.Recipe
+  - [BugFix] Corrected Recipe SaveAs
+  - [BugFix] Removed CATCode validation for PumpB,C,D prior ValidateMESProduct. ValidateMESProduct updates CATCode selection.
+
+5.0.97 -20210203 - KN
+  - [Enhance] frmImageSelectBox set TopMost
+  - [BugFix] Corrected frmDispProgDoRefEdge ToolType
+  - [BugFix] Correct ReadID live image
+
+5.0.94 -20210201 - KN
+  - [Feature] Added PatFindEdge Circle
+  - [BugFix] Corrected SaveXML2 for Spinnaker
+  - [Changes] Move Focus0 for TaskToggleCamOffset
+  - [Setting] Set PulseOutReverse.ReverseDisable as default when Open/Close Board. To revert old software version, must exit program proper.
+  - [Feature] HEIGHT_SET measure surround 10um.
+  - [Feature] frmDot Add Dot function
+  - [Feature] frmDotMulti Add Dot function
+  - [Changes] Added TAxisPara.HwInvert to handle axis direction invert by axis
+  - [Feature] Added frmCmdSelect. Improve CmdSelection. Removed cms_Command
+  - [HseKeep] Removed Define_Run.Lmds_CalDispPasses and relations. 
+    Move Define_Run.ELmdsMode, Define_Run.Lmds_COBTesterSeq to Lmds_CT.
+    Correct and remove redundant reference Program.LmdCT.SendLotStart(),  Program.LmdsCT_SendLotEnd(),  Program.SetCalMode, Program.CustomMode, Define_Run.Lmds_COBTesterMode
+  - [BugFix] Corrected DO_HEIGHT display.
+
+5.0.91 - 20210114 - KN
+  - [BugFix] Added HEIGHT_SET. DoHeight at the location of the next DOT and move command. Set the Height for execution of the Command.
+  - [BugFix] AutoLogout refreah Main Screen
+  - [Enhance] Added Camera_LaserSensor_LightRGB, Camera_TouchDot_LightRGB, Camera_TouchDotSet_LightRGB,
+
+5.0.89 - 20210110 - KN
+  - [BugFix] Correct DO_REF, DO_REF_EDGE, DO_HEIGHT data updating
+
+5.0.87 - 20210108 - KN
+  - [Feature] Added Do_Ref_Edge
+ 
+5.0.85 - 20210108 - KN
+  - [Feature] Lumileds temperature out of control stop machine. Not allow to continue.
+  - [HseKeep] TaskWeight remove commented codes
+  - [Feature] Added CustomPath Select
+  - [BugFix] Fix Weight Cal volume update. Bug exist for a long time. Known DispCore 1.4.15 not issue.
+
+5.0.83 - 20210105 - KN
+  - [Feature] Lumileds temperature out of control stop machine. Not allow to continue.
+  - [Feature] Added CustomPath. Lumileds MeniMeas save copy to CustomPath.
+ 
+5.0.79 - 20210104 - KN
+  - [BugFix] Corrected CheckMeniscus message.
+  - [Feature] Skip MeasMeniscus for Lumileds.
+
+5.0.77 - 20210104 - KN
+  - [Enhance] P1245 set Invert Pulse to Board
+  - [BugFix] Corrected HomeGX2, GY2 and GZ2 for Hardware Homing
+  - [Feature] Added log TileID to Board folder
+  - [Feature] Added TaskMeasMen.Datas.SaveLmds
+  - [Feature] Added Convert Program to Recipe
+
+5.0.75 - 20210104 - KN
+  - [BugFix] Corrected HomeGX2
+  - [Feature] Added MEAS_MENI CompleteOK and CompleteNG for 
+  - [Feature] Merged LotCtrl.dll v1.3.27. Only LUMDisp, LUMConfocal and OsramEMOS supported. Others not ported because previous codes not maintainable; too messy. Removed LotCtrl dependencies.
+  - [Feature] Added LotCtrl.ClearMaterialChangeAccessLevel
+  - [Feature] Add ETempCtrlModule.ExternalHeat Event.CLICK_AUTO_MODE to external temp monitoring
+  - [Feature] Add Event.CLICK_AUTO_MODE to log state
+
+5.0.71 - 20201226 - KN
+  - [HseKeep] Removed unused DispProg.Target_FlowRate
+  - [Feature] Added DispProg.Cal_Weight_Tol
+  - [Feature] TaskDisp.Preference == TaskDisp.EPreference.Unisem access to Weight Setting
+  - [Feature] Support Hardware homing for XY_ZX2Y2_Z2
+  - [HseKeep] Removed GDefine.EGantryConfig.XY_RX_Z, XY_RXRY_Z, XYZ_X4Y4Z4 dependencies. Not used.
+
+5.0.69 - 20201208 - KN
+  - [Feature] Display ConfigFile and load on homing
+  - [Changes] Change HomeMode16 to HomeMode6, less depended on Index
+
+5.0.67 - 20201125 - KN
+  - [Bugfix] GroupDisp Dot latch DispTime and Model 
+  - [Changes] GroupDisp DotEnd execute even Up =0
+
+5.0.65 - 20201124 - KN
+  - [BugFix] Corrected GroupDisp skip dispense
+
+5.0.63 - 20201116 - KN
+  - [Feature] Added FlowrateCal without TargetFlowrate
+  - [Improve] Fix SP cannot shot due to invalid path invalid value. added dummy values
+  - [Bugfix] Save DispProg.FlowRate.TargetFlowRate as double
+
+5.0.61 - 20201104 - KN
+  - [Improve] DispProg2 set b_ProgEdit = false on start
+  - [Feature] Add frmWeightMeas to measure weight
+  - [Change] Change GroupDisp DotEnd sequence to move and up
+
+5.0.57 - 20201028 - KN
+  - [BugFix] Corrected ZUP for TaskWeight.Weight_DownWeightUp
+  - [Enhance] GroupDisp scrollbar selection to last selected command
+  - [BugFix] GroupDisp Check Flowrate only if enabled
+
+5.0.55 - 20201026 - KN
+  - [Feature] Added DOT_START and DOT_END extended dot function
+  - Remove redundant error code 5310 and 5320 
+  - Removed event Intf.OnDoorLockReq() Intf.OnDoorUnLockReq() events and relations
+  - Removed redundant ErrCode.DOOR_IS_OPEN
+
+5.0.53 - 20201017 - KN
+  - [Feature] Added Flowrate Material Aproximate Fit line 
+
+5.0.51 - 20201016 - KN
+  - [Enhance] Option to select AutoCal by Unit interval
+  - [Feature] Display DoorLock status
+  - [Feature] Enable Disable GroupDisp Disp
+  - [Feature] Added Precisor = 2, engage precisor during dispense
+
+5.0.49 - 20201010 - KN
+  - [BugFix] Corrected DispProg run Async
+  - [BugFix] Corrected Enable Auto Cal
+  - [Enhance] Disable Input Map when TaskDisp.SECSGEMProtocol == TaskDisp.ESECSGEMProtocol.SECSGEMConnect2
+  
+5.0.47 - 20201010 - KN -> Big Problem 
+  - [Feature] Added FlowRate cal for SP and TP mode
+  - [Feature] Added GROUP_DISP to disp group of dots or group of lines
+  - [Enhance] Prevent DispProg frmMap being out of main screen area
+
+5.0.45 - 20201006 - KN
+  - [BugFix] Fix Lmds_CT Singulated Mode Operation
+  - [HseKeep] Removed frmDispProg2 tmrCycle, DispProg.LiveSpinnaker2
+  - [BugFix] Corrected Do_Vis_Insp STOP to stop operation
+  - [Feature] Added Support for A252 Dual Index for SECSGEM
+  - [Changes] Move Material related setting to Option.Process
+  - [Feature] Added Material Unit Counter.
+  - [BugFix] Corrected ReadID FocusNo display. Set light during Exec.
+
+5.0.43 - 20201002 - KN
+  - [Bugfix] frmOptions update cbxCustomerList data source 
+  - [Bugfix] LmdCT message 
+  - [Changes] Auto save incompelete Weight Measure on close.
+
+5.0.37 - 2020921 - KN
+  - [Changes] TInputMap.Upload, check (TaskDisp.Preference == TaskDisp.EPreference.Unisem && GDefine.sgc2.EnableStripMapE142) to check StripID
+
+5.0.35 - 20200914 - KN
+  - [BugFix] Corrected temporary commented laser value
+
+5.0.33 - 20200910 - KN
+  - [HseKeep] Removed UseMHS2 and all dependencies
+  - [Changes] LoadSaveConfig for tower lights
+
+5.0.31 - 20200909 - KN
+  - [Changes] frm_MHS2ConvPara force user control on click
+  - [BugFix] Corrected DispProg UploadXMLString(null) to UploadXMLString("")
+  - [Enhance] Add App version to MsgBox
+  - [Enhance] Uses NUtils 2.0.4.0, Update AccessCtrl
+  - [Enhance] Uses NVision 2.2.31, Upadte TaskVision.ExecVision to update complete AreaRatio info 
+  - [Enhance] Added TInputMap.Upload to  check Upload result
+  - [BugFix] Corrected UploadMap orientation
+
+5.0.29 - 20200908 - KN
+  - [Changes] Increase Head1 Volume_ul range from -0.1 to 0.1 to -1 to 1.
+  - [Changes] frmSECGEMConnect2 upon change PPSELECT force init.
+  - [Improve] Add frmConfig connected color to lime
+  - [HseKeep] Removed frmJogGantry and relation
+
+5.0.27 - 20200901 - KN
+  - [Improve] frmDispProg disable from when loading, encounter crash in odler S400 pc system
+  - [Improve] replace backgroundworker with timer for progess bar update
+
+5.0.25 - 20200827 - KN
+  - [Optimze] Dispose frmAuto and frmDispProg on close. Dispose child froms
+  - [Improve] Run as function Task frmProgram WipeA, WipeB and PurgeStage
+  - [Improve] Remove timer based RefreshMap. Created frmMap.Instance.RefreshMap(). Added to DispProg.
+  - [Improve] frmMap hide ImgCurr and ImgPrev
+  - [Improve] DispTools Teach Needle change MsgBox to MessageBox
+
+5.0.23 - 20200817 - KN
+  - [Improve] Vermes TEVermesMDS1560 and TEVermesHeaterHC48 to exception prompt include class name
+  - [BugFix] uctrl_JogGantry display motor position correctly
+   
+5.0.21 - 20200813 - KN
+  - Corrected Home Progress Report
+  - [Improve] DispProg Progress Report
+  - [Feature] Added Load Config ofd
+  - [Improve] Simplify Load Config
+  - [BugFix] Corrected CARC Cw/CCW display
+  - [BugFix] Check GXY Busy for button down move execution
+  - [BugFix] Corrected CCIRC End Point
+  
+5.0.17 - 20200807 - KN
+  - [Improve] Increase frmMap refresh timer
+  - [Improve] GC.Collect for frmAuto and frmDispProg
+  - [Improve] Memory leak improvements
+  
+5.0.13 - 20200804 - KN
+  - [Merge] Merged CControl.dll 1.7.1.27100
+    - Removed CControl.dll depencies
+    - [Improve] Cancel DispProg when frm_MHS2ConvCtrl.Return or Unload.
+	- [BugFix] Remanage Mutex declaration Solved thread deadlock problem. Deadlock location unknown.
+  - [Change] Move Focus to Camera Focus
+  - [Feature] Added Calibrate Default Z Pos, DefZPos
+  - [Feature] Added Calibrate Default Laser Value
+  - [Enhance] Improve AutoFocus
+  - [Feature] Relayout frmDispProg_Setting
+  - [Improve] Resize frmDispProg_DoHeight
+  - [BugFix] Corrected save Def2 Lighting
+
+5.0.11 - 20200729 - KN
+  - [Feature] Added Heater control to frmVermesMDS1560
+  - [BugFix] Fix CArc as first continuous move
+
+5.0.9 - 20200724 - KN
+  - [Feature] Added TEVermesHeaterHC48
+    - Added Vermes Heater control to frmVermes
+  - [Feature] Added frmCamera Right Click move to
+  - [Changes] Update uctrl_JogGantry, add Led settings
+  - [Feature] Switch Z to slow speed while moving
+  - [Feature] Stop Jog when mouse move out of button
+  
+5.0.7 - 20200717 16:30 - KN
+  - [BugFix] 16:35 Correct frmMain and frmAuto Status Display
+  - [BugFix] 16:40 Check Conveyour Type to DoorCheck_Conv
+
+5.0.5 - 20200708 - KN
+  - [Bugfix] Corrected DoRef always return false
+  - [Change] Change log to Data\Log
+  - [Change] Correct previus error. Copy Setup files from c:\DispCore\Setup to AppDir
+
+5.0.2 - 20200706 - KN Repackage to NDispWin
+
+  20200704
+  - [Change] Removed SECSGEMConnect features and dependencies.
+  - [Feature] Added SECSGEMConnect2 features and dependencies.
+
+  20200624
+  - [Merge] Merged MHS2_v15 2.2.21
+  - [Change] Removed Log.Board.WriteByMonthDay, replace with Event
+   
+  20200623
+  - [Merge] Merged NDisp3Win NDisp3WIN_vs15 4.0.87
+    - removed MHS.dll support
+  20200616
+  - [Merge] MsgBox2.dll 2.6.1. Removed redundancies.
+  - [Change] Migrate to Event
+    - removed redundant LogPump.LoadProgram with Event
+    - replace LogPump.DispVolumeAdj wiht Event
+    - replace LogPump.BSuckVolumeAdj with Event
+    - removed redundant TaskDisp.UpdatePPDispVol
+    - removed redundant TaskDisp.UpdatePPBSuckVol
+    - removed redundant TaskDisp.UpdateDispSpeed
+    - removed redundant TaskDisp.UpdateDispTime
+    - removed redundant TaskDisp.UpdateBacksuckSpeed
+    - removed redundant TaskDisp.UpdateBacksuckTime
+    - removed Run, Stop and Pause custom event log
+
+- frmIODiag update GDefine.ZSensor_DistPerPulse
+- [Feature] Added Vermes1560 Support 
+- [HseKeep] Remove frm_DispProg2 old used codes
+- [Change] Vermes and Vermes1560 Change CleanPurge NP to Time base
+- [Change] Vermes and Vermes1560 Change IdlePurge NP to Time base
+- [Feature] Added DispProg COUNT_DISP. Increment counter by USE_MAP.
+
+
+1.4.25 - 20200605 - KN 
+  - [Improve] Improve Layout Wafer
+  - [Changes] DoHeight used ErrorTol and SkipTol
+
+1.4.23 - 20200516 - KN 
+  - [Update] Update frmDispProg_DoBdCapture
+    - added MaxSize; change from 2000 to user define
+    - added Rotate; rotate image for right angled line scan
+    - area scan support camera 0 and 1
+    - line scan support camera 0 and 1
+  - [Enhance] Increase MAX_RC from 100 to 200, increase MAX_UNIT from 10000 to 40000
+  - [Improve] Save valid unit for Premap, improve save time
+
+1.4.21 - 20200513 - KN 
+  - [BugFix] frmDispProg_DotMulti btn_OfstAll_Click to update correctly
+
+1.4.19 - 20200508 - KN 
+  - [Enhance] frmDispProg_DotMulti added AdjustTolY.
+  - [Enhance] Preference==Unisem will apply 0 range.
+
+1.4.17 - 20200270 - KN
+  - [BugFix] Program Mode live camera after stop and cancel.
+
+1.4.15 - 20200270 - KN
+  - [Feature] Update WeightCal and WeightMeasure DispProg.Cal_Meas_Weight for all pumps.
+
+1.4.13 - 20200210 - KN
+  - [Feature] Set rt_Head1MapBin = EMapBin.Bypass for TaskDisp.Preference == TaskDisp.EPreference.Lumileds, unmanagable change as flow too complicated.
+  - [Enhance] frm_Setup_SP added P Pressure On/Off Delay and Early - [Enhance] frm_Setup_SP added P Pressure On/Off Delay and Early
+
+1.4.11 - 20200210 - KN
+  - [BugFix] Fix Lumileds COB features
+
+1.4.0 - 20200240 - KN
+  - [Library] Uses CControl.dll 1.7.1
+    - Load Motion Card Config file if exist
+  - [Removal] Removed unused PathDelay
+
+1.3.37 - 202001013 - KN
+  - [Library] Uses ModBus.dll 1.2.0
+  - [Feature] Stop Temp Controller if SV = 0
+  - [Feature] Added DispProg.DotsPerSample and DispProg.OutputResult support Meas and Cal
+
+1.3.35 - 202001010 - KN
+  - [Changes] frmDoVision Change ShowMessage to MsgBox on exception error
+  - [HseKeep] Removed frmProg2 timer based Run,Cancel,Stop
+  - [Feature] Program timer_1s enable button if taskComplete
+  - [Feature] Added LED Adjust to Param
+  - [Feature] Log event Program UnlockZ 
+  - [Feature] Log event Bypass Needle Setup
+  - [Feature] ResetIO at TaskGantry.BoardOpen
+  - [Enhance] Added frmDotMulti Position Range Tol, check of range in access level less than engineer
+- [Feature] Read UnitID
+    rt_ReadID[ID] to rt_ReadID[ID, UnitIndex]
+
+1.3.33 - 20200103 - KN
+  - [Feature] Added TeachNeedle cancel event
+  - [UI] Hide Cycle Cancel
+  - [BugFix] Check frmDispProg TaskRun not null for Wait
+  - [Feature] Added Vermes Ctrl TrigIO
+
+1.3.31 - 20200103 - KN
+ - [Enhance] LaserGetDistance - retry 1 time on exception
+  - [Enhance] frm_DispProg2 uses Task and TR_Run methods
+  - [Feature] GDefine.InPressureInRange, Intf.CmdSend("MonitorPressureInRange", 0) to monitor LowPressure
+- [Feature] Set DispATrig, DispBTrig, BPress1, BPress2 and DispPortC1 to false on EMO
+  - [Library] Uses NVision 2.2.21, include AreaRatio total data to log.
+  - [Changes] DoRef, DoVision, VisInsp and DoHeight Increse SkipCount from 50 to 99
+  - [Enhance] Saving using XmlWriter and XmlReader, improves loading and saving speed
+  - [Changes] Remove frm_DispCore_DispTools double-click enabling form
+
+1.3.29
+  - [Improve] Change DoorOpen prompt from OK, Retry, Cancel to OK option. Prevent MouseUp event not detected
+
+1.3.27 - 20191122 - KN
+  - [Library] Uses Modbus.dll 1.0.5
+    Added Update button to config to enable testing
+    Check PV ranges on controller Run
+  - [Feature] TaskDisp.LmdsCT_SendLotStart() clear TaskDisp.LmdsCT.NewVol to prevent residual param updates - Lumileds
+  - [BugFix] Load and Save DispProg DostsPerSample and OutputResult
+
+1.3.25 - 20191105 - KN
+  - [Enhance] Break if Log.PurgeBuffer fail - UnisemCD
+  - [Improve] Disable frmDispProg.TempCtrl.Pool - UnisemCD
+  - [Improve] Add DoWorkAsyncInfinite10s_TempPool(), seperate pulling thread - UnisemCD
+  - [HseKeep] Remove TaskWeight uncomplete development codes
+  - [Feature] Added TaskWeight.DotsPerSample and OutputResult priority by program - Lumileds
+  - [Feature] TaskDisp.LmdsCT_SendLotStart() clear rt info to prevent residual param updates - Lumileds
+
+1.3.23 - 20191105 - KN
+  - [BugFix] Corrected Unit.Count to clear Count and not CountLimit
+  - [BugFix] Corrected Head Offset log data
+
+1.3.21 - 20191029 - KN
+  - [Feature] Added Head Offset log data for CalHeadOffset, TeachNeedleOfst_Touch_Dot_Set, TaskTeachNeedle_ZSensor_BCamera, TaskTeachNeedle_ZSensor_Mark
+
+1.3.19 - 20191002 - KN
+  - [Feature] Added Pool HeaterControllers timer, prompt on alarm
+  
+1.3.17 - 20191001 - KN
+  - [Bugfix] Corrected CreateMap.MapOrigin.Right
+
+1.3.15 - 20190923 - KN
+  - [Enhance] DoLineCapture remove save
+  - [Bugfix] Spinnaker2 DoRef fail set message not TopMost
+  - [Bugfix] Spinnaker2 Corrected StepByStep display
+  
+1.3.13 - 20190917 - KN
+  - [Enhance] Improve DoLineCapture display and log
+
+1.3.11 - 20190912 - KN
+  - [Bugfix] Change loadXML Script[i] from Task.Parallel.For to for loop.
+  - [Bugfix] loadXML using input FullFilename
+  - [Bugfix] Fix Manage delete underscore files
+  - [Enhance] ManageProgram supports recipe format.
+  - [Enhance] Update DoLineCapture for Spinnaker2
+
+1.3.9 -20190819 - KN
+  - [Bugfix] Fix Temp Module not saving
+  - [Bugfix] Spinnaker2 GrabCont after DoRef and DoVision
+  - [Bugfix] Spinnaker2 added Save and LoadCamReticles
+
+1.3.7 -20190819 - KN - In house release for test
+  - [Library] Uses Modbus.dll 1.0.5.
+  - [Library] Uses NVision.dll 2.2.15.
+  - [Enhance] Live Camera after EndLayout
+
+1.3.6 -20190817 - KN - In house release for test
+  - [Feature] Spinnaker 2 support Line Scan
+  - [Feature] Added Log for DoVision and DoVisInsp message and actions
+  - [Enhance] Improve DispStart,Stop,Pause logging
+  - [Feature] DispProg.Stats.DispCount_Inc to SMCIRC, SMCIRC2, SMCIRC3
+  - [Enhance] PurgeStage move profile follow Model.Dn, Ret and Up
+  - [Changes] StageHeight Offset Min from -2 to -5
+  - [Feature] PurgeStage support PP, PP2 single head
+  - [Feature] DoVision/DoVisInsp add detail data log
+- [Library] Uses Modbus.dll 1.0.3
+- [Enhance] Support 4 Temp Controller Modules
+
+1.3.2 -20190707 - KN - In house release for test
+  - [Feature] Added FILL_COUNT_EXCEED_LIMIT
+  - [Feature] Added Maint.Unit.Count, UNIT_COUNT_EXCEED_LIMIT
+  - [Feature] Add Spinnaker2
+    - frmDispProg2
+    - frmVisionFailMsg2
+    - frmDispCoreCameraSetting
+    - frmDispCore_JogGantryVision
+    - frmDispProgView
+frmTeachNeedleStepByStep
+    - TaskDisp
+    - TaskVision
+    - frmVisionCal
+    - frmVisionSetting
+  - [Feature] frm_ProgressReport
+    - Removed Intf.Message
+    - frmDispProg2, SetZ, SetXY, New, Load, Save
+    - PP_Select
+  - [Feature] WaitTouchStageCleaned()
+    - TaskTeachNeedle_Laser_Touch_Dot_Set()
+    - TaskZTouch.SearchNeedleZTouch
+  - [HseKeep] Removed DispProg and related references. Discontinue DispProg support.
+  - [Feature] Added Cond to WipeStage
+  - [Enhance] Improve CameraType loading
+  - [Enhance] Standardize TaskDisp.Material_Life_EndTime and Maint.PP.StartDateTime[i]; preserve reverse compatibility
+  - [HseKeep] frmDispCore_JogGantryVision removed tmr_Debug
+    - consolidate to FormClose
+  - [Feature] Added Vermes Cycles
+  - [Library] Uses Vermes.dll 2.0.3  
+
+1.2.191 -20190717 - KN
+  - [Feature] Added try catch Euresys.Open_eVision_2_5.EImageBW8 to Intf.Initialize to prevent exception error.
+
+1.2.189 -20190716 - KN
+  - [BugFix] Corrected IDReader Type display.
+  - [BugFix] Added Euresys.Open_eVision_2_5.EImageBW8 to Intf.Initialize. Prevent fail to load type EBWImage8. Reason unknown.
+  - [Enhance] Added Exception to IDReader_Read.DataMatrix
+
+1.2.187 -20190712 - KN
+  - [BugFix] Correct FILL_PAT out of array, removed Vermes support
+  - [HseKeep] Remove non used Laser_RefPosZ_Setup and redundancies
+  - [Feature] Added ValidateLaserChangeRate to all TeachZLaser
+
+1.2.185 -20190710 - KN
+  - [Feature] Added TaskDisp.Preference == TaskDisp.EPreference.TD_4FCOB, Added Class RLMS//Registry Lot Management System
+
+1.2.183 -20190710 - KN
+  - [Changes] Added LoopDir for REPEAT
+  - [Changes] Update Program Display for PP_FILL
+  - [Changes] StartDelay and EndDelay from int to double
+  - [Changes] Added PP_CLEANFILL
+  - [Feature] Added PP_VOL_ADJRESET
+  - [Feature] Added PP_VOL_ADJINC
+  - [Changes] Always set CARC EndDelay to prevent 0x800000dc InvalidPathMoveMode Error
+
+1.2.181 -20190704 - KN
+  - [Feature] Added ExtVision Type KeyenceCVX
+  - [Enhance] Added Teach Laser Value to TaskTeachNeedle_Laser_Touch_Dot_Set.
+  - [Enhance] Added Teach Laser Ofst/Laser Value to CalLaser.
+  - [Feature] Added EXT_VISION, added Exec_ExtVision
+  - [Feature] Added WAIT_START
+
+1.2.171 -20190627 - KN
+  - [BugFix] Fix Target_Weight value load cast to int. Load as double
+  - [Changes] Add Prefernce.Cree
+
+1.2.169 -20190626 - KN
+  - [BugFix] Added TaskDisp.SECSGEMConnectPath
+  - [Feature] Removed LightingOff() for DoRef
+  - [Feature] Added Inft.Load(string ProgName) and Intf.Save(string ProgName)
+  - [Feature] Refresh ProrgamList on Load
+
+1.2.167 -20190625 - KN
+  - [Library] Uses dll 2.5.0, write RecipePath
+  - [Feature] Added Event Class
+  - [Feature] Update frm_DispTool_SpeedAdjust HeadAB location
+  - [Feature] Added Update frm_DispTool_SpeedAdjust HeadAB location
+
+1.2.165 -20190611 - KN
+  - [Library] Uses Vermes.dll 2.0.1
+- [Feature] frmVisionFailMsg2 set IO.State.Last for Accept, Retry, Skip, Manual
+- [Feature] frm_JogGAntryVision set IO.State.Last for Confirm and IO.State.Idle for Cancel
+  - [Library] Uses NImager 1.0.31
+  - [Enhance] Set frm_DispProg2 Set AllowEdit to false for Run and Cycle
+
+1.2.163 -20190531 - KN
+  - [Change] DispProg ChuckVac status color from red to lime
+  - [Feature] Added Command Repeat to repeat previous Dot, DotP, MoveLine
+
+1.2.161 -20190531 - KN
+  - [Feature] SecGem on PPSelect ForceInit
+  - [Improve] Move MCT CheckDoor switch to TaskGantry.CheckDoorSw
+  - [Feature] Added RunRegion
+  - [Enhance] XYPeakSpeedRatio,Dist use SetMotionParaEx
+  - [Feature] Added ZTouch_DetectMethod.Lift
+
+1.2.158 -20190524 - KN
+  - [Enhance] Added TaskDisp.Option_HideHPCManualControls
+  - [Enhance] Added Model BSuckVol, not implemented
+  - [Enhance] Added XYPeakSpeedRatio
+
+1.2.157 -20190522 - KN
+  - [Enhance] Update LotEnd
+
+1.2.151 -20190517 - KN
+  - [BugFix] Corrected DispProg saveXML OriginZ value
+  - [Enhance] Script.Validate SMCirc and SMCirc3 check DispGap
+  - [Enhance] Added ChuckVac status
+- [Enhance] Added Lot file log LmdsCT_SendLotStart(), LmdsCT_SendLotEnd(), DispProg.ReadID
+  - [Enhance] Added Verify Score, Verify Ref after manual adjust
+
+1.2.149 - 20190514 - KN
+  - [Changes] SECGEM Check for lastest file for PP-SELECT execution
+  - [Enhance] Added PPSelectBusy flag to prevent multiple loading
+  
+1.2.147 - 20190510 - KN
+  - [BugFix] Corrected HPC save and loading
+
+1.2.145 - 20190419 - KN
+  - [Feature] Parallel LoadXML, speed up loading
+  - [Change] Update NVision saving format
+  - [Feature] Added frmVisionSelectBox ResetROI
+
+1.2.143 - 20190419 - KN
+  - [Feature] Added EnableRecipeFile
+
+1.2.141 - 20190418 - KN
+  - [Change] Intf.frm.PnpAuto to CmdGet
+  - [Library] Uses Vermes_2.0.0.2.dll, HPC15 1.6.4.0.dll, NImager 1.0.25.dll, NUtils 2.0.0.dll
+  - [Feature] Added TaskDisp.RecipePath
+  - [Feature] Save to Recipe .xml file
+
+1.2.140 - 20190417 - KN
+  - [Feature] Added Intf.frm.PnpAuto support Pick and Place Module
+
+1.2.139 - 20190327 - KN
+  - [BugFix] TaskDisp.CalHeadOffset StopGrab on finally
+  - [Feature] Added MultiHeadXYTol
+
+1.2.137 - 20190327 - KN
+  - [BugFix] StepByStep set camera to Cam00 after complete
+ 
+1.2.135 - 20190327 - KN
+  - [BugFix] WeightMeasure PP_SetWeight only if DispProg.TargetWeight > 0
+  - [Changes] DisProg.Meas_Spec independent to Target Weight and Cal Weight 
+  - [Feature] Log DispTools events
+  - [Enhance] Move Intf.TR_Run to RunPermit, prompt at Auto Start
+  - [Enhance] StepByStep GrabStop if cancel
+
+1.2.130 - 20190315 - KN
+  - [BugFix] WeightMeasure PP_SetWeight only if DispProg.TargetWeight > 0
+
+1.2.129 - 20190312 - KN
+  - [BugFix] frm_DispProg2 btn_Close set DispProg.Setup to false.
+
+1.2.127 - 20190304 - KN
+  - [Enhance] Set FPress default to COM0. 
+
+1.2.125 - 20190301 - KN
+  - [BugFix] Correct image not capture after DoRef Manual Adjust. 
+    frm_JogGantryVision_FormClosed remove TaskVision.frmGenImageView.GrabStop();
+
+1.2.123 - 20190301 - KN
+  - [BugFix] Correct image not capture after DoVision Manual Adjust. 
+    frm_DispProg_View_FormClosing remove TaskVision.frmGenImageView.GrabStop();
+
+1.2.122 - 20190221 - KN
+  - [Temp] Add For_Layout info
+
+1.2.121 - 20190221 - KN
+  - [Enhance] Change Layout Toggle PreMap to PrevPreMap and NextPreMap
+- [BugFix] Corrected TaskWeight.CalMaxPressAdjRate unit as Psi
+- [MinorFix] frm_DispCore_JogGantryVision set ZoomFit EnableCamReticle to initialize camera
+
+1.2.120 - 20190219 - KN
+  - [Temp] RectFill disp full path
+  - [BugFix] Corrected BiasKernel correction for XZYTable
+  - [UI] Correct Condition Display
+
+1.2.119 - 20190219 - KN
+  - [Feature] Corrected RECTFILL
+  - [Feature] Save Measure Files to Data\WeightMeas
+  - [Feature] Corrected RECTFILL
+  - [Feature] Added BiasKernel
+  - [Changes] DO_REF save info and file save filename convention
+  - [Feature] Added TaskDisp.LmdsCT.CalDispPasses
+
+1.2.117 - 20190130 - KN
+  - [Enhance] CLEAN, PURGE, PURGEDOT, FILL, WEIGHTCAL Skip if unit is NG
+  - [Feature] Added Temp Contoller to config and program
+  - [Library] Modbus.dll 1.0.1
+
+1.2.116 - 20190123 - KN
+  - [Feature] Added WipeStage 5 Paths and Repeat
+  - [BugFix] Corrected MeasMeni to follow USEMAP
+
+1.2.115 - 20190122 - KN
+  - [Enhance] Intf TR_Run() add wait to clear message
+  - [Enhance] Added Settle Time for Cal Laser Offset
+  - [BugFix] Corrected WipeReady at TaskDisp.FuncWipeStage.Execute
+  - [BugFix] frm_DispProg2 create TaskVision.frmGenImageView at Home
+  - [Enhance] Spinnaker Stop Camera upon init
+ 
+1.2.111 - 20190118 - KN
+  - [BugFix] Stop Cam02 after ATNC to prevent Vision lag due to camera running at background
+  - [Enhance] Added Trace Mode
+  - [Enhance] Added Product Rect in Pad
+  - [Enhance] MeasureSpec = 0 skip update PP
+  - [Feature] Change Step Keyboard D1=0.001, D2=0.002, D3=0.005, D4=0.010
+  - [Feature] Added SoftLimit indication
+  - [Feature] Added WipeStage feature
+  - [Feature] Added to Log event WeightAdjust, WeightCalibrate and WeightMeasure 
+
+1.2.110 - 20190114 - KN
+  - [Enhance] Check Door at IdlePurge. Stop when Door Open.
+
+1.2.109 - 20190114 - KN
+  - [Enhance] TaskDisp.TeachNeedle_Completed with Tools.TeachNeedle or HeadOffset and ZSensor
+  - [Enhance] Check TeachNeedle_Completed on Run
+  - [Feature] Added FillCounter to increment during Fill, RecycleBarrel
+  - [Feature] CMControl.UpdateAxis add EnableSoftwareLimit
+  - [Bugfix] Update WeightMeasure data to controller.
+  - [Enhance] Improve Weight Measure
+    Added TaskWeight.TimeEnd to record completion of the measurement
+    Added WeightMeasure filename to window title
+  - [BugFix] Corrected MaxFPressAdjustRate
+  - [Feature] Improve Jog Panel
+	Added Keyboard function. 
+	Added Pad function.
+  - [Feature] tsbtn_Cancel enabled follow Line > 0
+  - [Feature] Added TapeClean to frm_IODiag
+
+1.2.107 - 20190103 - KN
+  - [Feature] Added SP Support for FillPat
+  - [Feature] Added LAYOUT_PREMAP to manual set PreMap after Layout
+  - [Feature] Apply sequencial PreMap for SCC and Lmds_COBTester only. PreMap will follow Layout ID 
+  - [Change] Change SBrush[(byte)EMapBin.None] from Transparent to Color.Honeydew
+  - [Change] Added b_RadiusPauseDisp to CLine
+  - [Change] LineSpeed2 to LineSpd2
+
+1.2.105 - 20181221 - KN
+  - [Bugfix] Intf CmdSet return not Idling
+  - [Feature] TaskDisp.TeachNeedle_Completed after TeachNeedle
+ 
+1.2.103 - 20181217 - KN
+  - [Feature] Support PP2D for INPUT_MAP LumiledsMap
+  - [Feature] Autop WeightCal fail will return DialogResult.Cancel to stop
+  - [Feature] Added Idle_PostVacTime
+  - [Feature] Allow FrameCount change at DispTool VolumeAdjust  
+  - [Enhance] Added Reset Button at InfoPanel_Pump.
+  - [Enhance] Added GetCmd Idling status.
+  - [Feature] Added Start Wait for MEAS_MENI to allow flow before measure.
+  - [Feature] Added Meas XY for MEAS_MENI to allow define meas pos.
+  - [Bugfix] Remove FPressOff for Clean/Purge, Add FPressOFf for manual Clean/Purge
+  - [Feature] Added GetCmd Preference
+
+1.2.101 - 20181117 - KN
+  - [Enhance] Prevent TaskVision.frmGenImageView to StopGrab
+  - [BugFix] Correct Cond.StartBoard
+  - [Enhance] Added Cond to PurgeDot
+  - [Correct] Corrected TaskTeachNeedle_Laser_Touch_Dot_Set() message
+
+1.2.99 - 20181116 - KN
+  - [Enhance] Added Clean/Purge FPress On for Vermes 
+  - [Library] Update NUtils.dll 1.0.12
+  - [Improve] Update DispProg display for PP_VOL_COMP
+
+1.2.97 - 20181114 - KN
+  - [BugFix] Skip FPressCtrl.Thread.Set_PressUnit if controller not support
+
+1.2.95 - 20181113 - KN
+  - [Feature] Added ChuckVac and funtionalities
+  - [BugFix] Skip FPressCtrl.Thread.Set_PressUnit when either value is 0
+
+1.2.93 - 20181025 - KN
+  - [Change] Cond UnitCount and DispCount is based on HeadA
+  - [BugFix] Corrected MEAS_MENISCUS running HeadB when NG
+- [Feature] Added TeachNeedle_PromptOnLotStart
+
+1.2.91 - 20181025 - KN
+  - [Feature] Added Meas_Men for 3 pts meniscus measurement
+  - [Feature] Added Weight.Cal_Status and Weight.Meas_Status
+  - [Feature] Added LotEntry for Preference Lumileds
+  - [Feature] Added Lumileds_EMap to support SS, COB and VIS format. Auto select by setting priority.
+  - [BugFix] Corrected frm_Message Load and Save message.
+  - [Feature] Added Condition to PPFill, PPRecycleB and PPRecycleN, Group to new frmDispProg_PPFillRecycle
+  - [BugFix] Corrected Model Delay Display 
+  - [Changes] Update HeadOffset Instruction
+  - [Enhance] remove rt_ContBoard
+  - [Feature] Corrected TaskDisp.EVolOfstProtocol.Lextar_FrontTestCloseLoop UI function and Upload function
+
+1.2.87 - 20181025 - KN
+  - [BugFix] Corrected Set Press unit
+  - [Hsekeep] Remove TDataOutputs.cs
+  - [Added] Added FPressA and FPressB to Model
+    - Set valid FPress for Dot, Line, Arc, CLine, CArc, SMCRIC, DOT_P
+
+1.2.85 - 20181018 - KN
+  - [Enhance] Rebuild TaskVolOfst_Custom.Lmds_CT; old error still exist
+  - [Feature] Display at VolumeAdjust Base + Adjust 
+  - [Feature] Update TaskDisp.EVolOfstProtocol.Lextar_FrontTestCloseLoop functions
+    - CheckPath on Enable Auto or Manual
+
+1.2.83 - 20181010 - KN
+  - [BugFix] Corrected GPIO No Display to match selection
+  - [Feature] Clear all GPIO when cancel program
+  - [Feature] Added PURGE_STAGE command
+  - [Feature] Added PURGE_STAGE command
+  - [Enhance] Resize NImager
+
+1.2.81 - 20181010 - KN
+  - [Changes] frm_LmdsCOBTester map sequence topright, down, zpath for InputMap and FrameComplete
+  - [Feature] Added PP_VOL_SET_SPEED set Model0 line speed to match Disp Volume
+
+1.2.79 - 20180920 - KN
+  - [Enhance] frm_LmdsCOBTester insert to listBox only if visible
+  - [Feature] Added SensDoor and LockDoor. With assignment, functions in program mode only.
+  - [BugFix] Remove GX2Y2 collision check for Head2_DefDistX < 0, A300 seried
+
+1.2.77 - 20180920 - KN
+  - [Improve] Removed frm_DispCore_DispTools.AllowClose and relations
+  - [Enhance] Log Exception
+    - Added Log for frmLayoutMatrix Invoke Exception
+    - Consolidate frm_TeachNeedle_StepByStep.Load Invoke. Added Log for Invoke Exception
+    - Added Log for frm_OsramSCC Invoke Exception
+    - Added Log for frm_LmdsCOBTester Invoke Exception
+  - [Enhance] Corrected frm_ReadID DataMan position
+  - [Enhance] Added Do_Ref Fail log
+
+1.2.75 - 20180914 - KN
+  - [Feature] Added Meas_Spec and Meas_Spec_Tol (Lumiled/Pen)  
+  - [Feature] Added Option ShowSkipButton to DoRef (Lumiled/Pen)  
+  - [Bugfix] Added Prog complete to invert RC to communicate with Tester (Lumiled/Pen)  
+
+1.2.73 - 20180907 - KN
+  - [Feature] Added support Euresys.Open_eVision_2_5
+  - [Feature] Added IDReaderType DataMatrix
+  - [Enhance] DispProg MHS prompt for unloading. Cancel Dispense and unload. Prevent mis execute.  
+  - [Enhance] DispProg MHS prompt for loading. Cancel Dispense and load. Start new dispense.
+  - [Enhance] Show frm_DispCore_WeightCal
+  - [Feature] Added IdlePurge function
+
+1.2.69 - 20180907 - KN
+  - [BugFix] Start Grab for Spinnaker when run
+  - [Feature] Clean/Purge/Flush Position and setting by PumpType
+  - [Enhance] Added Parameters and Setting to Measure Report
+  - [Enhance] WeightMeasure improve reporting, corrected Dot Count setting for Head2
+  - [Enhance] DoDotMulti add ShotCount
+  - [Feature] User Define DoDotMulti add ShotCount
+
+1.2.65 - 20180905 - KN
+  - [Changes] Hide folders from Program Open/SaveAs dialog
+  - [BugFix] Corrected Motor No Display for DeviceAxisConfigEditor
+  - [Feature] Added SZAxis for ZSensor defination
+  - [Changes] TaskDisp.Head2_DefDistX min from 35 to -100 to support A302 camera at left.
+  - [Changes] Remove MoveGX2Y2MinDist declaration and relations
+  - [Changes] TaskGantry.ZHeightForSlowSpeed min frm -100 to -200 to support Spray with longer stroke.
+  - [Enhance] Improves TaskWeight ScreenCapture to prevent wrong capture
+  - [Enhance] Add HomeTimeout retry. Improve HomeTimeout handling
+  - [Enhance] Improve TaskGantry.Home not to prompt Motor Alarm
+  - [Enhance] Inft.DispProg.ShowDialog Single intance of frm_DispProg2
+
+1.2.63 - 20180903 - KN
+  - [Feature] Added ILD1750 support. Uses CLaser 2.0.1.7. MEDAQLib.NET 4.4.0.27352
+  
+1.2.61 - 20180830 - KN
+  - [BugFix] Added Layout.MapOrigin. Fix Layout.PreMap selection.
+  
+1.2.59 - 20180823 - KN
+  - [BugFix] Corrected ATNC support for Spinnaker TeachHead Offset
+  - [Library] Removed NCamera dependencies
+
+1.2.58
+  - [Update] Update TeachNeedleStepByStep support Spinnaker and ATNC
+  
+1.2.57 - 20180813 - KN TD/David
+  - [BugFix] Corrected VOL_SET_DOTS to use number of CmdList and not total allow CmdList.
+  - [Feature] Added General Purpose Out definition GPOut1~6
+  - [Feature] Added SET_GPOUT command to programatically trigger output.
+  - [Enhance] PPVolComp added Weight entry.
+  - [Enhance] PPVolComp added New Condition setup.
+- [Enhance] DoDotMulti Position with Dots > 1 will have interdot EndDelay.
+
+1.2.55 - 20180802 - KN FOCI/Josh
+  - [BugFix] Corrected FindCircles Index increment
+
+1.2.53 - 20180723 - KN Lumileds/Joe
+  - [Enhance] Consolidate Lumileds maps
+    - Change Lumileds_SS_EMap to Lumileds_EMap
+  - [Enhance] Lmds_COBTester add units to array if not exists
+  - [Enhance] Lmds_COBTester invert write Col to support Layout Start Top Left.
+  
+1.2.51 - 20180717 - KN GA/Desmond
+  - [Enhance] Added ErrCode.LASER_OUT_OF_REF_HEIGHT_TOL as ErrCode
+  - [Change] Changed FillPat background line from green to maroon
+
+1.2.49 - 20180711 - KN TD/David
+  - [Feature] Sync PPFill on Sync Mode
+  - [Feature] Added log Z1/Z2 Gap Pos for SM_CIRC and SM_CIRC3 when TD_Log.txt exist
+  - [Enhance] Added READ_ID enable/disable
+  - [Enhance] Reorder DispProg.Stats
+  - [Enhance] ReadID update TowerLight status
+  - [Enhance] Added Log.Board to log READ_ID and INPUT_MAP
+  - [Enhance] Added Condition for Clean and Purge 
+
+1.2.44 - 20180709 - KN TD/David
+  - [Feature] Added InputMap TD_Map
+  - [BugFix] Corrected OSRAM_SCC command
+  - [Enhance] Improve Weight Settings
+  
+1.2.41 - 20180705 - KN FOCI/Josh
+  - [BugFix] Corrected ReadID Test
+ 
+1.2.39 - 20180705 - KN
+  - [Feature] Added IDReader_Type == GDefine.EIDReader.QRCodeReader
+  - [Display] Correct InfoPanel_VolAdjust display
+  - [Feature] Added DO_VIS_INSP
+  - [Enhance] ReadID return false at cancel
+    - Index by layout
+ 
+1.2.36 - 20180628 - KN
+  - [Change] Increase Weight Adjust Max from 10 t0 1000; allow larger range for COB
+  - [Change] Weight Setting Min from 0.001 t0 0; allow disable density.
+
+1.2.35 - 20180628 - KN
+  - [Enhance] Added Command SET_DOT_VOL distribute weight to the number of dots.
+  
+1.2.33 - 20180628 - KN
+  - [Enhance] Disable LumiledsCT Auto Connect.
+  - [Enhance] LumiledsCT ClearInfo, ClearOffset and Cancel Program on EndLot.
+
+1.2.31 - 20180625 - KN
+  - [Enhance] Add additional information to Lextar_FrontTestCloseLoop. Corrected Setting calculation to add OffsetVol.
+
+1.2.29 - 20180620 - KN
+- [Enhance] frmVisionFailMsg2 Tower Light IO SetState
+- [UI] Added Do_Height 3D show average data
+- [Correct] DoUnitMark, DoBdOrient added Threshold
+- [BugFix] TaskVision.MatchTemplate Grab add Spinnaker support
+
+1.2.28 - 20180611 - KN
+  - [Enhance] Simplify Lighting Adjust
+
+1.2.27 - 20180608 - KN
+- [Enhance] Lmds_COBTester + add DispProg.PP_HeadA/B_DispOffsetVol to value 
+- [Enhance] ReadID Improve UI handling
+- [Correct] Added TaskDisp.Head2_XOffset to Dot_P, DoDotMulti, DotLine_Multi, DoLineMulti 
+  - [BugFix] Added PreMapBin to store temp multi PreMaps. Prevent saving or Layout0 PreMap
+  - [BugFix] DispSetup create frmJogGantry2 instant
+  - [UI] Update frm_volumeOfst for different Protocol
+
+  - [Correct] LumiledsCT, corrected Stop Disp
+  - [Correct] LumiledsCT, Corrected CR to RC
+  - [Feature] LumiledsCT, Display at DispTools
+  - [BugFix] Clear Buzzer on ReadID_ManualEntry close
+
+1.2.25 - 20180601 - KN
+  - [Feature] Tested LmdsCOBTester
+  - [UI] DispProg2 Dot_Multi display Dot Count
+
+1.2.21 - 20180601 - KN
+  - [Enhance] DoVision uses frmVisonFailMsg2
+  - [Library] NVision.dll 2.0.2 and NCamera.dll 2.0.2
+  - [Changes] Remove DoVision Shrink command
+  - [InProgress] Do Inspect
+
+1.2.17 - 20180530 - KN
+  - [Correct] Added Spinnaker to frm_View
+- [Correct] Added Spinnaker to TaskVision.TeachTemplate
+- [Feature] Added MHS2 CmdSet loading and unloading
+  - [Feature] Added ZHeightForSlowSpeed, apply XYZ axis except Z Up
+  - [Feature] Added Do_Vision Support to MasterAlign
+
+1.2.15 - 20180525 - KN
+  - [Feature] Added ZHeightForSlowXY
+  - [Feature] Added LED uctrl_JogGantry
+
+1.2.14 - 20180521 - KN
+  - [BugFix] Corrected WeigthCal Set set CalWeight
+
+1.2.13 - 20180519 - KN
+  - [Enhance] Remove frmVisionView set parent. Prevent frmVisionView being disposed
+  - [BugFix] WeigthCal Set CalWeight and RunWeight
+  - [Library] Uses CControl.dll 1.6.3
+
+1.2.11 - 20180518 - KN
+  - [Enhance] Revert Intf.CmdSend "Cmd_ULoadPre" and "Cmd_LoadPro""
+  - [Enhance] Added TR_Run, TR_Pause, TR_Cancel, TR_ Test TaskRun
+
+1.2.9 - 20180517 - KN
+  - [Library] Used NImager.dll 1.0.7
+  - [Enhance] Auto Align frmGenCameraView
+  - [Enhance] frm_Program.frm_Layout create as TopLevel
+  
+1.2.7 - 20180513 - KN
+  - [BugFix] Corrected Signal Handshake PP Handshake only disp once
+  - [Improve] ECameraType = Spinnaker clear reticles after calibration.
+  - [Improve] frmGenCameraView always visible after fail vision
+  - [Improve] Ctrl to on top of frmGenCameraView
+  - [Feature] Added Cal_Weight for calibration using small volume
+
+1.2.5 - 20180510 - KN
+  - [Enhance] Display multiple FillPat
+  - [Feature] Add LightingAdjust from JogGantryVision
+
+1.2.1 - 20180502 - KN
+  - [Enhance] Uses NImager 1.0.2
+  - [Enhance] Save and Load frm_GenImageView CamReticles  
+
+1.2.0 - 20180502 - KN
+  - [Compiler] Compile with VS2017
+  - [Ancestor] DispCore.dll 1.1.114
+  - [Library] Uses EmguCV 3.0.0.2157
+  - [HseKeep] frm_VisionView remove accessice mouse move events
+  - [Library] Uses NVision.dll and NCamera.dll v2.0.0.0
+  - [Library] Uses NImager.dll 1.0.1 with Spinnaker support
+
+1.1.114 - 20180412 - KN 
+  - [Improve] TaskZTouch TaskDisp.TaskMoveGZZ2Up prevent needle crash
+
+1.1.113 - 20180411 - KN 
+  - [Improve] Increase TPRV delay from 1 to 20
+  - [Feature] Added MasterAlign
+  - [Feature] Added RealTimeFineTune, MoveLine, Dot, DotMulti, DotAngArr
+  - [Feature] Added TLayout.EnableWafer
+  - [Bugfix] Fix FOR_LAYOUT exceed MAX_UNITS exception error
+
+1.1.109 - 20180330 - KN 
+  - [BugFix] Fix DoFillPat SpiralCurve2; misplace switch condition
+  - [Change] PathAddArc2 use LineSpeed/LineSpeed
+
+1.1.107 - 20180330 - KN - Onsite Released to UnisemCD
+  - [Enhance] Save PurgeStage ModelNo
+
+1.1.105 - 20180329 - KN - Onsite Released to UnisemCD
+  - [Enhance] DoMove Added OfstAll
+  - [Enhance] Add OriginDrawOfst to DoCLine and DoCArc
+
+1.1.103 - 20180328 - KN - Onsite Released to UnisemCD
+  - [Enhance] Added Scan support frm_DispCore_DispTools.ExpiryTime
+  - [Enhance] Disable CamOfst Toggle for HeadOperation Single.
+  - [Enhance] DoDotMulti Added OfstAll, Added OriginDrawOfst, Add DrawOffset_Update for DoDotMulti
+
+1.1.101 - 20180327 - KN - Remote Released to GA
+  - [Feature] FILL_PAT SpiralStar2 and SpiralCurve2 continuous dispense, DryMode no dispense, compensation ratio from 0.3 to 0.25.
+  
+1.1.99 - 20180323 - KN - Remote Released to GA
+  - [Feature] Added Material Expiry and DateTime entry
+  - [Feature] Added View button at DispTools with CamOfst feature
+  - [Enhance] Change DispProg Setting DispWeight and FlowRate display from 3dp to 4dp
+  - [Feature] Added Cal Pressure Range
+  - [Feature] Change CalInitialAdjPress as variable. Renamed to CalMaxPressAdjRate. Log as error if out of range.
+  - [Feature] frmVisionView Update ImageG on Grab for PointGrey
+  - [BugFix] Corrected Weight Manual Save
+  - [Feature] Added FILL_PAT SpiralStar3 and SpiralCurve3
+  
+1.1.97 - 20180320 - KN - Remote Released to GA
+  - [Feature] Added FILL_PAT SpiralStar2 and SpiralCurve2
+
+1.1.95 - 20180309 - KN - Released at Wuxi
+  - Added SensLowLevel to DispTools
+  - [Enhance] Increase TeachNeedle DotTime from 100 to 1000
+  - [Feature] Added Adjust Calibration Value at WeightSetting
+
+1.1.93 - 20180222 - KN - Not tested
+  - [BugFix] OutOfRefHeightTol change return false to goto _Pause prevent software hang.
+  - [Enhance] Added CmdSet(string Cmd, int Value), CmdGet(string Cmd, out int Value)
+    - Obselute Intf.SetBValue, Intf.GetBValue
+    - Obselute Intf.GetIValue, Intf.SetIValue
+  - [Enhance] Added CmdSend(string Cmd, ref int Para)
+
+1.1.91 - 20180208 - KN
+  - [Enhance] Improve FILL_PAT SpiralCurve and SpiralStar section transition gap
+  - [Feature] Display SensMat1Low and SensMat2Low at DispInfo
+  - [BugFix] Prevent Error When No Layout is defined for Pause and Stop
+
+1.1.89 - 20180131 - KN
+  - [BugFix] Prevent Error When No Layout is Defined
+  - [Enhance] Capture Vermes Exception when loading Program
+  
+1.1.87 - 20180122 - KN
+  - [Feature] Added LINE_MULTI copied from DispCore A160
+  - [Feature] Added Help in DOT_P
+  - [Feature] Added Help in LINE_MULTI
+
+1.1.85 - 20180119 - KN
+  - [Enhance] DOT_P Added TP support with needle lift	
+  - [Change] DOT_P remove Ext-Timed support. Cannot check IO.
+  
+1.1.83 - 20180118 - KN
+  - [BugFix] Added PostWait to DOT_P Cont Mode
+  - [Feature] Call Clean, Purge Setup from Program
+  - [Enhance] Bring ModelSetting to front
+  
+1.1.82 - 20180116 - KN
+  - [Feature] Added EnableCheckScriptUnitMode
+
+1.1.81 - 20180116 - KN
+  - [Feature] Added EnableCheckScriptUnitMode
+  - [BugFix] Corrected FillPat.StartPos for Angle = 0
+  - [Enhance] FillPat trigger vacuum only on Normal Mode
+
+1.1.80 - 20180116 - KN
+  - [Enhance] Added FillPat.RatioY adjustable X and Y Ratio
+  - [Enhance] Corrected Set Center
+  - [Feature] Added FillPat.Angle
+  - [UI] Corrected frm_DoHeight.RefHeight Tol label 
+  - [Feature] TaskDisp.TeachNeedleOfst_Touch_Dot_Set() check DispCtrl for Control based Pumps only, supports TP, SP.
+  - [Enhance] TaskDisp.CalZSensorZ(true) Lighting Off for laser select
+
+1.1.71 - 20171219 - KN
+  - [Feature] Added DispProg.FillPat
+  - [BugFix] Corrected TLayout.UpdateUnitLocations for Table XZ_YTable
+
+1.1.65 - 20171219 - KN
+  - [Feature] Check Debug.txt to run debug mode
+  
+1.1.62 - 20171219 - KN
+  - DispProg.FillPat In-progress
+  - [Feature] Added Lock(ojb) to frm_DispProg_View
+  - [BugFix] Corrected frmVisionView exception message
+  
+1.1.60 - 20171219 - KN
+  - DispProg.FillPat In-progress
+  - [Feature] Added Enable_DualMaterial to check DualMaterial Type
+
+1.1.58 - 20171204 - KN
+  - PathAddLine PathAdd change StartV using LineSpeed to LineStartV
+  - PathAddArc2 PathAdd use LineSpeed2 if not 0
+  - Added DispCtrl.DispCtrlError Logic and implementations
+  - Increase MAX_CMD from 100 to 255
+    Prevent add insert when MAX_CMD
+    Tidy DispProg Delete implementation
+
+1.1.56 - 20171204 - KN
+- [Feature] ReadID Fail SetTower Light
+  - [Feature] Added PJ and SP to DispTools
+  - [Enhance] Change to UC.Adjust InvertDir, MotorAlarmLogic, InvertMotorOn, HomeDir, add para change log
+- [Enhance] Added RefHeight and RefHeightTol.
+  - [Enhance] Added Result to Weight Measure
+
+1.1.54 - 20171130 - KN
+  - [Enhance] Log Vision Exception Error Message
+  - [BugFix] Corrected Weight Cal DownWeightUp
+  - [Enhance] Update Layout for Map Start direction
+  - [Enhance] frm_DispProg_View and frmVisionView implement Using.
+
+1.1.52 - 20171116 - KN
+  - [Enhance] PumpHand Handshake Parameter is Pump Type dependent
+  - [Enhance] Added TeachNeedle_DotPromptCleanStage
+  - [Enhance] TeachNeedle_CleanStagePos, allow define position
+  - [Enhance] Init will Clear GUAxis Error
+  - [Improve] Remove dependency on GrabberNET.dll.VisProc; copy method to TaskVision.VisUtils
+  - [Improve] Dispose all local created Emgu.CV.Image for TaskVision, frm_DispProg_View, frmVisionView
+  - [Housekeep] Rename Script.b_SyncHead2 to DispProg.rt_SyncHead2
+  - [Housekeep] Seperate DispProg.Script.Run Line/Arc/Circ Cont Mode to DispProg.Script CLine and CArc
+  
+1.1.50 - 20171111 - KN - Remote released to LmdsPG/YC
+  - [Changes] Added TaskGantry.Home PP_Init Thread.Sleep from 15 to 50 prevent fast execution
+
+1.1.49 - 20171111 - KN - Remote released to LmdsPG/YC
+  - [Enhance] Added alternate WeightCal_Execute2 with SP Support. Not tested. Not implemented.
+  
+1.1.47 - 20171109 - KN - Remote released to LmdsPG/YC
+  - [Changes] DispProg.Load Set Weight when (Target_Weight > 0), prevent setting of PP Weight by default density.
+  - [Changes] DispSetup_PP add btn_Init Thread.Sleep from 15 to 50 prevent fast execution
+
+1.1.45 - 20171025 - KN - Remote released to OOSWUX/David
+  - [BugFix] Implement NUtils.UserAcc for frm_OsramSCC_LotInfo
+  - [Enhance] Prompt Clean Stage for every needle
+  - [BugFix] Update TeachNeedle_LaserChangeRate to min 0.
+  
+1.1.43 - 20171024 - KN - Remote released to OOSWUX/David
+  - [Enhance] Added DoorLock and Unlock to Clean,Purge, Weigth, TeachNeedle
+
+1.1.42 - 20171021 - KN - Remote released to OOSWUX/David
+  - [BugFix] Fix END_LAYOUT Move Panel Gap, Z2 wrong direction
+    - Remove Move Panel Gap for Dot_P, Dot_Multi, DotLine_Multi
+  
+1.1.41 - 20171021 - KN - Remote released to UnisemCD/Desmond, OOSWUX/David
+  - [BugFix] Fix END_LAYOUT Move Panel Gap, Z1 overtravel
+  - [BugFix] Fix DO_REF when USE_MAP
+  
+1.1.40 - 20171020 - KN - Remote released to UnisemCD/Desmond
+  - [Temp] Disable DOTLINE_MULTI MaxLineSpeed for OOSWUX.
+  - [Enhance] Move Panel Gap execute in END_LAYOUT. Move Relative.
+  - [Enhance] Update Map Layout when Pitch is negative.
+    - Remove Layout.UnitIsSetable
+  - [Enhance] SP Off Vac on FPressH
+  - [Enhance] Move ZUp on frmSP close
+  - [Feature] Added Test Purge Stage
+
+1.1.39 - 20171010 - KN - Onsite Released to UnisemCD/Desmond
+  - [BugFix] Uses Laser.dll 1.0.1.3
+  - [BugFix] Update frm_SetupPJ Close 
+  - [Enhance] SP.DispTime Min change from 0.1 to 0
+  
+1.1.38
+  - [Feature] Added GDefine.EHeightSensorType IFD2421 
+ 
+1.1.37 - 20171008 - KN - Onsite Released to UnisemCD/Desmond S400H/David
+  - [Enhance] Save DispProg.PurgeStage para.
+  - [Enhance] Update frm_SetupPJ and frm_SetupSP. Allow parameter adjust during run.
+  - [Enhance] PurgeStage only on RunMode.
+  - [Enhance] PurgeStage Update CRCount when PitchXY is changed.
+  - [Observation] SP DispTime < 3 ms appear different during PurgeStage and ProductRun.
+  
+1.1.36
+  - [Enhance] Exclude all Info if DeviceType is None
+  - [Feature] Added PurgeStage support SP.
+  
+1.1.32 - 20171005 - KN - Offsite Released to Lextar/Steven
+  - [Feature] FPressCtrl 
+    - Added ITV RS232 Interface
+    - Added Pressure Unit Conversion
+    - Update all interface
+  - [Enhance] PP_Vomp_Comp.Do support Cond loop. Req Lextar/Steven.
+  - [Feature] Added PumpType == SP, using internal IO
+    - Added SP mode to Dot_P and CLine
+  
+1.1.30 - 20171004 - KN - Offsite Released Internal to Tactilis/EY
+  - [Feature] Added DispError input to check controller for error during run
+  - [Enhance] Exclude IO Info if DeviceType is None
+
+1.1.29 - 20171003 - KN - Offsite Released Internal to Hui
+  - [Enhance] Display Hardware Labels for Motor and IO.
+  - [Feature] Added IODiagnostic FVac1, DispPortA1 - C1
+  - [Enhance] Dot_P height follows UseHeight
+  - [Feature] CLine PumpType == TPRV update valve conditions at last line.
+  - [Library] Uses CControl.dll 1.6.2
+  - [Feature] Support PumpType == TPRV, using internal IO
+  - [Feature] Added PumpType == PJ, using internal IO
+  
+1.1.27 - 20170927 - KN - Offsite Released to CREE/JOSH
+  - [Enhance] Added DoRef and DoHeight UpdateAllLayouts to copy data for multiple layouts
+  - [HKeep] Remove SMCIRC3 z position log
+
+1.1.26 - 20170921 - KN - Offsite Released to UMOPTO/EY
+  - [BugFix] MovePanelGap(int LineNo) check SM_CIRC and SM_CIRC2
+  - [Enhance] Prompt Clean Touch Dot Stage Before Laser
+  - [Enhance] Check Laser Change Rate
+  
+1.1.25 - 20170912 - KN - Offsite Released to UMOPTO/EY
+  - [Enhance] Added SMCirc3 with sequencial Z Up. Do not support 3D compensation.
+  
+1.1.24 - 20170908 - KN - Offsite Released to ProLight/Josh
+  - [Enhance] Thread_SetDispSpeed_Wait() off pumps before error.
+
+1.1.23 - 20170824 - KN - Offsite Released to ProLight/Josh
+  - [Change] SMCirc2 remove SetDispSpeed for StartArc. Check SetDispSpeed_Wait.
+
+1.1.22 - 20170824 - KN - Offsite Released to TD/JunLei
+  - [BugFix] Copy only height data for rt_HeightData; do not copy ready status
+  - [Enhance] Thread_SetDispSpeed_Run off pumps before error.
+  - [Enhance] Added Thread.Sleep(5) at frmVisionView.GrabbedEvent
+  - [Enhance] Stop Pump on Thread.SetDispSpeed error
+   
+1.1.21 - 20170816 - KN - Inhouse Released OOSPEN/Desmond
+  - [Change] Increase MultiDot max from 100 to 1000
+
+1.1.20 - 20170814 - KN - Onsite Released OOSPEN/Desmond
+  - [Enhance] Added Material Life Time Multiplier 
+  - [Enhance] frmDispProg and frmDispProg2 Copy/Paste all XYZU
+  - [Feature] Added DotMulti MoveUp, MoveDn and Delete
+
+1.1.19 - 20170809 - KN - Inhouse Release Excelitas/YC
+  - [Feature] Added TaskGantry.Buzzer(TOutputState State)
+  - [Enhance] frmDispProg mark as done to refresh command list.
+  - [Lib] Uses dll 2.0.3.5
+  - [Feature] Added Option_ChuckVac support.
+  - [Update] Update frmVisionFailMsg status.
+  
+1.1.18 - 20170804 - KN - Offsite Release OOSWUX/DAVID
+  - [Lib] Uses HPC.dll 1.5.3.6
+  - [Feature] Added CtrlWaitReady() Check PP Jam Status 
+
+1.1.17 - 20170804 - KN - Offsite Release OOSWUX/DAVID
+  - [BugFix] Added DOTLINE_MULTI correct move when 0 dot count.
+  - [BugFix] Set TargetWeight to current when doing WeightCal.
+  
+1.1.16 - 20170804 - KN - Offsite Release OOSWUX/DAVID
+  - [Enhance] SMCIRC2 On failed operation goto _Stop to stop pump.
+  - [Enhance] Do_Height prompt error and stop if Laser reading is exact 0 (Zero);
+  - [Enhance] Log HeightData to minimum 5dp value. 0.00001 represent very small values.
+
+1.1.15 - 20170803 - KN - Offsite Release OOSWUX/DAVID
+  - [Enhance] Remove OSRAM_SCC Auto ServerListen. Unknown error causing software crash. Temporay Manual Connect.
+
+1.1.13 - 20170803 - KN - Offsite Release OOSWUX/DAVID
+  - [BugFix] Corrected Do_Ref Accept Tol return values.
+  - [Feature] Added DOTLINE_MULTI.
+  - [BugFix] TeachNeedleOfst_Touch_Dot_Set() check Head2 on Sync and Double mode only.
+  - [Feature] CLine Mode lift last Line
+  - [Enhance] OSRAM_SCC Auto ServerListen if System is LeftMode.
+  
+1.1.9 - 20170730 - KN - Offsite Release YM_XMN,TD_ANHUI/EY
+  - [Feature] Added GDefine.ZSensor_DistPerPulse
+
+1.1.8 - 20170707 - KN - Onsite Release TDXMN
+  - [Feature] Crop higher Basler camerat to default 659x494
+
+1.1.7 - 20170705 - KN - Offsite Release TDXMN/EY 
+  - [BugFix] Fix HM Mode FlowRate measure.
+  - [Change] Increase WeightFlowRate from 5 tp 1000;
+
+1.1.6 - 20170620 - KN - Onsite Release OOSWUX/David 
+  - [Enhance] Dot_P DnAccel=0, use Default Value.
+  - [??] Remove PathEnd for P1265; unknown reason.
+  - [Enhance] Added DOT_P to DispProg
+
+1.1.5 - 20170620 - KN - Onsite Release OOSWUX/David 
+  - [Enhance] Added Radius Into to frm_DispProg2.
+  - [EnhanceUI] Added FlowRate to frm_WeightMeasure
+  - [Temp] Use Model.StartV as Arc Speed
+
+1.1.4 - 20170619 - KN - Onsite Release OOSWUX/David
+  - [BugFix] Corrected CLine and CArc to break.Prevent hang when unit map is not disp.
+
+1.1.3 - 20170617 - KN - Onsite Release OOSWUX/David 
+  - [UIFix] Corrected CalWeight log display.
+  - [Enhance] Updated CLine Radius. 
+    - Removed LiftRate for CLine.
+
+1.1.2 - 20170612 - KN - Internal Release 
+  - [UIFix] Lextar DispProg corrected Lextar front test mesage prompt.
+  - [Change] Lextar Change DecodeDataFile from CopyCurrentDataFilesToLocal to MoveCurrentDataFilesToLocal.
+  - [Lib] Uses NDispLicence.dll 1.0.0.2 for Lite Version
+  - [Feature] Added Stats DynamicFrameCount
+
+1.0.128 - 20170601 - KN - Remote Release OOSWUX/EY
+  - [Enhance] SetWeight Prompt Error as required
+  - [Temp] OsramSCC send 4 Weight values.
+
+1.0.127 - 20170529 - KN - InHouse Release OOSWUX; TD_AnHui/JunLei
+  - [Enhance] TeachNeedleOfst_Touch_Dot_Set() set PP Volume.
+  - [Feature] Added DispProg.PP_Head_VolumeRatio. Ratio of volume to Controller.
+  
+1.0.126 - 20170528 - KN - InHouse Release OOSWUX
+  - [Enhance] Set_Weight on Load Program and change Target Weight.
+  - [Enhance] Added TaskZTouch GDefine.EZSensorType.Type2 Prompt Clean to check function.
+  - [Enhance] Auto Connect on Startup
+  - [Enhance] Re-connect on System Mode change
+  - [Change] Allow continuous Map MoveTo operation
+  - [Feature] DoRef Added AcceptTol(mm)
+
+1.0.125 - 20170524 - KN - InHouse Release OOSWUX
+  - [BugFix] DispProg.Load append extension if not avail. Fix dot truncation.
+  - [BugFix] Skip MoveGZ/GZ2 for TaskMoveGZUp(), TaskMoveGZ2Up(), TaskMoveGZZ2Up() if safe.
+  - [Feature] Updated OsramSCC for Dual Machine Mode
+
+1.0.123 - 20170519 - KN - InHouse Release OOSWUX
+  - [Enhance] Update SpeedAdjust with Limit Param
+  - [Enhance] Option to Enable StartIdle
+  - [Enhance] DispTools.btn_Weight visibility with Weight Module
+  - [Enhance] DispProg Update execution for ULoadPre and LoadPro
+  - [Enhance] Corrected UC.UserAdjust of type Boolean enum
+  - [BugFix] DispProg.Load append extension if not avail. Fix dot truncation.
+
+1.0.122 - 20170510 - KN - Onsite Release OOSWUX/David
+  - [BugFix] Corrected DispInfo and InfoPanel_Pump PP volume display.
+  - [FoolProof] TaskMoveGZUp(), TaskMoveGZ2Up(), TaskMoveGZZ2Up() check Logical Position and prompt. Remove App.DoEvents.
+  
+1.0.121 - 20170510 - KN - Onsite Release OOSWUX/David
+  - [Enhance] WeightSetup remove Load and Save Default
+  - [BugFix] Program change pump load WeightSetup
+
+1.0.120 - 20170510 - KN - Onsite Release OOSWUX/David
+  - [Enhance] Weight Setting save by Pump Type
+  - [BugFix] Correct WeightSetting AppLanguage command
+  - [Internal] Move Needle_Weight_Pos to TaskWeight
+  - [Enhance] Minor UI improvements
+
+1.0.119 - 20170510 - KN - Onsite Release OOSWUX/David
+  - [BugFix] Correct WeightMeasure Cpk calculation
+  - [Enhance] Language support OsramSCC LotInfo
+  - [Enhance] Language support Weight Setting
+
+1.0.118 - 20170509 - KN - Onsite Release OOSWUX/David
+  - [Enhance] Complete use AppLanguage.Func2
+  - [BugFix] Remove DoDot time log
+  - [Enhance] Corrected AppLanguage incompatible with UserControl
+
+1.0.117 - 20170509 - KN - Onsite Release OOSWUX/David
+  - [Lib] Uses AppLanguage.dll 1.0.1.1
+    - Update to use AppLanguage.Func2 Partial
+
+1.0.116 - 20170509 - KN - Onsite Release OOSWUX/David
+
+1.0.115 - 20170508 - KN - Onsite Release OOSWUX/David
+  - [Enhance] Weight_Cal and Weight_Meas uses DispCore.Target_Weight, manual floating offset
+  - [Enhance] Keep Set_Weight for SCC feedback. 
+    - Remove public static double Weight(int HeadNo)//HeadNo 0 index based
+    - Remove public static double GetVolume(int HeadNo, double Weight)//HeadNo 0 index based
+    - Remove public static void UpdateVolByWeight(double Weight1, double Weight2)
+  - [Enhance] Added WeightAdjust
+    - Group Weight Features
+  - [BugFix] Correct WeightMeas stats display
+  - [Enhance] Reset WeightMeas listbox and graph. Disable continue button
+  - [BugFix] Removed Script.Load(string FullFilename, bool UpdateDispVol) Application.DoEvents(); causing program crash
+
+1.0.113 - 20170506 - KN - Onsite Release OOSWUX/David
+- [Change] Remove TeachNeedleOfst_Touch_Dot_Set() move offset 1 mm. Need to clean plate.
+- [Enhance] frm_DispProg2 top panel offset
+- [BugFix] Display WeightMeas graph
+- [Feature] IO Diag added TrigTime_ms
+
+1.0.112 - 20170505 - KN - Onsite Release UnisemCD/EY/LiSong
+  - [Feature] Added DoVision Grab Exec.
+  - [Feature] Disable DoVision Save Image on frmDispProg and frm_DispProg2 close.
+
+1.0.111 - 20170505 - KN - Onsite Release UnisemCD/EY/LiSong
+  - [Enhance] DoVision shrink image on manual grab.
+  - [Lib] NVision 1.0.2.4
+  - [Feature] Added DoVision Save Image 
+
+1.0.110 - 20170504 - KN
+  - [Feature] DoVision retain frm_CamView
+  - [Feature] frmDispProg frm_DispProg2 added function DrawOfst
+  - [Feature] Update DoVision pattern to DispInfo.FoundDoRef1
+
+1.0.109 - 20170503 - KN
+- [Enhance] Improve/Tidy Lextar_FrontTest controls.
+- [Enhance] Move Utilities.Log_OsramSCC to Log.OsramSCC
+- [Enhance] Move Utilities.Log_WeightCal to Log.WeightCal
+- [Enhance] Lextar_FrontTest Update Status
+  - [BugFix] frm_DispProg and frm_DispProg2 save filename with dot truncated as extension. Corrected to save correctly.
+  - [Feature] frm_DispProg added Laser Zero
+  - [Enhance] Disable LightingOn for DoHeight.
+  - [Enhance] frm_DispProg TaskToggleCamOffset.
+  
+1.0.108 - 20170425 - KN
+  - [Enhance] Lextar_FrontTest DispTools check with TaskDispPara.
+
+1.0.107 - 20170415 - KN - Release In-house OOSPEN
+  - [Enhance] 10:17 Added TaskToggleCamOfst
+  - [BugFix] Correct WeightMeasure head selection
+  - [Enhance] WeightCal Head1 fail not continue
+  - [Enhance] Update WeightMeasure DispProg.Targetweight to TaskWeight.WeightSpec
+
+1.0.106 - 20170415 - KN - Release In-house OOSPEN
+  - [BugFix] frm_JogGantry2 btn_Close set visible
+  - [Enhance]
+   WeightCal
+    - Consolidata WeightCal to TaskWeight. Continuous execution.
+    - Accept Cal Result if Consec in target
+    - Added CleanOnStart 
+  - [Enhance] Relayout VolumeAdjust for OsramSCC and Lextar_FrontTest
+  - [Enhance] Lextar_FrontTest
+    - Lextar_FrontTest Display
+    - Lextar_FrontTest Added UpdateTime and Wait Timer
+  - [Lib] Uses NUtils.dll 1.0.6
+  - [Enhance] Reset Encoder ZSensor before touch
+  - [Enhance] Refresh Programs if dirty
+  - [Enhance] BringToFront DispCtrl forms on show. 
+  - [Feature] Added FPress control at Vermes_Control
+  - [Lib] Uses Vermes.dll 1.0.4
+
+1.0.105 - 20170409 - KN - Release In-house OOSPEN
+  - [Enhance] Correct Funtion Panel
+
+1.0.104 - 20170405 - KN - Release In-house OOSPEN 
+  - [Enhance] 20180408 Added SLmt indication to Jog Buttons
+  - [Enhance] 20170408 Improve DispProg.Function Panel
+  - [Change] TouchZEncd_Sensitivity from 0.001 to 0.003;
+
+1.0.102 - 20170405 - KN - Remote Release to Desmond for OOSPen
+  - [Change] Update DispInfo Disp Total value including Backsuck.
+  - [Enhance] Add Ctrl1 and Ctrl2 at WeightCal and WeightMeasure
+
+1.0.101 - 20170404 - KN - Onsite Release to Clic A252, Remote Release to Desmond for OOSPen
+  - [BugFix] Multidot Output select TrigB
+
+1.0.100 - 20170403 - KN - Remote Release to Desmond for OOSPen
+  - [BugFix] Corrected frm_Vermes FPress initialization
+  - [BugFix] Corrected frm_HPC FPress initialization
+  
+1.0.99 - 20170328 - KN
+  - [Feature] Add FPress Control to HPC15.
+  - [Lib] Uses HPC15.dll 1.5.3.4
+  - [BugFix] Corrected RunMode Display
+  - [BugFix] UpdateDisplay for DispProg.Init
+  
+1.0.98 - 20170324 - KN
+  - [Feature] Correct display Program Name
+
+1.0.96 - 20170321 - KN
+  - [Enhance] Improve GUIExtension to support ToolStrip
+  - [Enhance] Migrate all to NUtils.UserCtrl. Phase out StdUserControl.UserCtrl.
+  - [Feature] Added Cond to Weight_Cal
+
+1.0.94 - 20170310
+  - [Feature] Added Start Idle 
+  - [Feature] Added Weight_Cal
+  - [Feature] Added Weight Calibrate for Vermes adjust FPress
+
+1.0.93 - 20170306
+  - [Request Lextar] VolumeAdj Auto Upload Data File during run.
+    Update log file
+
+1.0.91 - 20170302
+  - [BugFix] Removed frmDispProg done flag. Fix DispProg item selection only once.
+  - [BugFix] Fix laser logging error when data is null.
+  
+1.0.90 - 20170301
+  - [Change] Retreive MES Lot as lot no
+  - [Feature] Added frm_DispTools.SetEnable
+  - [Request Lextar] VolumeAdj disable Adjust for AutoMode
+    Upload Data button always enabled
+    Retreive Mag Level from Registry Software\\MHS\\Elev
+  - [New] Added frm_DispProg2; new UI
+  - [Lib] Introduction of NUtils; using new LogFileW; logging of param change, logging of laser
+
+1.0.89 - 23Feb2017
+  - [BugFix] Corrected Input Map Lot No.
+  - [Change] Retreive MES Product as lot no
+  - [Enhance] Disable Input Map if lot is not Activated
+
+1.0.88 - 23Feb2017
+  - [Feature] Added Copy Paste to frm_InputMap
+  - [Correct] Added Settle Time adjustment
+  - [Enhance] Remove GDefine2. Consolidata to DispCore
+  - [Feature] TaskDisp.VolumeOfst_Protocol == TaskDisp.EVolumeOfstProtocol.Lextar_FrontTestCloseLoop 
+    Reset will clear Adjust, Offset and Stats
+    Stop machine on Volume Offset Error 
+
+1.0.87 - 21Feb2017
+  - [Feature] Save FPress Calibrations
+  - [Feature] Add FPress to Speed Adjust
+  - [Housekeep] Remove TDataOutput and related 
+  - [Feature] Added ReadID support
+	- Add frmDispProg_ReadID, InputMap and InputMap_ManualEntry
+  - [Lib] Uses CReader.dll 1.0.1.0
+    Need to install 
+
+1.0.86 - 11Feb2017
+  - [Feature] Added BPress to VolumeAdj
+    Need to install NaviDAQ
+  - [BugFix] Fix Lighting Condition for TeachNeedleOfst_Touch_Dot_Set()
+  
+1.0.85 - 03Jan2017
+  - [Lib] Uses WGH_Series 1.0.2.2
+  - [Feature] Updated Do Height error message
+  - [BugFix] Display volume adjust
+
+1.0.84 - 03Jan2017
+  - [Feature] Updated DispCore.EVolumeOffsetProtocol.Lextar_FrontTestCloseLoop
+  
+1.0.83 - 09Dec2016
+  - [Enhance] Added Threshold for DoRef
+  - [BugFix] Corrected Clean,Purge and Flush for XY_Z_X2Y2_Z2 mode
+  - [Enhance] Counter, CondOn and CondOff support different ID
+
+1.0.82 - 30Nov2016
+  - [Enhance] IFD2451 support Ethernet Interface
+  - [Feature] Added Funtion Move Laser Offset
+  - [Enahance] Update Vermes only if setting differ
+  - [Lib] Used Vermes.dll 1.0.0.7
+
+1.0.80 - 21Nov2016
+  - [Enhance] Added PumpAction seq from 10 to 16
+  - [Improve] Move Z Up at start of Laser_Touch_Dot_Set()
+  - [BugFix] Correct Clean, Purge, Flush position select
+  - [Improve] Remove OK Button for Relative Height Fail.
+  - [BugFix] Door remain unlock for stop.
+1.0.79 - 21Nov2016
+  - [Feature] Added Flush
+			  Update DispTool UI with CleanPurgeFlush menu
+			  Remove Purge Use CleanPosition
+1.0.78 - 18Nov2016
+  - [Lib] Uses Vermes.dll 1.0.0.6
+  - [Feature] Added Tare function to Weight Cal and Meas
+	          Used WGH_Series.dll 1.0.2.1
+  - [Feature] Added PumpAction for customized pump maintenance instruction 
+  - [Feature] Added DoorLock and DoorUnlock Event
+              Added Unlock and Lock for DO_REF, DO_VISION, DO_BDORIENT, DO_UNITMARK, DO_HEIGHT
+  - [FeatureUG] Remove SUB, ARC, DWELL, MOVELINE, RECTFILL, DOT Measure Weight, Cal Weight and Cal Speed
+  - [Feature] Added Weight Pos Method, PCD and PCD Count
+1.0.77 - 15Nov2016
+  - [BugFix] Corrected Vermes.IsOpen at WeightMeas and WeightCal
+1.0.76 - 14Nov2016
+  - [BugFix] Corrected Head Setup Display
+  - [Enhance] Save Weight Measure as png image file
+  - [Enhance] Display details for Weight Meassure
+  - [Enhance] Check Vermes Connection at Start Weight Measure and Calibrate
+1.0.75 - 03Nov2016
+  - [Lib] Uses Vermes.dll 1.0.0.5
+  - [Enhance] Load and Save Vermes by Program 
+  - [BugFix] Corrected Head2 Selection for Double mode
+1.0.74 - 03Nov2016
+  - [Feature] Vermes support GantryConfig.XYZ dual Pump
+  - [Lib] Uses Vermes.dll 1.0.0.4
+1.0.73 - 26Oct2016
+  - [BugFix] Added CheckDoorSw for Disp Tool Origin
+1.0.72 - 25Oct2016
+  - [BugFix] Corrected HM_HeadB_RPM writing value
+  - [Feature] Added HM_HeadA/B_BSuck_RPM and HM_HeadA/B_BSuck_Time
+  - [Lib] Uses HPC15 1.5.3.3
+1.0.71 - 24Oct2016
+  - [BugFix] Fix SM_CIRC direction
+  - [Lib] Uses CControl.dll 1.3.5
+  - [Feature] Added DO_HEIGHT ZRelHeight Check
+1.0.69 - 19Oct2016
+  - [GUI] Added DispInfo to display Disp Offset and Disp Total
+  - [BufFix] Corrected CArc arc direction for GantryConfig=XYZ
+1.0.67 - 12Oct2016
+  - [Feature] Update VOLUME_OFST to auto execute
+  - [Feature] Added DOT_MULTI
+  - [Lib] Used Vermes.dll 1.0.0.3
+1.0.66 - 07Oct2016
+  - [UI] Improve DotUI
+  - [BugFix] Fix HM Mode Weight Cal and Measure
+  - [Enhancement] Add Disp Speed Adjust
+1.0.65 - 06Oct2016
+  - [BugFix] WeightSetting Display
+  - [Temp] Add CLaser_Temp.dll to support older laser
+1.0.63 - 28Sep2016
+  - Uses CLaser.dll 2.0.0.0, add ILD1x20 support
+1.0.62 - 27Sep2016
+  - frm_Message resize and opaque 0.9; enable see through
+  - Added summary to Weight Measure
+  - Right Mouse Click -> MoveTo; Left Mouse -> Sroll
+  - Improve Homing smoothness
+  - Added frm_DispCore_EditXY
+  - Update SM_CIRC UI
+1.0.60 - 3Sep2016
+  - Added EarlyCutOff in ms for Line and ARC_CIRC
+1.0.59 - 2Sep2016
+  - DrawOfstAdjust updates Head2_XOffset and Head2_YOffset
+  - Meas_WH new measurement algo
+  - Corrected SCC reply message desc
+  - Capture OsramSCC connection exception
+1.0.58 - 28Aug2016
+  - Added Head2_XOffset and Head2_YOffset
+1.0.57 - 25Aug2016
+  - Discontinue AOT.dll. Move all codes to TaskVolOfst_Custom
+  - Added DispCore.EVolumeOffsetProtocol.Lextar_FrontTestCloseLoop
+1.0.56 - 19Aug2016
+  - Added DispProg.TargetWeight
+  - Update OsramSCC UI
+1.0.54 - 19Aug2016
+  - Corrected Delete Program to delete HPC files
+  - Uses SocketV1.dll 1.0.0.6
+1.0.53 - 10Aug2016
+  - Weight Measure able to continue
+  - Add Weight Cal to log
+  - Added OsramSCC support
+1.0.50 - 04Aug2016
+  - Corrected Weight Settings for A251
+  - Added Mat Low Sensor
+1.0.50 - 05Jul2016
+  - Correct DispCtrlNo Error Message
+  - Added CreateMap Error Retry
+1.0.49 - 04Jul2016
+  - Added frm_DispCore_WeightCal
+  - Added frm_DispCore_WeightSetting
+1.0.48 - 06Jun2016
+  - Corrected frmDispProg.MoveLine
+1.0.47 - 06Jun2016
+  - Corrected TaskGantry.AxisError GZ2 label
+  - TaskMoveGZFocus check Home Sensor
+1.0.46.7 - 19May2016
+  - Revert rounding for TaskWeight.Weight_DownWeightUp
+  - Corrected Ignore Fill for Dot/Sample > 1
+  - Change frm_WeightMeasure to 3dp mg.
+1.0.46.2 - 1May2016
+  - Updated frm_WeightMeasure, timer based, remove App.DoEvents
+1.0.46.1 - 04May2016
+  - Fix CreateMap contain ByPass not Update Map
+  - Improve Run,Pause, Stop removing AppDoEvent
+1.0.46.0 - 03May2016
+  - Updated GO_POS
+1.0.45.1 - 30Apr2016
+  - Added GDefine.XY_RX_Z and XY_RXRY_Z
+  - Added RX and RY Controls
+  - Added GoPos Commmand
+1.0.44.4 - 27Apr2016 - KN Rel at HuiZhou/Cree David
+  - Corrected DoLine Move To to use default speed when model speed = 0
+1.0.44.0 - 18Apr2016 - KN Rel at Taiwan/AOT Ryan/Steven
+  - Uses AOT.dll 1.0.0.4
+  - Added support to AOT.FrontTestCloseLoop
+1.0.43.5 - 18Apr2016 - KN Rel at Taiwan/UnityOpto Steven
+  - Corrected DispSetup_HeadCal DefaultZ Set and Goto
+1.0.43.4 - 18Apr2016 - KN Rel at Taiwan/UnityOpto Steven
+  - Added Temporary Line Time calculation 
+  - Update CameraNo to DoBdCapture
+  - Remove JogGantryVision ShowVision Mode TaskDisp.TaskMoveGZFocus(0);
+  - Moved Z Default Pos to DispSetup_HeadCal
+  - Added TaskWeight.DotsPerSample
+  - Corrected Weight_DownWeightUp Z2 Up
+  - Remove MouseDn MouseUp for DispProg, New, Save, SetProductZ, SetOrigin
+1.0.43.1 - 15Apr2016 - KN Rel In-House
+  - Added TaskAutoFocus
+  - Uses NCamera.dll and NVision.dll 1.0.2.1
+  - Uses WGH_Series.dll 1.0.0.3
+  - Added frm.Message to handle messages
+  - New UI for frm_DispSetup and frm_DispSetup_HeadCal
+1.0.43.1 - 14Apr2016
+  - Use relative focus position
+  - Minor Focus bug fixes
+1.0.43.0 - 13Apr2016
+  - DispProg_Setting 
+    NewUI
+    Added CameraFocus
+  - Improved TaskDisp.TaskMoveGZZ2Up()
+  - Added FocusNo feature
+  - Added TaskMoveGZFocus(int FocusNo)
+  - Change ZDefPos as user define
+1.0.42.5 - 12Apr2016
+  - DoBdCapture
+    Added Line Scan feature
+    Change exposure from IPara[5] to DPara[5]
+    New UI
+  - Corrected TaskVision CalVisionXY Only_X, Only_Y computation
+1.0.42.4 - 30Mar2016 - Rel to NSWSZ/YangBin
+  - Uses NCamera and NVision 1.0.2.1
+  - DoVision ShrinkRight when Grab or Load
+1.0.42.3 - 30Mar2016 - Rel to NSWSZ/YangBin
+  - Consolidate frmVisionView and frm_DispProg_View to TaskVision.ImageDrawReticle
+  - Added Vision CalMode {Ave_XY,Only_X, Only_Y, Aperture} for Line Scan Calibration
+  - DOT_ARRAY move panel gap for last dot only
+1.0.42.2 - 26Mar2016 - Rel to Steven/Clic
+  - Corrected StepByStep ZSensor Checking
+1.0.42.1 - 26Mar2016 - Rel to Steven/Clic
+  - Added move Z2Up at before do DoVision
+  - Added move ZZUp at MeasL_WH
+  - Added move ZZUp after complete board
+  - CMControl.MoveArcCenterEndAbs uses relative position
+1.0.42.0 - 22Mar2016 - Rel to Steven/Clic
+  - Improve TaskMeasure
+    - Added MeasStartDelay and MeasEndDelay
+    - Update Measure sequence
+1.0.41.8 - 16Mar2016 - Rel to David/CREE
+  - DoLine EndDelay switch thread if more than 75ms
+  - DoWait switch thread if more than 75ms
+1.0.41.7 - 12Mar2016
+  - DoHeight checks for multiple layout and force do height.
+  - DoRef DoHeight updates all layout for Board and Cluster type.
+1.0.41.6 - 12Mar2016
+  - Set TaskDisp.TaskGotoPMaint() and TaskGotoMMaint moves GX2GY2 first.
+1.0.41.5 - 12Mar2016
+  - Set TaskGantry.SetMotionParam set Min Speed and Accel if value is less than minimum
+  - DoRef Update all Subsequent Layouts for EAlignType.Board/Cluster
+1.0.41.4 - 12Mar2016
+  - Added Log for DoLine
+  - Added EnsureVisible for DispProg
+1.0.41.0 - 11Mar2016
+  - Uses GrabberNET.dll 1.0.6.4
+  - Uses NCamera.dll 1.0.1.3 and NVision.dll 1.0.1.3
+  - frm_DoHeight MoveGX2Y2 to default Pos
+  - Added to DispTools>TeachNeedle TaskDisp.ETeachNeedleMethod.Laser_ZSensor_Dot_Set
+  - Corrected frm_DoRef SettleTime display
+  - Enable DoRef Speed settings
+  - Updated DoRef, DoHeight, DoBdOrient, DoUnitMark to MoveGX2Y2 to default pos
+  - Added DoMeasL_WH TestAtPos
+1.0.40.0 - 01Mar2016
+  - Uses NCamera.dll 1.0.1.0 and NVision.dll 1.0.1.0
+1.0.38.2x - 18Feb2016
+  - Improve Camera funtions for PtGrey
+  - Improve CameraRun flag
+  - Added ZTouch Logging
+  - ToudchDot ignore DispCtrl if not ready
+  - Added ZSensor Config Check
+  - Improve Home Accuracy
+  - Corrected DoVision Speed
+1.0.38.2 - 01Feb2016
+  - TaskZTouch increase clear sensor from 0.2 to 0.5
+  - Added to DO_DOT if Start Delay > 75 Thread.Sleep(1)
+1.0.38.1 - 20Jan2016
+  - Corrected TaskTeachNeedleOfst_Touch_Dot_Set() DispB not dispense.
+1.0.38.0 - 13Jan2016
+  - frm_DispProg_View live image
+    New UserControl uctrl_JogGantry
+    Added to frm_DispProg_View 
+  - Added Zoom function to CreateMap
+  - Uses NVision 1.0.0.4
+  - Corrected frm_VolumeAdjust unit display
+  - Draw DoVision found pattern with color
+1.0.37.5 - 21Dec2015
+  - Added IO Config label to differenciate I/O
+  - Improved DispProg.GenerateMap to preven creating image in loop and improve syntax
+  - Added DispProg.DispTool Origin to move camera to origin.
+  - Delete HPC15 files 
+1.0.37.3 - 04Dec2015
+  - Added EZSensorType = Type2, Z Touch Encoder 
+  - Remove ZSensor checking for TaskTeachNeedle, CalZSensor
+  - Added TaskZTouch.
+    Replace TaskDisp.SearchNeedle with TaskZTouch.SearchNeedleZTouch
+    Added Z Touch Encoder Support
+  - Uses WGH_Series 1.0.0.2
+    GDefine.Config uses dll enum
+1.0.37.2 - 02Dec2015
+  - Do_Dot ExtTimed mode StartDelay move TaskDisp.Thread_CheckIsFilling_Run out of while loop; improve timing
+  - Do_Dot Cont mode StartDelay remove Thread.Sleep(0); improve timing
+  - Added frm_DoVision
+    Uses NVision 1.0.0.2
+    Used NCamera 1.0.0.0
+  - Added DOT_AARR
+1.0.36.12 - 11Nov2015
+  - Corrected DispProg.DoLine GX2Y2 speed ration calc.
+  - Prompt for PP Init during Gantry Init
+  - DispSetup_HeadCal - Allow HeadZSensRefZ entry
+1.0.36.11 - 05Nov2015
+  - PtGrey Grab and Stop camera upon open
+1.0.36.10 - 23Oct2015
+  - Corrrect DispProg FlagConsecutiveUnit
+    FirstUnitDelay when using CondOn, Clean, Purge etc
+  - Correct GX2Y2 when first unit for Head 2 is skipped.
+1.0.36.9 - 23Oct2015
+  - Prevent Continue dispense at Clean/Purge Position
+1.0.36.8 - 22Oct2015
+  - DO_CIRC, DO_ARC stops trigger and go to Stop Mode on error
+1.0.36.7 - 20Oct2015
+  - Fix Needle Crach when Line, Sync, DispError
+  - Remove ForceErrorCode 3590~3592
+1.0.36.6 - 19Oct2015 - KN
+  - Corrected CalHeadOffset ATNC RetryCount
+  - Set frm_VisionView SelectedCam 
+1.0.36.5 - 14Oct2015 - KN
+  - Added DrawOfstAdjust X2Y2Z2
+  - Added temp TaskTeachNeedleOfst_Touch_Dot_Set()
+  //- Added Setting to frm_DoRef
+1.0.36.4 - 14Oct2015 - KN
+  - Added ForceErrorCode 3590~3592
+  - Removed Data Commands
+  - Layout added Zoom funtions
+1.0.36.3 - 09Oct2015
+  - Uses GrabberNET.dll 1.0.6.2
+  - Used CControl.dll 1.2.1.1
+  - Added Camera Setting for PtGrey camera
+  - DO_REF_OTF in progress
+1.0.36.0 - 05Oct2015
+  - Increase BdCapture Exposure from 50,000 to 100,000 us 
+  - Remove DispProg ProgressBar
+  - Increase TaskVision.OnMouseDn Thread.Sleep from 5 to 10
+  - Close PtGrey camera on exception
+1.0.35.9 - 02Oct2015
+  - Corrected Bd_Capture PtGrey exposure
+  - Fix PtGrey fps to 30; remove throttle frame rate
+  - Improve DispProg MouseDnWait
+1.0.35.8 - 30Sep2015
+  - DispProg.Do_Height prevent LightingOff is unit is skip
+  - Uses CControl 1.0.2.4
+  - Uses AdvMotAPI 1.2.1.1
+1.0.35.7 - 28Sep2015
+  - Added DO_HEIGHT_OTF support Path XFZ
+  - Changes to DO_HEIGHT_OTF Speed
+1.0.35.6 - 28Sep2015
+  - Improve DO_HEIGHT, data display info
+  - DispProg.DO_HEIGHT added ErrCode
+  - Added GC.Collect to frm_Vision.Refresh
+1.0.35.5 - 25Sep2015
+  - Improve Do_Height fast speed
+1.0.35.4 - 25Sep2015
+  - Added Speed and Accel to Do_Height
+  - Added feature to Do_Height.Test
+1.0.35.3 - 24Sep2015
+- Corrected DispProg Line Radius execution
+  - DispProg.Run.Do_Height LightingOff during Do_Height
+  - Change TLayout MAX_UNIT from 8192 to 10,000
+  - Added Do_Height On The Fly (does not support Position correction, support only LoopDir XFU)
+1.0.35.2 - 23Sep2015
+  - Added Line Smooth and Radius feature
+    Added frmLine.Smooth frmLine.Radius
+    Added DispProg Smooth and Radius
+1.0.35.1 - 22Sep2015
+  - Corrected TaskVision PtGrey Stop bug causing continous grab, lagging
+  - Corrected frmVision switch camera issue
+1.0.35.0 - 22Sep2015
+  - TaskDisp.TaskCalLaserOfst change detect delta from 0.1 to 0.25
+  - Added Model.FirstGapWait
+    - For DoDot and DoMove only with PreMoveZ = false
+  - Corrected DoLine b_Flag_ConsecutiveUnit for PreMove = false
+1.0.33.x - corrupt
+1.0.32.x - corrupt
+1.0.31.x - corrupt
+1.0.30.x - corrupt
+1.0.29.2 - 15Sep2015
+  - Added frm_VisionView.pnl_Menu3
+    Added Live, Grab, Save to save current image
+  - Added frm_MoveLine adjust Line Length
+  - Added Continuous Mode for Line and Arc/Circ
+1.0.29.1 - 25Aug2015
+  - Corrected TaskDisp.TaskCalLaserOfst() calculation
+  - Corrected TaskTeachNeedle_ZSensor_Mark() needle not compensated
+  - Corrected PP_VOL_COMP when only DispA or DispB is enabled
+  - Corrected frm_VisionView cam select for Basler
+  - Added PP_VOL_COMP adjust at frm_VolumeAdjust
+    - Adjust only first PP_VOL_COMP in DispProg
+1.0.29.0 - 21Aug2015
+  - Uses CLaser 1.0.0.4
+  - Added MEASL_H 
+    - Measure Dispense Height by 2 Edge Pt
+1.0.28.2 - 13Aug2015
+  - Corrected DO_HEIGHT UnitRow and UnitCol Mode
+  - Integrate CLaser.dll to replace LHS_ILD_Series.dll
+    - Added support for IFD2451 Confocal Laser
+    - Support ILD1302 and ILD1700
+    - Changes to frmConfig
+  - Uses GrabberNET.dll 1.0.5.2
+    - Changes to frmConfig
+    - Support PtGrey camera
+    - Changes to TaskVision and frmVisionView
+1.0.27.2 - 27Jul2015
+  - Fix Command Window not able to open.
+  - Fix PP_VOLCOMP when set (0,0)
+  - Check DispComplete for PP_VOLCOMP
+1.0.27.1 - 27Jul2015
+  - Added CtrlWaitResponse to PP_VOLCOMP
+  - Corrected TaskDisp.Head2_ZOffset for Laser and Non_Laser operation
+1.0.27.0 - 24Jul2015
+  - Support for PtGrey Camera - In Progress
+  - Added DispProg.DoArc Set Length
+  - Remove Thread.Sleep for StartDelay < 75ms for Line, Arc, SmCirc
+  - Added command PP_VOL_COMP; compensation for PP
+  - Added EndOffset for SM_CIRC, Offset of End Arc; <0 Offset Inward, >0 Offset Outward
+  - Prevent Multiple Command Window
+1.0.26.2 - 01Jul2015
+  - Removed DispProg.DoArc rounding of calculated Center
+  - Added DispProg.DoArc set angle
+1.0.26.1 - 01Jul2015
+  - Corrected LINE and ARC CheckDispSpeed for different modes(Disp, Dry, Camera)
+  - Added ARC_CIRC SetCenter 
+1.0.25.1 - 30Jun2015
+  - Corrected DO_HEIGHT Point Assignment. Do Height by Cluster Problem
+1.0.25.0 - 19Jun2015
+  - Added Execute function to PurgeDot
+  - Added PostVacTime after Clean/Purge
+    - DispSetup.Clean/Purge, DispProg.Clean/Purge, FuncSetup.Clean/Purge
+  - Corrected Config.LogLevel Display
+1.0.24.0 - 12Jun2015
+  - Added set process priority to RealTime
+    - Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.RealTime;
+  - Added GDefine.LogLevel
+  - Added Timing Log for DoLine
+1.0.23.0 - 02Jun2015
+  - Prevent unpredictive Thread termination
+    - Change DispCore Thread.Abort() to Thread.Join()
+    - Added State Ex Error for monitoring
+  - Set VolAdj values to 0.001
+  - Prevent VolAdj Update Multi Click
+  - Corrected Logging of Log.DispVolumeAdj
+  - Prevent GetVolumeMapOffset array more than TVolumeMap.MAX_MAP of 1024 
+1.0.22.1 - 28Mar2015 - KN - Remote release to Steven
+  - DO_HEIGHT updates all layouts units if is not in FOR_LAYOUT loop
+1.0.22.0 - 28Mar2015 - KN - Remote release to Steven
+  - Consolidate PreMap to Class TMaps
+  - Create Curr and Prev Map arrays
+    - Change MapBin to TMaps.CurrMap[MAX_ID]
+    - Change PrevMapBin to TMaps.PrevMap[MAX_ID]
+    - DO_REF updates all layouts units if is not in FOR_LAYOUT loop
+  - Added Multi Layout support for frm_Map
+1.0.21.2 - 27Mar2015 - KN - Remote release to David
+  - Corrected frm_DispCore_Lighting btn display text
+  - Corrected frm_DispCore_VolumeAdjust btn display text
+  - Added Language description to frm_DispCore_SystemConfig
+1.0.21.1 - 27Mar2015 - KN - Remote release to David
+  - Added Language description and files for forms
+1.0.20.0 - 14Mar2015 - KN - Remote release to David for DaLiang
+  - Enhance TaskDisp SetDispSpeed, SetDispVolume and CheckIsFilling thread to prevent memory leak
+1.0.19.2 - 14Mar2015 - KN - Remote release to David for DaLiang
+  - Save HomeSequence to Config file
+1.0.19.1 - 14Mar2015 - KN - Remote release to David for DaLiang
+  - Corrected ArcCirc and SMCircle CenterX, CenterY and Set Center
+1.0.19.0 - 12Mar2015 - KN - Remote release to David/Steven
+  - Change TaskDisp.Thread_SetDispVolume_Run from void to return bool and stop
+  - Change TaskDisp.Thread_SetDispSpeed_Run from void to return bool and stop
+  - Task.Thread_CheckIsFilling_Run execute only if Thread_SetDispVolume_Run and Thread_SetDispSpeed_Run is not busy
+  - Corrected EHomeSequence homing secquence
+  - Auto connect DispCtrl at Run, GetDispCtrlMode and SetDispCtrlMode
+1.0.18.2 - 11Mar2015 - KN - Remote release to David for DaLiang
+  - Remove DispProg.DoLine2 add temp log to message
+  - Added frmMotorPara EHomeSequence
+1.0.18.1 - 11Mar2015 - KN - Released to Desmond
+  - Corrected DispProg.DoLine2 Tigger Off
+1.0.18.0 - 22Apr2015 - KN
+  - DO_REF, execute DO_REF of RefData not ready.
+    - Added TRefData.Ready
+  - DO_HEIGHT, execute DO_HEIGHT of HeightData not ready.
+    - Added THeightData.Ready
+  - Add ECNTR_TYPE unit count
+  - Increase CNTR_ACTION to max 1KKK to cater unit
+  - DispTool.Reset only clear Unit Stats
+1.0.17.1 - 22Apr2015 - KN - Remote release to David for DaLiang
+  - Move Circ with Center and Angle=360 for P12x5
+1.0.17.0 - 21Apr2015 - KN - Remote release to David for DaLiang
+  - Move Arc with 3Pts for P12x5
+1.0.16.1 - 16Apr2015 - KN - Remote release to David for DaLiang
+  - Check PumpSpeed for Arc and SmCirc
+  - Corrected DispProg.Setting SetZ
+1.0.16.0 - 14Apr2015 - KN - Remote release to David for DaLiang
+  -  Corrected Dir for MoveArcCenterEndAbs
+1.0.15.0 - 13Apr2015 - KN - Remote release to Steven for Epistar
+  - Added ReverseDir for Move Command for filling purpose
+    Reverse Line direction for OddRow or OddCol.
+    Only works with Move and Line combination  
+1.0.14.0 - 02Apr2015 - KN - Relased to Steven/Ryan at Epistar
+  - Added RECT_FILL function with YLines (incomplete)
+  - Drag Mode and Scroll Mode for GDefine.GantryConfig == GDefine.EGantryConfig.XZ_YTABLE
+1.0.13.4 - 31Mar2015 - KN - Relased to Steven/Ryan at AOT
+  - Remove temporay log for line and circ
+1.0.13.3 - 31Mar2015 - KN - Relased to Steven/Ryan at AOT
+  - Uses AOT.dll 1.0.0.3
+1.0.13.2 - 31Mar2015 - KN - Relased to Steven/Ryan at AOT
+  - Added rt_VolumeOfst_Mode
+  - Added DispTool_VolumeAdjust Online and Mode
+  - Uses AOT.dll 1.0.0.2
+  - Added SM_CIRC to DispProg.Script.Validate
+1.0.13.0 - 31Mar2015 - KN - Relased to Steven/Ryan at AOT
+  - Added DispTool_VolumeAdjust.Update to update VolumeOfst
+  - Uses AOT.dll 1.0.0.1
+1.0.12.9
+  - Remove Touch Mode
+  - Added Mouse Left Button Drag Mode feature
+  - Added Mouse Right Button Scroll Mode feature
+1.0.12.7
+  - Re-Code for all Arc and Circle relation to Direction, CW/CCW
+  - Integrate LINE2 to LINE
+  - Updated CW/CCW display for GDefine.GantryConfig == GDefine.EGantryConfig.XZ_YTABLE
+1.0.10.6 - 19Mar2015 - Release In House
+  - Added LINE2 for testing
+  - Translate DoRef pos if ID > 0
+  - Corrected UpdateModelPara(int ModelNo) Line StartV, DriveV and Accel
+  - Calculate End Point from Current Pos for Do_SmCirc
+1.0.10.4 - 16Mar2015 - Release In House David, Remote to Steven at Cree HuiZhou
+  - Added SM_CIRC, circle with 4 arc combination for Dam
+  - Changed LiftGap to LiftDist
+    Allow minus LiftDist setting 
+1.0.9.9 - 10Mar2015 - Release onsite to Steven at Cree HuiZhou
+  - DispCore_DispInfo added Runtime display
+  - Added command CNTR_ACTION 
+    Added frmDispProg_CntrAction
+    DispTool_VolumeAdjust display both FrameCount and Runtime 
+  - Corrected USE_HEIGHT not check b_InLoop
+  - Corrected frm_DispTool_VolumeAdjust On_Click Events (unknown why disappear)
+1.0.9.7 - 09Mar2015 - Release onsite NSWSZ briefed JunLei
+  - Set frmDispProg to disable for TR Function; prevent start of program
+  - Prompt to Cancel Program if script is active
+    Added ErrCode.PROGRAM_ACTIVE_PROGRAM_COMMAND_MODIFICATION
+1.0.9.6 - 05Mar2015 - Release at Luminus US
+  - SetDispVol default to response true; prevent non connected controller thread error
+1.0.9.5 - 16Feb2015 - To release inhouse
+  - DispProg Restructure Volume Offset
+    - VolumeMap is subset of VolumeOfst
+    - Added VolumeOfst to ARC/CIRC
+  - AOT Volume Offset
+    uses AOT.dll 1.0.0.0
+1.0.9.4 - 12Feb2015 - To release inhouse
+  - Added Message to UpdateDrawOffset
+  - Added ResumeMap
+1.0.9.3 - 11Feb2015 - To release inhouse
+  - TaskDisp.Clean WaitCtrlReady before OnVac	
+  - Update DispTool_VolAdjust BSuck_Vol in setting mode
+  - Use HPC15.dll 1.5.2.10
+  - Change TaskDisp.SetDispSpeed for 2 Head
+  - Added Threading for SetDispSpeed
+  - Added Purge and Trig to DispSetup_PP
+  - Added DispTool_DispSetup_HM
+  - Corrected XYZAdjust feature
+  - Added Clear Draw Offset
+1.0.9.2 - 28Jan2015 - Release onsite to David/A251/KaiStar/Xiamen
+  - Added Origin Adjust Para
+  - Log VolumeAdj and BSuckAdj for changes in para only
+1.0.9.1 - 14Jan2015
+  - Limit Model Relative adjust to final value of 0 or more.
+1.0.9.0 - 14Jan2015
+  - Uses CControl 1.1.0.0
+    Changes to support new class
+  - Added ABS and REL Adjust for all Models
+  - Update Z2Offset Display
+  - Added Origin Ofst Adjust at DispTool
+1.0.8.15 - 12Jan2015
+  - Added Needle Height Difference check for TeachNeedle_StepByStep
+    Added TaskDisp.MultiHead_ForceInTol
+  - Update TaskTeachNeedle_ZSensor_Mark() setup data
+    TaskDisp.Laser_RefPosZ, TaskDisp.Head_ZSensor_RefPosZ
+1.0.8.14 - 30Dec2014
+  - Added MoveZUp for DoHeight
+  - ModelList use HPC15 HM_Max_RPM
+  - Corrected TaskDisp.SetDispSpeed
+1.0.8.13 - 01Dec2014
+  - Added Disp Control function
+    Supported functions None, Delay, GoMMaint, GoPMaint, DoClean, DoPurge, CleanFill, RecycleBarrelF, RecycleBarrel5S, RecycleNeedle,
+    Added frm_DispCtrl_FuncSetup
+    Added TaskDispCtrl
+  - Added PPD support for DispTools_DispSetup_PP
+1.0.8.12 - 25Nov2014
+  - Added DispProg.DispCtrl_ForceTimeMode
+1.0.8.11 - 18Nov2014
+  - Use HPC15.dll 1.5.2.7
+  - Move frm_VolumeAdjust from DispTools_PP to DispTools
+  - Change Volume unit to ms for HM
+    - Added frm_VolumeAdjust EAdjustUnit {ul, ms}
+    - Added frm_DispTools EAdjustUnit
+    - Update frm_ModelList Units
+  - Update ModelLimit
+1.0.8.10 - 18Nov2014
+  - frm_TeachNeedle_LaserCrossHair do not move Z Down; prevent longer needle crash
+  - Improve DispTools Weight Button display
+    DispTools display valid button for Weight Program.
+    DispTools display Program Name
+    DispSetup.Weight display red if Program invalid
+1.0.8.9 - 11Nov2014
+  - Corrected frm_MoveLine, frm_Arc, frm_Dwell and frm_Sub, btn_Trig head selection
+  - Added AngleAdjust illustration
+1.0.8.8 - 23Oct2014
+  - Added DO_DOT b_ExtTimedCompleted
+  - Corrected frm_Dot btn_Trig head selection
+1.0.8.7 - 21Oct2014
+  - Improve DipsReady and DispResp 
+    Added DispCompleteTimeOut
+    Added EDispReadyLogic, EDispResponseLogic, EDispCompleteLogic
+  - Added feature to Teach Laser and CrossHair
+    Added ETeachNeedleMethod.Laser_CrossHair
+    Added frm_TeachNeedle_LaserCrossHair
+  - Corrected LAYOUT MultiPitch Set/Goto for Last Cluster
+  - Change frm_DispProg to add more information and controls
+  - Hide unrelated setting for DispProg.Setting
+  - Added Log.LoadProg Log.DispVolAdj and BSuckVolAdj
+  - Improve LAYOUT to select PreMap
+    Intersect Rectangle
+    Select by Board, Row, Col, ClusterRow, ClusterCol 
+  - Added frmLayout PreMap ClearAll, SetAll and Invert
+  - Corrected TLayout.UnitNoIsHead2(int Index) to reflect InValid Head2
+  - Reset rt_Layout_Rel_X, Y, X2, Y2 at END_LAYOUT
+  - Update DispProg Thread.Sleep(1) for Dot and Draw
+  - Improve Delay comparison for Dot and Draw
+  - Uses CControl 1.0.3.4.
+1.0.8.6 - 15Oct2014
+  - Corrected frmDispProg.EnableControl
+  - Draw PatMatch found Rect
+  - Disable Camera for DispProg.RunMode == Normal
+  - Uses CControl 1.0.3.3.
+    Added LoadDeviceConfig.Device.CheckDependencies
+1.0.8.5 - 13Oct2014
+  - Set Model.DispVol = Default for WeightProgram
+  - Uses CControl 1.0.3.2; solve CalToTime error
+  - Added class Thread_CheckIsFilling. Use Thread to check filling
+  - Change Thread_SetDispVolume to class Thread_SetDispVolume
+  - Add Z1Z2 Compensation for Head ZSensor Difference for DO_DOT, DO_PURGEDOT, DO_LINE, DO_ARC, DO_DWELL, TaskPurgeCleanNeedle
+  - Uses simultaneous SetVolume for DO_LINE, DO_ARC, DO_DWELL
+  - Support Volume Mapping DO_LINE
+1.0.8.4 - 09Oct2014
+  - Change DispProg.MinDist and DefDist limit from 50 to 35
+  - DispSetup_PP faster response for single shot
+  - Corrected TaskDisp.CalZSensorZ for PP2D operation
+  - Added Thread_SetDispVolume_Run, Thread_SetDispVolume_Wait
+1.0.8.3 - 08Oct2014
+  - Uses CControl 1.0.3.1
+  - Added Head_PitchX = -1, follow last head pitch
+  - Show btn_ForceSingle when HeadConfig == Dual
+  - Corrected TaskTeachNeedle_ZSensor_Mark() SearchNeedle2
+  - Improve BarrelPress Mouse Dn and Up
+  - Added BarrelPress
+  - Change DispTool.btn_PurgeShot to btn_Purge
+  - Added DispTool.btn_Shot
+  - Updated CalHeadOffset for ATNC to support Head2
+  - Added DispProg PromptSingleHeadRun
+1.0.8.1 - 07Oct2014
+  - Uses HPC15.dll 1.5.2.4
+1.0.8.0 - 02Oct2014
+  - Added Head2_ZOffset
+  - Remove PumpType check for SetSingleShortParam
+  - Add UpdateZHeight to wait complete for DoLine, DoArc, DoDwel
+    - Change frmDispProg Stop to Cancel
+  - Added GDefine.EHeadConfig(Single, Dual)
+  - Remove TaskDisp.EPumpType.Auto
+    Program manages PumpType
+  - Added TaskDisp.EHeadOperation
+    Remove TaskDisp.Head_Operation
+    Program manages Head_Operation
+  - Added auto Head_PitchX and Head_NeedlePitchY
+    Program manages Head_PitchX and Head_NeedlePitchY
+  - Update DispProg.DoDot, DoMove, DoLine, DoArcCirc, DoDwell to support HeadConfig and Head_Operation
+  - Remove Layout.SyncHead2
+  - Added DispWeight2
+1.0.7.6 - 01Sep2014
+  - Uses CControl 1.0.3.0
+  - Corrected Intf.CheckDependecies
+  - Add ECmd.Next to MovePanelGap
+  - Added to Commonontrol.ResetBoard Set EMO Logic High
+1.0.7.5 - 15Sep2014
+  - TaskDisp.TaskPurgeCleanNeedle always turn VacOn/Off
+  - Change MessageBox to MsgBox for DO_REF error
+    Added public const int DO_REF_OFFSET_OOS = OPERATION_ERR + 60;
+    Added public const int DO_REF_ANGLE_OOS = OPERATION_ERR + 61;
+    Added public const int DO_REF_PT1_PT2_DIST_OOS = OPERATION_ERR + 62;
+  - Corrected ECMMethod.Binay option to DispProg.Run
+  - Added check CREATE_MAP OK Yield.
+    Added public const int CREATE_MAP_OKYIELD_OOS = OPERATION_ERR + 70;
+1.0.7.4 - 13Sep2014
+  - Added ECMMethod.Binary feature to CreateMap
+  - Added Expoure to DO_BDCapture  
+1.0.7.3 - 12Sep2014
+  - Corrected SetDispVolume
+1.0.7.2 - 12Sep2014
+  - Added DispProg.StationCount
+    Add setting to frmDispProg_Setting
+  - Added command VOLUME_MAP
+  - Move TaskDisp.Option_PromptRunSingleHead from DispProg to frm_TeachNeedle_StepByStep
+1.0.7.1 - 08Sep2014, 09Sep2014
+  - Added Intf.SetBValue("SwDoor")
+    Check SwDoor to operate tools
+  - Change RemoveAir_MouseDown and MouseUp implementation to prevent multiple execution
+  - Add public static void WriteRegStat
+    WriteRegStat UnitCount
+  - Corrected DoInitPP and DoFill head selection
+  - Corrected DispProg not DoFill
+1.0.7.0 - 05Sep2014
+  - frmMap draw color for Head 1 and Head 2
+  - Move to Clean Pos for PP_FILL, PP_RECYCLE_B, PP_RECYCLE_N
+  - Added DispProg.MovePanelGap
+    Update DispProg.DoDot
+  - DispTools.PurgeShot at NeedleMaintPos with Purge parameters
+1.0.6.20 - 05Sep2014
+  - Set Cursur to Default on leave for CREATE_MAP
+  - Integrated HPC15 Version 1.5.0.3
+  - Uses Nspira_HPC_Series 1.0.2.0
+  - frm_DispCore_DispSetup_PP used tools from HPC dlls
+  - Added PP_RECYCLE_B and PP_RECYCLE_N
+1.0.6.19 - 27Aug2014
+  - Added reporting feature
+    DATA_CLEAR, DATA_NEWSET, DATA_COMPUTE, DATA_TEXT
+    Added frm_OutputWindow
+    Added data log selection in DO_REF
+1.0.6.18 - 26Aug2014
+  - Set Settle Time for DO_BDCAPTURE, DO_REF, DO_UNITMARK, DO_BDORIENT, DO_HEIGHT to default 150 upon script validate
+  - Add Settle Time setting to DoBdCapture
+    IPara[4]
+1.0.6.16 - 22Aug2014
+  - DispProg set focus to dummy button
+  - Set Gantry to OprationSpeed.Safe on normal program completion
+  - Move Z Up when exit from Program
+  - Hide frmOutput when exit from Program
+  - Move PumpMaint Set/Goto from frm_DispSetup_TeachNeedle to frm_DispSetup_Maint
+  - Z Compensation
+    Compensate Z2 height factor
+  - Added TaskLaser.Load and Save.
+    Move Laser_SettleTime to TaskLaser.Load
+  - Fix DoPatMatch SettleTime
+  - Correct DispProg cmsScript from Max 8 to Max 4
+  - Fix DoHeight.SkipCounter counting
+  - Fix DoRef.SkipCounter counting
+  - Corrected frm_DispCore_DispSetup_PP.btn_RecycleNeedle_Click MoveFill direction
+1.0.6.14 - 14Aug2014 - KN - Remote Released to Lextar/Steven  
+  - Correct Recycle_Barrel 5step Direction
+  - Set PP_HEAD_Min_Volume from 0.01 to 0. 
+1.0.6.13 - 13Aug2014 - KN - Remote Released to Lextar/Steven
+  - TaskDisp.TaskPurgeCleanNeedle always set TimeMode after Purge/Clean
+1.0.6.12 - 13Aug2014 - KN - Remote Released to Lextar/Steven
+  - Move Settle time and Retry Count to DoRef and DoHeight 
+  - Added EFailAction.Normal, AutoReject, PromptReject
+    Implement to DoHeight, DoRef, DoBdOrient, DoUnitMark
+  - Corrected DeleteProgram all related program files.
+  - Corrected TaskDisp.MoveFillVolume
+  - Clean and Purge according to MultiHead_OpType
+1.0.6.11 - 05Aug2014 - KN - Released at Lextar
+  - GenerateMap set as MapNG if not MapOK 
+  - Add VisionSettleTime to frmDispProg_DoRef
+  - Faster speed for Recycle Barrel Five Step
+    Change MoveDisp to MoveFill
+1.0.6.10 - 27Jul2014 - KN
+  - Added DispProg Manage Program to delete program
+  - Uses MsgBox2 2.0.1.0
+1.0.6.8 - 10Jul2014 - KN
+  - Disable frm_TeachNeedle-StepByStep during busy
+  - Reduce SearchNeedle retract from 1 to 0.5
+  - Added ERecycleMethod.FiveStep 
+  - Added procedure to calibrate Bottom Camera
+    Added CalVisionAperture(ECamNo CamID)
+  - Enhance ATCN for StepByStep
+1.0.6.7 - 10Jul2014 - KN
+  - Functional ATCN, GantryConfig XYZX2Y2Z2 not tested
+  - TaskDisp.Search needle touch 3 times to confirm position. Return average. 
+  - Corrected BCamera Lighting save
+1.0.6.6 - 10Jul2014 - KN
+  - (InProgress) DoRef Multiple Pat, UI Complete
+  - UseRef applies to DoRef, allow multi step DoRef
+  - DoRef Check Ref Distance
+  - Uses dll v 2.0.0.12
+  - Update Tower Light Status for Vision and Height Fail
+  - Momentary Trigger Barrel Pressure when BarrelPressTime == 0
+1.0.6.5 
+  - Uses dll v 2.0.0.10
+  - Correct DispProg.Save that miss Para D
+  - Uses LHS_ILD_Series v 1.0.0.5
+    Prevent dll message prompt
+1.0.6.1 
+  - Uses dll v 2.0.0.5
+    Remove frm_Msg
+    Major change on all frmMsg to use 
+  - Added IO.SetAlarm to DispProg.Run Vision and Height Fail
+1.0.5.31 - 17Jun2014
+  - Move GZ2 for invalid to prevent crash with top clamp
+    Implemented to DoDot and DoMove
+  - Corrected Model.DispVol min and max
+  - Show DispTools.SetupPP according to Pump Type
+1.0.5.30 - 16Jun2014
+  - Fix odd column Head2 collision
+    Update UIndex2 is valid.
+1.0.5.29 - 13Jun2014
+  - Added Model.DispVol
+  - DispProg Show PreMoveZ display for DoDot and DoMove
+  - Fix TeachNeedle TaskTeachNeedle_ZSensor_Mark speed
+  - Add adjust button to Lighting Control
+  - Show DoRef values on DispInfo
+1.0.5.27 - 12Jun2014
+  - TaskDisp.TaskMoveGZZ2Up() wait until Z Sensor Trigger
+    Change move from 0.5 to ZDefPos public static double ZDefPos = 0.1;
+    Add timeout public static int MoveZ_TimeOut = 500;
+  - GZZ2 Home move to ZDefPos
+  - Check ZDefPos for DispProg
+1.0.5.26 - 06Jun2014
+  - Rewrite 1.0.5.25 from 1.0.2.24 due to source corrupt
+1.0.5.25 - 06Jun2014
+  - Added Recycle Barrel 2
+  - Added ProgressMessage to DispTools
+  - Added Application.DoEvents for long loops
+1.0.5.24 - 05Jun2014
+  - Added HeadAShotCount and HeadBShotCount
+  - Added DispInfo.PP DispVol and BackSuckVol
+  - Fix frm_DispCore_DispSetup_CleanPurge.CleanTime click
+  - Improve Program Loading Time
+    - Clear PreMap, check FileExist for loading
+1.0.5.23 - 04Jun2014
+  - Added TaskDisp.LoadPPDispPara
+  - Add BackSuck and OffsetTol to VolumeAdjust
+  - TaskDisp.PP_Head_BackSuckVolume and TaskDisp.PP_Head_OffsetTol
+    Add SettingMode
+  - Fix frm_DispTool_VolumeAdjust HPC into retrieve
+  - New dynamic material timer and display
+1.0.5.21 - 03Jun2014
+  - Update frm_DispCore_DispInfo
+  - Added Intf.Indicator.IValues
+  - Save MeasL_WH if with valid data count
+  - Change MapNG color from Red to Black
+  - Correct DoHeight Test
+  - Timer UpdateDisplay frm_DispCore_DispSetup_HeadCal 
+1.0.5.20 - 03Jun2014
+  - Corrected XYZ_X2Y2_Z2 CalHeadOffset and TeachNeedle StepByStep update value
+  - TaskGantry OpenBoard Check Dependencies once
+  - Uses CControl 1.0.2.7
+  - Added P1245PathDelay in ms, default = 2;
+1.0.5.19 - 02Jun2014
+  - Update ImageWidth and Height during Open Camera
+  - Added FP_ED and RT_ED to Barrel Pressure, Recycle Barrel and Recycle Needleh
+  - Added TaskDisp.GetSingleParam
+  - Added Get Filled Fluid Pressure End Delay TaskDisp.GetFilled_FP_ED
+  - Added Get Filled Rotary End Delay TaskDisp.GetFilled_RT_ED
+1.0.5.18 - 30May2014
+  - Added frmDispProg_Layout MoveSet teaching
+  - Fix TaskDisp.TaskTeachNeedle_ZSensor_BCamera values and computation
+  - Check NeedleZ Sensor for TaskDisp.SearchNeedle
+  - Increas DispSetup_DispControl.DispReadyTimeOut from 20000 to 60000
+1.0.5.17 - 26May2014
+  - Force load Premap default values if no file exists 
+  - Disable Material Expire message if Lifetime == 0
+  - Update GDefine.Status to Busy for DoMove, DoLine, DoArc, DoDwell 
+1.0.5.16 - 23May2014
+  - Added OptionPromptRunSingleHead
+  - Added Material_LifeTime
+  - Corrected Cam01 exposure time
+  - Added Language support for frmTeachNeedle_StepByStep and frm_DispSetup_PP
+  - Added Retry to TeachNeedle
+1.0.5.15 - 23May2014
+  - Fix DispTool display
+  - Add clear TaskDisp.WeightProgram name
+  - Fix Needle not move to bottom camera height
+1.0.5.14 - 22May2014
+  - Added RecycleNeedle function
+    Uses Nspira_HPC_Series 1.0.1.17
+  - Prevent EMO Check exception on offline mode
+  - Prevent Position Check exception on offline mode
+  - Remove DispSetup.PreDisp
+  - Prevent Attempt Div by Zero when TUCount == 0
+    DispProg.TScript.Run UPH calculation skip if TUCount == 0
+  - Relayout DispSetup
+  - Remove CleanStationType and PurgeStationType selection
+  - Prevent MoveNeedleToBCamera to minus side.Limit Z,Z2 Pos to 0 for MoveNeedleToBCamera
+1.0.5.12 - 20May2014
+  - Display DoRef image on DispInfo 
+  - Corrected Arc length calculation
+    Verify F100 configuration
+    Verify S320 configuration
+  - Clear PreMap on NewScript
+  - Update TeachNeedle
+    frmTeachNeedle added support for no Laser
+    frmTeachNeedle added support for GantryConfig.XY_ZX2Y2_Z2 and PP2D
+  - Corrected DispProg.DoUnitMark
+    Reset i_UnitMarkFailCntr if OK
+    Use correct CameraNo for DistPerPixel
+  - Move ZZ2Up if CleanPurge fail 
+  - Increase MAX_UNITCOUNT to 8192
+    Check TUCount on entry
+  - Zoom Image on frm_Map
+1.0.5.11 - 14May2014
+  - Corrected DoUnitMark camera selection
+  - Corrected PurgeShot Entry value.
+  - Change RemoveAir time min adjust value from 1 to 0.01
+  - Fix Recycle Barrel Pressure On
+1.0.5.10 - 13May2014
+  - PP Rotate Rotary every Recycle.  
+1.0.5.9 - 12May2014
+  - Prevent update DispenseVolume for Weight Program
+    public static bool Load(string FullFilename, bool UpdateDispVol)
+1.0.5.8 - 10May2014
+  - Added Weight Measure Program
+  - Change DispProg_MAXSCRIPT from 8 to 4.
+1.0.5.7 - 10May2014
+  - Added DispTool_VolumeAdjust  
+  - Added public frm_DispCore_DispInfo
+  - Added BoardImage View
+  - Fix DispTool switch rotary to disp after recycle
+1.0.5.6 - 09May2014
+  - Adjusted frmMsg message size to allow more line display
+  - Added MoveTo at frmMap
+  - Remove GX2Y2 at TaskMeasure
+1.0.5.5 - 08May2014
+  - Mask edit map to rtMap
+  - Corrected Check XY position
+  - OpenLaser Retry
+1.0.5.4 - 07May2014
+  - Corrected Laser value
+    Uses LHS_ILD_Series.dll 1.0.0.3
+  - Uses Nspira_HPC_Series 1.0.1.14
+  - Check XY Target Pos at TaskGantry.MoveAbsGXY
+  - Complete DispenserCtrl function to DispTool
+1.0.5.3 - 06May2014
+  - Corrected LiftGap for DispProg.DoLine and DoArc
+    d_LineSpeed OperationSpeed calculation 
+  - Apply TaskGantry.OperationSpeed.Safe to GZ and GZ2
+  - Added DispenserCtrl function to DispTool - In Progress
+  - Uses LHS_ILD_Series.dll 1.0.0.2
+  - Display Laser Height value at frm_JogGantry
+  - Uses GrabberNET.dll 1.0.3.1
+  - Corrected DispProg.PURGE_DOT rt_Cond break 
+1.0.5.2 - 30Apr2014
+  - Improve Loading time. Script. Load Ignore short data
+  - Update frmVisionSetup Cal Vision to support 3 Cameras
+  - Added Align to DispProg.DO_REF
+  - Corrected frmConfig Cam2 and Cam3 setting
+  - Tidy DispProg
+  - Update CreateMap to support new TLayout
+1.0.5.1 - 29Apr2014
+  - DispProg STOP button used to reset program, disable if not program is active
+  - Fix COUNTER
+  - Check Z Up trigger Home Sensor
+    TaskGZZ2Up
+  - CreateMap In-Progress
+1.0.5.1 - 28Apr2014
+  - Update DO_REF and DO_HEIGHT rt_Map if unit is OK
+  - Corrected d_ZDist calculation for GDefine.EGantryConfigType.XY_ZX2Y2_Z2
+  - Update new TLayout
+    Update DispProg.LAYOUT, FOR_LAYOUT, END_LAYOUT
+  - Added public EMO function to TaskDisp
+1.0.3.5 - 16Apr2014
+  - Revert DispProg.DELAY global delay
+  - Added DispProg.WAIT for loop implementation
+  - Fix DispProg.b_SyncHead2 not set. Set flag at DispProg.LAYOUT
+1.0.3.4 - 15Apr2014
+  - Support 3 Cameras
+  - Added 4th Lighting Channel
+    Added frm_LightingAdjust
+  - Fix PP2D Cluster Height
+    Changes to DispProg.FOR_LAYOUT
+  - Support flexible DO_REF and DO_HEIGHT by Board, Cluster, ClusterCol, ClusterRow, Unit, UnitCol, UnitRow
+    Changed DO_REF, USE_REF, DO_HEIGHT, USE_HEIGHT
+    Discontinued FOR, NEXT
+  - Fix DispProg.DoDwell ModelNo selection
+  - Check DispCtrl Connection
+    Added TaskDisp.CheckDispCtrlConnection()
+    Added TaskDisp.HeadIsValid()
+  - Corrected DispProg.DO_DWELL LiftRate.
+    Convert LiftRate from mm/ms to mm/s
+1.0.3.1 - 09Apr2014
+  - Fix Icon Display
+  - Fix Delay not run for ByPassed units
+1.0.3.0 - 09Apr2014
+  - Change DispProg Icons to UI_Utils
+  - Added Operation_SafeSpeed 25% of Drive Speed
+    XY will run on SafeSpeedRatio except for DispProg.Run
+    Homing run on default speed
+  - Added Operation_SlowMo
+    All Axis will run on SlowSpeedRatio 5% of Drive Speed
+    All timing will run on SlowSpeedTimeFactor 5x
+    Available for RunMode==Camera and RunMode==Dry
+  - MoveG2Y2MinDist upon Init
+1.0.2.28 - 08Apr2014
+  - Added TLayout
+    Migrated DispCore variables to TLayout 
+  - Added StructEnum for public Structures and Enums declaration
+  - New Layout Commang
+    Added DispProg.LAYOUT
+    Added DispProg.FOR_LAYOUT
+    Added DispProg.END_LAYOUT
+  - Fix SecRefID and SecHeightID used when not enabled
+1.0.2.27 - 01Apr2014 - KN - Released to Steven
+  - Added DispProg.PURGE_DOT
+    Updated DispProg.Run
+    Added DispProg.DoPurgeDot to support PurgeDot
+1.0.2.26 - 01Apr2014 - KN - Released to Josh
+  - Update Laser_RefPosZ to DispTool TaskTeachNeedle_ZSensor_BCamera()
+  - Update Head_ZSensor_RefPosZ[0, 1] to TaskTeachNeedle_ZSensor_BCamera()
+  - Update BCamera_Cal_Needle1_Z and BCamera_Cal_Needle2_Z to TaskTeachNeedle_ZSensor_BCamera()
+  - Added DispProg.LAYOUT - In Progress
+  - Change TLine Structure
+    Added PosU
+    Increased TLine.MAX_PARA from 50 to 100
+1.0.2.25 - 27Mar2014 - KN - Released to Josh
+  - Corrected DispTool.TeachNeedle for XYZX2Y2Z2
+  - Corrected DoUnitMark Lighting condition
+  - Corrected Program.Save clearing Z pos
+  - Added Program.New Press Delay
+  - New Program New, Load, Save, SaveAs Icons
+1.0.2.24 - 19Mar2014 - KN - Released In-house Burn
+  - Added Secondary Do_Height
+    Changes in UI to accomodate Secondary Height Support
+    Update to DispProg.DoHeight and UseHeight
+  - Added Height 2D Multiple Points where average value is used for Z correction
+  - Reduce button press delay from 1s to 0.5s
+  - Added Press Delay to DispProg.Save
+1.0.2.23 - 19Mar2014 - KN - Released In-house to David
+  - Added Numbers to show unit map row and columns[Josh]
+  - Added Clear to clear unit map status[Josh]
+  - Added RC indicator on unit map[Josh]
+  - Move X2Y2 to MinDist for MeasL_HW[Josh]
+  - Added Secondary Do_Ref
+    Changes in UI to accomodate Secondary Ref Support
+    Update to DispProg.DoRef and UseRef
+  - Solve Gantry ErrorInit cannot exit in Cycle Run
+    Exit DispProg.Run on GantryStatus == ErrorInit
+1.0.2.22 - 04Mar2014 - KN - Released onsite to Edison/Josh
+  - Remove Accept button from Vision fail Window
+    frmVisionFailMsg hide btn_Accept
+  - Close button visible for DispProg only.
+    Added ShowHide to frmMap.
+  - Update SUB Comment to DispProg display
+1.0.2.21 - 03Mar2014 - KN  
+  - Fix TaskTeachNeedle_ZSensor_BCamera() for Single Head
+  - Correct UpdateModelPara d_LiftGap and d_PanelGap to double type
+1.0.2.20 - 03Mar2014 - KN  
+  - Fix missing multiple circles
+    Commonontrol.MoveArcCenterEndAbs use P1245.MoveArcCenterEndRel, Abs rounding cause short arc length
+1.0.2.19 - 26Feb2014 - KN  
+  - Fix DO_REF Pt2 fail Accept wrong position computation 
+  - Add button press progress 2s for SetZ and SetXY to prevent accidental position set
+1.0.2.18 - 20Feb2014 - KN  
+  - Prevent PreMoveZ if previous unit is disabled
+  - Move Z to UpGap or RetGap if not consecutive unit
+    Create same height dispense condition for first unit
+  - SetOpTypePara during load of Program
+  - Update DoBdCapture PrevImage only if CurrentImage is valid
+1.0.2.17 - 17Feb2014 - KN  
+  - Fix DO_REF SKIP position adjustment
+  - Fix XYZ_X2Y2_2 BCamera Head Offset 
+1.0.2.16 - 16Feb2014 - KN  
+  - Preload Dynamic Button Text Languange
+    - Prevent UpdateDisplay timer to call AppLanguage.Func.SetComponent
+1.0.2.15 - 10Feb2014 - KN
+  - Remove Application.DoEvent()
+    - Remove at DispProg.Do_Ref
+    - Remove for all timer while loop of TaskDisp, TaskGantry, TaskWeight
+1.0.2.14 - 09Feb2014 - KN
+  - Temporay Disable Load and Save HPC Para
+1.0.2.13 - 07Feb2014 - KN
+  - Added to Map Window feature to View BdCapture Image
+  - Corrected Board Vision Lighting
+  - Corrected Angle Unit for DO_Ref Angle Computation
+  - Corrected TaskDisp.LoadHPCData HPC Index
+  - PP2D Map selection clone to twin unit
+    Added DispProg.RCGetIndex
+    Updated DispProg.Needle1IndexGetNeedle2Index
+  - Reduce CPU Loading
+    Increase Sleep(1) to DO_DBCapture, DO_BdOrient
+1.0.2.12 - 29Jan2014 - KN
+  - Load and Save NSpira data by ProgramName
+    Uses Nspira_HPC_Series.dll 1.0.1.11
+  - Reduce CPU Loading
+    Added Sleep(1) to all axis wait
+    Remove Sleep from Dot and Move
+    Increase Sleep(1) TaskDisp.TriggerWaitReady and TriggerWaitNotReady
+    Increase Sleep(1) to DownWait and PostWait for DOT,LINE,ARC,DWELL
+    Cycle Loading ~40%
+1.0.2.11 - 29Jan2014 - KN
+  - Addded Sleep to Dot and Move
+  - Added PreviousMap view to Product Map
+  - Correct DO_REF angle computation error
+    Correct DispProg.Run DoRef Angle Calculation
+    Correct frmDispProg_DoRef and DispProg.Run angle more than Pi
+    Improve frmDispProg_DoRef with color result
+1.0.2.10 - 22Jan2014 - KN
+  - Fix Cycle not stop for short dispense cycle
+  - Update frmDispProg lvProgramList
+    FOR display
+    CREATE_MAP display
+    COND_ON display
+  - Update frmGantryJog button display
+  - Reduce CPU loading for RunPump
+    Added frmDispProg.btn_RunPump_Click Thread.Sleep(1)
+  - Change DispProg.Path display
+  - Fix calling SUB not update UnitComplete
+  - Fix STOP while calling SUB not hang
+  - Change component
+    frmDispSetup.TeachNeedle_Method
+  - CalHeadOffset move to 0,0 if out of range.
+  - Fix CalHeadOffset calling X2Y2Z2 for GantryConfig == XYZ
+  - Fix Software Limit issue for P1240
+    Uses CControl 1.0.2.2
+1.0.2.9 - 20Jan2014 - KN
+  - Move GX2Y2 to MinDist for CalHeadOffset
+  - frmDispProg_Setting show as non modal
+  - Fix Step Move cause SlowSpeed lockdown
+  - Fix Counter not able to Reset
+    - DispProg.Run
+  - Added Station Position Entry
+  - Added Software Limit Input and message prompt for jog
+1.0.2.8 - 18Jan2014 - KN
+  - Uses CControl 1.0.2.1
+  - Show Jog and non modal for frmMotorPara and frmMotorDiag
+  - Added Home to frmMotorPara
+  - Added SwLimit check for P1245
+  - Correct COND_OFF flag condition set true
+1.0.2.7 - 17Jan2014 - KN
+  - Fix P1240 not able to set TaskGantry.Home accel
+1.0.2.6 - 16Jan2014 - KN
+  - LINE, ARC, DWELL Do not check ready after move up if not Disp
+1.0.2.5 - 16Jan2014 - KN
+  - Added Real Position Display
+  - Correct Logical to Real Position for XY Motor Off Condition
+  - ClearAxisError for StartJog 
+  - Tidy TaskDisp.TrigCheckReady and TaskDisp.TrigWaitReadyd
+  - Stop/Pause DOT and MOVE in main loop
+  - Fix Adjust Station Position
+  - Wait DispReady for Purge/Clean
+  - Fix RC values display for frm_DispProg_For
+1.0.2.4 - 8Jan2014 - KN
+  - Jog Medium and Fast Speed decel stop
+  - Update CmdList only if CalToTime success
+  - Fix Enable and Disable frmDispProg for Cycle
+  - Debug CalSpeedToTime for Linear Servo Systems
+  - CalToTime at PurgePosition
+1.0.2.3 - 8Jan2014 - KN
+  - Fix Check File Dependecies
+  - Fine Adjust Station Position
+  - Language support
+    - Uses AppLanguage 1.0.0.4
+    - Update UI for language
+1.0.2.1 - 2Jan2014 - KN
+  - Added CalSpeedToTime for SUB, LINE, ARC, CIRC
+    - Added DispProg.CalSpeedToTime
+    - Added Cal Speed Time
+  - Added Variable Line Pump Speed
+    - ModelList.Pump Speed. Required HPC controller ver 1.0.4.0 above
+    - Added funtions to LINE, ARC, CIRC, DWELL
+1.0.2.0 - 2Jan2014 - KN
+  - Check File Dependecies
+  - Added CalToTim
+    - DispProg.CalToTime
+  - Fix TaskDisp.GotoPurge calling Clean Pos
+  - Restrict SubCmd for Disp and Pattern cmd only
+  - PPFill support PPD
+  - frmDispTools set as public
+1.0.1.62 - 30Dec2013 - KN - Steven
+  - Precheck script SyncHead2 in DispProg for Clean and Purge
+  - New JogGantry Interface
+    - Remove Step Jog
+    - Add Diagonal Move
+    - Unlock to move Z	
+  - Vision fail manual entry check in spec.
+    - Added to DispProg.Run 
+1.0.1.61 - 25Dec2013 - KN - Steven
+  - Prompt to move Z Down for Goto Clean, Goto Purge and Goto Weight
+  - Rename Maint to PMaint Pump Maintenance Position
+  - Added MMaint Machine Maintencance Position
+    - Added TaskDisp.Machine_MaintPos[]
+    - Updated frmDispTools
+    - Updated frmDispSetup
+    - Updated DispProg
+  - Added RemoveAll to frmDispProg_UISetting.TRControlPanel
+  - Fix CreateMap PreMapNG selection
+  - Set PumpNeedlePitch range to negative numbers
+1.0.1.60 - 18Dec2013 - KN - David, Steven  
+  - Remove VisualBasic.PowerPack.printFrom which was accidentally added
+  - Standardize Map Visualization
+    - Added DispCore.TMapColor
+  - Fix frmDispProg_Arc setting continuous Arc
+  - Complete PreMap features
+    - Fix recipe not Load Premap
+  - Prevent frm_ProductMap obstructing Program Menus
+   - Hide and restore frm_ProductMap
+1.0.1.59 - 12Dec2013 - KN - KaiStar/David
+  - Clear frmDispProg_MeasL_WH.WHData upon test
+  - Fix DispProg Last Command Line, Arc, Circ, Dwell not TrigOff
+  - Commonontrol SetMotionParam if StartV > DriveV set StartV = DriveV 
+  - In Progress - PreMap features
+    Edit Map at CreateMap
+  - MeasureWeight able to define ZUpSpeed
+1.0.1.57 - 11Dec2013 - KN - KaiStar/David
+  - Clean and Purge with Controller Purge Mode
+  - Fix TaskGantry _SvChuckVac name
+  - Tidy DispProg.DoDot, DoLine, DoArc, DoDwell Move RetGap, UpGap and PanelGap
+  - Corrected DispProg.DoDwell not waiting dwell time
+1.0.1.56 - 10Dec2013 - KN - KaiStar/David Clic/Steven
+  - Added Command Dwell to Delay between patterns
+    Use with Move, Line, Arc, Circ
+1.0.1.55 - 10Dec2013 - KN - KaiStar/David Clic/Steven
+  - DispProg.ClearRTDispData to clear rt_MapStatus, rt_RefData and rt_HeightData
+1.0.1.54 - 10Dec2013 - KN - KaiStar/David
+  - TaskVision.LaserGetDistance take median of 5 readings.
+  - Add DispProg.Run GDefine.Status = EStatus.Ready to complete;
+  - Added TaskDisp.TaskMoveCamOffset
+  - Added TaskDisp.TaskMoveNeedleOffset
+  - Added DispProgUI.EFuntion.CamOfst and NdleOfst
+1.0.1.53 - 10Dec2013 - KN - KaiStar/David
+  - Integrate MEASL_WH to DispProg.Run
+  - Add Graph to DispProg.MEASL_WH
+    Uses ZedGraph v5.1.5.28844 
+1.0.1.51 - 09Dec2013 - KN - KaiStar/David
+  - Add Command Measure Laser Width Heigh DispProg.MEASL_WH form
+  - Corrected Do_UnitMark positioning
+  - Corrected Do_UnitMark ContErrorCount display
+1.0.1.50 - 09Dec2013 - KN - KaiStar/David
+  - Added Do_UnitMark
+  - DispProg.DoDot, DoLine, DoArc use Height data only in TaskDisp.RunMode
+  - Corrected TaskDisp.CalHeadOffset GantryConfig.XYZX2Y2Z2 Step6
+  - Change CalWeight Tolerance to min 0.1
+1.0.1.49 - 09Dec2013 - KN - KaiStar/David  
+  - Handle Odd Col count dispensing.
+    Update DispProg.IndexGetHead2RC and IndexGetHead2Index to return Index2 valid
+    Modified DispProg.Run to check Index2 valid  
+1.0.1.48 - 06Dec2013 - KN  
+  - Fix DispProg.IndexGetNeedle2Index() XFirstUPath PP2D Needle2 UnitIndex
+  - Fix DispProg.DoRef showing NoImage2
+1.0.1.47 - 04Dec2013 - KN  
+  - Switch mode Camera when SetXY	
+  - Move Z Up during start of Run
+  - Fix DispProg.Run Line and Circ continuous flag
+1.0.1.46 - 04Dec2013 - KN  
+  - Added CommandList selection
+    - Added selection to frmDispProg_UISetting
+    - Changed UISetting .ini format
+  - Added frmDispProg_Arc Set Center
+  - Allow edit XY position for frmDispProg_Line and frmDispProg_ArcCirc
+1.0.1.45 - 03Dec2013 - KN  
+  - Relocate DispFunction.Load to frmDispProg.Create
+1.0.1.44 - 03Dec2013 - KN  
+  - Corrected DispProg.Setting display for PumpType
+  - DispProg.DoDot Set Status to Ready if Skip Disp
+  - Fix IndexIsNeedle2 Calc
+  - Change TaskDisp TrigWaitNotReady
+    - Seperate Response Check
+    - Prompt if 2x fail
+    - Remove CheckIsFilling
+1.0.1.43 - 02Dec2013 - KN  
+  - Added DispProg Top Right panel controls
+    - Added frmDispProg_UISetting
+1.0.1.42 - 01Dec2013 - KN  
+  - Added Dot, Line, Arc, Circ WeightMeasure.
+    - Added to UI Measure and CalWeight
+    - Added function CalWeight
+    - Line, Arc, Circ adjust line speed
+    - Cont Dot adjust StartDelay and EndDelay, ExTimed Dot adjust external time
+1.0.1.41 - 28Nov2013 - KN  
+  - DispProg.COND_ON and COUNTER to skip if b_SyncHead2 && b_SecondHalf
+  - Tidy DispProg.DoDot, DoLine and DoArcCirc
+  - Test Weight Dev IP
+1.0.1.40 - 28Nov2013 - KN  
+  - Tidy TaskDisp TrigCheckReady, TrigOn, TrigOff, TrigWaitReady, TrigWaitNotReady
+  - frmDispProg_MoveLine fix Trigger time measure
+  - Corrected DispProg.TScript.Delete, MoveUp and MoveDn to copy, prevent duplicate references 
+1.0.1.39 - 28Nov2013 - KN  
+  - Added DispProg.Counter
+  - Added temp Condition for counter
+1.0.1.38 - 27Nov2013 - KN  
+  - Invert circ dir if axis is invert
+1.0.1.37 - 19Nov2013 - KN  
+  - Corrected frmDispSetup.btn_ZSensor CalLaser = true
+  - Added CheckIsFilling() during all wait and delay for TaskDisp.Line and Arc 
+  - Added TaskDisp.TrigWaitReady before finalization for TaskDisp.Line and Arc
+1.0.1.36 - 12Nov2013 - KN  
+  - Added GDefine.Status to DispProg.Run
+  - Fix ChuckVac config setting
+1.0.1.35 - 12Nov2013 - KN  
+  - Remove DispProg.Run GDefine.Status = EStatus.Busy;
+  - Add DispProg.Run GDefine.Status = EStatus.Stop;
+  - frmMap Toggle selection
+1.0.1.34 - 12Nov2013 - KN  
+  -	Corrected TaskPurgeCleanNeedle Vac Off
+  - Use ForceStop for Jog Fast Speed
+1.0.1.33 - 11Nov2013 - KN  
+  - Corrected DispProg.Validate
+  - Corrected PreMoveZ for DispProg.Move
+  - Added ReticleCrossHair2
+  - Added goto _EndBoard for DoBdOrient fail
+1.0.1.30 - 11Nov2013 - KN  
+  - Added Command DoBdOrient
+  - Corrected DispProg.Run 2pt Manual Entry to update data
+  - Added public DispCore.frmMap:Form
+  - Added DispCore.BdOrient
+1.0.1.29 - 9Nov2013 - KN  
+  - BDReady only when DispProg.Run complete
+  - Remove for loop xy addition to BDCapture
+  - Consolidate TaskDisp.TaskPurgeCleanNeedle
+1.0.1.28 - 9Nov2013 - KN  
+  - Added TaskTeachNeedle_ZSensor_BCamera()
+  - Consolidate CalHeadOffset(ECalHeadOffsetMethod)
+  - Check DoDot, if IsFilling do not wait DispReady
+  - Added EMapStart.MapStart
+    - Updated frmDispProg_CreateMap and frmMap
+    - Update DispProg.TScript.Run rt_MapStart 
+  - Added DispProg.TScript LastInCluster to DoDot, DoLine and DoArc
+  - Added DispProg.TScript PreMoveZ to DoMove
+1.0.1.27 - 5Nov2013 - KN  
+  - Added TModelList.WarnLLimit and WarnULimit
+  - Corrected DispProg.DoDot TrigWaitReady
+1.0.1.26 - 3Jan2013 - KN  
+  - Added DispCore.DoDot, PreMoveZ, early move Z during XY index
+    - frmDispProg_Dot
+  - Added to ModelList DnStartV, LineStartV, RetStartV, UpStartV
+    - Allow user to select BasicParameters
+1.0.1.25 - 31Oct2013 - KN  
+  - Added frmDispProgSetting, to reset HeadOffset settings
+  - Added frmIODiag ChuckVacuum
+  - Added LightRGB for HeadOffset and LaserOffset
+  - Correct Gantry status for Stop and Error
+  - Fix BdCapture Ligthting not set 
+  - Fix DispProg to use TLine.Copy function, prevent unnecessary referencing
+  - Fix CreateMap and For not to copu position data
+1.0.1.24 - 24Oct2013 - KN  
+  - Manage Filling flag seperately
+  - Set status to Stop on TrigOn error
+1.0.1.23 - 24Oct2013 - KN  
+  - Move DispProg GZZ2 Up upon pause/stop
+1.0.1.22 - 24Oct2013 - KN  
+  - Added CheckIsFilling for TaskDisp.TrigOn and TaskDisp.DispCheckReady
+  - Fix TaskDisp.TrigOn Response Message
+  - TaskDisp Clean and Purge execute as setting
+  - Move Needle to Origin according to RunMode
+  - Add IndexGetNeedle2Index and IndexIsNeedle2
+    Update DispProg.Run to use new functions
+  - Change frmDispProg RefreshProgramList
+1.0.1.21 - 21Oct2013 - KN  
+  - Change frmDispProg_Cmd to Create and Close
+  - Fix DoBdCapture lighting
+  - Fix structure reference problem.
+    - Change TLine from struct to class with initialization
+    - Added TLine.Copy
+1.0.1.20 - 19Oct2013 - KN  
+  - Added DispProg.Script[combox_Program.SelectedIndex].CheckCmd() to validate initial parameters
+  - ErrorInit on DoDot errors
+  - DispProg TScript function set GantryStatus=ErrorInit on Exception
+  - Change App.DoEvent to Thread.Sleep(0) for TaskDisp.TrigOn,TrigWaitReady
+  - Add CheckIsFilling before and after RetGap and UpGap
+  - Add Thread.Sleep(0) after frmDispProg.RunPump
+1.0.1.19 - 18Oct2013 - KN  
+  - Set SyncHead2 for FOR Command
+    Remove reset SyncHead2 for NEXT Command
+  - Remove Application.DoEvents in DispProg.DoDot
+  - Added DispProg ThreadSleep after Pause
+  - CheckIsFilling after Dot
+  - Tidy codes
+  - Added seperator for Program Commands
+1.0.1.18 - 17Oct2013 - KN  
+  - PPFill apply for PP2 and PP2D only.
+1.0.1.17 - 17Oct2013 - KN  
+  - Prevent Pitch Calculation divide by 0
+    frmDispProg_For add checking
+  - Fix Dot XFUPath even row bypass not disp
+    Reset flag before exit DoDot.
+  - Added Command COMMENT
+  - Added IgnoreAfterFillCount
+    No of measurement to ignore after fill process
+  - Added ZFineAdjust range from -0.5~0.5 to -1.0~1.0
+  - Added Command COND_ON and COND_OFF
+    Execute subsequent funtion only if condition is met
+    Support Event PPFilled only,
+  - Added Command PP_FILL
+  - Fix LaserSensorOffset and ZOffset pump selection
+  - Added DispResponse_TimeOut, 0=Disable 
+  - Removed DispCheckReady
+    DispReady_TimeOut, 0=Disable 
+  - Add LoopId and MasterId to CreateMap
+1.0.1.16 - 16Oct2013 - KN  
+  - Maintain only single MapID. Changed rtMap array to single array
+  - Fix LaserSensorOffset and ZOffset calling X2Y2 for XYZ config
+  - clear rt dispense data if station no changed
+  - frmSystemConfig fixed combox selection problem
+1.0.1.15 - 12Oct2013 - KN  
+  - Set BdReady to false at end of program
+  - Added DispCtrl HPC interface to DispProg
+  - Change DispCtrl open flag from HPC structure
+1.0.1.13 - 12Oct2013 - KN  
+  - ClearMap during GantryHome
+  - frmWeightMeasure
+    - Increase MeasureDelay from 10000 to 30000
+    - Increase StableTimeOut from 20000 to 30000
+  - Added Time, Delay and Count to Global and Program Clean/Purge
+  - Added Z Fine Adjust for Station Z in DispProg.Settings
+  - DispCtrl interface in progress (incomplete)
+1.0.1.12 - 12Oct2013 - KN
+  - Added Command BD_READY
+    - Added DispProg.BdReady flag
+    - Added to Intf
+  - DispCtrl interface in progress (incomplete)
+1.0.1.11 - 11Oct2013 - KN
+  - DispProg DoEndOfLoop was removed
+  - Enable Inft.frm for backward compatibility
+1.0.1.10 - 11Oct2013 - KN
+  - Added Intf.GetVersionInfo
+  - Added Reticle Scale
+  - Disable Inft.frm
+1.0.1.9 - 10Oct2013 - KN 
+  - Added Color to frmMap
+  - Added NonRunModeSpeedFactor
+    - TaskGantry.SetMotionParamGXY to to NonRunSpeedFactor
+1.0.1.8 - 10Oct2013 - KN
+  - New Program Structure. Program prior to 1.0.1.0 is not supported.
+  - Command FOR new teaching method
+  - Added Command CreateMap
+  - Added Command BDCapture
+  - Added Command UnitComplete
+  - Added Map
+  - Added HeadType and MultipleHead Support
+    - selection by Program
+  - Changed Needle Search Sequence
+  - Enable stop program for not in loop at DispProg.Run
+  - Added Device.Type = NONE
+  - Use CControl 1.0.0.7
+  - Corrected DispProg.Validate error when adding FOR
+  - Clear command line parameters for DispProg.Insert 
+  - Home, Clear axis error after AlmClr
+1.0.0.50 - 17Sep2013 - KN
+  - Bug fix for XYZ and XZ_YTable secondary gantry.
+1.0.0.49 - 10Sep2013 - KN
+  - Change TaskGantry.Home Seq to Z2>Z>X>Y>X2>Y2.
+    - Prevent F100 collision.
+  - Tidy DispProg
+  - frmDispProg_ModelList
+    - increase Delay limit from 5000 to 20000.
+    - increase Speed limit from Max/5 to Max.
+    - increase Accel limit from Max/5 to 8000.
+1.0.0.48 - 07Sep2013 - KN
+  - Update frmDispProg lvi display
+1.0.0.47 - 07Sep2013 - KN
+  - Disable Jog Work Area if axis limit is 1000.
+  - Use CControl 1.0.0.2
+  - frmDispProg_Arc added circle direction and change direction. 
+1.0.0.34 - 13Aug2013 - KN
+  - First Official Release
+  - Released to S320A HienLam, Lightera US
