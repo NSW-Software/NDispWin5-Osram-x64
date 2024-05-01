@@ -36,6 +36,14 @@
             this.btn_Open = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tPage_Conv1 = new System.Windows.Forms.TabPage();
+            this.lbl_Pos_VacSw = new System.Windows.Forms.Label();
+            this.btn_Pos_SvVac = new System.Windows.Forms.Button();
+            this.lbl_Pos_SensStopperUp = new System.Windows.Forms.Label();
+            this.lbl_Pos_SensLifterDn = new System.Windows.Forms.Label();
+            this.lbl_Pos_SensLifterUp = new System.Windows.Forms.Label();
+            this.btn_Pos_SvLifterUp = new System.Windows.Forms.Button();
+            this.lbl_Pos_SensPsnt = new System.Windows.Forms.Label();
+            this.btn_Pos_SvStopperUp = new System.Windows.Forms.Button();
             this.btnSmema2_McReady = new System.Windows.Forms.Button();
             this.lblSmema2_BdReady = new System.Windows.Forms.Label();
             this.lbl_Pre_HeaterAlm = new System.Windows.Forms.Label();
@@ -200,6 +208,14 @@
             // 
             // tPage_Conv1
             // 
+            this.tPage_Conv1.Controls.Add(this.lbl_Pos_VacSw);
+            this.tPage_Conv1.Controls.Add(this.btn_Pos_SvVac);
+            this.tPage_Conv1.Controls.Add(this.lbl_Pos_SensStopperUp);
+            this.tPage_Conv1.Controls.Add(this.lbl_Pos_SensLifterDn);
+            this.tPage_Conv1.Controls.Add(this.lbl_Pos_SensLifterUp);
+            this.tPage_Conv1.Controls.Add(this.btn_Pos_SvLifterUp);
+            this.tPage_Conv1.Controls.Add(this.lbl_Pos_SensPsnt);
+            this.tPage_Conv1.Controls.Add(this.btn_Pos_SvStopperUp);
             this.tPage_Conv1.Controls.Add(this.btnSmema2_McReady);
             this.tPage_Conv1.Controls.Add(this.lblSmema2_BdReady);
             this.tPage_Conv1.Controls.Add(this.lbl_Pre_HeaterAlm);
@@ -266,10 +282,114 @@
             this.tPage_Conv1.Text = "Conv1";
             this.tPage_Conv1.UseVisualStyleBackColor = true;
             // 
+            // lbl_Pos_VacSw
+            // 
+            this.lbl_Pos_VacSw.AutoEllipsis = true;
+            this.lbl_Pos_VacSw.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lbl_Pos_VacSw.Location = new System.Drawing.Point(538, 214);
+            this.lbl_Pos_VacSw.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.lbl_Pos_VacSw.Name = "lbl_Pos_VacSw";
+            this.lbl_Pos_VacSw.Size = new System.Drawing.Size(100, 23);
+            this.lbl_Pos_VacSw.TabIndex = 434;
+            this.lbl_Pos_VacSw.Text = "Pos_VacSw";
+            this.lbl_Pos_VacSw.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lbl_Pos_VacSw.MouseHover += new System.EventHandler(this.controlIO_MouseHover);
+            // 
+            // btn_Pos_SvVac
+            // 
+            this.btn_Pos_SvVac.Location = new System.Drawing.Point(538, 240);
+            this.btn_Pos_SvVac.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.btn_Pos_SvVac.Name = "btn_Pos_SvVac";
+            this.btn_Pos_SvVac.Size = new System.Drawing.Size(100, 23);
+            this.btn_Pos_SvVac.TabIndex = 433;
+            this.btn_Pos_SvVac.Text = "Pro_SvVac";
+            this.btn_Pos_SvVac.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_Pos_SvVac.UseVisualStyleBackColor = true;
+            this.btn_Pos_SvVac.Click += new System.EventHandler(this.btn_Pos_SvVac_Click);
+            this.btn_Pos_SvVac.MouseHover += new System.EventHandler(this.controlIO_MouseHover);
+            // 
+            // lbl_Pos_SensStopperUp
+            // 
+            this.lbl_Pos_SensStopperUp.AutoEllipsis = true;
+            this.lbl_Pos_SensStopperUp.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lbl_Pos_SensStopperUp.Location = new System.Drawing.Point(536, 32);
+            this.lbl_Pos_SensStopperUp.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.lbl_Pos_SensStopperUp.Name = "lbl_Pos_SensStopperUp";
+            this.lbl_Pos_SensStopperUp.Size = new System.Drawing.Size(100, 23);
+            this.lbl_Pos_SensStopperUp.TabIndex = 432;
+            this.lbl_Pos_SensStopperUp.Text = "Pos_SensStopperUp";
+            this.lbl_Pos_SensStopperUp.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lbl_Pos_SensStopperUp.MouseHover += new System.EventHandler(this.controlIO_MouseHover);
+            // 
+            // lbl_Pos_SensLifterDn
+            // 
+            this.lbl_Pos_SensLifterDn.AutoEllipsis = true;
+            this.lbl_Pos_SensLifterDn.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lbl_Pos_SensLifterDn.Location = new System.Drawing.Point(536, 110);
+            this.lbl_Pos_SensLifterDn.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.lbl_Pos_SensLifterDn.Name = "lbl_Pos_SensLifterDn";
+            this.lbl_Pos_SensLifterDn.Size = new System.Drawing.Size(100, 23);
+            this.lbl_Pos_SensLifterDn.TabIndex = 431;
+            this.lbl_Pos_SensLifterDn.Text = "Pos_SensLifterDn";
+            this.lbl_Pos_SensLifterDn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lbl_Pos_SensLifterDn.MouseHover += new System.EventHandler(this.controlIO_MouseHover);
+            // 
+            // lbl_Pos_SensLifterUp
+            // 
+            this.lbl_Pos_SensLifterUp.AutoEllipsis = true;
+            this.lbl_Pos_SensLifterUp.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lbl_Pos_SensLifterUp.Location = new System.Drawing.Point(536, 84);
+            this.lbl_Pos_SensLifterUp.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.lbl_Pos_SensLifterUp.Name = "lbl_Pos_SensLifterUp";
+            this.lbl_Pos_SensLifterUp.Size = new System.Drawing.Size(100, 23);
+            this.lbl_Pos_SensLifterUp.TabIndex = 430;
+            this.lbl_Pos_SensLifterUp.Text = "Pos_SensLifterUp";
+            this.lbl_Pos_SensLifterUp.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lbl_Pos_SensLifterUp.MouseHover += new System.EventHandler(this.controlIO_MouseHover);
+            // 
+            // btn_Pos_SvLifterUp
+            // 
+            this.btn_Pos_SvLifterUp.Location = new System.Drawing.Point(536, 136);
+            this.btn_Pos_SvLifterUp.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.btn_Pos_SvLifterUp.Name = "btn_Pos_SvLifterUp";
+            this.btn_Pos_SvLifterUp.Size = new System.Drawing.Size(100, 23);
+            this.btn_Pos_SvLifterUp.TabIndex = 427;
+            this.btn_Pos_SvLifterUp.Text = "Pos_SvLifterUp";
+            this.btn_Pos_SvLifterUp.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_Pos_SvLifterUp.UseVisualStyleBackColor = true;
+            this.btn_Pos_SvLifterUp.Click += new System.EventHandler(this.btn_Pos_SvLifterUp_Click);
+            this.btn_Pos_SvLifterUp.MouseHover += new System.EventHandler(this.controlIO_MouseHover);
+            // 
+            // lbl_Pos_SensPsnt
+            // 
+            this.lbl_Pos_SensPsnt.AutoEllipsis = true;
+            this.lbl_Pos_SensPsnt.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lbl_Pos_SensPsnt.Location = new System.Drawing.Point(536, 6);
+            this.lbl_Pos_SensPsnt.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.lbl_Pos_SensPsnt.Name = "lbl_Pos_SensPsnt";
+            this.lbl_Pos_SensPsnt.Size = new System.Drawing.Size(100, 23);
+            this.lbl_Pos_SensPsnt.TabIndex = 428;
+            this.lbl_Pos_SensPsnt.Text = "Pos_SensPsnt";
+            this.lbl_Pos_SensPsnt.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lbl_Pos_SensPsnt.MouseHover += new System.EventHandler(this.controlIO_MouseHover);
+            // 
+            // btn_Pos_SvStopperUp
+            // 
+            this.btn_Pos_SvStopperUp.Location = new System.Drawing.Point(536, 58);
+            this.btn_Pos_SvStopperUp.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.btn_Pos_SvStopperUp.Name = "btn_Pos_SvStopperUp";
+            this.btn_Pos_SvStopperUp.Size = new System.Drawing.Size(100, 23);
+            this.btn_Pos_SvStopperUp.TabIndex = 429;
+            this.btn_Pos_SvStopperUp.Text = "Pos_SvStopperUp";
+            this.btn_Pos_SvStopperUp.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_Pos_SvStopperUp.UseVisualStyleBackColor = true;
+            this.btn_Pos_SvStopperUp.Click += new System.EventHandler(this.btn_Pos_SvStopperUp_Click);
+            this.btn_Pos_SvStopperUp.MouseHover += new System.EventHandler(this.controlIO_MouseHover);
+            // 
             // btnSmema2_McReady
             // 
             this.btnSmema2_McReady.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSmema2_McReady.Location = new System.Drawing.Point(536, 292);
+            this.btnSmema2_McReady.Location = new System.Drawing.Point(538, 344);
             this.btnSmema2_McReady.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.btnSmema2_McReady.Name = "btnSmema2_McReady";
             this.btnSmema2_McReady.Size = new System.Drawing.Size(100, 23);
@@ -284,7 +404,7 @@
             this.lblSmema2_BdReady.AutoEllipsis = true;
             this.lblSmema2_BdReady.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblSmema2_BdReady.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSmema2_BdReady.Location = new System.Drawing.Point(536, 266);
+            this.lblSmema2_BdReady.Location = new System.Drawing.Point(538, 318);
             this.lblSmema2_BdReady.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.lblSmema2_BdReady.Name = "lblSmema2_BdReady";
             this.lblSmema2_BdReady.Size = new System.Drawing.Size(100, 23);
@@ -297,7 +417,7 @@
             // 
             this.lbl_Pre_HeaterAlm.AutoEllipsis = true;
             this.lbl_Pre_HeaterAlm.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_Pre_HeaterAlm.Location = new System.Drawing.Point(324, 266);
+            this.lbl_Pre_HeaterAlm.Location = new System.Drawing.Point(326, 318);
             this.lbl_Pre_HeaterAlm.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.lbl_Pre_HeaterAlm.Name = "lbl_Pre_HeaterAlm";
             this.lbl_Pre_HeaterAlm.Size = new System.Drawing.Size(100, 23);
@@ -310,7 +430,7 @@
             // 
             this.lbl_Pro_HeaterAlm.AutoEllipsis = true;
             this.lbl_Pro_HeaterAlm.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_Pro_HeaterAlm.Location = new System.Drawing.Point(430, 266);
+            this.lbl_Pro_HeaterAlm.Location = new System.Drawing.Point(432, 318);
             this.lbl_Pro_HeaterAlm.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.lbl_Pro_HeaterAlm.Name = "lbl_Pro_HeaterAlm";
             this.lbl_Pro_HeaterAlm.Size = new System.Drawing.Size(100, 23);
@@ -357,9 +477,10 @@
             this.groupBox3.Controls.Add(this.lbl_CWPos);
             this.groupBox3.Controls.Add(this.btn_CW_JogPFast);
             this.groupBox3.Controls.Add(this.btn_CW_JogMFast);
-            this.groupBox3.Location = new System.Drawing.Point(275, 337);
+            this.groupBox3.Location = new System.Drawing.Point(277, 389);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(479, 72);
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.groupBox3.Size = new System.Drawing.Size(479, 69);
             this.groupBox3.TabIndex = 418;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Conveyor";
@@ -505,9 +626,10 @@
             this.groupBox1.Controls.Add(this.btn_RevSlow);
             this.groupBox1.Controls.Add(this.btn_Rev);
             this.groupBox1.Controls.Add(this.btn_Fwd);
-            this.groupBox1.Location = new System.Drawing.Point(8, 337);
+            this.groupBox1.Location = new System.Drawing.Point(10, 389);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(257, 72);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.groupBox1.Size = new System.Drawing.Size(257, 69);
             this.groupBox1.TabIndex = 131;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Conveyor";
@@ -569,7 +691,7 @@
             this.lblRightSmema_McReady.AutoEllipsis = true;
             this.lblRightSmema_McReady.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblRightSmema_McReady.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblRightSmema_McReady.Location = new System.Drawing.Point(642, 266);
+            this.lblRightSmema_McReady.Location = new System.Drawing.Point(644, 318);
             this.lblRightSmema_McReady.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.lblRightSmema_McReady.Name = "lblRightSmema_McReady";
             this.lblRightSmema_McReady.Size = new System.Drawing.Size(100, 23);
@@ -596,7 +718,7 @@
             this.lblSmema2_McReady.AutoEllipsis = true;
             this.lblSmema2_McReady.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblSmema2_McReady.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSmema2_McReady.Location = new System.Drawing.Point(112, 266);
+            this.lblSmema2_McReady.Location = new System.Drawing.Point(114, 318);
             this.lblSmema2_McReady.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.lblSmema2_McReady.Name = "lblSmema2_McReady";
             this.lblSmema2_McReady.Size = new System.Drawing.Size(100, 23);
@@ -610,7 +732,7 @@
             this.lblLeftSmema_BdReady.AutoEllipsis = true;
             this.lblLeftSmema_BdReady.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblLeftSmema_BdReady.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblLeftSmema_BdReady.Location = new System.Drawing.Point(6, 266);
+            this.lblLeftSmema_BdReady.Location = new System.Drawing.Point(8, 318);
             this.lblLeftSmema_BdReady.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.lblLeftSmema_BdReady.Name = "lblLeftSmema_BdReady";
             this.lblLeftSmema_BdReady.Size = new System.Drawing.Size(100, 23);
@@ -909,7 +1031,7 @@
             // 
             this.lbl_Pro_VacSw2.AutoEllipsis = true;
             this.lbl_Pro_VacSw2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_Pro_VacSw2.Location = new System.Drawing.Point(536, 214);
+            this.lbl_Pro_VacSw2.Location = new System.Drawing.Point(432, 266);
             this.lbl_Pro_VacSw2.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.lbl_Pro_VacSw2.Name = "lbl_Pro_VacSw2";
             this.lbl_Pro_VacSw2.Size = new System.Drawing.Size(100, 23);
@@ -933,7 +1055,7 @@
             // 
             // btn_Pro_SvVac2
             // 
-            this.btn_Pro_SvVac2.Location = new System.Drawing.Point(536, 240);
+            this.btn_Pro_SvVac2.Location = new System.Drawing.Point(432, 292);
             this.btn_Pro_SvVac2.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.btn_Pro_SvVac2.Name = "btn_Pro_SvVac2";
             this.btn_Pro_SvVac2.Size = new System.Drawing.Size(100, 23);
@@ -1090,7 +1212,7 @@
             // btnSmema2_BdReady
             // 
             this.btnSmema2_BdReady.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSmema2_BdReady.Location = new System.Drawing.Point(112, 292);
+            this.btnSmema2_BdReady.Location = new System.Drawing.Point(114, 344);
             this.btnSmema2_BdReady.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.btnSmema2_BdReady.Name = "btnSmema2_BdReady";
             this.btnSmema2_BdReady.Size = new System.Drawing.Size(100, 23);
@@ -1103,7 +1225,7 @@
             // btnLeftSmema_McReady
             // 
             this.btnLeftSmema_McReady.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLeftSmema_McReady.Location = new System.Drawing.Point(6, 292);
+            this.btnLeftSmema_McReady.Location = new System.Drawing.Point(8, 344);
             this.btnLeftSmema_McReady.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.btnLeftSmema_McReady.Name = "btnLeftSmema_McReady";
             this.btnLeftSmema_McReady.Size = new System.Drawing.Size(100, 23);
@@ -1129,7 +1251,7 @@
             // btnRightSmema_BdReady
             // 
             this.btnRightSmema_BdReady.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRightSmema_BdReady.Location = new System.Drawing.Point(642, 292);
+            this.btnRightSmema_BdReady.Location = new System.Drawing.Point(644, 344);
             this.btnRightSmema_BdReady.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.btnRightSmema_BdReady.Name = "btnRightSmema_BdReady";
             this.btnRightSmema_BdReady.Size = new System.Drawing.Size(100, 23);
@@ -1609,5 +1731,13 @@
         private System.Windows.Forms.Label lblSmema2_BdReady;
         private System.Windows.Forms.Label lblSmema2_McReady;
         private System.Windows.Forms.Button btnSmema2_BdReady;
+        private System.Windows.Forms.Label lbl_Pos_VacSw;
+        private System.Windows.Forms.Button btn_Pos_SvVac;
+        private System.Windows.Forms.Label lbl_Pos_SensStopperUp;
+        private System.Windows.Forms.Label lbl_Pos_SensLifterDn;
+        private System.Windows.Forms.Label lbl_Pos_SensLifterUp;
+        private System.Windows.Forms.Button btn_Pos_SvLifterUp;
+        private System.Windows.Forms.Label lbl_Pos_SensPsnt;
+        private System.Windows.Forms.Button btn_Pos_SvStopperUp;
     }
 }

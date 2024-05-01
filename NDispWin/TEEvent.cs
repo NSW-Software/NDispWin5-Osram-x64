@@ -240,6 +240,8 @@ namespace NDispWin
         public static TEEvent PREHEAT_END = new TEEvent(MHS_EVENT + 501, "Preheat End.");
         public static TEEvent DISPHEAT_START = new TEEvent(MHS_EVENT + 510, "Dispense Heat Start.");
         public static TEEvent DISPHEAT_END = new TEEvent(MHS_EVENT + 511, "Dispense Heat End.");
+        public static TEEvent POSHEAT_START = new TEEvent(MHS_EVENT + 512, "Post Heat Start.");
+        public static TEEvent POSHEAT_END = new TEEvent(MHS_EVENT + 513, "Post Heat End.");
         #endregion
     }
 }

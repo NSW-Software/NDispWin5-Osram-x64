@@ -127,20 +127,23 @@ namespace NDispWin
             switch (TaskWeight.CalMeasType)
             {
                 case TaskWeight.ECalMeasType.Density:
-                    lbl_CurrentCalName.Text = "Density";
-                    lbl_CurrentCalUnit.Text = "(" + TaskWeight.WEIGHT_UNIT + ")";
+                    lbl_CurrentCalName.Text = $"Density ({TaskWeight.WEIGHT_UNIT})";
                     break;
                 case TaskWeight.ECalMeasType.FR_mg_s:
-                    lbl_CurrentCalName.Text = "FlowRate";
-                    lbl_CurrentCalUnit.Text = "(" + TaskWeight.CalMeasUnit + ")";
+                    lbl_CurrentCalName.Text = $"FlowRate ({TaskWeight.CalMeasUnit})";
                     break;
                 case TaskWeight.ECalMeasType.FR_mg_dot:
-                    lbl_CurrentCalName.Text = "FlowRate";
-                    lbl_CurrentCalUnit.Text = "(" + TaskWeight.CalMeasUnit + ")";
+                    lbl_CurrentCalName.Text = $"FlowRate ({TaskWeight.CalMeasUnit})";
                     break;
             }
             lbl_CurrentCal1.Text = TaskWeight.CurrentCal[0].ToString(dp4);
             lbl_CurrentCal2.Text = TaskWeight.CurrentCal[1].ToString(dp4);
+
+            lbl_FR.Visible = TaskWeight.CalMeasType == TaskWeight.ECalMeasType.Density;
+            lblFR1.Visible = TaskWeight.CalMeasType == TaskWeight.ECalMeasType.Density;
+            lblFR2.Visible = TaskWeight.CalMeasType == TaskWeight.ECalMeasType.Density;
+            lblFR1.Text = "~" + TaskWeight.ApproxFlowrate[0].ToString(dp4);
+            lblFR2.Text = "~" + TaskWeight.ApproxFlowrate[1].ToString(dp4);
 
             #region Target
             lbl_CalTarget.Text = TaskWeight.Cal_Meas_Weight.ToString(dp4);
@@ -149,22 +152,24 @@ namespace NDispWin
             switch (TaskWeight.CalMeasType)
             {
                 case TaskWeight.ECalMeasType.Density:
-                    lbl_TargetName.Text = "Weight";
-                    lbl_TargetUnit.Text = "(" + TaskWeight.WEIGHT_UNIT + ")";
+                    lbl_TargetName.Text = $"Weight ({TaskWeight.WEIGHT_UNIT})";
                     break;
                 case TaskWeight.ECalMeasType.FR_mg_s:
-                    lbl_TargetName.Text = "FlowRate";
-                    lbl_TargetUnit.Text = "(" + TaskWeight.CalMeasUnit + ")";
+                    lbl_TargetName.Text = $"FlowRate ({TaskWeight.CalMeasUnit})";
                     break;
                 case TaskWeight.ECalMeasType.FR_mg_dot:
-                    lbl_TargetName.Text = "FlowRate";
-                    lbl_TargetUnit.Text = "(" + TaskWeight.CalMeasUnit + ")";
+                    lbl_TargetName.Text = $"FlowRate ({TaskWeight.CalMeasUnit})";
                     break;
             }
             #endregion
 
-            lbl_DotsPerSample.Text = (DispProg.DotsPerSample_Meas > 0 ? "P|" : "") + TaskWeight.iDotsPerSample(TaskWeight.EMeasType.Cal).ToString();
-            lbl_OutputResult.Text = (DispProg.DotsPerSample_Meas > 0 ? "P|" : "") + TaskWeight.eOutputResult(TaskWeight.EMeasType.Cal).ToString();
+            rtbSettings.Clear();
+            rtbSettings.Text = "DotsPerSample: " +
+            //lbl_DotsPerSample.Text = 
+            (DispProg.DotsPerSample_Meas > 0 ? "P|" : "") + TaskWeight.iDotsPerSample(TaskWeight.EMeasType.Cal).ToString() + '\r' +
+            //lbl_OutputResult.Text = 
+            "OutputResult: " +
+            (DispProg.DotsPerSample_Meas > 0 ? "P|" : "") + TaskWeight.eOutputResult(TaskWeight.EMeasType.Cal).ToString() + '\r';
         }
 
         bool bErr = false;
@@ -192,7 +197,6 @@ namespace NDispWin
             bErr = !TaskWeight.WeightValue(ref d_mg);
             lbl_WeightCurrentValue.Text = d_mg.ToString(dp3);
             tmr_WeightDisplay.Enabled = true;
-
         }
 
         private void btn_Ctrl1_Click(object sender, EventArgs e)
@@ -205,6 +209,18 @@ namespace NDispWin
             if (!TaskDisp.DispCtrlOpened(1)) return;
             TaskDisp.ShowDispCtrl(1);
         }
+        private void btn_Setting_Click(object sender, EventArgs e)
+        {
+            frm_DispCore_WeightSetting frm = new frm_DispCore_WeightSetting
+            {
+                TopMost = true
+            };
+            frm.BringToFront();
+            frm.ShowDialog();
+
+            UpdateDisplay();
+        }
+
         private void btn_Tare_Click(object sender, EventArgs e)
         {
             TaskWeight.SoftZero();
@@ -239,23 +255,32 @@ namespace NDispWin
 
             UpdateDisplay();
         }
+        private void btn_Start_Click(object sender, EventArgs e)
+        {
+            if (!TaskGantry.CheckDoorSw()) return;
+            DefineSafety.DoorLock = true;
+
+            if (HeadToCal.Count == 0)
+            {
+                Msg MsgBox = new Msg();
+                EMsgRes MsgRes = MsgBox.Show(Messages.WEIGHT_NO_HEAD_SELECTED);
+            }
+
+            CalStart();
+
+            Event.OP_WEIGHT_CALIBRATION.Set();
+
+            DefineSafety.DoorLock = false;
+
+            UpdateDisplay();
+        }
 
         private void lbl_CalTarget_Click(object sender, EventArgs e)
         {
             UC.AdjustExec("Weight Cal, Target (mg)", ref TaskWeight.Cal_Meas_Weight, 0.001, 1000);
             UpdateDisplay();
         }
-        private void btn_Setting_Click(object sender, EventArgs e)
-        {
-            frm_DispCore_WeightSetting frm = new frm_DispCore_WeightSetting
-            {
-                TopMost = true
-            };
-            frm.BringToFront();
-            frm.ShowDialog();
 
-            UpdateDisplay();
-        }
         private void btn_Close_Click(object sender, EventArgs e)
         {
             if (DispProg.Target_Weight > 0) TaskDisp.PP_SetWeight(DispProg.Disp_Weight, true);
@@ -359,26 +384,6 @@ namespace NDispWin
             return true;
         }
 
-        private void btn_Start_Click(object sender, EventArgs e)
-        {
-            if (!TaskGantry.CheckDoorSw()) return;
-            DefineSafety.DoorLock = true;
-
-            if (HeadToCal.Count == 0)
-            {
-                Msg MsgBox = new Msg();
-                EMsgRes MsgRes = MsgBox.Show(Messages.WEIGHT_NO_HEAD_SELECTED);
-            }
-
-            CalStart();
-            
-            Event.OP_WEIGHT_CALIBRATION.Set();
-
-            DefineSafety.DoorLock = false;
-
-            UpdateDisplay();
-        }
-
         private void tmr_Start_Tick(object sender, EventArgs e) 
         {
             if (CalMode == ECalMode.Auto)
@@ -394,7 +399,6 @@ namespace NDispWin
             TaskWeight.Cal_Status = TaskWeight.EWeightCalStatus.Calibrated;
             DialogResult = DialogResult.OK;
         }
-
         private void button2_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;

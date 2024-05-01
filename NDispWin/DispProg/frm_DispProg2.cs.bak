@@ -67,7 +67,7 @@ namespace NDispWin
         private void UpdateDisplay()
         {
             tslbl_ProgName.Text = GDefine.ProgRecipeName;
-            tslbl_ProgName.ToolTipText = "Program: " + GDefine.ProgRecipeName;
+            tslbl_ProgName.ToolTipText = "Program: " +  GDefine.ProgRecipeName;
 
             switch (DispProg.rt_StationNo)
             {
@@ -795,9 +795,9 @@ namespace NDispWin
                         #region
                         Cmd = Indent + Enum.GetName(typeof(DispProg.ECmd), CmdLine.Line[i].Cmd);
                         if (CmdLine.Line[i].Cond[0] > 0)
-                            Para = $"Cond1,{CmdLine.Line[i].Cond[0]},{CmdLine.Line[i].Cond[1]} ";
+                            Para = "Cond1 ";
                         if (CmdLine.Line[i].Cond[5] > 0)
-                            Para = Para + $"Cond2,{CmdLine.Line[i].Cond[5]},{CmdLine.Line[i].Cond[6]} ";
+                            Para = Para + ",2 ";
 
                         if (CmdLine.Line[i].Cmd == DispProg.ECmd.PP_RECYCLE_B || CmdLine.Line[i].Cmd == DispProg.ECmd.PP_RECYCLE_N)
                             Para = Para + "Count " + CmdLine.Line[i].IPara[2].ToString();
@@ -849,9 +849,9 @@ namespace NDispWin
                         #region
                         Cmd = Indent + Enum.GetName(typeof(DispProg.ECmd), CmdLine.Line[i].Cmd);
                         if (CmdLine.Line[i].Cond[0] > 0)
-                            Para = $"Cond1,{CmdLine.Line[i].Cond[0]},{CmdLine.Line[i].Cond[1]} ";
+                            Para = "Cond1 ";
                         if (CmdLine.Line[i].Cond[5] > 0)
-                            Para = Para + $"Cond2,{CmdLine.Line[i].Cond[5]},{CmdLine.Line[i].Cond[6]} ";
+                            Para = Para + ",2 ";
 
                         if (CmdLine.Line[i].IPara[2] == 0)
                         {
@@ -880,12 +880,12 @@ namespace NDispWin
                         #region
                         Cmd = Indent + Enum.GetName(typeof(DispProg.ECmd), CmdLine.Line[i].Cmd);
                         if (CmdLine.Line[i].Cond[0] > 0)
-                            Para = $"Cond1,{CmdLine.Line[i].Cond[0]},{CmdLine.Line[i].Cond[1]} ";
+                            Para = "Cond1 ";
                         if (CmdLine.Line[i].Cond[5] > 0)
-                            Para = Para + $"Cond2,{CmdLine.Line[i].Cond[5]},{CmdLine.Line[i].Cond[6]} ";
+                            Para = Para + ",2 ";
 
                         if (CmdLine.Line[i].Cmd == DispProg.ECmd.PP_RECYCLE_B || CmdLine.Line[i].Cmd == DispProg.ECmd.PP_RECYCLE_N)
-                            Para = Para + "Count " + CmdLine.Line[i].IPara[2].ToString();
+                                Para = Para + "Count " + CmdLine.Line[i].IPara[2].ToString();
                         if (CmdLine.Line[i].Cmd == DispProg.ECmd.PP_RECYCLE_B)
                             Para = Para + ", " + "Method " + ((TaskDisp.ERecycleMethod)CmdLine.Line[i].IPara[3]).ToString();
                         break;
@@ -963,9 +963,9 @@ namespace NDispWin
                         {
                             Cmd = Indent + Enum.GetName(typeof(DispProg.ECmd), CmdLine.Line[i].Cmd);
                             if (CmdLine.Line[i].Cond[0] > 0)
-                                Para = $"Cond1,{CmdLine.Line[i].Cond[0]},{CmdLine.Line[i].Cond[1]} ";
+                                Para = "Cond1 ";
                             if (CmdLine.Line[i].Cond[5] > 0)
-                                Para = Para + $"Cond2,{CmdLine.Line[i].Cond[5]},{CmdLine.Line[i].Cond[6]} ";
+                                Para = Para + ",2 ";
                             break;
                         }
                     #endregion
@@ -977,12 +977,6 @@ namespace NDispWin
                             break;
                         }
                     #endregion
-                    case DispProg.ECmd.IMAGE_SNAP:
-                        {
-                            Cmd = Indent + Enum.GetName(typeof(DispProg.ECmd), CmdLine.Line[i].Cmd);
-                            Para = $"Delay {CmdLine.Line[i].IPara[0]}, Frame Count {CmdLine.Line[i].IPara[1]}";
-                            break;
-                        }
                     #endregion
                     default:
                         #region
@@ -1464,52 +1458,33 @@ namespace NDispWin
         }
         private void tsbtn_CamGoOrigin_Click(object sender, EventArgs e)
         {
-            if (!DefineSafety.DoorCheck_Disp(true)) return;
-            DefineSafety.DoorLock = true;
+            if (!TaskDisp.TaskMoveGZFocus(0)) return;
 
-            try
-            {
-                if (!TaskDisp.TaskMoveGZFocus(0)) return;
+            if (!TaskGantry.SetMotionParamGXYX2Y2()) return;
 
-                if (!TaskGantry.SetMotionParamGXYX2Y2()) return;
+            TPos2 GXY = new TPos2(DispProg.Origin(DispProg.rt_StationNo).X, DispProg.Origin(DispProg.rt_StationNo).Y);
+            TPos2 GX2Y2 = new TPos2(TaskDisp.Head2_DefPos.X, TaskDisp.Head2_DefPos.Y);
+            GX2Y2.X = GX2Y2.X - TaskDisp.Head2_DefDistX + TaskDisp.Head2_DefDistX;
 
-                TPos2 GXY = new TPos2(DispProg.Origin(DispProg.rt_StationNo).X, DispProg.Origin(DispProg.rt_StationNo).Y);
-                TPos2 GX2Y2 = new TPos2(TaskDisp.Head2_DefPos.X, TaskDisp.Head2_DefPos.Y);
-                GX2Y2.X = GX2Y2.X - TaskDisp.Head2_DefDistX + TaskDisp.Head2_DefDistX;
+            if (!TaskDisp.GotoXYPos(GXY, GX2Y2)) return;
 
-                if (!TaskDisp.GotoXYPos(GXY, GX2Y2)) return;
-
-                DispProg.RunTime.UIndex = 0;
-            }
-            finally
-            {
-                DefineSafety.DoorLock = false;
-            }
+            DispProg.RunTime.UIndex = 0;
         }
         private void tsbtn_NeedleGoOrigin_Click(object sender, EventArgs e)
         {
-            if (!DefineSafety.DoorCheck_Disp(true)) return;
-            DefineSafety.DoorLock = true;
+            //btn_Dummy.Focus();
+            if (!TaskDisp.TaskMoveGZFocus(0)) return;
 
-            try
-            {
-                if (!TaskDisp.TaskMoveGZFocus(0)) return;
+            if (!TaskGantry.SetMotionParamGXYX2Y2()) return;
 
-                if (!TaskGantry.SetMotionParamGXYX2Y2()) return;
+            TPos2 GXY = new TPos2(DispProg.Origin(DispProg.rt_StationNo).X, DispProg.Origin(DispProg.rt_StationNo).Y);
+            TPos2 GX2Y2 = new TPos2(TaskDisp.Head2_DefPos.X, TaskDisp.Head2_DefPos.Y);
+            GX2Y2.X = GX2Y2.X - TaskDisp.Head2_DefDistX + TaskDisp.Head2_DefDistX;
 
-                TPos2 GXY = new TPos2(DispProg.Origin(DispProg.rt_StationNo).X, DispProg.Origin(DispProg.rt_StationNo).Y);
-                TPos2 GX2Y2 = new TPos2(TaskDisp.Head2_DefPos.X, TaskDisp.Head2_DefPos.Y);
-                GX2Y2.X = GX2Y2.X - TaskDisp.Head2_DefDistX + TaskDisp.Head2_DefDistX;
+            GXY.X = GXY.X + TaskDisp.Head_Ofst[0].X;
+            GXY.Y = GXY.Y + TaskDisp.Head_Ofst[0].Y;
 
-                GXY.X = GXY.X + TaskDisp.Head_Ofst[0].X;
-                GXY.Y = GXY.Y + TaskDisp.Head_Ofst[0].Y;
-
-                if (!TaskDisp.GotoXYPos(GXY, GX2Y2)) return;
-            }
-            finally
-            {
-                DefineSafety.DoorLock = false;
-            }
+            if (!TaskDisp.GotoXYPos(GXY, GX2Y2)) return;
         }
         private void tslbl_Status_DoubleClick(object sender, EventArgs e)
         {
@@ -1528,10 +1503,13 @@ namespace NDispWin
                 MessageBox.Show(Ex.Message.ToString());
             }
         }
+
+
+
         #endregion
 
         #region Program Load/Save
-        private async void ts_ProgNew_Click(object sender, EventArgs e)
+        private void ts_ProgNew_Click(object sender, EventArgs e)
         {
             frm_ProgressReport frm = new frm_ProgressReport();
             frm.Message = "Create New Program?";
@@ -1540,7 +1518,7 @@ namespace NDispWin
                 frm1 = new frm_ProgressReport();
                 frm1.Message = "Creating in Progress. Please wait...";
 
-                await Task.Factory.StartNew(() =>
+                Task.Factory.StartNew(() =>
                 {
                     DispProg.NewScript();
                     GDefine.ProgRecipeName = "new";
@@ -2387,22 +2365,6 @@ namespace NDispWin
                                         break;
                                     }
                                 #endregion
-                                case DispProg.ECmd.PAR_LINES:
-                                    #region
-                                    {
-                                        frmDispProg_ParallelLines frm = new frmDispProg_ParallelLines();
-                                        frm.TopLevel = false;
-                                        frm.Parent = this;
-                                        frm.ProgNo = SelProg;
-                                        frm.LineNo = ProgLine;
-                                        frm.SubOrigin = SubOfst;
-                                        frm.BringToFront();
-                                        Dirty = true;
-                                        Done = false;
-                                        frm.Show();
-                                        break;
-                                    }
-                                #endregion
                                 case DispProg.ECmd.DO_BDCAPTURE:
                                     #region
                                     {
@@ -3060,71 +3022,45 @@ namespace NDispWin
 
         private async void tsbtn_Run_Click(object sender, EventArgs e)
         {
-            if (!DefineSafety.DoorCheck_Disp(true)) return;
-            DefineSafety.DoorLock = true;
+            if (!TaskGantry.CheckDoorSw()) return;
 
-            try
+            if (!TaskGantry.CheckReadyStop()) return;
+
+            if (!TaskDisp.TeachNeedle_Bypass && !TaskDisp.TeachNeedle_Completed)
             {
-                if (!TaskGantry.CheckReadyStop()) return;
-
-                if (!TaskDisp.TeachNeedle_Bypass && !TaskDisp.TeachNeedle_Completed)
-                {
-                    Msg MsgBox = new Msg();
-                    EMsgRes MsgRes = MsgBox.Show(Messages.TEACH_NEEDLE_REQUIRED);
-                    return;
-                }
-
-                if (TaskDisp.Option_DensityRange > 0)
-                {
-                    if (GDefine.GantryConfig == GDefine.EGantryConfig.XY_ZX2Y2_Z2 && DispProg.Head_Operation == TaskDisp.EHeadOperation.Sync)
-                    {
-                        double range = Math.Abs(TaskWeight.CurrentCal[0] - TaskWeight.CurrentCal[1]);
-                        if (Math.Abs(range) > TaskDisp.Option_DensityRange)
-                        {
-                            Msg MsgBox = new Msg();
-                            EMsgRes Res = MsgBox.Show(Messages.VALVE_DENSITY_FLOWRATE_MISMATCH, $"Pump 1,2 {TaskWeight.CurrentCal[0]:f3},{TaskWeight.CurrentCal[1]:f3} > Range {TaskDisp.Option_DensityRange:f3}. Check Valve Density or Flowrate Calibration.", EMsgBtn.smbOK_Stop);
-                            switch (Res)
-                            {
-                                case EMsgRes.smrStop:
-                                    return;
-                                case EMsgRes.smrOK:
-                                    break;
-                            }
-                        }
-                    }
-                }
-
-                if (!DispProg.Script[0].TaskCheckScript()) return;
-
-                this.Enable(false);
-                tsbtn_Stop.Enable(true);
-                b_ProgEdit = false; ;
-
-                UpdateDisplay();
-
-                GDefine.InPressureInRange = true;
-                frm_Main.b_MonitorLowPressure = true;
-
-                await Task.Run(() => TaskRun());
-                TaskVision.LightingOn(TaskVision.DefLightRGB);
-
-                if (GDefine.CameraType[0] == GDefine.ECameraType.Spinnaker2)
-                {
-                    TaskVision.frmMVCGenTLCamera.SelectCamera(0);
-                    TaskVision.genTLCamera[0].StartGrab();
-                }
-                if (GDefine.CameraType[0] == GDefine.ECameraType.MVCGenTL)
-                {
-                    TaskVision.frmMVCGenTLCamera.SelectCamera(0);
-                    TaskVision.genTLCamera[0].StartGrab();
-                }
-            }
-            finally
-            {
-                DefineSafety.DoorLock = false;
-                this.Enable(true);
+                Msg MsgBox = new Msg();
+                EMsgRes MsgRes = MsgBox.Show(Messages.TEACH_NEEDLE_REQUIRED);
+                return;
             }
 
+            if (!DispProg.Script[0].TaskCheckScript()) return;
+
+            this.Enable(false);
+            tsbtn_Stop.Enable(true);
+            b_ProgEdit = false; ;
+
+            UpdateDisplay();
+
+            GDefine.InPressureInRange = true;
+            frm_Main.b_MonitorLowPressure = true;
+
+            await Task.Run(() => TaskRun());
+
+            if (GDefine.CameraType[0] == GDefine.ECameraType.Spinnaker2)
+            {
+                //                TaskVision.frmCamera.SelectCamera(1);
+                //TaskVision.frmCamera.SelectCamera(0);
+                //TaskVision.frmCamera.Grab();
+                TaskVision.frmMVCGenTLCamera.SelectCamera(0);
+                TaskVision.genTLCamera[0].StartGrab();
+            }
+            if (GDefine.CameraType[0] == GDefine.ECameraType.MVCGenTL)
+            {
+                TaskVision.frmMVCGenTLCamera.SelectCamera(0);
+                TaskVision.genTLCamera[0].StartGrab();
+            }
+
+            this.Enable(true);
         }
         private void tsbtn_Resume_Click(object sender, EventArgs e)
         {
@@ -3153,41 +3089,33 @@ namespace NDispWin
         }
         private async void tsbtn_Cycle_Click(object sender, EventArgs e)
         {
-            if (!DefineSafety.DoorCheck_Disp(true)) return;
-            DefineSafety.DoorLock = true;
+            if (!TaskGantry.CheckReadyStop()) return;
 
-            try
+            b_ProgEdit = false;
+            this.Enable(false);
+            tsbtn_Stop.Enable(true);
+            bCycle = true;
+
+            GDefine.InPressureInRange = true;
+            frm_Main.b_MonitorLowPressure = true;
+
+            await Task.Run(() => TaskCycleRun());
+
+            if (GDefine.CameraType[0] == GDefine.ECameraType.Spinnaker2)
             {
+                //TaskVision.frmCamera.SelectCamera(0);
+                //TaskVision.frmCamera.Grab();
 
-                if (!TaskGantry.CheckReadyStop()) return;
-
-                b_ProgEdit = false;
-                this.Enable(false);
-                tsbtn_Stop.Enable(true);
-                bCycle = true;
-
-                GDefine.InPressureInRange = true;
-                frm_Main.b_MonitorLowPressure = true;
-
-                await Task.Run(() => TaskCycleRun());
-
-                if (GDefine.CameraType[0] == GDefine.ECameraType.Spinnaker2)
-                {
-                    TaskVision.frmMVCGenTLCamera.SelectCamera(0);
-                    TaskVision.genTLCamera[0].StartGrab();
-                }
-                if (GDefine.CameraType[0] == GDefine.ECameraType.MVCGenTL)
-                {
-                    TaskVision.frmMVCGenTLCamera.SelectCamera(0);
-                    TaskVision.genTLCamera[0].StartGrab();
-                }
+                TaskVision.frmMVCGenTLCamera.SelectCamera(0);
+                TaskVision.genTLCamera[0].StartGrab();
             }
-            finally
+            if (GDefine.CameraType[0] == GDefine.ECameraType.MVCGenTL)
             {
-                DefineSafety.DoorLock = false;
-                this.Enable(true);
+                TaskVision.frmMVCGenTLCamera.SelectCamera(0);
+                TaskVision.genTLCamera[0].StartGrab();
             }
 
+            this.Enable(true);
         }
         #endregion
 
@@ -3311,7 +3239,7 @@ namespace NDispWin
 
             try
             {
-                await Task.Run(() => Define_Run.InitGantry(true));
+                await Task.Run(() => TaskGantry.Home());
             }
             finally
             {
@@ -3342,117 +3270,83 @@ namespace NDispWin
         }
         private void tsbtn_PMaint_Click(object sender, EventArgs e)
         {
-            if (!DefineSafety.DoorCheck_Disp(true)) return;
-            DefineSafety.DoorLock = true;
-
-            try
-            {
-                FormDisable();
-                TaskDisp.TaskGotoPMaint();
-            }
-            finally
-            {
-                DefineSafety.DoorLock = false;
-                FormEnable();
-            }
+            FormDisable();
+            TaskDisp.TaskGotoPMaint();
+            FormEnable();
         }
         private void tsbtn_MMaint_Click(object sender, EventArgs e)
         {
-            if (!DefineSafety.DoorCheck_Disp(true)) return;
-            DefineSafety.DoorLock = true;
-
-            try
-            {
-                FormDisable();
-                TaskDisp.TaskGotoMMaint();
-            }
-            finally
-            {
-                DefineSafety.DoorLock = false;
-                FormEnable();
-            }
+            FormDisable();
+            TaskDisp.TaskGotoMMaint();
+            FormEnable();
         }
         private void tsbtn_Clean_Click(object sender, EventArgs e)
         {
-            if (!DefineSafety.DoorCheck_Disp(true)) return;
-            DefineSafety.DoorLock = true;
+            FormDisable();
 
             try
             {
-                FormDisable();
                 TaskDisp.TaskCleanNeedle(true);
             }
             finally
             {
-                DefineSafety.DoorLock = false;
                 TaskDisp.FPressOff();
                 FormEnable();
             }
         }
         private void tsbtn_Purge_Click(object sender, EventArgs e)
         {
-            if (!DefineSafety.DoorCheck_Disp(true)) return;
-            DefineSafety.DoorLock = true;
+            FormDisable();
             try
             {
-                FormDisable();
                 TaskDisp.TaskPurgeNeedle(true);
             }
             finally
             {
-                DefineSafety.DoorLock = false;
                 TaskDisp.FPressOff();
                 FormEnable();
             }
         }
         private async void tsbtn_WipeA_Click(object sender, EventArgs e)
         {
-            if (!DefineSafety.DoorCheck_Disp(true)) return;
-            DefineSafety.DoorLock = true;
+            FormDisable();
             try
             {
-                FormDisable();
                 await Task.Run(() =>
                 TaskDisp.WipeStage.Execute(true, false)
                 );
             }
             finally
             {
-                DefineSafety.DoorLock = false;
                 FormEnable();
             }
         }
         private async void tsbtn_WipeB_Click(object sender, EventArgs e)
         {
-            if (!DefineSafety.DoorCheck_Disp(true)) return;
-            DefineSafety.DoorLock = true;
+            FormDisable();
             try
             {
-                FormDisable();
                 await Task.Run(() =>
                 TaskDisp.WipeStage.Execute(false, true)
                 );
             }
             finally
             {
-                DefineSafety.DoorLock = false;
                 FormEnable();
             }
         }
         private async void tsbtn_PurgeStage_Click(object sender, EventArgs e)
         {
-            if (!DefineSafety.DoorCheck_Disp(true)) return;
-            DefineSafety.DoorLock = true;
+            FormDisable();
             try
             {
-                FormDisable();
                 await Task.Run(() =>
                 TaskDisp.PurgeStage.Execute(DispProg.PurgeStage.Count)
                 );
             }
             finally
             {
-                DefineSafety.DoorLock = false;
+                frm1.Close();
                 FormEnable();
             }
         }

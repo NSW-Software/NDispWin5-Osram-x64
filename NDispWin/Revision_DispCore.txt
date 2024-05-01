@@ -1,8 +1,46 @@
-﻿NDisp5Win Osram
+﻿NDispWin Osram
 
 Known issues - none
 In Prog, after DO_REF not found, camera cannot live
 
+Ver 6.0.1 - KN - 20240501
+[Updates] Replicated changes from 5.6.11 
+[Replicate] DispProg, frmDispProg2, TaskWeight, TaskDisp, frmWeightCal, GDefine from 5.6.11
+[Copy] frmDispProg_ParallelLines, DispProgCmd, ErrCode, ZKA, TaskMHS, frm_MHSConvIO, TEvent from 5.6.11
+
+Ver 6.0.0 - YH - 20240429
+[Refactor] Platform Target x64 from 5.6.3
+
+(Replicated) Ver 5.6.11 - KN -820240404 - Gitted
+Improve] Refactor TaskWeight.WeightCal clean DispVol and BSuck
+[Improve] TaskWeight.WeightMeas abort sample if IsFilling
+    
+(Replicated) Ver 5.6.10 - KN - 20240404
+[Feature] Added ParLines AddLineTime, RelLeadStartHeight, RelLagEndHeight.
+[Feature] Added Option_DensityRange check.
+[Improve] Added Thread_CheckIsFilling_Run to CtrlWaitReady and CtrlWaitResponse.
+[Improve] LightingOn after upon end of Program.Run.
+    
+(Replicated) Ver 5.6.8 - KN - 20240328 - Gitted
+[Feature] Added PosStation declaration and IO.
+[Feature] Added Door Checking and lock for frmProgram for gantry moving execution.
+    
+(Replicated) Ver 5.6.7 - KN - 20240326
+[BugFix] Corrected WeightCal density calculation.
+    
+(Replicated) Ver 5.6.6 - KN - 2024032
+[BugFix] 20240325 Corrected CutTail to support no lag length.
+[Feature] 20240325 Refactor frmWeight approx flowrate.
+[Feature] 20240325 Added PAR_LINES to check controller ready, handle auto fill.
+[Feature] 20240324 Added editable Weight Cal values.
+[Feature] 20240324 Added PAR_LINES to check max 100mm/s line speed.
+    
+(Replicated) Ver 5.6.5 - KN - 20240324 - Gitted 20240324
+[Function] Added PAR_LINES parallel lines dispense according to Layout. With line weight definition.
+    
+(Replicated) Ver 5.6.4 - KN - 20240322 - Gitted 20240223
+[Enhance] Improve Weight related parameters.
+[BugFix] Correted WeightCal SetDispVolume.
 
 Ver 5.6.3 - KN - 20240124 - Gitted 20240206
 [Changes] TaskDisp.LoadSetup() EPreference default to EPreference.Osram.

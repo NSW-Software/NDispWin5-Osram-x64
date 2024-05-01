@@ -116,6 +116,19 @@ namespace NDispWin
                 keybd_event(VK_NUMLOCK, 0x45, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, (UIntPtr)0);
             }
         }
+
+        public static string GetKK(int value)
+        {
+            int a = value;
+            string sa = a.ToString();
+            if (a > 1000000)
+            { a = a / 1000000; sa = a.ToString() + "kk"; }
+            else
+            if (a > 1000)
+            { a = a / 1000; sa = a.ToString() + "k"; }
+
+            return sa;
+        }
     }
 
     class GDefineN//migrated from GDefineN
@@ -329,7 +342,7 @@ namespace NDispWin
 
             GDefineN.SysAssist = 0;
             GDefineN.LastAssistCount = 0;
-            MsgInfo.AssistCount = 0;
+            Msg.AssistCount = 0;
 
             GDefineN.SaveAppData();
         }
@@ -351,6 +364,7 @@ namespace NDispWin
             IniFile.Create(GDefine.AppPath, "\\AppData.dta");
 
             GDefine.DeviceRecipe = IniFile.ReadString("DeviceRecipe", "RecipeName", "DEFAULT");
+            //GDefine.DeviceRecipe = IniFile.ReadString("DeviceRecipe", "RecipeName", "DEFAULT");
 
             Language1 = IniFile.ReadInteger("AppEnvironment", "Language1", 0);
             Language2 = IniFile.ReadInteger("AppEnvironment", "Language2", 0);
@@ -385,7 +399,7 @@ namespace NDispWin
                 SaveAppData();
             }
 
-            MsgInfo.AltMsg = AltErrMsgFile;
+            //MsgInfo.AltMsg = AltErrMsgFile;
         }
         public static void SaveAppData()
         {
@@ -543,8 +557,7 @@ namespace NDispWin
         }
         public static string UpdateAssist()
         {
-            //string S = (SysAssist = LastAssistCount + MsgBox.Page.ErrorAssist).ToString();
-            string S = (SysAssist = LastAssistCount + MsgInfo.AssistCount).ToString();
+            string S = (SysAssist = LastAssistCount + Msg.AssistCount).ToString();
             return S;
         }
         public static string UpdateMTBA()
@@ -651,9 +664,6 @@ namespace NDispWin
 
         public static bool DoorCheck_Disp(bool Prompt)
         {
-            //if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)
-            //{
-
             if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)
                 return TaskConv.DoorCheck(Prompt);
             else
@@ -667,7 +677,8 @@ namespace NDispWin
                             if (Prompt)
                             {
                                 Msg MsgBox = new Msg();
-                                EMsgRes MsgRes = MsgBox.Show((int)EErrCode.DOOR_IS_OPEN, EMcState.Warning, EMsgBtn.smbOK, false);
+                                //EMsgRes MsgRes = MsgBox.Show((int)EErrCode.DOOR_IS_OPEN, EMcState.Warning, EMsgBtn.smbOK, false);
+                                EMsgRes MsgRes = MsgBox.Show(Messages.DOOR_IS_OPEN, "");
                             }
                             return false;
                         }
@@ -706,7 +717,7 @@ namespace NDispWin
             if (Prompt)
             {
                 Msg MsgBox = new Msg();
-                if (MsgBox.Show((int)EErrCode.INIT_SYSTEM, EMcState.Notice, EMsgBtn.smbOK_Cancel, false) != EMsgRes.smrOK)
+                if (MsgBox.Show(Messages.INIT_SYSTEM, msgBtn: EMsgBtn.smbOK_Cancel) != EMsgRes.smrOK)
                 {
                     return false;
                 }
@@ -721,7 +732,8 @@ namespace NDispWin
 
             if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)
             {
-                IO.SetState(ERYG.Blink, ERYG.Off, ERYG.Off, EBuzzer.Off);
+                //IO.SetState(ERYG.Blink, ERYG.Off, ERYG.Off, EBuzzer.Off);
+                TCTwrLight.SetStatus(2, 0, 0, 0);
             }
             else
                 if (GDefine.ConveyorType == GDefine.EConveyorType.TABLE_S320A)
@@ -741,7 +753,7 @@ namespace NDispWin
 
             if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)
             {
-                IO.SetState(EMcState.Idle);
+                TCTwrLight.SetStatus(TwrLight.Idle);
             }
             return true;
 
@@ -754,7 +766,7 @@ namespace NDispWin
             if (Prompt)
             {
                 Msg MsgBox = new Msg();
-                if (MsgBox.Show((int)EErrCode.INIT_GANTRY, EMcState.Notice, EMsgBtn.smbOK_Cancel, false) != EMsgRes.smrOK)
+                if (MsgBox.Show(Messages.INIT_GANTRY, msgBtn: EMsgBtn.smbOK_Cancel) != EMsgRes.smrOK)
                 {
                     return false;
                 }
@@ -779,7 +791,7 @@ namespace NDispWin
             if (Prompt)
             {
                 Msg MsgBox = new Msg();
-                if (MsgBox.Show((int)EErrCode.INIT_CONVEYOR, EMcState.Notice, EMsgBtn.smbOK_Cancel, false) != EMsgRes.smrOK)
+                if (MsgBox.Show(Messages.INIT_CONVEYOR, "", EMsgBtn.smbOK_Cancel) != EMsgRes.smrOK)
                 {
                     return false;
                 }
@@ -808,7 +820,7 @@ namespace NDispWin
             if (Prompt)
             {
                 Msg MsgBox = new Msg();
-                if (MsgBox.Show((int)EErrCode.INIT_LR_LINE, EMcState.Notice, EMsgBtn.smbOK_Cancel, false) != EMsgRes.smrOK)
+                if (MsgBox.Show(Messages.INIT_LR_LINE, msgBtn: EMsgBtn.smbOK_Cancel) != EMsgRes.smrOK)
                 {
                     return false;
                 }
@@ -823,11 +835,10 @@ namespace NDispWin
 
         public static bool CheckSysReady()
         {
-            string EMsg = "CheckSysReady";
             if (GDefineN.SystemSt != GDefineN.ESystemSt.Ready)
             {
                 Msg MsgBox = new Msg();
-                MsgBox.Show((int)EErrCode.SYSTEM_NOT_READY, "", true);
+                MsgBox.Show(Messages.SYSTEM_NOT_READY);
                 return false;
             }
 
@@ -845,9 +856,8 @@ namespace NDispWin
             }
             catch (Exception Ex)
             {
-                EMsg = EMsg + (char)13 + Ex.Message;
                 Msg MsgBox = new Msg();
-                MsgBox.Show((int)EErrCode.UNKNOWN_EX_ERR, EMsg, true);
+                MsgBox.Show(Messages.UNKNOWN_EX_ERR, MethodBase.GetCurrentMethod().Name.ToString() + '\r' + Ex.Message.ToString());
                 return false;
             }
             return true;
@@ -861,7 +871,7 @@ namespace NDispWin
                 if (!GDefineN.DI_InPressureInRange)
                 {
                     Msg MsgBox = new Msg();
-                    MsgBox.Show((int)EErrCode.LOW_AIR_PRESSURE);
+                    MsgBox.Show(Messages.LOW_AIR_PRESSURE);
                     return false;
                 }
             }
@@ -946,8 +956,28 @@ namespace NDispWin
             if (GDefineN.LowPressureValid() && !GDefineN.DI_InPressureInRange)
             {
                 Msg MsgBox = new Msg();
-                MsgBox.Show((int)EErrCode.LOW_AIR_PRESSURE);
+                MsgBox.Show(Messages.LOW_AIR_PRESSURE);
                 return false;
+            }
+
+            if (TaskDisp.Option_DensityRange > 0)
+            {
+                if (GDefine.GantryConfig == GDefine.EGantryConfig.XY_ZX2Y2_Z2 && DispProg.Head_Operation == TaskDisp.EHeadOperation.Sync)
+                {
+                    double range = Math.Abs(TaskWeight.CurrentCal[0] - TaskWeight.CurrentCal[1]);
+                    if (Math.Abs(range) > TaskDisp.Option_DensityRange)
+                    {
+                        Msg MsgBox = new Msg();
+                        EMsgRes Res = MsgBox.Show(Messages.VALVE_DENSITY_FLOWRATE_MISMATCH, $"Pump 1,2 {TaskWeight.CurrentCal[0]:f3},{TaskWeight.CurrentCal[1]:f3} > Range {TaskDisp.Option_DensityRange:f3}. Check Valve Density or Flowrate Calibration.", EMsgBtn.smbOK_Stop);
+                        switch (Res)
+                        {
+                            case EMsgRes.smrStop:
+                                return false;
+                            case EMsgRes.smrOK:
+                                break;
+                        }
+                    }
+                }
             }
 
             if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)
@@ -957,7 +987,7 @@ namespace NDispWin
               !TaskConv.Pro.SensVac)
                 {
                     Msg MsgBox = new Msg();
-                    MsgBox.Show(ErrCode.CONV_VACUUM_LOW);
+                    MsgBox.Show(Messages.CONV_VACUUM_LOW);
                     return false;
                 }
             }
@@ -970,7 +1000,6 @@ namespace NDispWin
             if (TR_IsRunning) return true;
 
             if (!Define_Run.CheckSysReady()) return false;
-            //if (!PromptLowPressure()) return false;
             if (!Intf.Program.RunPermit) return false;
 
             if (!TR_CheckProcess()) return false;
@@ -978,13 +1007,13 @@ namespace NDispWin
             Msg MsgBox = new Msg();
             if (GDefine.EnableLotEntry && !LotInfo2.LotActive)
             {
-                MsgBox.Show((int)EErrCode.LOT_NOT_ACTIVATED);
+                MsgBox.Show(Messages.LOT_NOT_ACTIVATED);
                 return false;
             }
 
             if (NDispWin.TaskConv.StopInput)
             {
-                EMsgRes Res = MsgBox.Show((int)EErrCode.INPUT_IS_STOPPED, EMcState.Notice, EMsgBtn.smbOK_Cancel | EMsgBtn.smbStop, false);
+                EMsgRes Res = MsgBox.Show(Messages.INPUT_IS_STOPPED, "", EMsgBtn.smbOK_Cancel | EMsgBtn.smbStop);
                 switch (Res)
                 {
                     case EMsgRes.smrStop:
@@ -999,7 +1028,7 @@ namespace NDispWin
 
             if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)
             {
-                IO.SetState(EMcState.Run);
+                TCTwrLight.SetStatus(TwrLight.Run);
                 TaskConv.VacPump = true;
             }
 
@@ -1033,7 +1062,7 @@ namespace NDispWin
 
             if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)
             {
-                IO.SetState(EMcState.Idle);
+                TCTwrLight.SetStatus(TwrLight.Idle);
             }
         }
 
@@ -1043,10 +1072,6 @@ namespace NDispWin
             {
                 if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)
                 {
-                    //if (!DefineSafety.DoorCheck_All(true)) TR_StopRun();
-                    //if (!Define_Run.PromptLowPressure()) TR_StopRun();
-                    //if (!Intf.Program.RunPermit) return;
-
                     if (DispProg.TR_IsBusy()) return;
 
                     #region Set Conditions before run
@@ -1128,7 +1153,7 @@ namespace NDispWin
                         switch (NDispWin.TaskConv.Pro.Status)
                         {
                             case NDispWin.TaskConv.EProcessStatus.WaitDisp:
-                                DispProg.TR_Cancel();//start new dispense
+                                DispProg.TR_CancelNoClearMap();//start new dispense
                                 NDispWin.TaskConv.Pro.Status = NDispWin.TaskConv.EProcessStatus.InProcess;
                                 break;
                             case NDispWin.TaskConv.EProcessStatus.WaitDisp2:
@@ -1138,7 +1163,7 @@ namespace NDispWin
                                 if (GDefine.GetTickCount() >= t_ProStartWaitDisp + i_TOut)
                                 {
                                     Msg MsgBox = new Msg();
-                                    EMsgRes Res = MsgBox.Show((int)EErrCode.DISP12MODE_WAIT_PRE_TIMEOUT, EMcState.Notice, EMsgBtn.smbOK_Retry_Stop, false);
+                                    EMsgRes Res = MsgBox.Show(Messages.DISP12MODE_WAIT_PRE_TIMEOUT, msgBtn: EMsgBtn.smbOK_Retry_Stop);
 
                                     switch (Res)
                                     {
@@ -1171,30 +1196,28 @@ namespace NDispWin
                     }
                     #endregion
 
-                    if (TaskDisp.VolumeOfst_Protocol == TaskDisp.EVolumeOfstProtocol.Lmds_COBTester || TaskDisp.VolumeOfst_Protocol == TaskDisp.EVolumeOfstProtocol.Lmds_WebService)
-                    {
-                        if (Lmds_CT.Lmds_COBTesterSeq >= Lmds_CT.ELmdsMode.Cal1 && Lmds_CT.Lmds_COBTesterSeq < (Lmds_CT.ELmdsMode)TaskDisp.LmdsCT.CalDispPasses)
-                        {
-                            TaskConv.StopInput = true;
-                            DispProg.UsePreMap((int)Lmds_CT.Lmds_COBTesterSeq);
-                        }
-                        else
-                        if (Lmds_CT.Lmds_COBTesterSeq == (Lmds_CT.ELmdsMode)TaskDisp.LmdsCT.CalDispPasses)
-                        {
-                            TaskConv.StopInput = false;
-                            DispProg.UsePreMap((int)Lmds_CT.Lmds_COBTesterSeq);
-                        }
-                        else
-                        if (Lmds_CT.Lmds_COBTesterSeq == Lmds_CT.ELmdsMode.Prod)
-                        {
-                            DispProg.UsePreMap(0);
-                        }
-                        else
-                        if (Lmds_CT.Lmds_COBTesterSeq == Lmds_CT.ELmdsMode.Full)
-                        {
-                            DispProg.UsePreMap(15);
-                        }
-                    }
+                    if (!DispProg.TR_Run()) b_TR_IsRunning = false;
+
+                    if (GDefine.Status == EStatus.Stop || Intf.Program.BdStatus == EBoardStatus.Stop) TR_StopRun();
+
+                    if (!b_TR_IsRunning) DefineSafety.DoorLock = false;
+                }
+            }
+            catch (Exception Ex)
+            {
+                MessageBox.Show("Disp Run " + Ex.Message.ToString());
+            }
+            finally
+            {
+            }
+        }
+        public static void RunDispConv_BurnRun()//full auto converyor run
+        {
+            try
+            {
+                if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)
+                {
+                    if (DispProg.TR_IsBusy()) return;
 
                     if (!DispProg.TR_Run()) b_TR_IsRunning = false;
 
@@ -1211,6 +1234,7 @@ namespace NDispWin
             {
             }
         }
+
         public static bool PromptButtonFocus = false;
 
         public static bool TableIsRunning = false;
@@ -1236,24 +1260,26 @@ namespace NDispWin
                         if (!GDefine.Table.TaskMoveToLoad()) return false;
                         GDefine.Table.StationStatus = GDefine.Table.TStStatus.stWaitLoad;
 
-                        MsgInfo.TMsgInfo msgInfo = new MsgInfo.TMsgInfo();
-                        MsgInfo.GetInfo((int)EErrCode.S320_LOAD_PRODUCT, ref msgInfo);
+                        //MsgInfo.TMsgInfo msgInfo = new MsgInfo.TMsgInfo();
+                        //MsgInfo.GetInfo((int)EErrCode.S320_LOAD_PRODUCT, ref msgInfo);
 
-                        IO.SetState(EMcState.Notice);
+                        TCTwrLight.SetStatus(TwrLight.Notification);//IO.SetState(EMcState.Notice);
 
                         frmS320Prompt frm = new frmS320Prompt();
-                        frm.Desc = msgInfo.Desc;
-                        frm.Desc_Alt = msgInfo.Desc_Alt;
+                        //frm.Desc = msgInfo.Desc;
+                        //frm.Desc_Alt = msgInfo.Desc_Alt;
+                        frm.Desc = Messages.S320_LOAD_PRODUCT.Desc;
+                        frm.Desc_Alt = Messages.S320_LOAD_PRODUCT.DescAlt;
 
                         DialogResult dr = frm.ShowDialog();
                         switch (dr)
                         {
                             case DialogResult.OK:
-                                IO.SetState(EMcState.Run);
+                                TCTwrLight.SetStatus(TwrLight.Run);
                                 GDefine.Table.StationStatus = GDefine.Table.TStStatus.stLoaded;
                                 break;
                             case DialogResult.Cancel:
-                                IO.SetState(EMcState.Idle);
+                                TCTwrLight.SetStatus(TwrLight.Idle);
                                 return false;
                         }
                         break;
@@ -1266,24 +1292,26 @@ namespace NDispWin
 
                         DefineSafety.DoorLock = false;
 
-                        MsgInfo.TMsgInfo msgInfo = new MsgInfo.TMsgInfo();
-                        MsgInfo.GetInfo((int)EErrCode.S320_UNLOAD_PRODUCT, ref msgInfo);
+                        //MsgInfo.TMsgInfo msgInfo = new MsgInfo.TMsgInfo();
+                        //MsgInfo.GetInfo((int)EErrCode.S320_UNLOAD_PRODUCT, ref msgInfo);
 
-                        IO.SetState(EMcState.Notice);
+                        TCTwrLight.SetStatus(TwrLight.Notification);
 
                         frmS320Prompt frm = new frmS320Prompt();
-                        frm.Desc = msgInfo.Desc;
-                        frm.Desc_Alt = msgInfo.Desc_Alt;
+                        //frm.Desc = msgInfo.Desc;
+                        //frm.Desc_Alt = msgInfo.Desc_Alt;
+                        frm.Desc = Messages.S320_UNLOAD_PRODUCT.Desc;
+                        frm.Desc_Alt = Messages.S320_UNLOAD_PRODUCT.DescAlt;
 
                         DialogResult dr = frm.ShowDialog();
                         switch (dr)
                         {
                             case DialogResult.OK:
                                 GDefine.Table.StationStatus = GDefine.Table.TStStatus.stEmpty;
-                                IO.SetState(EMcState.Idle);
+                                TCTwrLight.SetStatus(TwrLight.Idle);
                                 break;
                             case DialogResult.Cancel:
-                                IO.SetState(EMcState.Idle);
+                                TCTwrLight.SetStatus(TwrLight.Idle);
                                 return false;
                         }
                         break;
@@ -1605,6 +1633,11 @@ namespace NDispWin
         //public static string RecipePath = AppPath + "\\Recipe";//recipe replaces program from 1.3.x version
 
         public static DirectoryInfo RootDir => Directory.CreateDirectory("C:\\Program Files\\NSWAutomation\\NDisp3WIN\\");
+        public static DirectoryInfo MsgBoxDir => Directory.CreateDirectory(RootDir.FullName + "MsgBox\\");
+        public static string MsgFile => MsgBoxDir.FullName + $"Message_List.txt";
+        public static string TLStatusFile => MsgBoxDir.FullName + $"TLStatus.txt";
+        public static DirectoryInfo MsgBoxImageDir => Directory.CreateDirectory(RootDir.FullName + "MsgBox\\");
+
         public static DirectoryInfo RecipeDir => Directory.CreateDirectory(RootDir.FullName + "Recipe\\");
         public static string RecipeExt = ".xml";
 
@@ -1618,7 +1651,7 @@ namespace NDispWin
         public static string ModelSettingFile = SetupPath + "\\Model.Setting.ini";
         public static string DispProgUISettingFile = SetupPath + "\\DispProg.UI.ini";
 
-        public static string WeightMeasPath = DataPath + "\\Weight";
+        public static string WeightMeasPath = DataPath + "\\WeightMeas";
         public static string ImageBufferPath = DataPath + "\\ImageBuffer";
 
         public static DirectoryInfo StripMapDir => Directory.CreateDirectory(DataDir.FullName + "StripMap\\");
@@ -1628,11 +1661,17 @@ namespace NDispWin
         public static string MHSRecipePath = MHSPath + "\\Recipe";
         public static string MHSRecipeName = "default";
         public static string MHSRecipeExt = ".hdlr";
+        public static DirectoryInfo MHSDir => Directory.CreateDirectory(RootDir.FullName + "MHS2\\");
+        public static DirectoryInfo MHSRecipeDir => Directory.CreateDirectory(MHSDir.FullName + "Recipe\\");
 
         public static string MHSDIOAddFile = MHSPath + "\\DIOAdd.ini";
         internal static string MHSMotorParaFile = MHSPath + "\\MotorPara.ini";
 
         public static string BufferPath = "c:\\NSW_Buffer";
+
+        public static string ProcessVideoPath  = "c:\\Process\\";
+        public static DirectoryInfo MonCameraImageDir => Directory.CreateDirectory(DataDir.FullName + "MonCamera\\Image\\");
+        public static DirectoryInfo MonCameraVideoDir => Directory.CreateDirectory(DataDir.FullName + "MonCamera\\Video\\");
         #endregion
 
         public static string ProgFolder
@@ -1666,8 +1705,6 @@ namespace NDispWin
             if (!Directory.Exists(BiasKernelPath)) { Directory.CreateDirectory(BiasKernelPath); }
         }
 
-
-
         public const string RegSubKey_DispProg = "DispCore\\UI\\DispProg";
 
         public static string CmdHelpFilename = "Command_Help.pdf";
@@ -1690,6 +1727,17 @@ namespace NDispWin
             catch
             {
                 try { TaskDisp.Material_Life_EndTime = DateTime.ParseExact(s, "M/d/yyyy hh:mm:ss tt", null); } catch { };//maintain reverse compatiblity
+            }
+            TaskDisp.Material_LifePreAlert_Time = TaskDisp.Material_Life_EndTime.AddMinutes((double)-TaskDisp.Material_ExpiryPreAlertTime);
+
+            s = IniFile.ReadString("Valve", "Life_End_Time", "");
+            try
+            {
+                TaskDisp.Valve_Life_EndTime = DateTime.ParseExact(s, "yyyy-MM-dd HH:mm:ss", null);// Convert.ToDateTime(s);
+            }
+            catch
+            {
+                try { TaskDisp.Valve_Life_EndTime = DateTime.ParseExact(s, "M/d/yyyy hh:mm:ss tt", null); } catch { };//maintain reverse compatiblity
             }
             TaskDisp.Material_LifePreAlert_Time = TaskDisp.Material_Life_EndTime.AddMinutes((double)-TaskDisp.Material_ExpiryPreAlertTime);
 
@@ -1729,6 +1777,7 @@ namespace NDispWin
 
             IniFile.Create(AppPath + "\\" + "DispCore" + ".def");
             IniFile.WriteString("Material", "Life_End_Time", TaskDisp.Material_Life_EndTime.ToString("yyyy-MM-dd HH:mm:ss"));// "MM/dd/yyyy HH:mm tt"));
+            IniFile.WriteString("Valve", "Life_End_Time", TaskDisp.Valve_Life_EndTime.ToString("yyyy-MM-dd HH:mm:ss"));// "MM/dd/yyyy HH:mm tt"));
 
             for (int i = 0; i < TaskDisp.MAX_HEADCOUNT; i++)
             {
@@ -1743,7 +1792,6 @@ namespace NDispWin
         }
 
         public static string EquipmentID = "NSW";
-
 
         #region Device
         public static bool LoadDevice(string FName)
@@ -1804,32 +1852,20 @@ namespace NDispWin
         public enum EHeadConfig { Single, Dual };
         public static EHeadConfig HeadConfig = EHeadConfig.Single;
 
-        public enum ECameraType { None, Basler, Emulator, PtGrey, Spinnaker, Spinnaker2 };
+        public enum ECameraType { None, Basler, Emulator, PtGrey, Spinnaker, Spinnaker2, MVCGenTL };
         public enum ELCType { None, LCSerial, LCSerLegacy };
-        public enum EHeightSensorType { None, IDL1700, IDL1302, IFD2451, DONOTUSE, IDL1X20, IFD2421, IDL1750, IFD2422 };
-        //public enum EWeightStType { None, JB1603, ALD214 };
-        //public enum ECleanStType { None, Type1 };
-        //public enum EPurgeStType { None, Type1 };
+
+        public enum EHeightSensorType { None, ILD1700, ILD1302, IFD2451, DONOTUSE, ILD1X20, IFD2421, ILD1750, IFD2422, CL3000, ILD1900 };
+
         public enum EPreDispStType { None, Type1 };
         public enum EZSensorType { None, Sensor, Encoder };//Type1 - PinType, //Type2 - LinearEncoder
         public static EZSensorType ZSensorType = EZSensorType.None;
         public static double ZSensor_DistPerPulse = 0.0005;
 
-
-        public enum EBottomCamType { None, External, ATNC }
-        public static EBottomCamType BottomCamType = EBottomCamType.None;
-
         public enum EDispCtrlType { None, HPC, HPC15, Vermes, Vermes1560 };
         //public static ECameraType CameraType = ECameraType.None;
         //public static string CameraIPAddress = "192.168.0.100";
         public enum EDispHeaterType { None, Vermes_HC48 };
-
-        public const int MAX_CAMERA = 3;
-        public static ECameraType[] CameraType = new ECameraType[MAX_CAMERA];
-        //public static ECameraType CameraTypeA = ECameraType.None;
-        //public static bool[] CameraEnable = new bool[MAX_CAMERA] { false, false, false };
-        public static string[] CameraIPAddress = new string[MAX_CAMERA];// "192.168.0.100";
-
 
         public static ELCType LCType = ELCType.None;
         public static int LCComport = 0;
@@ -1865,6 +1901,31 @@ namespace NDispWin
         public static ExtVision.EType ExtVisType = ExtVision.EType.None;
         public static string ExtVisIPAddress = "192.168.0.10";
         public static int ExtVisPort = 8500;
+        #endregion
+
+        #region Camera
+        public const int MAX_CAMERA = 3;
+        public static ECameraType[] CameraType = new ECameraType[MAX_CAMERA];
+        public static string[] CameraIPAddress = new string[MAX_CAMERA];// "192.168.0.100";
+        public static string[] CameraSerialNo = new string[MAX_CAMERA];// "1234";
+
+        public const int MAX_MCAMERA = 2;
+        public static ECameraType[] MCameraType = new ECameraType[MAX_MCAMERA];
+        public static string[] MCameraIPAddress = new string[MAX_MCAMERA];
+        public static string[] MCameraSerialNo = new string[MAX_MCAMERA];
+
+        public static double[] MCameraExposure = new double[MAX_MCAMERA];
+        public static double[] MCameraGain = new double[MAX_MCAMERA];
+        public static bool[] MCameraReverseX = new bool[MAX_MCAMERA];
+        public static bool[] MCameraReverseY = new bool[MAX_MCAMERA];
+
+        public static bool MCameraAutoShow = false;
+        public static Rectangle MCameraLocation = new Rectangle(0, 0, 600, 400);
+        public static bool MCameraSwapPos = false;
+
+        public enum EBottomCamType { None, External, ATNC }
+        public static EBottomCamType BottomCamType = EBottomCamType.None;
+        #endregion
 
         public static bool SaveSystemConfig(string ConfigName)
         {
@@ -1880,7 +1941,8 @@ namespace NDispWin
 
             TaskGantry.SaveDeviceConfig(FileName);
 
-            NSW.Net.IniFile IniFile = new NSW.Net.IniFile();
+            NUtils.IniFile IniFile = new NUtils.IniFile(FileName);
+            //NSW.Net.IniFile IniFile = new NSW.Net.IniFile();
 
             //IniFile.WriteInteger("General", "LogLevel", LogLevel);
 
@@ -1893,7 +1955,27 @@ namespace NDispWin
                 if (i > 0) section = section + i.ToString();
                 IniFile.WriteInteger(section, "Type", (int)CameraType[i]);
                 IniFile.WriteString(section, "IPAddress", CameraIPAddress[i]);
+                IniFile.WriteString(section, "SerialNo", CameraSerialNo[i]);
             }
+
+            for (int i = 0; i < MAX_MCAMERA; i++)
+            {
+                IniFile.WriteInteger($"MCamera{i}", "Type", (int)MCameraType[i]);
+                IniFile.WriteString($"MCamera{i}", "IPAddress", MCameraIPAddress[i]);
+                IniFile.WriteString($"MCamera{i}", "SerialNo", MCameraSerialNo[i]);
+
+                IniFile.WriteDouble($"MCamera{i}", "Exposure", MCameraExposure[i]);
+                IniFile.WriteDouble($"MCamera{i}", "Gain", MCameraGain[i]);
+                IniFile.WriteBool($"MCamera{i}", "ReverseX", MCameraReverseX[i]);
+                IniFile.WriteBool($"MCamera{i}", "ReverseY", MCameraReverseY[i]);
+            }
+            IniFile.WriteBool($"MCamera", "AutoShow", MCameraAutoShow);
+            IniFile.WriteBool($"MCamera", "SwapPos", MCameraSwapPos);
+            IniFile.WriteInteger($"MCamera", "LocationX", MCameraLocation.X);
+            IniFile.WriteInteger($"MCamera", "LocationY", MCameraLocation.Y);
+            IniFile.WriteInteger($"MCamera", "LocationW", MCameraLocation.Width);
+            IniFile.WriteInteger($"MCamera", "LocationH", MCameraLocation.Height);
+            IniFile.WriteString("MCamera", "ProcessVideoPath", ProcessVideoPath);
 
             IniFile.WriteInteger("LC", "Type", (int)LCType);
             IniFile.WriteInteger("LC", "ComPort", LCComport);
@@ -1932,9 +2014,6 @@ namespace NDispWin
             IniFile.WriteInteger("TempSensor", "Type", (int)SysConfig.TempSensorType);
             IniFile.WriteString("TempSensor", "Comport", SysConfig.TempSensorComport);
 
-            IniFile.WriteInteger("VideoLogger", "Type", (int)SysConfig.VideoLoggerType);
-            IniFile.WriteInteger("VideoLogger", "Port", SysConfig.VideoLoggerPort);
-
             IniFile.WriteInteger("TempCtrl", "Type", (int)TempCtrl_Type);
             IniFile.WriteString("TempCtrl", "ComPort", TempCtrl_PortName);
 
@@ -1946,6 +2025,7 @@ namespace NDispWin
             IniFile.WriteInteger("ExtVis", "Type", (int)ExtVisType);
             IniFile.WriteString("ExtVis", "IPAddress", ExtVisIPAddress);
             IniFile.WriteInteger("ExtVis", "Port", ExtVisPort);
+
 
             return true;
         }
@@ -1973,7 +2053,8 @@ namespace NDispWin
 
             TaskGantry.LoadDeviceConfig(FileName);
 
-            NSW.Net.IniFile IniFile = new NSW.Net.IniFile();
+            NUtils.IniFile IniFile = new NUtils.IniFile(FileName);
+            //NSW.Net.IniFile IniFile = new NSW.Net.IniFile();
 
             //LogLevel = IniFile.ReadInteger("General", "LogLevel", 0);
 
@@ -1986,7 +2067,27 @@ namespace NDispWin
                 if (i > 0) section = section + i.ToString();
                 try { CameraType[i] = (ECameraType)(IniFile.ReadInteger(section, "Type", (int)ECameraType.None)); } catch { CameraType[i] = ECameraType.None; };
                 CameraIPAddress[i] = IniFile.ReadString(section, "IPAddress", "0.0.0.0");
+                CameraSerialNo[i] = IniFile.ReadString(section, "SerialNo", "");
             }
+
+            for (int i = 0; i < MAX_MCAMERA; i++)
+            {
+                try { MCameraType[i] = (ECameraType)(IniFile.ReadInteger($"MCamera{i}", "Type", (int)ECameraType.None)); } catch { MCameraType[i] = ECameraType.None; };
+                MCameraIPAddress[i] = IniFile.ReadString($"MCamera{i}", "IPAddress", "0.0.0.0");
+                MCameraSerialNo[i] = IniFile.ReadString($"MCamera{i}", "SerialNo", "");
+
+                MCameraExposure[i] = IniFile.ReadDouble($"MCamera{i}", "Exposure", 15000);
+                MCameraGain[i] = IniFile.ReadDouble($"MCamera{i}", "Gain", 0);
+                MCameraReverseX [i] = IniFile.ReadBool($"MCamera{i}", "ReverseX", false);
+                MCameraReverseY[i] = IniFile.ReadBool($"MCamera{i}", "ReverseY", false);
+            }
+            MCameraAutoShow = IniFile.ReadBool($"MCamera", "AutoShow", false);
+            MCameraSwapPos = IniFile.ReadBool($"MCamera", "SwapPos", false);
+            MCameraLocation.X = IniFile.ReadInteger($"MCamera", "LocationX", 0);
+            MCameraLocation.Y = IniFile.ReadInteger($"MCamera", "LocationY", 0);
+            MCameraLocation.Width = IniFile.ReadInteger($"MCamera", "LocationW", 600);
+            MCameraLocation.Height = IniFile.ReadInteger($"MCamera", "LocationH", 300);
+            ProcessVideoPath = IniFile.ReadString("MCamera", "ProcessVideoPath", ProcessVideoPath);
 
             LCType = (ELCType)IniFile.ReadInteger("LC", "Type", (int)EHeightSensorType.None);
             LCComport = IniFile.ReadInteger("LC", "ComPort", 3);
@@ -2039,9 +2140,6 @@ namespace NDispWin
             try { SysConfig.TempSensorType = (SysConfig.ETempSensorType)IniFile.ReadInteger("TempSensor", "Type", 0); } catch { SysConfig.TempSensorType = 0; }
             SysConfig.TempSensorComport = IniFile.ReadString("TempSensor", "Comport", "COM1");
 
-            try { SysConfig.VideoLoggerType = (SysConfig.EVideoLoggerType)IniFile.ReadInteger("VideoLogger", "Type", 0); } catch { SysConfig.VideoLoggerType = 0; }
-            SysConfig.VideoLoggerPort = IniFile.ReadInteger("VideoLogger", "Port", 11000);
-
             TempCtrl_Type = (ETempCtrl)IniFile.ReadInteger("TempCtrl", "Type", 0);
             TempCtrl_PortName = IniFile.ReadString("TempCtrl", "ComPort", "COM0");
             int TempCtrl_PreHeatID = IniFile.ReadInteger("TempCtrl", "PreHeatID", 0);
@@ -2070,7 +2168,8 @@ namespace NDispWin
         {
             return LoadSystemConfig("");
         }
-        #endregion
+
+
 
         #region Machine Setup
         public static EOperationSpeed OperationSpeed = EOperationSpeed.Safe;
@@ -2604,8 +2703,6 @@ namespace NDispWin
 
             public static bool TaskMoveToLoad()
             {
-                string EMsg = "MoveToLoad";
-
                 GDefine.Status = EStatus.Busy;
 
                 try
@@ -2618,9 +2715,8 @@ namespace NDispWin
                 }
                 catch (Exception Ex)
                 {
-                    EMsg = EMsg + (char)13 + Ex.Message.ToString();
                     Msg MsgBox = new Msg();
-                    MsgBox.Show((int)EErrCode.UNKNOWN_EX_ERR, EMsg);
+                    MsgBox.Show(Messages.UNKNOWN_EX_ERR, MethodBase.GetCurrentMethod().Name.ToString() + '\r' + Ex.Message.ToString());
                     return false;
                 }
                 GDefine.Status = EStatus.Ready;
@@ -2641,10 +2737,6 @@ namespace NDispWin
         public enum ETempSensorType { None, UE_thermoCT };
         public static ETempSensorType TempSensorType = ETempSensorType.None;
         public static string TempSensorComport = "COM8";
-
-        public enum EVideoLoggerType { None, VideoLogger };
-        public static EVideoLoggerType VideoLoggerType = EVideoLoggerType.None;
-        public static int VideoLoggerPort = 11000;
     }
 
     public class Log
@@ -2713,6 +2805,7 @@ namespace NDispWin
         public static NUtils.LogFileW ExtVision = new NUtils.LogFileW(GDefine.DataPath + "\\ExtVision");
         public static NUtils.LogFileW Temp = new NUtils.LogFileW(GDefine.DataPath + "\\Temp");
         public static NUtils.LogFileW LmdsWebService = new NUtils.LogFileW(GDefine.DataPath + "\\LmdsWebService");
+
 
         public static void OnAction(string Action, string ParamName, bool Old, bool New)
         {

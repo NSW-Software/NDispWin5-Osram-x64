@@ -21,6 +21,12 @@ namespace NDispWin
 
         public static TPos3[] Needle_Weight_Pos = new TPos3[2] { new TPos3(0, 0, 0), new TPos3(0, 0, 0) };
 
+
+        public enum ECalMeasType { Density, FR_mg_s, FR_mg_dot };
+        public static ECalMeasType CalMeasType = ECalMeasType.Density;//calibration measurement unit
+        public static string[] CAL_MEAS_UNIT = new string[3] { "mg/ml", "mg/s", "mg/d" };
+        public const string WEIGHT_UNIT = "mg";
+
         public static int PurgeCount = 2;
         public static int MeasureCount = 10;
 
@@ -88,7 +94,8 @@ namespace NDispWin
         public static int CalAcceptCount = 3;
         public static int CalAverageCount = 0;
         public static double CalMaxPressAdjRate = 5;//unit MPa def 0.03
-        public static double[] CurrentCal = new double[TaskDisp.MAX_HEADCOUNT];//Calibrated Density
+        public static double[] CurrentCal = new double[TaskDisp.MAX_HEADCOUNT];//Calibrated Density or FlowRate(mg/s or mg/dot)
+        public static double[] ApproxFlowrate = new double[TaskDisp.MAX_HEADCOUNT];
         public enum EWeightCalStatus { None, Require, Calibrated, Fail };
         public static bool Cal_RequireOnLotStart = false;
         public static bool Cal_RequireOnLoadProgram = false;
@@ -538,11 +545,11 @@ namespace NDispWin
         }
 
         static int PosNo = 0;
-        public static bool Weight_DownWeightUp(int HeadNo, EMeasType measType, ref double Weight, ref bool IsFilling)
+        public static bool Weight_DownWeightUp(int HeadNo, EMeasType measType, ref double Weight, ref bool isFilling)
         {
             int t = 0;
 
-            IsFilling = false;
+            isFilling = false;
 
             bool b_Head1Run = (HeadNo == 1);
             bool b_Head2Run = (HeadNo == 2);
@@ -598,17 +605,18 @@ namespace NDispWin
                             for (int i = 0; i < iDotsPerSample(measType); i++)
                             {
                                 if (!TaskDisp.CtrlWaitReady(b_Head1Run, b_Head2Run)) goto _Error;
+                                if (!isFilling) isFilling = TaskDisp.IsFilling();
+                                if (isFilling) break;//5.6.11 abort the sample
                                 if (!TaskDisp.TrigOn(b_Head1Run, b_Head2Run)) goto _Error;
                                 if (!TaskDisp.CtrlWaitResponse(b_Head1Run, b_Head2Run)) goto _Error;
                                 if (!TaskDisp.TrigOff(b_Head1Run, b_Head2Run)) goto _Error;
                                 Application.DoEvents();
                                 if (!TaskDisp.CtrlWaitComplete(b_Head1Run, b_Head2Run)) goto _Error;
-                                TaskDisp.Thread_CheckIsFilling_Run(b_Head1Run, b_Head2Run);
-                                Thread.Sleep(500);
-                                //return;
-                                TaskDisp.Thread_CheckIsFilling_Run(b_Head1Run, b_Head2Run);
-                                if (!IsFilling)
-                                    IsFilling = TaskDisp.IsFilling();
+                                if (!isFilling) isFilling = TaskDisp.IsFilling();
+                                //TaskDisp.Thread_CheckIsFilling_Run(b_Head1Run, b_Head2Run);
+                                //Thread.Sleep(500);
+                                //TaskDisp.Thread_CheckIsFilling_Run(b_Head1Run, b_Head2Run);
+                                //if (!isFilling) isFilling = TaskDisp.IsFilling();
                             }
                             #endregion
                         }
@@ -644,7 +652,7 @@ namespace NDispWin
             }
             #endregion
 
-            if (!IsFilling) IsFilling = TaskDisp.IsFilling();
+            if (!isFilling) isFilling = TaskDisp.IsFilling();
 
             if (MeasPosMethod == EMeasPosMethod.PCD)
             {
@@ -722,7 +730,7 @@ namespace NDispWin
             {
 
                 case TaskDisp.EPumpType.SP:
-                    TaskDisp.SP.SP_Shot(time_s*1000);
+                    TaskDisp.SP.SP_Shot(time_s * 1000);
                     break;
                 case TaskDisp.EPumpType.TP:
                     TaskDisp.TP.TP_Shot(time_s * 1000);
@@ -788,11 +796,6 @@ namespace NDispWin
         const string dp_FLOWRATE = "f6";
 
         #region Weight Cal
-
-        public enum ECalMeasType { Density, FR_mg_s, FR_mg_dot };
-        public static ECalMeasType CalMeasType = ECalMeasType.Density;//calibration measurement unit
-        public static string[] CAL_MEAS_UNIT = new string[3] { "mg/ml", "mg/s", "mg/d" };
-        public const string WEIGHT_UNIT = "mg";
         public static string CalMeasUnit
         {
             get
@@ -817,49 +820,49 @@ namespace NDispWin
 
         private static bool WeightCal_ExecuteSingle(ListBox ListBox, int HeadNo, ref double Weight)//HeadNo start 1
         {
-            string s_Log = "";
+            //string s_Log = "";
 
-            double d_DispVol = 0;
-            double d_BSVol = 0;
-            double d_Speed = 0;
-            double d_FPress = 0;
+            //double d_DispVol = 0;
+            //double d_BSVol = 0;
+            //double d_Speed = 0;
+            //double d_FPress = 0;
             double d_mg = 0;
 
-            switch (TaskWeight.CalMeasType)
-            {
-                case TaskWeight.ECalMeasType.Density:
-                    #region
-                    if (HeadNo == 1)
-                    {
-                        d_DispVol = DispProg.PP_HeadA_DispBaseVol;
-                        d_BSVol = DispProg.PP_HeadA_BackSuckVol;
-                    }
-                    else
-                    {
-                        d_DispVol = DispProg.PP_HeadB_DispBaseVol;
-                        d_BSVol = DispProg.PP_HeadB_BackSuckVol;
-                    }
-                    #endregion
-                    break;
-                case TaskWeight.ECalMeasType.FR_mg_s:
-                    #region
-                    if (HeadNo == 1)
-                    {
-                        d_Speed = DispProg.HM_HeadA_Disp_RPM;
-                    }
-                    else
-                    {
-                        d_Speed = DispProg.HM_HeadB_Disp_RPM;
-                    }
-                    #endregion
-                    break;
-                case TaskWeight.ECalMeasType.FR_mg_dot:
-                    int i_HeadNo = HeadNo - 1;
-                    #region
-                    d_FPress = DispProg.FPress[i_HeadNo] * FACTOR_MPaToPSI;
-                    #endregion
-                    break;
-            }
+            //switch (TaskWeight.CalMeasType)
+            //{
+            //    case TaskWeight.ECalMeasType.Density:
+            //        #region
+            //        if (HeadNo == 1)
+            //        {
+            //            d_DispVol = DispProg.PP_HeadA_DispBaseVol;
+            //            d_BSVol = DispProg.PP_HeadA_BackSuckVol;
+            //        }
+            //        else
+            //        {
+            //            d_DispVol = DispProg.PP_HeadB_DispBaseVol;
+            //            d_BSVol = DispProg.PP_HeadB_BackSuckVol;
+            //        }
+            //        #endregion
+            //        break;
+            //    case TaskWeight.ECalMeasType.FR_mg_s:
+            //        #region
+            //        if (HeadNo == 1)
+            //        {
+            //            d_Speed = DispProg.HM_HeadA_Disp_RPM;
+            //        }
+            //        else
+            //        {
+            //            d_Speed = DispProg.HM_HeadB_Disp_RPM;
+            //        }
+            //        #endregion
+            //        break;
+            //    case TaskWeight.ECalMeasType.FR_mg_dot:
+            //        int i_HeadNo = HeadNo - 1;
+            //        #region
+            //        d_FPress = DispProg.FPress[i_HeadNo] * FACTOR_MPaToPSI;
+            //        #endregion
+            //        break;
+            //}
 
 
             if (!Weight_DownWeightUp(HeadNo, EMeasType.Cal, ref d_mg, ref b_IsFilling))
@@ -874,34 +877,34 @@ namespace NDispWin
 
             Weight = d_mg;
 
-            if (TaskWeight.CalMeasType == TaskWeight.ECalMeasType.Density)
-            {
-                double d_Density = d_mg / (d_DispVol - d_BSVol);
-                s_Log = "Volume/Weight/Density" + (char)9 + d_DispVol.ToString(dp_VOLUME) + "-" + d_BSVol.ToString(dp_VOLUME) + "/" + d_mg.ToString(dp_WEIGH) + "/" + d_Density.ToString(dp_DENSITY);
-            }
-            if (TaskWeight.CalMeasType == TaskWeight.ECalMeasType.FR_mg_s)
-            {
-                s_Log = "Speed/Weight/FlowRate" + (char)9 + d_Speed.ToString(dp_SPEED_RPM) + "/" + d_mg.ToString(dp_WEIGH) + "/" + (d_mg / (TaskWeight.DispTime / 1000)).ToString(dp_FLOWRATE);
-            }
-            if (TaskWeight.CalMeasType == TaskWeight.ECalMeasType.FR_mg_dot)
-            {
-                s_Log = "Fluid Press/Weight" + (char)9 + d_FPress.ToString(dp_FPRESS) + "/" + d_mg.ToString(dp_WEIGH);
-            }
-            ListBox.Items.Add(s_Log);
-            Log.WeightCal.WriteByMonthDay(s_Log);
-            ListBox.Items.Add("");
-            ListBox.SelectedIndex = ListBox.Items.Count - 1;
+            //if (TaskWeight.CalMeasType == TaskWeight.ECalMeasType.Density)
+            //{
+            //    double d_Density = d_mg / (d_DispVol - d_BSVol);
+            //    s_Log = "Volume/Weight/Density" + (char)9 + d_DispVol.ToString(dp_VOLUME) + "-" + d_BSVol.ToString(dp_VOLUME) + "/" + d_mg.ToString(dp_WEIGH) + "/" + d_Density.ToString(dp_DENSITY);
+            //}
+            //if (TaskWeight.CalMeasType == TaskWeight.ECalMeasType.FR_mg_s)
+            //{
+            //    s_Log = "Speed/Weight/FlowRate" + (char)9 + d_Speed.ToString(dp_SPEED_RPM) + "/" + d_mg.ToString(dp_WEIGH) + "/" + (d_mg / (TaskWeight.DispTime / 1000)).ToString(dp_FLOWRATE);
+            //}
+            //if (TaskWeight.CalMeasType == TaskWeight.ECalMeasType.FR_mg_dot)
+            //{
+            //    s_Log = "Fluid Press/Weight" + (char)9 + d_FPress.ToString(dp_FPRESS) + "/" + d_mg.ToString(dp_WEIGH);
+            //}
+            //ListBox.Items.Add(s_Log);
+            //Log.WeightCal.WriteByMonthDay(s_Log);
+            //ListBox.Items.Add("");
+            //ListBox.SelectedIndex = ListBox.Items.Count - 1;
 
-            if (d_mg <= 0)
-            {
-                TaskDisp.TaskMoveGZZ2Up();
-                s_Log = "[Head" + HeadNo + " Error] Low Weight Error.";
-                ListBox.Items.Add(s_Log);
-                Log.WeightCal.WriteByMonthDay(s_Log);
-                ListBox.Items.Add("");
-                ListBox.SelectedIndex = ListBox.Items.Count - 1;
-                return false;
-            }
+            //if (d_mg <= 0)
+            //{
+            //    TaskDisp.TaskMoveGZZ2Up();
+            //    s_Log = "[Head" + HeadNo + " Error] Low Weight Error.";
+            //    ListBox.Items.Add(s_Log);
+            //    Log.WeightCal.WriteByMonthDay(s_Log);
+            //    ListBox.Items.Add("");
+            //    ListBox.SelectedIndex = ListBox.Items.Count - 1;
+            //    return false;
+            //}
 
             return true;
         }
@@ -909,9 +912,12 @@ namespace NDispWin
                                                                                                //pressure unit for cal is Psi
         {
             string s_Log;
-            double d_Vol;
-            double d_Speed;
+            double d_DispVol = 0;
+            double d_BSVol = 0;
+            double d_Speed = 0;
+            double d_FPress = 0;
             double d_mg = 0;
+            double dApproxFR = 0;
 
             List<double> AdjPress = new List<double>();
 
@@ -925,6 +931,22 @@ namespace NDispWin
             Log.WeightCal.WriteByMonthDay(s_Log);
             ListBox.Items.Add("");
 
+            switch (TaskWeight.CalMeasType)
+            {
+                case TaskWeight.ECalMeasType.Density:
+                    s_Log = $"No\tVolume     \tWeight\tDensity\tApproxFR";
+                    break;
+                case TaskWeight.ECalMeasType.FR_mg_s:
+                    s_Log = $"No\tSpeed\tWeight\tFlowRate";
+                    break;
+                case TaskWeight.ECalMeasType.FR_mg_dot:
+                    s_Log = $"No\tFluid Press\tWeight";
+                    break;
+            }
+            ListBox.Items.Add(s_Log);
+            ListBox.SelectedIndex = ListBox.Items.Count - 1;
+            Log.WeightCal.WriteByMonthDay(s_Log);
+
             if (CleanOnStart)
             {
                 if (!TaskDisp.TaskCleanNeedle(false)) goto _SpeedError;
@@ -935,21 +957,25 @@ namespace NDispWin
             {
                 case TaskWeight.ECalMeasType.Density:
                     #region
-                    double HA_Vol = DispProg.PP_HeadA_DispBaseVol + DispProg.PP_HeadA_DispVol_Adj + DispProg.rt_Head1VolumeOfst;
-                    double HB_Vol = DispProg.PP_HeadB_DispBaseVol + DispProg.PP_HeadB_DispVol_Adj + DispProg.rt_Head2VolumeOfst;
+                    //double HA_Vol = DispProg.PP_HeadA_DispBaseVol + DispProg.PP_HeadA_DispVol_Adj + DispProg.rt_Head1VolumeOfst;
+                    //double HB_Vol = DispProg.PP_HeadB_DispBaseVol + DispProg.PP_HeadB_DispVol_Adj + DispProg.rt_Head2VolumeOfst;
                     if (HeadNo == 1)
                     {
-                        d_Vol = DispProg.PP_HeadA_DispBaseVol;
                         DispProg.PP_HeadA_DispVol_Adj = 0;
                         DispProg.rt_Head1VolumeOfst = 0;
-                        TaskDisp.SetDispVolume(true, false, HA_Vol, HB_Vol);
+                        d_DispVol = DispProg.PP_HeadA_DispBaseVol - DispProg.PP_HeadA_BackSuckVol;
+                        d_BSVol = DispProg.PP_HeadA_BackSuckVol;
+                        TaskDisp.SetDispVolume(true, false, DispProg.PP_HeadA_DispBaseVol, DispProg.PP_HeadB_DispBaseVol);
+                        TaskDisp.SetBackSuckVolume(true, false, d_BSVol, d_BSVol);
                     }
                     else
                     {
-                        d_Vol = DispProg.PP_HeadB_DispBaseVol;
                         DispProg.PP_HeadB_DispVol_Adj = 0;
                         DispProg.rt_Head2VolumeOfst = 0;
-                        TaskDisp.SetDispVolume(false, true, HA_Vol, HB_Vol);
+                        d_DispVol = DispProg.PP_HeadB_DispBaseVol - DispProg.PP_HeadB_BackSuckVol;
+                        d_BSVol = DispProg.PP_HeadB_BackSuckVol;
+                        TaskDisp.SetDispVolume(false, true, DispProg.PP_HeadA_DispBaseVol, DispProg.PP_HeadB_DispBaseVol);
+                        TaskDisp.SetBackSuckVolume(false, true, d_BSVol, d_BSVol);
                     }
                     #endregion
                     break;
@@ -957,15 +983,13 @@ namespace NDispWin
                     #region
                     if (HeadNo == 1)
                     {
-                        //d_Speed = DispProg.HM_HeadA_Disp_RPM;
-                        //TaskDisp.UpdateDispSpeed(LogPump.EVolAdjType.Auto, true, false);
-                        TaskDisp.SetDispSpeed(true, false, DispProg.HM_HeadA_Disp_RPM, DispProg.HM_HeadB_Disp_RPM);
+                        d_Speed = DispProg.HM_HeadA_Disp_RPM;
+                        TaskDisp.SetDispSpeed(true, false, d_Speed, d_Speed);
                     }
                     else
                     {
-                        //d_Speed = DispProg.HM_HeadB_Disp_RPM;
-                        //TaskDisp.UpdateDispSpeed(LogPump.EVolAdjType.Auto, false, true);
-                        TaskDisp.SetDispSpeed(false, true, DispProg.HM_HeadA_Disp_RPM, DispProg.HM_HeadB_Disp_RPM);
+                        d_Speed = DispProg.HM_HeadB_Disp_RPM;
+                        TaskDisp.SetDispSpeed(false, true, d_Speed, d_Speed);
                     }
                     #endregion
                     break;
@@ -974,6 +998,7 @@ namespace NDispWin
                     #region
                     TaskDisp.Vermes3200[i_HeadNo].Param.NP = (uint)iDotsPerSample(EMeasType.Cal);
                     TaskDisp.Vermes3200[i_HeadNo].Set();
+                    d_FPress = DispProg.FPress[i_HeadNo] * FACTOR_MPaToPSI;
                     FPressCtrl.SetPress_MPa(DispProg.FPress);
                     #endregion
                     break;
@@ -981,7 +1006,6 @@ namespace NDispWin
             #endregion
 
             if (!TaskWeight.TaskGotoWeight(HeadNo)) goto _SpeedError;
-
 
             while (list_WC_PurgeWeight.Count < PurgeCount)
             {
@@ -992,19 +1016,37 @@ namespace NDispWin
                     frm_Message.Message = "Weight Cal - Purge in Progress. Pls wait...";
                     frm_Message.Show();
 
-                    s_Log = "[Head" + HeadNo + " Purge " + (list_WC_PurgeWeight.Count + 1).ToString() + "]";
-                    ListBox.Items.Add(s_Log);
-                    Log.WeightCal.WriteByMonthDay(s_Log);
+                    //s_Log = "[Head" + HeadNo + " Purge " + (list_WC_PurgeWeight.Count + 1).ToString() + "]";
+                    //ListBox.Items.Add(s_Log);
+                    //Log.WeightCal.WriteByMonthDay(s_Log);
 
                     if (!WeightCal_ExecuteSingle(ListBox, HeadNo, ref d_mg)) goto _Abort;
-
+                    if (!CheckWeightLowError()) goto _Abort;
                     list_WC_PurgeWeight.Add(d_mg);
+
+                    switch (TaskWeight.CalMeasType)
+                    {
+                        case TaskWeight.ECalMeasType.Density:
+                            double d_Density = d_mg / (d_DispVol);
+                            double pumpTime = TaskDisp.CalcPPDispTime(d_DispVol);// + d_BSVol);
+                            dApproxFR = d_mg / pumpTime;
+                            s_Log = $"Purge {list_WC_PurgeWeight.Count}\t{d_DispVol + d_BSVol:f4}-{d_BSVol:f4}\t{d_mg:f3}\t{d_Density:f4}\t{dApproxFR:f4}";
+                            break;
+                        case TaskWeight.ECalMeasType.FR_mg_s:
+                            s_Log = $"Purge {list_WC_PurgeWeight.Count}\t{d_Speed:f2}\t{d_mg:f3}\t{d_mg / (TaskWeight.DispTime / 1000):f4}";
+                            break;
+                        case TaskWeight.ECalMeasType.FR_mg_dot:
+                            s_Log = $"Purge {list_WC_PurgeWeight.Count}\t{d_FPress:f4}\t{d_mg:f3}";
+                            break;
+                    }
+                    ListBox.Items.Add(s_Log);
+                    ListBox.SelectedIndex = ListBox.Items.Count - 1;
+                    Log.WeightCal.WriteByMonthDay(s_Log);
 
                     if (frm_Message.Cancel)
                     {
                         goto _Cancel;
                     }
-
                     #endregion
                 }
                 catch { }
@@ -1025,7 +1067,6 @@ namespace NDispWin
                     if (list_WC_MeasWeight.Count == 0)
                     {
                         int i_HeadNo = HeadNo - 1;
-                        //return false;
                         double CurrFPress = DispProg.FPress[i_HeadNo] * 145.038;
                         AdjPress.Add(0);
                     }
@@ -1035,19 +1076,19 @@ namespace NDispWin
                         {
                             case TaskWeight.ECalMeasType.Density:
                                 #region
-                                double HA_Vol = DispProg.PP_HeadA_DispBaseVol + DispProg.PP_HeadA_DispVol_Adj + DispProg.rt_Head1VolumeOfst;
-                                double HB_Vol = DispProg.PP_HeadB_DispBaseVol + DispProg.PP_HeadB_DispVol_Adj + DispProg.rt_Head2VolumeOfst;
+                                //double HA_Vol = DispProg.PP_HeadA_DispBaseVol + DispProg.PP_HeadA_DispVol_Adj + DispProg.rt_Head1VolumeOfst;
+                                //double HB_Vol = DispProg.PP_HeadB_DispBaseVol + DispProg.PP_HeadB_DispVol_Adj + DispProg.rt_Head2VolumeOfst;
                                 if (HeadNo == 1)
                                 {
-                                    d_Vol = (Target_Weight / list_WC_MeasWeight[list_WC_MeasWeight.Count - 1]) * (DispProg.PP_HeadA_DispBaseVol - DispProg.PP_HeadA_BackSuckVol);//DispProg.PP_HeadA_DispBaseVol;
-                                    DispProg.PP_HeadA_DispBaseVol = d_Vol + DispProg.PP_HeadA_BackSuckVol;
-                                    bool b = TaskDisp.SetDispVolume(true, false, d_Vol, d_Vol);
+                                    d_DispVol = (Target_Weight / list_WC_MeasWeight[list_WC_MeasWeight.Count - 1]) * (d_DispVol - d_BSVol);//(DispProg.PP_HeadA_DispBaseVol - DispProg.PP_HeadA_BackSuckVol);//DispProg.PP_HeadA_DispBaseVol;
+                                    DispProg.PP_HeadA_DispBaseVol = d_DispVol + d_BSVol;// DispProg.PP_HeadA_BackSuckVol;
+                                    TaskDisp.SetDispVolume(true, false, DispProg.PP_HeadA_DispBaseVol, d_BSVol);// DispProg.PP_HeadB_DispBaseVol);
                                 }
                                 else
                                 {
-                                    d_Vol = (Target_Weight / list_WC_MeasWeight[list_WC_MeasWeight.Count - 1]) * (DispProg.PP_HeadB_DispBaseVol - DispProg.PP_HeadB_BackSuckVol);//DispProg.PP_HeadB_DispBaseVol;
-                                    DispProg.PP_HeadB_DispBaseVol = d_Vol + DispProg.PP_HeadB_BackSuckVol;
-                                    TaskDisp.SetDispVolume(false, true, d_Vol, d_Vol);
+                                    d_DispVol = (Target_Weight / list_WC_MeasWeight[list_WC_MeasWeight.Count - 1]) * (d_DispVol - d_BSVol);//(DispProg.PP_HeadB_DispBaseVol - DispProg.PP_HeadB_BackSuckVol);//DispProg.PP_HeadB_DispBaseVol;
+                                    DispProg.PP_HeadB_DispBaseVol = d_DispVol + d_BSVol;// + DispProg.PP_HeadB_BackSuckVol;
+                                    TaskDisp.SetDispVolume(false, true, DispProg.PP_HeadA_DispBaseVol, d_BSVol);//DispProg.PP_HeadB_DispBaseVol);
                                 }
                                 break;
                             #endregion
@@ -1090,7 +1131,7 @@ namespace NDispWin
                                     else
                                         NewFPress = CurrFPress - TaskWeight.CalMaxPressAdjRate * FACTOR_MPaToPSI;
 
-                                    FPressOutRange = ((DispProg.FPress_AdjMin * FACTOR_MPaToPSI > 0 && NewFPress < DispProg.FPress_AdjMin * FACTOR_MPaToPSI) || 
+                                    FPressOutRange = ((DispProg.FPress_AdjMin * FACTOR_MPaToPSI > 0 && NewFPress < DispProg.FPress_AdjMin * FACTOR_MPaToPSI) ||
                                         (DispProg.FPress_AdjMax * FACTOR_MPaToPSI > 0 && NewFPress > DispProg.FPress_AdjMax * FACTOR_MPaToPSI));
 
                                     AdjPress.Add(TaskWeight.CalMaxPressAdjRate * FACTOR_MPaToPSI);
@@ -1126,33 +1167,33 @@ namespace NDispWin
                     frm_Message.Message = "Weight Cal - Weight in Progress. Pls wait...";
                     frm_Message.Show();
 
-                    s_Log = "[Head" + HeadNo + " Meas " + (list_WC_MeasWeight.Count + 1).ToString() + "]";
-                    ListBox.Items.Add(s_Log);
-                    Log.WeightCal.WriteByMonthDay(s_Log);
+                    //s_Log = "[Head" + HeadNo + " Meas " + (list_WC_MeasWeight.Count + 1).ToString() + "]";
+                    //ListBox.Items.Add(s_Log);
+                    //Log.WeightCal.WriteByMonthDay(s_Log);
 
                     if (!WeightCal_ExecuteSingle(ListBox, HeadNo, ref d_mg)) goto _Abort;
+                    if (!CheckWeightLowError()) goto _Abort;
+                    list_WC_MeasWeight.Add(d_mg);
 
-                    if (TaskWeight.CalMeasType == TaskWeight.ECalMeasType.Density)
+                    switch (TaskWeight.CalMeasType)
                     {
-                        list_WC_MeasWeight.Add(d_mg);
-                        if (HeadNo == 1)
-                        {
-                            list_WC_MeasDensity.Add(d_mg / (DispProg.PP_HeadA_DispBaseVol - DispProg.PP_HeadA_BackSuckVol));
-                        }
-                        if (HeadNo == 2)
-                        {
-                            list_WC_MeasDensity.Add(d_mg / (DispProg.PP_HeadB_DispBaseVol - DispProg.PP_HeadB_BackSuckVol));
-                        }
+                        case TaskWeight.ECalMeasType.Density:
+                            double d_Density = d_mg / (d_DispVol);
+                            list_WC_MeasDensity.Add(d_Density);
+                            double pumpTime = TaskDisp.CalcPPDispTime(d_DispVol);// + d_BSVol);
+                            dApproxFR = d_mg / pumpTime;
+                            s_Log = $"Cal {list_WC_MeasWeight.Count}\t{d_DispVol + d_BSVol:f4}-{d_BSVol:f4}\t{d_mg:f3}\t{d_Density:f4}\t{dApproxFR:f4}";
+                            break;
+                        case TaskWeight.ECalMeasType.FR_mg_s:
+                            s_Log = $"Cal {list_WC_MeasWeight.Count}\t{d_Speed:f2},{d_mg:f3}\t{d_mg / (TaskWeight.DispTime / 1000):f4}";
+                            break;
+                        case TaskWeight.ECalMeasType.FR_mg_dot:
+                            s_Log = $"Cal {list_WC_MeasWeight.Count}\t{d_FPress:f4}\t{d_mg:f3}";
+                            break;
                     }
-                    if (TaskWeight.CalMeasType == TaskWeight.ECalMeasType.FR_mg_s)
-                    {
-                        list_WC_MeasWeight.Add(d_mg);// / (TaskWeight.DispTime / 1000));
-                    }
-                    if (TaskWeight.CalMeasType == TaskWeight.ECalMeasType.FR_mg_dot)
-                    {
-                        list_WC_MeasWeight.Add(d_mg);
-                    }
-
+                    ListBox.Items.Add(s_Log);
+                    ListBox.SelectedIndex = ListBox.Items.Count - 1;
+                    Log.WeightCal.WriteByMonthDay(s_Log);
 
                     if (list_WC_MeasWeight.Count >= TaskWeight.CalAcceptCount)
                     {
@@ -1186,35 +1227,26 @@ namespace NDispWin
                         {
                             double W = l_AcceptWeight.Average();
 
-                            if (TaskWeight.CalMeasType == TaskWeight.ECalMeasType.Density)
+                            switch (TaskWeight.CalMeasType)
                             {
-                                TaskWeight.CurrentCal[HeadNo - 1] = l_AcceptDensity.Average();
-                                Log.WeightCal.WriteByMonthDay("Density " + HeadNo.ToString() + (char)9 + TaskWeight.CurrentCal[HeadNo - 1].ToString(dp_FLOWRATE));
-                            }
-                            if (TaskWeight.CalMeasType == TaskWeight.ECalMeasType.FR_mg_s)
-                            {
-                                if (HeadNo == 1)
-                                {
+                                case TaskWeight.ECalMeasType.Density:
+                                    TaskWeight.CurrentCal[HeadNo - 1] = l_AcceptDensity.Average();
+                                    TaskWeight.ApproxFlowrate[HeadNo - 1] = dApproxFR;
+                                    s_Log = $"Density\t{TaskWeight.CurrentCal[HeadNo - 1]:f4}";
+                                    break;
+                                case TaskWeight.ECalMeasType.FR_mg_s:
                                     TaskWeight.CurrentCal[HeadNo - 1] = W / (TaskWeight.DispTime / 1000);
-                                }
-                                if (HeadNo == 2)
-                                {
-                                    TaskWeight.CurrentCal[HeadNo - 1] = W / (TaskWeight.DispTime / 1000);
-                                }
-                                Log.WeightCal.WriteByMonthDay("FlowRate " + HeadNo.ToString() + (char)9 + TaskWeight.CurrentCal[HeadNo - 1].ToString(dp_FLOWRATE));
+                                    s_Log = $"FlowRate\t{TaskWeight.CurrentCal[HeadNo - 1]:f4}";
+                                    break;
+                                case TaskWeight.ECalMeasType.FR_mg_dot:
+                                    TaskWeight.CurrentCal[HeadNo - 1] = W;
+                                    s_Log = $"Weight\t{TaskWeight.CurrentCal[HeadNo - 1]:f4}";
+                                    break;
                             }
-                            if (TaskWeight.CalMeasType == TaskWeight.ECalMeasType.FR_mg_dot)
-                            {
-                                if (HeadNo == 1)
-                                {
-                                    TaskWeight.CurrentCal[HeadNo - 1] = W;// / TaskWeight.DispTime;
-                                }
-                                if (HeadNo == 2)
-                                {
-                                    TaskWeight.CurrentCal[HeadNo - 1] = W;// / TaskWeight.DispTime;
-                                }
-                                Log.WeightCal.WriteByMonthDay("Weight " + HeadNo.ToString() + (char)9 + TaskWeight.CurrentCal[HeadNo - 1].ToString(dp_FLOWRATE));
-                            }
+                            ListBox.Items.Add(s_Log);
+                            ListBox.SelectedIndex = ListBox.Items.Count - 1;
+                            Log.WeightCal.WriteByMonthDay(s_Log);
+
                             TaskWeight.SaveDefault();
                             TaskDisp.FPressOff();
 
@@ -1231,7 +1263,7 @@ namespace NDispWin
                             }
                             else
                             {
-                                s_Log = $"[Head {HeadNo} Cal Error] Invalid Calibration Value {TaskWeight.CurrentCal[HeadNo - 1]:f3}.";
+                                s_Log = $"[Cal Error] Invalid Calibration Value {TaskWeight.CurrentCal[HeadNo - 1]:f3}.";
                                 TaskWeight.CurrentCal[HeadNo - 1] = 1;
                                 ListBox.Items.Add(s_Log);
                                 Log.WeightCal.WriteByMonthDay(s_Log);
@@ -1246,7 +1278,7 @@ namespace NDispWin
                     if (list_WC_MeasWeight.Count >= TaskWeight.CalMaxAttempt)
                     {
                         TaskDisp.TaskMoveGZZ2Up();
-                        s_Log = "[Head" + HeadNo + " Error] Max Attempt Fail to Achieve Target.";
+                        s_Log = $"[Cal Error] HeadNoMax Attempt Fail to Achieve Target.";
                         ListBox.Items.Add(s_Log);
                         Log.WeightCal.WriteByMonthDay(s_Log);
                         ListBox.Items.Add("");
@@ -1271,7 +1303,7 @@ namespace NDispWin
                 if (FPressOutRange)
                 {
                     TaskDisp.TaskMoveGZZ2Up();
-                    s_Log = "[Head" + HeadNo + " Error] FPress Out Of Range.";
+                    s_Log = $"[Cal Error] FPress Out Of Range.";
                     ListBox.Items.Add(s_Log);
                     Log.WeightCal.WriteByMonthDay(s_Log);
                     ListBox.Items.Add("");
@@ -1296,7 +1328,7 @@ namespace NDispWin
 
             TaskDisp.TaskMoveGZZ2Up();
 
-            s_Log = "[Head" + HeadNo + " Cancelled]";
+            s_Log = "[Cal Cancelled]";
             ListBox.Items.Add(s_Log);
             Log.WeightCal.WriteByMonthDay(s_Log);
             ListBox.Items.Add("");
@@ -1308,12 +1340,26 @@ namespace NDispWin
 
             TaskDisp.TaskMoveGZZ2Up();
 
-            s_Log = "[Head" + HeadNo + " Error]";
+            s_Log = "[Cal Error] Speed Error.";
             ListBox.Items.Add(s_Log);
             Log.WeightCal.WriteByMonthDay(s_Log);
             ListBox.Items.Add("");
 
             return false;
+
+            bool CheckWeightLowError()
+            {
+                if (d_mg <= 0)
+                {
+                    TaskDisp.TaskMoveGZZ2Up();
+                    s_Log = "[Cal Error] Low Weight Error.";
+                    ListBox.Items.Add(s_Log);
+                    ListBox.SelectedIndex = ListBox.Items.Count - 1;
+                    Log.WeightCal.WriteByMonthDay(s_Log);
+                    return false;
+                }
+                return true;
+            }
         }
         #endregion
 
@@ -1701,13 +1747,13 @@ namespace NDispWin
                             d_mg = d_mg / iDotsPerSample(EMeasType.Meas);
                         }
                         list_WM_MeasWeight.Add(d_mg);
-                        if (DispProg.Meas_Spec == 0) TaskWeight.MeasureSpec = list_WM_MeasWeight.Average();
+                        //if (DispProg.Meas_Spec == 0) TaskWeight.MeasureSpec = list_WM_MeasWeight.Average();
                         frm.GraphAddData(d_mg);
                         frm.UpdateStats();
                         ListBox.Items.Add("[" + (list_WM_MeasWeight.Count).ToString() + "]" + (char)9 + d_mg.ToString(dp_WEIGH));
                         ListBox.SelectedIndex = ListBox.Items.Count - 1;
                     }
-                    else
+                    else//b_Ignore
                     {
                         if (i_IgnoreCount == 0)
                         {

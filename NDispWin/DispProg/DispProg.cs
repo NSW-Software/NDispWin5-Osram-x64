@@ -450,6 +450,17 @@ namespace NDispWin
 
             GROUP_DISP = 460,
 
+            PAR_LINES = 461,
+            /* Parameters
+            ID              nil
+            IPara[0..9]     [ModelNo, .1., Disp, VHType, UseWeight, Reverse, .6., .7., .8., .9.]
+            DPara[0..9]     [LeadLen, LagLen, .2., .3., .4., .5., .6., .7., .8., .9.]
+            DPara[10..19]   [CutTailLength, Speed, Height, Type, ..]
+            DPara[20..29]   [FirstLineMass, LineMass, LastLineMass, ..]
+            X[0..99]        [XStart, ..]
+            Y[0..99]        [YStart, ..]
+            */
+
             VOL_SET_DOTS = 480,//distribute volume to total number of dots.
 
             CLEAN = 500,
@@ -522,7 +533,7 @@ namespace NDispWin
             IPara[10..19]   []
             IPara[20..29]   []
             Index[0..9]   []
-            DPara[0..9]    [?, ?,..]
+            DPara[0..9]    [LeadLen, LagLen, AddLineTime, ..]
             DPara[10..11]   []
             X[0..9]         [RX1..RX99]
             Y[0..9]         [RY1..RY99]
@@ -668,6 +679,10 @@ namespace NDispWin
         public static int PP_Head_DispOffsetTol = 0;//%
         public static double PP_Head_DispAdjustReso = 0.001;//%
 
+
+
+
+
         public static double Target_Weight = 1.000;//mg - package weight
         public static double Cal_Weight = 0;//mg - calibration weight
 
@@ -675,6 +690,9 @@ namespace NDispWin
         public static double Meas_Spec = 0;//mg - measure weight
         public static double Meas_Spec_Tol = 0;//mg - measure weight tol
         public static double Cal_Weight_Tol = 0;//mg - calibration weight tol
+
+
+
 
         public static double[] Disp_Weight = new double[2] { 1, 1 };
 
@@ -9915,7 +9933,6 @@ namespace NDispWin
                                 }
                             #endregion;
                             case ECmd.GROUP_DISP:
-                                #region
                                 {
                                     EMsg = Msg + " " + CmdList.Line[Line].Cmd.ToString();
 
@@ -9944,7 +9961,47 @@ namespace NDispWin
                                     if (!GroupDisp.Execute(ActiveLine, RunMode, f_origin_x, f_origin_y, f_origin_z)) Running = false;
                                     break;
                                 }
-                            #endregion;
+                            case ECmd.PAR_LINES:
+                                {
+                                    EMsg = Msg + " " + CmdList.Line[Line].Cmd.ToString();
+
+                                    if (!b_InLoop && !Running) goto _Pause;
+                                    LicenseValidation();
+
+                                    int ColNo = 0;
+                                    int RowNo = 0;
+                                    rt_Layouts[rt_LayoutID].UnitNoGetRC(RunTime.UIndex, ref ColNo, ref RowNo);
+                                    //int CColNo = 0;
+                                    //int CRowNo = 0;
+                                    //rt_Layouts[rt_LayoutID].UnitNoGetRC(RunTime.UIndex, ref ColNo, ref RowNo, ref CColNo, ref CRowNo);
+
+                                    EVHType vhType = EVHType.Hort;//0=Horizontal, 1=Vertical
+                                    try { vhType = (EVHType)ActiveLine.IPara[3]; } catch { };
+
+                                    if (vhType == EVHType.Hort && ColNo > 0) break;
+                                    if (vhType == EVHType.Vert && RowNo > 0) break;
+
+                                    if (b_SecondHalf || b_IsNeedle2) break;
+                                    switch (RunMode)
+                                    {
+                                        case ERunMode.Dry:
+                                        case ERunMode.Normal:
+                                            TaskVision.LightingOff();
+                                            break;
+                                        case ERunMode.Camera:
+                                            TaskVision.LightingOn(TaskVision.DefLightRGB);
+                                            break;
+                                    }
+
+                                    if (GDefine.CameraType[(int)TaskVision.SelectedCam] == GDefine.ECameraType.PtGrey)
+                                    {
+                                        if (RunMode == ERunMode.Camera)
+                                            TaskVision.PtGrey_CamLive(0);
+                                    }
+
+                                    if (!ParLines.Par_Lines(ActiveLine, RunMode, f_origin_x, f_origin_y, f_origin_z)) Running = false;
+                                    break;
+                                }
                             case ECmd.VOL_SET_DOTS:
                                 #region
                                 {

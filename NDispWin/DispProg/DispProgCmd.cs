@@ -1206,4 +1206,420 @@ namespace NDispWin
             return false;
         }
     }
+
+    internal class ParLines
+    {
+        public static bool Par_Lines(DispProg.TLine Line, ERunMode RunMode, double f_origin_x, double f_origin_y, double f_origin_z)
+        {
+            GDefine.Status = EStatus.Busy;
+
+            try
+            {
+                TModelPara Model = new TModelPara(DispProg.ModelList, Line.IPara[0]);
+                bool disp = (Line.IPara[2] > 0);
+
+                EVHType vhType = EVHType.Hort;//0=Horizontal, 1=Vertical
+                try { vhType = (EVHType)Line.IPara[3]; } catch { };
+
+                double leadLength = Line.DPara[0];
+                double lagLength = Line.DPara[1];
+                double relLeadStartHeight = Line.DPara[2];
+                double relLagEndHeight = Line.DPara[3];
+                double addLineTime = Line.DPara[4];
+
+                bool[] bHeadRun = new bool[2] { false, false };
+                bool bHead2IsValid = false;
+                bool bSyncHead2 = false;
+                if (!DispProg.SelectHead(Line, ref bHeadRun, ref bHead2IsValid, ref bSyncHead2)) goto _End;
+
+                switch (RunMode)
+                {
+                    case ERunMode.Normal:
+                        {
+                            if (disp)
+                            {
+                                if (!TaskDisp.CtrlWaitReady(bHeadRun[0], bHeadRun[1])) goto _Stop;
+                            }
+                            break;
+                        }
+                    case ERunMode.Dry:
+                    case ERunMode.Camera:
+                        {
+                            break;
+                        }
+                }
+
+                TLayout layout = new TLayout();
+                layout.Copy(DispProg.rt_Layouts[DispProg.rt_LayoutID]);
+
+                Point currentUnitCR = new Point(0, 0);
+                layout.UnitNoGetRC(DispProg.RunTime.UIndex, ref currentUnitCR);
+                Point currentClusterCR = new Point(0, 0);
+                currentClusterCR.X = currentUnitCR.X / layout.UColCount;
+                currentClusterCR.Y = currentUnitCR.Y / layout.URowCount;
+
+                if (!DispProg.SetPumpParameters(Model, disp, bHeadRun)) goto _Stop;
+
+                #region Move GZ2 Up if invalid
+                if (GDefine.GantryConfig == GDefine.EGantryConfig.XY_ZX2Y2_Z2 && !bHead2IsValid)
+                {
+                    switch (RunMode)
+                    {
+                        case ERunMode.Normal:
+                        case ERunMode.Dry:
+                            if (!TaskDisp.TaskMoveGZ2Up()) return false;
+                            break;
+                    }
+                }
+                #endregion
+
+                #region assign and xy translate position
+                TPos2[] absStart = new TPos2[]
+                {
+                new TPos2(f_origin_x + DispProg.rt_LayoutRelPos[DispProg.RunTime.UIndex].X + Line.X[0], f_origin_y + DispProg.rt_LayoutRelPos[DispProg.RunTime.UIndex].Y + Line.Y[0]),
+                new TPos2(f_origin_x + DispProg.rt_LayoutRelPos[DispProg.RunTime.UIndex2].X + Line.X[0], f_origin_y + DispProg.rt_LayoutRelPos[DispProg.RunTime.UIndex2].Y + Line.Y[0])
+                };
+                DispProg.TranslatePos(absStart[0].X, absStart[0].Y, DispProg.rt_Head1RefData, ref absStart[0].X, ref absStart[0].Y);
+                DispProg.TranslatePos(absStart[1].X, absStart[1].Y, DispProg.rt_Head1RefData, ref absStart[1].X, ref absStart[1].Y);
+                #endregion
+
+                #region Calculate the End positions
+                Point firstCR = new Point(0, 0);
+                Point lastCR = new Point(0, 0);
+                int lastUnitNo = 0;//Last UnitNo of Hort/Vert line 
+                if (vhType == EVHType.Hort)
+                {
+                    layout.UnitNoGetRC(DispProg.RunTime.UIndex, ref firstCR);
+                    lastCR = new Point((currentClusterCR.X * layout.UColCount) + layout.UColCount - 1, firstCR.Y);
+                    layout.RCGetUnitNo(ref lastUnitNo, lastCR.X, lastCR.Y);//Get the last unit number of the current row.
+                }
+                else
+                {
+                    layout.UnitNoGetRC(DispProg.RunTime.UIndex, ref firstCR);
+                    lastCR = new Point(firstCR.X, (currentClusterCR.Y * layout.URowCount) + layout.URowCount - 1);
+                    layout.RCGetUnitNo(ref lastUnitNo, lastCR.X, lastCR.Y);//Get the last unit number of the current col.
+                }
+                TPos2 absEnd = new TPos2(f_origin_x + DispProg.rt_LayoutRelPos[lastUnitNo].X + Line.X[0], f_origin_y + DispProg.rt_LayoutRelPos[lastUnitNo].Y + Line.Y[0]);
+                DispProg.TranslatePos(absEnd.X, absEnd.Y, DispProg.rt_Head1RefData, ref absEnd.X, ref absEnd.Y);
+                #endregion
+
+                bool reverse = Line.IPara[5] > 0;
+                if (reverse)
+                {
+                    if ((vhType == EVHType.Hort && firstCR.Y % 2 != 0) || (vhType == EVHType.Vert && firstCR.X % 2 != 0))
+                    {
+                        TPos2 temp = new TPos2(absStart[0]);
+                        absStart[0] = new TPos2(absEnd);
+                        absEnd = new TPos2(temp);
+                    }
+                }
+
+                #region Calculate the start Z positions
+                double[] absZ = new double[] { 0, 0 };
+                absZ[0] = f_origin_z + TaskDisp.Head_Ofst[0].Z; //Assign Z positions
+                absZ[1] = absZ[0] + (TaskDisp.Head_ZSensor_RefPosZ[1] - TaskDisp.Head_ZSensor_RefPosZ[0]); //Update ZPlane if valid Z values
+                DispProg.UpdateZHeight(bSyncHead2, absStart[0].X, absStart[0].Y, absStart[1].X, absStart[1].Y, ref absZ[0], ref absZ[1]);
+                double[] zRetGapPos = new double[] { Math.Min(absZ[0] + Model.DispGap + Model.RetGap, TaskDisp.ZDefPos), Math.Min(absZ[1] + Model.DispGap + Model.RetGap, TaskDisp.ZDefPos) };
+
+                double[] absEndZ = new double[] { absZ[0], absZ[1] };
+                DispProg.UpdateZHeight(bSyncHead2, absEnd.X, absEnd.Y, absEnd.X, absEnd.Y, ref absEndZ[0], ref absEndZ[1]);//Head2 Z follow Head1
+                #endregion
+
+                //Calculate the relative line end pos
+                TPos2 relLineEndXY = new TPos2(absEnd.X - absStart[0].X, absEnd.Y - absStart[0].Y);
+                double relEndZ = absEndZ[0] - absZ[0];
+
+                //Calculate the lead lag relative pos
+                double lineLength = Math.Sqrt(Math.Pow(relLineEndXY.X, 2) + Math.Pow(relLineEndXY.Y, 2));
+                TPos2 relLeadXY = new TPos2(leadLength / lineLength * relLineEndXY.X, leadLength / lineLength * relLineEndXY.Y);
+                TPos2 relLagXY = new TPos2(lagLength / lineLength * relLineEndXY.X, lagLength / lineLength * relLineEndXY.Y);
+
+                #region Move abs Start Pos + lead length, move head2 to position
+                if (!TaskGantry.SetMotionParamGXY()) goto _Error;
+                TPos2 GXY = new TPos2(absStart[0].X - relLeadXY.X, absStart[0].Y - relLeadXY.Y);
+                if (RunMode == ERunMode.Normal || RunMode == ERunMode.Dry)
+                {
+                    GXY.X += TaskDisp.Head_Ofst[0].X;
+                    GXY.Y += TaskDisp.Head_Ofst[0].Y;
+                }
+                if (!TaskGantry.MoveAbsGXY(GXY.X, GXY.Y, false)) goto _Error;
+                TPos2 GX2Y2 = new TPos2(TaskDisp.Head2_DefPos.X, TaskDisp.Head2_DefPos.Y);
+                if (GDefine.GantryConfig == GDefine.EGantryConfig.XY_ZX2Y2_Z2)
+                {
+                    if (bHeadRun[1])
+                    {
+                        GX2Y2.X = GX2Y2.X - TaskDisp.Head2_DefDistX + (absStart[1].X - absStart[0].X) + TaskDisp.Head2_XOffset;
+                        GX2Y2.Y = GX2Y2.Y + (absStart[1].Y - absStart[0].Y) + TaskDisp.Head2_YOffset;
+
+                        if (!TaskGantry.SetMotionParamGX2Y2()) goto _Error;
+                        if (!TaskGantry.MoveAbsGX2Y2(GX2Y2.X, GX2Y2.Y, false)) goto _Error;
+                    }
+                    TaskGantry.WaitGX2Y2();
+                }
+                TaskGantry.WaitGXY();
+                #endregion
+
+                //Move to abs RetractGap
+                switch (RunMode)
+                {
+                    case ERunMode.Normal:
+                    case ERunMode.Dry:
+                        {
+                            if (!TaskGantry.SetMotionParamGZZ2(Model.DnStartV, Model.DnSpeed, Model.DnAccel)) return false;
+                            if (!DispProg.MoveZAbs(bHeadRun[0], bHeadRun[1], zRetGapPos[0], zRetGapPos[1])) return false;
+                            //return false;
+                            break;
+                        }
+                    case ERunMode.Camera:
+                    default:
+                        {
+                            break;
+                        }
+                }
+
+                double[] GZ = new double[] { Math.Min(absZ[0] + Model.DispGap + relLeadStartHeight, TaskDisp.ZDefPos), Math.Min(absZ[1] + Model.DispGap + TaskDisp.Head2_ZOffset + relLeadStartHeight, TaskDisp.ZDefPos) };//include H2 ZOffset
+
+                //Move to abs DispGap
+                switch (RunMode)
+                {
+                    case ERunMode.Normal:
+                    case ERunMode.Dry:
+                        {
+
+                            double sv = Model.DnStartV;
+                            double dv = Model.DnSpeed;
+                            double ac = Model.DnAccel;
+                            if (!TaskGantry.SetMotionParamGZZ2(sv, dv, ac)) goto _Stop;
+                            if (!DispProg.MoveZAbs(bHeadRun[0], bHeadRun[1], GZ[0], GZ[1])) return false;
+
+                            break;
+                        }
+                    case ERunMode.Camera:
+                    default:
+                        {
+                            break;
+                        }
+                }
+
+                #region Dn Wait
+                int t = GDefine.GetTickCount() + (int)Model.DnWait;
+                while (GDefine.GetTickCount() < t)
+                {
+                    if (Model.DnWait > 75) Thread.Sleep(1);
+                }
+                #endregion
+
+                #region Start Disp and StartDelay
+                CControl2.TAxis[] Axis = new CControl2.TAxis[] { TaskGantry.GXAxis, TaskGantry.GYAxis, TaskGantry.GZAxis, TaskGantry.GZ2Axis };
+                CommonControl.P1245.PathFree(Axis);
+                CControl2.TOutput[] Output = null;
+                DispProg.Outputs(bHeadRun, ref Output);
+                CommonControl.P1245.PathAddDO(Axis, Output, disp && RunMode == ERunMode.Normal);
+                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.GPDELAY, true, Model.StartDelay, 0, null, null);
+                #endregion
+
+                CommonControl.P1245.SetAccel(Axis, Model.LineAccel);
+                double LineSpeed = Model.LineSpeed;
+
+                bool useWeight = Line.IPara[4] > 0;
+                if (useWeight)
+                {
+                    double LineMass = Line.DPara[21];
+                    double FLineMass = Line.DPara[20] > 0 ? Line.DPara[20] : Line.DPara[21];
+                    double LLineMass = Line.DPara[22] > 0 ? Line.DPara[22] : Line.DPara[21];
+
+                    double targetWeight = 0;
+                    if (vhType == EVHType.Hort)
+                    {
+                        targetWeight = LineMass;
+                        if (currentUnitCR.Y == 0) targetWeight = FLineMass;
+                        if (currentUnitCR.Y == layout.TRowCount - 1) targetWeight = LLineMass;
+                    }
+                    else //Vert
+                    {
+                        targetWeight = LineMass;
+                        if (currentUnitCR.X == 0) targetWeight = FLineMass;
+                        if (currentUnitCR.X == layout.TColCount - 1) targetWeight = LLineMass;
+                    }
+
+                    double vol = targetWeight / TaskWeight.CurrentCal[0];
+                    double dispVol = vol + DispProg.PP_HeadA_BackSuckVol;
+                    DispProg.PP_HeadA_DispBaseVol = dispVol;
+                    double time = TaskDisp.CalcPPDispTime(dispVol) + addLineTime;
+                    LineSpeed = (lineLength + leadLength + lagLength) / time;
+                    Log.AddToEventLog($"DispVol(ul) {vol}, BSuck(ul) {DispProg.PP_HeadA_BackSuckVol}, LineSpeed {LineSpeed}");
+                    if (LineSpeed > 100) throw new Exception("Auto Line Speed over 50mm/s. Run Aborted.");
+
+                    if (!TaskDisp.SetDispVolume(
+                    true, false,
+                        DispProg.PP_HeadA_DispBaseVol + DispProg.PP_HeadA_DispVol_Adj + DispProg.rt_Head1VolumeOfst,
+                        DispProg.PP_HeadB_DispBaseVol + DispProg.PP_HeadB_DispVol_Adj + DispProg.rt_Head2VolumeOfst))
+                    {
+                        throw new Exception("Set Volume Error");
+                    }
+                }
+
+                if (RunMode == ERunMode.Normal || RunMode == ERunMode.Dry)
+                {
+                    CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel4DDirect, false, LineSpeed, LineSpeed, new double[4] { relLeadXY.X, relLeadXY.Y, -relLeadStartHeight, -relLeadStartHeight }, null);
+                    CommonControl.P1245.PathAddDO(Axis, Output, disp && RunMode == ERunMode.Normal);
+                    CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel4DDirect, false, LineSpeed, LineSpeed, new double[4] { relLineEndXY.X, relLineEndXY.Y, relEndZ, relEndZ }, null);
+                    CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel4DDirect, false, LineSpeed, LineSpeed, new double[4] { relLagXY.X, relLagXY.Y, relLagEndHeight, relLagEndHeight }, null);
+                    CommonControl.P1245.PathAddDO(Axis, Output, false);
+                }
+                else
+                {
+                    CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel4DDirect, false, LineSpeed, LineSpeed, new double[4] { relLeadXY.X, relLeadXY.Y, 0, 0 }, null);
+                    CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel4DDirect, false, LineSpeed, LineSpeed, new double[4] { relLineEndXY.X, relLineEndXY.Y, 0, 0 }, null);
+                    CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel4DDirect, false, LineSpeed, LineSpeed, new double[4] { relLagXY.X, relLagXY.Y, 0, 0 }, null);
+                }
+
+                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.GPDELAY, true, Model.PostWait, 0, null, null);
+
+                #region Path CutTail
+                //double priorLineLength = Math.Sqrt(Math.Pow(relLagXY.X, 2) + Math.Pow(relLagXY.Y, 2));
+                //if (priorLineLength == 0) goto _SkipCutTail;
+                double cutTailLength = Line.DPara[10];
+                double priorLineLength = lineLength;
+                double extRelX = relLineEndXY.X * cutTailLength / priorLineLength;
+                double extRelY = relLineEndXY.Y * cutTailLength / priorLineLength;
+
+                double lagLineLength = Math.Sqrt(Math.Pow(relLagXY.X, 2) + Math.Pow(relLagXY.Y, 2));
+                if (lagLineLength > 0)
+                //goto _SkipCutTail;
+                {
+                    priorLineLength = lagLineLength;
+                    extRelX = relLagXY.X * cutTailLength / priorLineLength;
+                    extRelY = relLagXY.Y * cutTailLength / priorLineLength;
+                }
+
+                double cutTailSpeed = Line.DPara[11];
+                double cutTailSSpeed = Math.Min(Model.LineStartV, cutTailSpeed);
+                double cutTailHeight = (RunMode == ERunMode.Normal || RunMode == ERunMode.Dry) ? Line.DPara[12] : 0;
+                ECutTailType cutTailType = ECutTailType.None;
+                try { cutTailType = (ECutTailType)Line.DPara[13]; } catch { };
+
+                bool b_Blend = false;
+
+                switch (cutTailType)
+                {
+                    case ECutTailType.None:
+                        break;
+                    case ECutTailType.Fwd:
+                        CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel3DLine, b_Blend, cutTailSpeed, cutTailSSpeed, new double[4] { extRelX, extRelY, cutTailHeight, cutTailHeight }, null);
+                        break;
+                    case ECutTailType.Bwd:
+                        CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel3DLine, b_Blend, cutTailSpeed, cutTailSSpeed, new double[4] { -extRelX, -extRelY, cutTailHeight, cutTailHeight }, null);
+                        break;
+                    case ECutTailType.SqFwd:
+                        CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel3DLine, b_Blend, cutTailSpeed, cutTailSSpeed, new double[4] { 0, 0, cutTailHeight, cutTailHeight }, null);
+                        CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel3DLine, b_Blend, cutTailSpeed, cutTailSSpeed, new double[4] { extRelX, extRelY, 0, 0 }, null);
+                        break;
+                    case ECutTailType.SqBwd:
+                        CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel3DLine, b_Blend, cutTailSpeed, cutTailSSpeed, new double[4] { 0, 0, cutTailHeight, cutTailHeight }, null);
+                        CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel3DLine, b_Blend, cutTailSpeed, cutTailSSpeed, new double[4] { -extRelX, -extRelY, 0, 0 }, null);
+                        break;
+                    case ECutTailType.Rev:
+                        CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel3DLine, b_Blend, cutTailSpeed, cutTailSSpeed, new double[4] { extRelX, extRelY, 0, 0 }, null);
+                        CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel3DLine, b_Blend, cutTailSpeed, cutTailSSpeed, new double[4] { -extRelX, -extRelY, cutTailHeight, cutTailHeight }, null);
+                        break;
+                    case ECutTailType.SqRev:
+                        CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel3DLine, b_Blend, cutTailSpeed, cutTailSSpeed, new double[4] { extRelX, extRelY, 0, 0 }, null);
+                        CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel3DLine, b_Blend, cutTailSpeed, cutTailSSpeed, new double[4] { 0, 0, cutTailHeight, cutTailHeight }, null);
+                        CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel3DLine, b_Blend, cutTailSpeed, cutTailSSpeed, new double[4] { -extRelX, -extRelY, 0, 0 }, null);
+                        break;
+                }
+            _SkipCutTail:
+                #endregion
+
+                CommonControl.P1245.PathEnd(Axis);
+                CommonControl.P1245.PathMove(Axis);
+
+                while (true)
+                {
+                    if (!CommonControl.P1245.AxisBusy(Axis)) break;
+                }
+
+                #region Move ZRetGap, ZUpGap and ZPanelGap
+                switch (RunMode)
+                {
+                    case ERunMode.Normal:
+                    case ERunMode.Dry:
+                        {
+                            if (Model.RetGap != 0)
+                            {
+                                #region Move Ret
+                                if (!TaskGantry.SetMotionParamGZZ2(Model.RetStartV, Model.RetSpeed, Model.RetAccel)) return false;
+                                if (!DispProg.MoveRelZ(bHeadRun[0], bHeadRun[1], Model.RetGap, Model.RetGap)) return false;
+                                #endregion
+                                #region Ret Wait
+                                if (Model.RetWait > 0)
+                                {
+                                    t = GDefine.GetTickCount() + Model.RetWait;
+                                    while (GDefine.GetTickCount() < t)
+                                    {
+                                        TaskDisp.Thread_CheckIsFilling_Run(bHeadRun[0], bHeadRun[1]);
+                                    }
+                                }
+                                #endregion
+                            }
+                            if (Model.UpGap != 0)
+                            {
+                                #region Move Up
+                                if (!TaskGantry.SetMotionParamGZZ2(Model.UpStartV, Model.UpSpeed, Model.UpAccel)) return false;
+                                if (!DispProg.MoveRelZ(bHeadRun[0], bHeadRun[1], Model.UpGap, Model.UpGap)) return false;
+                                #endregion
+                                #region Up Wait
+                                t = GDefine.GetTickCount() + Model.UpWait;
+                                while (GDefine.GetTickCount() < t)
+                                {
+                                    TaskDisp.Thread_CheckIsFilling_Run(bHeadRun[0], bHeadRun[1]);
+                                }
+                                #endregion
+                            }
+                            break;
+                        }
+                    case ERunMode.Camera:
+                        {
+                            break;
+                        }
+                }
+                #endregion
+
+                if (DispProg.Options_EnableProcessLog)
+                {
+                    double gz1 = TaskGantry.EncoderPos(TaskGantry.GZAxis);
+                    string str = $"{Line.Cmd}\t";
+                    str += $"DispGap={Model.DispGap:f3}\t";
+                    str += $"C,R={DispProg.RunTime.Head_CR[0].X},{DispProg.RunTime.Head_CR[0].Y}\t";
+                    str += $"X,Y,Z={GXY.X:f3},{GXY.Y:f3},{gz1:f3} XE,YE,ZE ={ GXY.X + relLineEndXY.X:f3},{ GXY.Y + relLineEndXY.Y:f3},{ gz1 + relEndZ:f3}\t";
+                    if (DispProg.Head_Operation == TaskDisp.EHeadOperation.Sync)
+                    {
+                        double gz2 = TaskGantry.EncoderPos(TaskGantry.GZ2Axis);
+                        str += $"C2,R2={DispProg.RunTime.Head_CR[1].X},{DispProg.RunTime.Head_CR[1].Y}\t";
+                        str += $"X2,Y2,Z2={GX2Y2.X:f3},{GX2Y2.Y:f3},{gz2:f3} X2,Y2,Z2={GX2Y2.X + relLineEndXY.X:f3},{GX2Y2.Y + relLineEndXY.Y:f3},{gz2 + relEndZ:f3}\t";
+                        double zdiff = TaskDisp.Head_ZSensor_RefPosZ[1] - TaskDisp.Head_ZSensor_RefPosZ[0];
+                        str += $"XA2,YA2,ZA2={GXY.X + (absStart[1].X - absStart[0].X):f3},{GXY.Y + (absStart[1].Y - absStart[0].Y):f3},{gz2 - TaskDisp.Head_ZSensor_RefPosZ[1] - TaskDisp.Head_ZSensor_RefPosZ[0]:f3}\t";
+                    }
+                    GLog.WriteProcessLog(str);
+                }
+            }
+            catch (Exception Ex)
+            {
+                GDefine.Status = EStatus.ErrorInit;
+                TaskDisp.TrigOff(true, true);
+                string eMsg = Line.Cmd.ToString() + (char)13 + Ex.Message.ToString();
+                throw new Exception(eMsg);
+            }
+        _End:
+            GDefine.Status = EStatus.Ready;
+            return true;
+        _Stop:
+            GDefine.Status = EStatus.Stop;
+            return false;
+        _Error:
+            GDefine.Status = EStatus.ErrorInit;
+            return false;
+        }
+    }
 }

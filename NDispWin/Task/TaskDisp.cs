@@ -871,6 +871,7 @@ namespace NDispWin
         public static bool Option_EnableDualMaterial = false;
         public static bool MaterialLowForbidContinue = false;
 
+        public static double Option_DensityRange = 0;
 
         public enum ETeachNeedleMethod
         {
@@ -1345,6 +1346,7 @@ namespace NDispWin
             Option_EnableMaterialLow = IniFile.ReadBool("Option", "EnableMaterialLow", false);
             Option_EnableDualMaterial = IniFile.ReadBool("Option", "EnableDualMaterial", false);
             MaterialLowForbidContinue = IniFile.ReadBool("Option", "MaterialLowForbidContinue", false);
+            Option_DensityRange = IniFile.ReadDouble("Option", "DensityRange", 0);
 
             Material.EnableUnitCounter = IniFile.ReadBool("Material", "EnableUnitCounter", false);
             Material.Unit.Limit[0] = IniFile.ReadInteger("Material", "UnitLimit0", 0);
@@ -1653,6 +1655,7 @@ namespace NDispWin
             IniFile.WriteBool("Option", "EnableMaterialLow", Option_EnableMaterialLow);
             IniFile.WriteBool("Option", "EnableDualMaterial", Option_EnableDualMaterial);
             IniFile.WriteBool("Option", "MaterialExpiryForbidContinue", MaterialExpiryForbidContinue);
+            IniFile.WriteDouble("Option", "DensityRange", Option_DensityRange);
 
             IniFile.WriteBool("Material", "EnableUnitCounter", Material.EnableUnitCounter);
             IniFile.WriteInteger("Material", "UnitLimit0", Material.Unit.Limit[0]);
@@ -1768,7 +1771,7 @@ namespace NDispWin
 
             if (!TaskDisp.SetDispVolume(
             true, true,
-                DispProg.PP_HeadA_DispBaseVol + DispProg.PP_HeadA_DispVol_Adj + DispProg.rt_Head1VolumeOfst,
+                DispProg.PP_HeadA_DispBaseVol + DispProg.PP_HeadA_DispVol_Adj + DispProg.rt_Head1VolumeOfst ,
                 DispProg.PP_HeadB_DispBaseVol + DispProg.PP_HeadB_DispVol_Adj + DispProg.rt_Head2VolumeOfst))
             {
                 throw new Exception("Set Volume Error");
@@ -6968,6 +6971,7 @@ namespace NDispWin
                     else
                             if (DispB && !TaskGantry.DispBReady()) break;
                     if (GDefine.GetTickCount() >= t) break;
+                    TaskDisp.Thread_CheckIsFilling_Run(DispA, DispB);
                     Thread.Sleep(1);
                 }
                 if (DispA && TaskGantry.DispAReady())
@@ -7030,6 +7034,7 @@ namespace NDispWin
                         if (DispB && TaskGantry.DispBReady()) break;
 
                     if (GDefine.GetTickCount() >= t) break;
+                    TaskDisp.Thread_CheckIsFilling_Run(DispA, DispB);
                     Thread.Sleep(1);
                 }
                 if (DispA && !TaskGantry.DispAReady())
@@ -7112,6 +7117,7 @@ namespace NDispWin
                     if (!DispBLow) DispBLow = !TaskGantry.DispBReady();
                     if (DispALow && DispBLow) break;
                     if (GDefine.GetTickCount() > t) break;
+                    TaskDisp.Thread_CheckIsFilling_Run(DispA, DispB);
                     Thread.Sleep(1);
                 }
 
@@ -7164,6 +7170,7 @@ namespace NDispWin
                     if (!DispBHigh) DispBHigh = TaskGantry.DispBReady();
                     if (DispAHigh && DispBHigh) break;
                     if (GDefine.GetTickCount() > t) break;
+                    TaskDisp.Thread_CheckIsFilling_Run(DispA, DispB);
                     Thread.Sleep(1);
                 }
 
@@ -8970,7 +8977,46 @@ namespace NDispWin
         }
         #endregion
 
-        public static void PP_CalcDispTime(ref double Time)//get disp time
+        public static double CalcPPDispTime(double vol_ul)//get disp time PLC frequency
+        {
+            double dia = TaskDisp.HPC_15[0].PP_Dia_mm;
+            double dpp = TaskDisp.HPC_15[0].PP_DPP_mm;
+            double acTime = (double)TaskDisp.HPC_15[0].Param.Disp_AC[0, 0] / 1000;//accel is time value in s
+            double dcTime = (double)TaskDisp.HPC_15[0].Param.Disp_DC[0, 0] / 1000;//decel is time value in s
+            double speed_mm_s = TaskDisp.HPC_15[0].Param.Disp_SP_mm_s[0, 0];
+            double speed_pulse_s = TaskDisp.HPC_15[0].Speed_mm_s_Get_Freq(speed_mm_s);
+
+            double pistonArea = Math.PI * Math.Pow(dia / 2, 2);
+            double volPerPulse = pistonArea * dpp;
+
+            double pulse = vol_ul / volPerPulse;
+            double acDist = acTime * speed_mm_s / 2;
+
+            double distAD;//acc and dec same value
+            double distC;
+
+            if (acDist * 2 >= pulse)
+            {
+                distAD = pulse / 2;
+                distC = 0;
+            }
+            else
+            {
+                distAD = acDist;
+                distC = pulse - (distAD * 2);
+            }
+
+            double vMax = distAD / acDist * speed_pulse_s;
+
+            double timeToAcc = vMax / speed_pulse_s * acTime;
+            double timeToDec = timeToAcc;
+            double timeConst = distC / speed_pulse_s;
+            double timeTotal = timeToAcc + timeConst + timeToDec;
+
+            return timeTotal;
+        }
+
+        public static void PP_CalcDispTime(ref double Time)//get disp time using linear parameters
         {
             double d_DispVol_A_ul = HPC_15[0].Param.Disp_Amount[0, 0];
             double d_DispVol_B_ul = HPC_15[0].Param.Disp_Amount[0, 1];
@@ -9185,7 +9231,7 @@ namespace NDispWin
                     {
                         Emgu.CV.Image<Emgu.CV.Structure.Gray, byte> Image = null;
 
-                    _Retry:
+                        _Retry:
                         switch (GDefine.CameraType[0])
                         {
                             case GDefine.ECameraType.Basler:

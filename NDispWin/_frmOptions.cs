@@ -68,7 +68,6 @@ namespace NDispWin
             lblMaterialLifeTimeMultipler.Text = TaskDisp.Material_Life_Multiplier.ToString();
             lblMaterialExpiryPreAlertTime.Text = TaskDisp.Material_ExpiryPreAlertTime.ToString();
             cbEnableValveExpiry.Checked = TaskDisp.Valve_EnableTimer;
-            lblDensityRange.Text = $"{TaskDisp.Option_DensityRange:f3}";
 
             lblDefZPos.Text = TaskDisp.ZDefPos.ToString("f3");
             lblDefLaserValue.Text = TaskDisp.Laser_CalValue.ToString("f3");
@@ -119,6 +118,7 @@ namespace NDispWin
         {
             Close();
         }
+
         private void btnOK_Click(object sender, EventArgs e)
         {
 
@@ -295,7 +295,6 @@ namespace NDispWin
             UpdateDisplay();
         }
 
-        #region Process
         private void cbEnableMaterialLow_Click(object sender, EventArgs e)
         {
             UC.AdjustExec("Disp Option, Enable Material Low", ref TaskDisp.Option_EnableMaterialLow);
@@ -306,36 +305,31 @@ namespace NDispWin
             UC.AdjustExec("Disp Option, Enable Dual Material", ref TaskDisp.Option_EnableDualMaterial);
             UpdateDisplay();
         }
+
+        private void cbEnableMaterialTimer_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec("Disp Option, EnableMaterialExpiry", ref TaskDisp.Material_EnableTimer);
+            UpdateDisplay();
+        }
+        private void lblMaterialLifeTimeMultipler_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec("Disp Option, MaterialLifeMultiplier", ref TaskDisp.Material_Life_Multiplier, 1, 3600);
+            UpdateDisplay();
+        }
         private void cbMaterialLowForbidContinue_Click(object sender, EventArgs e)
         {
             UC.AdjustExec("Disp Option, MaterialExpiryForbidContinue", ref TaskDisp.MaterialExpiryForbidContinue);
             UpdateDisplay();
         }
 
-        private void cbEnableMaterial_Click(object sender, EventArgs e)
-        {
-            UC.AdjustExec("Disp Option, EnableMaterialExpiry", ref TaskDisp.Material_EnableTimer);
-            UpdateDisplay();
-        }
-        private void cbEnableValveExpiry_Click(object sender, EventArgs e)
-        {
-            UC.AdjustExec("Disp Option, EnableValveExpiry", ref TaskDisp.Valve_EnableTimer);
-            UpdateDisplay();
-        }
         private void cbForbidMaterialExpriyContinue_Click(object sender, EventArgs e)
         {
             UC.AdjustExec("Disp Option, MateriaLowForbidContinue", ref TaskDisp.MaterialLowForbidContinue);
             UpdateDisplay();
         }
-
-        private void lblMaterialLifeTimeMultipler_Click(object sender, EventArgs e)
+        private void cbEnableValveExpiry_Click(object sender, EventArgs e)
         {
-            UC.AdjustExec("Disp Option, MaterialLifeMultiplier", ref TaskDisp.Material_Life_Multiplier, 1, 3600);
-            UpdateDisplay();
-        }
-        private void lblMaterialExpiryPreAlertTime_Click(object sender, EventArgs e)
-        {
-            UC.AdjustExec("Material, ExpiryPreAlertTime", ref TaskDisp.Material_ExpiryPreAlertTime, 0, 720);
+            UC.AdjustExec("Disp Option, EnableValveExpiry", ref TaskDisp.Valve_EnableTimer);
             UpdateDisplay();
         }
 
@@ -374,14 +368,6 @@ namespace NDispWin
             }
             UpdateDisplay();
         }
-
-        private void lblDensityRange_Click(object sender, EventArgs e)
-        {
-            UC.AdjustExec("Material, Density Range", ref TaskDisp.Option_DensityRange, 0, 1);
-            UpdateDisplay();
-        }
-        #endregion
-
 
         private async void btnConvertProgramToRecipe_ClickAsync(object sender, EventArgs e)
         {
@@ -489,6 +475,11 @@ namespace NDispWin
             UpdateDisplay();
         }
 
+        private void lblMaterialExpiryPreAlertTime_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec("Material, ExpiryPreAlertTime", ref TaskDisp.Material_ExpiryPreAlertTime, 0, 720);
+            UpdateDisplay();
+        }
 
         private void cbEnableEventDebugLog_Click(object sender, EventArgs e)
         {
@@ -546,6 +537,11 @@ namespace NDispWin
         private void btnLoadTwrLightStatusFile_Click(object sender, EventArgs e)
         {
             if (TCTwrLight.LoadStatus()) MessageBox.Show($"{GDefine.TLStatusFile} was loaded.");
+        }
+
+        private void cbEnableValveExpiry_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
 
     }

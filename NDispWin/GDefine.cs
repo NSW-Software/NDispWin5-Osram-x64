@@ -664,9 +664,9 @@ namespace NDispWin
 
         public static bool DoorCheck_Disp(bool Prompt)
         {
-            //if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)
-            //{
-
+        	
+        	
+       
             if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)
                 return TaskConv.DoorCheck(Prompt);
             else
@@ -961,6 +961,26 @@ namespace NDispWin
                 Msg MsgBox = new Msg();
                 MsgBox.Show(Messages.LOW_AIR_PRESSURE);
                 return false;
+            }
+
+            if (TaskDisp.Option_DensityRange > 0)
+            {
+                if (GDefine.GantryConfig == GDefine.EGantryConfig.XY_ZX2Y2_Z2 && DispProg.Head_Operation == TaskDisp.EHeadOperation.Sync)
+                {
+                    double range = Math.Abs(TaskWeight.CurrentCal[0] - TaskWeight.CurrentCal[1]);
+                    if (Math.Abs(range) > TaskDisp.Option_DensityRange)
+                    {
+                        Msg MsgBox = new Msg();
+                        EMsgRes Res = MsgBox.Show(Messages.VALVE_DENSITY_FLOWRATE_MISMATCH, $"Pump 1,2 {TaskWeight.CurrentCal[0]:f3},{TaskWeight.CurrentCal[1]:f3} > Range {TaskDisp.Option_DensityRange:f3}. Check Valve Density or Flowrate Calibration.", EMsgBtn.smbOK_Stop);
+                        switch (Res)
+                        {
+                            case EMsgRes.smrStop:
+                                return false;
+                            case EMsgRes.smrOK:
+                                break;
+                        }
+                    }
+                }
             }
 
             if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)

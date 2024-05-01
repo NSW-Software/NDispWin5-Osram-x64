@@ -45,12 +45,14 @@
             this.btn_Head2 = new System.Windows.Forms.Button();
             this.btn_Setting = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.lblFR2 = new System.Windows.Forms.Label();
+            this.lblFR1 = new System.Windows.Forms.Label();
+            this.lbl_FR = new System.Windows.Forms.Label();
             this.lbl_Result2 = new System.Windows.Forms.Label();
             this.lbl_Result1 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.btn_Tare = new System.Windows.Forms.Button();
             this.lbl_CurrentCalName = new System.Windows.Forms.Label();
-            this.lbl_CurrentCalUnit = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.lbl_CurrentCal1 = new System.Windows.Forms.Label();
             this.lbl_CurrentCal2 = new System.Windows.Forms.Label();
@@ -67,6 +69,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.rtbSettings = new System.Windows.Forms.RichTextBox();
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -111,7 +114,7 @@
             // btn_Start
             // 
             this.btn_Start.AccessibleDescription = "Start";
-            this.btn_Start.Location = new System.Drawing.Point(227, 147);
+            this.btn_Start.Location = new System.Drawing.Point(227, 161);
             this.btn_Start.Margin = new System.Windows.Forms.Padding(2);
             this.btn_Start.Name = "btn_Start";
             this.btn_Start.Size = new System.Drawing.Size(70, 30);
@@ -181,10 +184,10 @@
             // lbox_Result
             // 
             this.lbox_Result.FormattingEnabled = true;
-            this.lbox_Result.ItemHeight = 14;
+            this.lbox_Result.ItemHeight = 18;
             this.lbox_Result.Location = new System.Drawing.Point(314, 40);
             this.lbox_Result.Name = "lbox_Result";
-            this.lbox_Result.Size = new System.Drawing.Size(376, 382);
+            this.lbox_Result.Size = new System.Drawing.Size(376, 418);
             this.lbox_Result.TabIndex = 0;
             // 
             // tmr_WeightDisplay
@@ -242,12 +245,14 @@
             // groupBox3
             // 
             this.groupBox3.AutoSize = true;
+            this.groupBox3.Controls.Add(this.lblFR2);
+            this.groupBox3.Controls.Add(this.lblFR1);
+            this.groupBox3.Controls.Add(this.lbl_FR);
             this.groupBox3.Controls.Add(this.lbl_Result2);
             this.groupBox3.Controls.Add(this.lbl_Result1);
             this.groupBox3.Controls.Add(this.label1);
             this.groupBox3.Controls.Add(this.btn_Tare);
             this.groupBox3.Controls.Add(this.lbl_CurrentCalName);
-            this.groupBox3.Controls.Add(this.lbl_CurrentCalUnit);
             this.groupBox3.Controls.Add(this.label3);
             this.groupBox3.Controls.Add(this.lbl_CurrentCal1);
             this.groupBox3.Controls.Add(this.label4);
@@ -256,15 +261,50 @@
             this.groupBox3.Controls.Add(this.btn_Start);
             this.groupBox3.Location = new System.Drawing.Point(6, 40);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(302, 200);
+            this.groupBox3.Size = new System.Drawing.Size(302, 215);
             this.groupBox3.TabIndex = 191;
             this.groupBox3.TabStop = false;
+            // 
+            // lblFR2
+            // 
+            this.lblFR2.BackColor = System.Drawing.SystemColors.Control;
+            this.lblFR2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblFR2.Location = new System.Drawing.Point(227, 107);
+            this.lblFR2.Margin = new System.Windows.Forms.Padding(2);
+            this.lblFR2.Name = "lblFR2";
+            this.lblFR2.Size = new System.Drawing.Size(70, 23);
+            this.lblFR2.TabIndex = 203;
+            this.lblFR2.Text = "-";
+            this.lblFR2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblFR1
+            // 
+            this.lblFR1.BackColor = System.Drawing.SystemColors.Control;
+            this.lblFR1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblFR1.Location = new System.Drawing.Point(153, 107);
+            this.lblFR1.Margin = new System.Windows.Forms.Padding(2);
+            this.lblFR1.Name = "lblFR1";
+            this.lblFR1.Size = new System.Drawing.Size(70, 23);
+            this.lblFR1.TabIndex = 202;
+            this.lblFR1.Text = "-";
+            this.lblFR1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lbl_FR
+            // 
+            this.lbl_FR.AccessibleDescription = "";
+            this.lbl_FR.Location = new System.Drawing.Point(5, 107);
+            this.lbl_FR.Margin = new System.Windows.Forms.Padding(2);
+            this.lbl_FR.Name = "lbl_FR";
+            this.lbl_FR.Size = new System.Drawing.Size(130, 23);
+            this.lbl_FR.TabIndex = 201;
+            this.lbl_FR.Text = "FlowRate (mg/s)";
+            this.lbl_FR.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lbl_Result2
             // 
             this.lbl_Result2.BackColor = System.Drawing.SystemColors.Control;
             this.lbl_Result2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_Result2.Location = new System.Drawing.Point(227, 107);
+            this.lbl_Result2.Location = new System.Drawing.Point(227, 134);
             this.lbl_Result2.Margin = new System.Windows.Forms.Padding(2);
             this.lbl_Result2.Name = "lbl_Result2";
             this.lbl_Result2.Size = new System.Drawing.Size(70, 23);
@@ -276,7 +316,7 @@
             // 
             this.lbl_Result1.BackColor = System.Drawing.SystemColors.Control;
             this.lbl_Result1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_Result1.Location = new System.Drawing.Point(153, 107);
+            this.lbl_Result1.Location = new System.Drawing.Point(153, 134);
             this.lbl_Result1.Margin = new System.Windows.Forms.Padding(2);
             this.lbl_Result1.Name = "lbl_Result1";
             this.lbl_Result1.Size = new System.Drawing.Size(70, 23);
@@ -287,7 +327,7 @@
             // label1
             // 
             this.label1.AccessibleDescription = "Result";
-            this.label1.Location = new System.Drawing.Point(5, 107);
+            this.label1.Location = new System.Drawing.Point(5, 134);
             this.label1.Margin = new System.Windows.Forms.Padding(2);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(70, 23);
@@ -317,16 +357,6 @@
             this.lbl_CurrentCalName.TabIndex = 190;
             this.lbl_CurrentCalName.Text = "Density";
             this.lbl_CurrentCalName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lbl_CurrentCalUnit
-            // 
-            this.lbl_CurrentCalUnit.Location = new System.Drawing.Point(79, 80);
-            this.lbl_CurrentCalUnit.Margin = new System.Windows.Forms.Padding(2);
-            this.lbl_CurrentCalUnit.Name = "lbl_CurrentCalUnit";
-            this.lbl_CurrentCalUnit.Size = new System.Drawing.Size(70, 23);
-            this.lbl_CurrentCalUnit.TabIndex = 191;
-            this.lbl_CurrentCalUnit.Text = "(mg/ul)";
-            this.lbl_CurrentCalUnit.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label3
             // 
@@ -371,10 +401,10 @@
             this.groupBox1.Controls.Add(this.lbl_CalTarget);
             this.groupBox1.Controls.Add(this.lbl_TargetName);
             this.groupBox1.Controls.Add(this.lbl_TargetUnit);
-            this.groupBox1.Location = new System.Drawing.Point(5, 246);
+            this.groupBox1.Location = new System.Drawing.Point(6, 261);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.groupBox1.Size = new System.Drawing.Size(303, 87);
+            this.groupBox1.Size = new System.Drawing.Size(303, 91);
             this.groupBox1.TabIndex = 193;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Target";
@@ -433,9 +463,9 @@
             this.groupBox2.Controls.Add(this.label22);
             this.groupBox2.Controls.Add(this.lbl_OutputResult);
             this.groupBox2.Controls.Add(this.label35);
-            this.groupBox2.Location = new System.Drawing.Point(5, 339);
+            this.groupBox2.Location = new System.Drawing.Point(11, 472);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(303, 90);
+            this.groupBox2.Size = new System.Drawing.Size(303, 94);
             this.groupBox2.TabIndex = 194;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Sample/Result";
@@ -506,20 +536,30 @@
             this.groupBox4.AutoSize = true;
             this.groupBox4.Controls.Add(this.button1);
             this.groupBox4.Controls.Add(this.button2);
-            this.groupBox4.Location = new System.Drawing.Point(314, 428);
+            this.groupBox4.Location = new System.Drawing.Point(314, 483);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(376, 65);
+            this.groupBox4.Size = new System.Drawing.Size(376, 69);
             this.groupBox4.TabIndex = 200;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Debug";
+            // 
+            // rtbSettings
+            // 
+            this.rtbSettings.Enabled = false;
+            this.rtbSettings.Location = new System.Drawing.Point(6, 358);
+            this.rtbSettings.Name = "rtbSettings";
+            this.rtbSettings.Size = new System.Drawing.Size(302, 100);
+            this.rtbSettings.TabIndex = 202;
+            this.rtbSettings.Text = "";
             // 
             // frm_DispCore_WeightCal
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(719, 514);
+            this.ClientSize = new System.Drawing.Size(704, 581);
             this.ControlBox = false;
+            this.Controls.Add(this.rtbSettings);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.lbl_Status);
             this.Controls.Add(this.btn_Ctrl2);
@@ -575,7 +615,6 @@
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.Label lbl_OutputResult;
         private System.Windows.Forms.Label label35;
-        private System.Windows.Forms.Label lbl_CurrentCalUnit;
         private System.Windows.Forms.Label lbl_CurrentCalName;
         private System.Windows.Forms.Label lbl_CurrentCal2;
         private System.Windows.Forms.Label lbl_CurrentCal1;
@@ -592,5 +631,9 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.Label lblFR2;
+        private System.Windows.Forms.Label lblFR1;
+        private System.Windows.Forms.Label lbl_FR;
+        private System.Windows.Forms.RichTextBox rtbSettings;
     }
 }

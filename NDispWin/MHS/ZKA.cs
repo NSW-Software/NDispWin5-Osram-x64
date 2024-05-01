@@ -208,6 +208,12 @@ namespace NDispWin
         internal static ZEC3002.Ctrl.TDInput DI38 = new ZEC3002.Ctrl.TDInput("Spare", DIOModel, BoardID, 0, 38, false, false);
         internal static ZEC3002.Ctrl.TDInput Pro_VacSw = new ZEC3002.Ctrl.TDInput("Pro_VacSw", DIOModel, BoardID, 0, 39, false, false);
 
+        internal static ZEC3002.Ctrl.TDInput Pos_VacSw = new ZEC3002.Ctrl.TDInput("Pos_VacSw", DIOModel, BoardID, 0, 17, false, false);
+        internal static ZEC3002.Ctrl.TDInput Pos_SensStopperUp = new ZEC3002.Ctrl.TDInput("Pos_SensStopperUp", DIOModel, BoardID, 0, 36, false, false);
+        internal static ZEC3002.Ctrl.TDInput Pos_SensPsnt = new ZEC3002.Ctrl.TDInput("Pos_SensPsnt", DIOModel, BoardID, 0, 35, false, false);
+        internal static ZEC3002.Ctrl.TDInput Pos_SensLifterDn = new ZEC3002.Ctrl.TDInput("Pos_SensLifterDn", DIOModel, BoardID, 0, 37, false, false);
+        internal static ZEC3002.Ctrl.TDInput Pos_SensLifterUp = new ZEC3002.Ctrl.TDInput("Pos_SensLifterUp", DIOModel, BoardID, 0, 38, false, false);
+
         internal static ZEC3002.Ctrl.TDInput Smema2InBdReady = new ZEC3002.Ctrl.TDInput("Smema2InBdReady", DIOModel, BoardID, 0, 7, false, false);//Smema2UplineIn -> Smema2DiBdReady
         internal static ZEC3002.Ctrl.TDInput Smema2InMcReady = new ZEC3002.Ctrl.TDInput("Smema2InMcReady", DIOModel, BoardID, 0, 13, false, false);//Smema2DnlineIn -> Smema2DiMcReady
         #endregion
@@ -223,7 +229,6 @@ namespace NDispWin
         internal static ZEC3002.Ctrl.TDOutput DO8 = new ZEC3002.Ctrl.TDOutput("Spare", DIOModel, BoardID, 0, 8, false, false);
         internal static ZEC3002.Ctrl.TDOutput Pro_SvVac2 = new ZEC3002.Ctrl.TDOutput("Pro_SvVac2", DIOModel, BoardID, 0, 9, false, false);
         internal static ZEC3002.Ctrl.TDOutput Pro_SvLifterUp = new ZEC3002.Ctrl.TDOutput("Pro_SvLifterUp", DIOModel, BoardID, 0, 10, false, false);
-
 
         internal static ZEC3002.Ctrl.TDOutput DoorLock = new ZEC3002.Ctrl.TDOutput("DoorLock", DIOModel, BoardID, 0, 11, false, false);
         internal static ZEC3002.Ctrl.TDOutput Pre_SvStopperUp = new ZEC3002.Ctrl.TDOutput("Pre_SvStopperUp", DIOModel, BoardID, 0, 12, false, false);
@@ -254,6 +259,10 @@ namespace NDispWin
         internal static ZEC3002.Ctrl.TDOutput DO35 = new ZEC3002.Ctrl.TDOutput("Spare", DIOModel, BoardID, 0, 35, false, false);
         internal static ZEC3002.Ctrl.TDOutput DO36 = new ZEC3002.Ctrl.TDOutput("Spare", DIOModel, BoardID, 0, 36, false, false);
 
+        internal static ZEC3002.Ctrl.TDOutput Pos_SvLifterUp = new ZEC3002.Ctrl.TDOutput("Pos_SvLifterUp", DIOModel, BoardID, 0, 25, false, false);
+        internal static ZEC3002.Ctrl.TDOutput Pos_SvStopperUp = new ZEC3002.Ctrl.TDOutput("Pos_SvStopperUp", DIOModel, BoardID, 0, 28, false, false);
+        internal static ZEC3002.Ctrl.TDOutput Pos_SvVac = new ZEC3002.Ctrl.TDOutput("Pos_SvVac", DIOModel, BoardID, 0, 12, false, false);
+
         internal static ZEC3002.Ctrl.TDOutput Smema2OutMcReady = new ZEC3002.Ctrl.TDOutput("Smema2OutMcReady", DIOModel, BoardID, 0, 12, false, false);//Smema2Upline Out -> Smema2DoMcReady
         internal static ZEC3002.Ctrl.TDOutput Smema2OutBdReady = new ZEC3002.Ctrl.TDOutput("Smema2OutBdReady", DIOModel, BoardID, 0, 13, false, false);//Smema2Dnline Out -> Smema2DoBdReady
         #endregion
@@ -278,6 +287,7 @@ namespace NDispWin
             if (Name.Contains("Pre_SensPrecisorExt")) return ConvIO.Pre_SensPrecisorExt;
             if (Name.Contains("Pre_SensPrecisorExt")) return ConvIO.Pre_SensPrecisorExt;
             if (Name.Contains("Pre_VacSw")) return ConvIO.Pre_VacSw;
+            
             if (Name.Contains("Pro_SensPsnt")) return ConvIO.Pro_SensPsnt;
             if (Name.Contains("Pro_SensStopperUp")) return ConvIO.Pro_SensStopperUp;
             if (Name.Contains("Pro_SensStopperUp")) return ConvIO.Pro_SensStopperUp;
@@ -286,10 +296,18 @@ namespace NDispWin
             if (Name.Contains("Pro_SensPrecisorExt")) return ConvIO.Pro_SensPrecisorExt;
             if (Name.EndsWith("Pro_VacSw")) return ConvIO.Pro_VacSw;
             if (Name.EndsWith("Pro_VacSw2")) return ConvIO.Pro_VacSw2;
+            
+            if (Name.Contains("Pos_SensPsnt")) return ConvIO.Pos_SensPsnt;
+            if (Name.Contains("Pos_SensStopperUp")) return ConvIO.Pos_SensStopperUp;
+            if (Name.Contains("Pos_SensStopperUp")) return ConvIO.Pos_SensStopperUp;
+            if (Name.Contains("Pos_SensLifterUp")) return ConvIO.Pos_SensLifterUp;
+            if (Name.Contains("Pos_VacSw")) return ConvIO.Pos_VacSw;
+            
             if (Name.Contains("Out_SensPsnt")) return ConvIO.Out_SensPsnt;
             if (Name.Contains("Out_SensLFPsnt")) return ConvIO.Out_SensLFPsnt;
             if (Name.Contains("Out_SensKickerExt")) return ConvIO.Out_SensKickerExt;
             if (Name.Contains("Out_SensKickerRet")) return ConvIO.Out_SensKickerRet;
+
             if (Name.Contains("Pre_HeaterAlm")) return ConvIO.Pre_HeaterAlarm;
             if (Name.Contains("Pro_HeaterAlm")) return ConvIO.Pro_HeaterAlarm;
 
@@ -327,6 +345,10 @@ namespace NDispWin
             if (Name.Contains("Pro_SvPrecisorExt")) return ConvIO.Pro_SvPrecisorExt;
             if (Name.EndsWith("Pro_SvVac")) return ConvIO.Pro_SvVac;
             if (Name.EndsWith("Pro_SvVac2")) return ConvIO.Pro_SvVac2;
+
+            if (Name.Contains("Pos_SvStopperUp")) return ConvIO.Pos_SvStopperUp;
+            if (Name.Contains("Pos_SvLifterUp")) return ConvIO.Pos_SvLifterUp;
+            if (Name.Contains("Pos_SvVac")) return ConvIO.Pos_SvVac;
 
             if (Name.Contains("Out_SvKickerExt")) return ConvIO.Out_SvKickerExt;
 
@@ -469,6 +491,12 @@ namespace NDispWin
             Pro_VacSw2.Add = 16;
             Pro_HeaterAlarm.Add = 18;
 
+            Pos_VacSw.Add = 17;
+            Pos_SensPsnt.Add = 35;
+            Pos_SensStopperUp.Add = 36;
+            Pos_SensLifterDn.Add = 37;
+            Pos_SensLifterUp.Add = 38;
+
             Out_SensPsnt.Add = 39;
             Out_SensLFPsnt.Add = 12;
             Out_SensKickerExt.Add = 8;
@@ -511,6 +539,10 @@ namespace NDispWin
             Pro_SvPrecisorExt.Add = 30;
             Pro_SvVac.Add = 10;
             Pro_SvVac2.Add = 11;
+
+            Pos_SvLifterUp.Add = 25;
+            Pos_SvStopperUp.Add = 28;
+            Pos_SvVac.Add = 14;
 
             Out_SvKickerExt.Add = 31;
 
@@ -558,6 +590,12 @@ namespace NDispWin
             IODefine.LoadDIOAdd(ref IniFile, ref Pro_VacSw2);
             IODefine.LoadDIOAdd(ref IniFile, ref Pro_HeaterAlarm);
 
+            IODefine.LoadDIOAdd(ref IniFile, ref Pos_SensPsnt);
+            IODefine.LoadDIOAdd(ref IniFile, ref Pos_SensStopperUp);
+            IODefine.LoadDIOAdd(ref IniFile, ref Pos_SensLifterDn);
+            IODefine.LoadDIOAdd(ref IniFile, ref Pos_SensLifterUp);
+            IODefine.LoadDIOAdd(ref IniFile, ref Pos_VacSw);
+
             IODefine.LoadDIOAdd(ref IniFile, ref Out_SensPsnt);
             IODefine.LoadDIOAdd(ref IniFile, ref Out_SensLFPsnt);
             if (Out_SensLFPsnt.Add == 0 && TL_Control == 1) Out_SensLFPsnt.Add = 12;
@@ -602,6 +640,9 @@ namespace NDispWin
             IODefine.LoadDIOAdd(ref IniFile, ref Pro_SvVac);
             IODefine.LoadDIOAdd(ref IniFile, ref Pro_SvVac2);
 
+            IODefine.LoadDIOAdd(ref IniFile, ref Pos_SvStopperUp);
+            IODefine.LoadDIOAdd(ref IniFile, ref Pos_SvLifterUp);
+
             IODefine.LoadDIOAdd(ref IniFile, ref Out_SvKickerExt);
 
             IODefine.LoadDIOAdd(ref IniFile, ref DoorLock);
@@ -643,6 +684,12 @@ namespace NDispWin
             IODefine.SaveDIOAdd(ref IniFile, Pro_VacSw);
             IODefine.SaveDIOAdd(ref IniFile, Pro_VacSw2);
             IODefine.SaveDIOAdd(ref IniFile, Pro_HeaterAlarm);
+
+            IODefine.SaveDIOAdd(ref IniFile, Pos_SensPsnt);
+            IODefine.SaveDIOAdd(ref IniFile, Pos_SensStopperUp);
+            IODefine.SaveDIOAdd(ref IniFile, Pos_SensLifterDn);
+            IODefine.SaveDIOAdd(ref IniFile, Pos_SensLifterUp);
+            IODefine.SaveDIOAdd(ref IniFile, Pos_VacSw);
 
             IODefine.SaveDIOAdd(ref IniFile, Out_SensPsnt);
             IODefine.SaveDIOAdd(ref IniFile, Out_SensLFPsnt);
@@ -686,6 +733,9 @@ namespace NDispWin
             IODefine.SaveDIOAdd(ref IniFile, Pro_SvPrecisorExt);
             IODefine.SaveDIOAdd(ref IniFile, Pro_SvVac);
             IODefine.SaveDIOAdd(ref IniFile, Pro_SvVac2);
+
+            IODefine.SaveDIOAdd(ref IniFile, Pos_SvStopperUp);
+            IODefine.SaveDIOAdd(ref IniFile, Pos_SvLifterUp);
 
             IODefine.SaveDIOAdd(ref IniFile, Out_SvKickerExt);
 

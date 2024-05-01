@@ -489,6 +489,7 @@ namespace NDispWin
             public int[] ConvPara = new int[CONV_PARA_COUNT];
             public int[] Pre = new int[ST_PARA_COUNT];
             public int[] Pro = new int[ST_PARA_COUNT];
+            public int[] Pos = new int[ST_PARA_COUNT];
             public int[] Out = new int[ST_OUT_PARA_COUNT];
 
             public int[] Conv2Para = new int[CONV_PARA_COUNT];
@@ -2836,6 +2837,386 @@ namespace NDispWin
                 Delay(Setup.Pro[(int)EPara.Load_Delay]);
             }
         }
+        public class Pos
+        {
+            public static EPosStType _StType = EPosStType.None;
+            public static EPosStType rt_StType = EPosStType.None;
+            public static EPosStType StType
+            {
+                set
+                {
+                    _StType = value;
+                    rt_StType = value;
+                }
+                get
+                {
+                    return _StType;
+                }
+            }
+
+            public static EProcessStatus Status = EProcessStatus.Empty;
+            public static Color StatusColor
+            {
+                get
+                {
+                    return ProcessStatusColor[(int)Status];
+                }
+            }
+
+            internal static int TimeOut
+            {
+                get
+                {
+                    return Setup.Pos[(int)EPara.TimeOut];
+                }
+            }
+            internal static bool SensPsnt
+            {
+                get
+                {
+                    return ZEC3002.Ctrl.GetDI(ref ConvIO.Pos_SensPsnt);
+                }
+            }
+
+            internal static bool UseStopper//not used
+            {
+                get
+                {
+                    return true;
+                }
+            }
+            internal static bool SensStopperUp
+            {
+                get
+                {
+                    return ZEC3002.Ctrl.GetDI(ref ConvIO.Pos_SensStopperUp);
+                }
+            }
+            internal static bool SvStopperUp
+            {
+                set
+                {
+                    if (!UseStopper) return;
+
+                    ZEC3002.Ctrl.TDOStatus Status = ZEC3002.Ctrl.TDOStatus.Lo;
+                    if (value)
+                        Status = ZEC3002.Ctrl.TDOStatus.Hi;
+                    ZEC3002.Ctrl.SetDO(ref ConvIO.Pos_SvStopperUp, Status);
+                }
+                get
+                {
+                    return ConvIO.Pos_SvStopperUp.Status;
+                }
+            }
+            internal static bool StopperUp()
+            {
+                if (!UseStopper) return true;
+
+                _Retry:
+                SvStopperUp = true;
+                Delay(Setup.Pos[(int)EPara.StopperUp_Delay]);
+
+                if (Pos.SensStopperUp) return true;
+
+                SvStopperUp = false;
+                Msg MsgBox = new Msg();
+                EMsgRes MsgRes = MsgBox.Show(Messages.CONV_STOPPER_UP_TIMEOUT, "POS", EMsgBtn.smbOK_Retry_Cancel);
+                switch (MsgRes)
+                {
+                    case EMsgRes.smrRetry: goto _Retry;
+                    default: goto _Error;
+                }
+            _Error:
+                SvStopperUp = false;
+                return false;
+            }
+            internal static bool StopperDn()
+            {
+                if (!UseStopper) return true;
+
+                _Retry:
+                SvStopperUp = false;
+                Delay(Setup.Pos[(int)EPara.StopperDn_Delay]);
+
+                if (!Pos.SensStopperUp) return true;
+
+                SvStopperUp = false;
+
+                Msg MsgBox = new Msg();
+                EMsgRes MsgRes = MsgBox.Show(Messages.CONV_STOPPER_UP_TIMEOUT, "POS", EMsgBtn.smbOK_Retry_Cancel);
+                switch (MsgRes)
+                {
+                    case EMsgRes.smrRetry: goto _Retry;
+                    default: goto _Error;
+                }
+            _Error:
+                SvStopperUp = false;
+                return false;
+            }
+
+            internal static bool UseLifter
+            {
+                get
+                {
+                    return (Setup.Pos[(int)EPara.Lifter_Enable] > 0);
+                }
+            }
+            internal static bool SensLifterUp
+            {
+                get
+                {
+                    return ZEC3002.Ctrl.GetDI(ref ConvIO.Pos_SensLifterUp);
+                }
+            }
+            internal static bool SensLifterDn
+            {
+                get
+                {
+                    return ZEC3002.Ctrl.GetDI(ref ConvIO.Pos_SensLifterDn);
+                }
+            }
+            internal static bool SvLifterUp
+            {
+                set
+                {
+                    ZEC3002.Ctrl.TDOStatus Status = ZEC3002.Ctrl.TDOStatus.Lo;
+                    if (value)
+                        Status = ZEC3002.Ctrl.TDOStatus.Hi;
+
+                    ZEC3002.Ctrl.SetDO(ref ConvIO.Pos_SvLifterUp, Status);
+                }
+                get
+                {
+                    return ConvIO.Pos_SvLifterUp.Status;
+                }
+            }
+            internal static bool LifterUp()
+            {
+                if (!UseLifter) return true;
+
+                _Retry:
+                SvLifterUp = true;
+                Delay(Setup.Pos[(int)EPara.LifterUp_Delay]);
+
+                if (SensLifterUp) return true;
+
+                #region
+                SvLifterUp = false;
+
+                Msg MsgBox = new Msg();
+                EMsgRes MsgRes = MsgBox.Show(Messages.CONV_LIFTER_UP_TIMEOUT, "POS", EMsgBtn.smbOK_Retry_Cancel);
+                switch (MsgRes)
+                {
+                    case EMsgRes.smrRetry: goto _Retry;
+                    default: goto _Error;
+                }
+            #endregion
+            _Error:
+                return false;
+            }
+            internal static bool LifterDn()
+            {
+                if (!UseLifter) return true;
+
+                _Retry:
+                SvLifterUp = false;
+                Delay(Setup.Pos[(int)EPara.LifterDn_Delay]);
+
+                if (SensLifterDn) return true;
+
+                #region
+                Msg MsgBox = new Msg();
+                EMsgRes MsgRes = MsgBox.Show(Messages.CONV_LIFTER_DN_TIMEOUT, "POS", EMsgBtn.smbOK_Retry_Cancel);
+                switch (MsgRes)
+                {
+                    case EMsgRes.smrRetry: goto _Retry;
+                    default: goto _Error;
+                }
+            #endregion
+            _Error:
+                return false;
+            }
+
+            internal static bool UseHeater
+            {
+                get
+                {
+                    return (Setup.Pos[(int)EPara.HeatTime] > 0);
+                }
+            }
+
+            public static int StartHeatTime;//volatile
+            internal static bool HeatStart()//true if start heating
+            {
+                if (Setup.Pos[(int)EPara.HeatTime] > 0)
+                {
+                    Event.POSHEAT_START.Set();
+                    Pos.StartHeatTime = Environment.TickCount;
+                    return true;
+                }
+                return false;
+            }
+            internal static bool HeatEnd()//true if head ended
+            {
+                int TOut = Pos.StartHeatTime + (Setup.Pos[(int)EPara.HeatTime] * 1000);
+                if (Environment.TickCount < TOut) return false;
+                Event.POSHEAT_END.Set();
+
+                switch (Pos.rt_StType)
+                {
+                    case EPosStType.None:
+                    case EPosStType.Buffer:
+                        Pos.Status = TaskConv.EProcessStatus.Psnt; break;
+                }
+                return true;
+            }
+            internal static int HeatRemain_s
+            {
+                get
+                {
+                    return (Pos.StartHeatTime + (Setup.Pos[(int)EPara.HeatTime] * 1000) - Environment.TickCount) / 1000;
+                }
+            }
+
+            internal static bool UseVac
+            {
+                get
+                {
+                    return (Setup.Pos[(int)EPara.Vac1_Enable] > 0);
+                }
+            }
+            internal static bool SensVac
+            {
+                get
+                {
+                    return ZEC3002.Ctrl.GetDI(ref ConvIO.Pos_VacSw);
+                }
+            }
+            internal static bool SvVac
+            {
+                set
+                {
+                    ZEC3002.Ctrl.TDOStatus Status = ZEC3002.Ctrl.TDOStatus.Lo;
+                    if (value)
+                        Status = ZEC3002.Ctrl.TDOStatus.Hi;
+
+                    ZEC3002.Ctrl.SetDO(ref ConvIO.Pos_SvVac, Status);
+                }
+                get
+                {
+                    return ConvIO.Pos_SvVac.Status;
+                }
+            }
+            internal static bool VacOn()
+            {
+                if (!UseVac) return true;
+
+                int i_Retry = 0;
+            _Retry:
+                try
+                {
+                    Pos.SvVac = true;
+                    Delay(Setup.Pos[(int)EPara.Vac1On_Delay]);
+                    if (Pos.SensVac) return true;
+
+                    if (i_Retry <= 1)
+                    {
+                        i_Retry++;
+
+                        SvVac = false;
+                        Delay(Setup.Pos[(int)EPara.Vac1Off_Delay]);
+                        if (!LifterDn()) return false;
+                        if (!LifterUp()) return false;
+                        goto _Retry;
+                    }
+                    else
+                    {
+                        #region
+                        Msg MsgBox = new Msg();
+                        EMsgRes MsgRes = MsgBox.Show(Messages.CONV_VACUUM_ON_TIMEOUT, "POS", EMsgBtn.smbRetry_Stop);
+                        switch (MsgRes)
+                        {
+                            case EMsgRes.smrRetry:
+                                {
+                                    SvVac = false;
+                                    Delay(Setup.Pos[(int)EPara.Vac1Off_Delay]);
+                                    if (!LifterDn()) return false;
+                                    if (!LifterUp()) return false;
+                                    goto _Retry;
+                                }
+                            case EMsgRes.smrStop:
+                                {
+                                    if (!LifterDn()) return false;
+                                    return false;
+                                }
+                        }
+
+                        #endregion
+                    }
+                }
+                catch { }
+
+                return true;
+            }
+            internal static bool VacOff()
+            {
+                if (!UseVac) return true;
+
+                _Retry:
+                try
+                {
+                    Pos.SvVac = false;
+                    Delay(Setup.Pos[(int)EPara.Vac1Off_Delay]);
+                    if (!Pos.SensVac) return true;
+
+                    #region
+                    Msg MsgBox = new Msg();
+                    EMsgRes MsgRes = MsgBox.Show(Messages.CONV_VACUUM_OFF_TIMEOUT, "POS", EMsgBtn.smbRetry_Stop);
+                    switch (MsgRes)
+                    {
+                        case EMsgRes.smrRetry:
+                            {
+                                goto _Retry;
+                            }
+                        case EMsgRes.smrStop:
+                            {
+                                return false;
+                            }
+                    }
+
+                    #endregion
+                }
+                catch { }
+
+                return true;
+            }
+
+            internal static bool CheckEmpty()
+            {
+            _Retry:
+                if (Pos.SensPsnt)
+                {
+                    Msg MsgBox = new Msg();
+                    EMsgRes MsgRes = MsgBox.Show(Messages.CONV_SENSOR_PART_PSNT, "POS", EMsgBtn.smbRetry_Stop_Cancel);
+                    switch (MsgRes)
+                    {
+                        case EMsgRes.smrRetry: goto _Retry;
+                        default:
+                        case EMsgRes.smrStop:
+                            {
+                                return false;
+                            }
+                    }
+                }
+
+                return true;
+            }
+
+            internal static void Delay_LoadD()
+            {
+                Delay(Setup.Pos[(int)EPara.Load_Delay]);
+            }
+        }
         public class Out
         {
             public static EProcessStatus Status = EProcessStatus.Empty;
@@ -4005,9 +4386,8 @@ namespace NDispWin
             {
             #region
             _RetryLoad:
-                Buf1.SvStopperUp = true;
-                Conv.Fwd_Fast();
                 if (!Buf1.StopperUp()) goto _Error;
+                Conv.Fwd_Fast();
 
                 int TOut = Environment.TickCount + Pre.TimeOut;
                 while (true)
@@ -4071,9 +4451,8 @@ namespace NDispWin
             {
             #region
             _RetryLoad:
-                Buf2.SvStopperUp = true;
-                Conv.Fwd_Fast();
                 if (!Buf2.StopperUp()) goto _Error;
+                Conv.Fwd_Fast();
 
                 int TOut = Environment.TickCount + Pre.TimeOut;
                 while (true)
@@ -4137,9 +4516,8 @@ namespace NDispWin
             {
             #region
             _RetryLoad:
-                Pre.SvStopperUp = true;
-                Conv.Fwd_Fast();
                 if (!Pre.StopperUp()) goto _Error;
+                Conv.Fwd_Fast();
 
                 int TOut = Environment.TickCount + Pre.TimeOut;
                 while (true)
@@ -4231,9 +4609,8 @@ namespace NDispWin
             {
             #region
             _RetryLoad:
-                Pro.SvStopperUp = true;
-                Conv.Fwd_Fast();
                 if (!Pro.StopperUp()) goto _Error;
+                Conv.Fwd_Fast();
 
                 int TOut = Environment.TickCount + Pro.TimeOut;
                 while (true)

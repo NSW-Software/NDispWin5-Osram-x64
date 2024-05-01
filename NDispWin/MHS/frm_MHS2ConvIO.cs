@@ -70,6 +70,15 @@ namespace NDispWin
                 GDefineMHS.RefreshOutput(btn_Pro_SvVac, TaskConv.Pro.SvVac);
                 GDefineMHS.RefreshOutput(btn_Pro_SvVac2, TaskConv.Pro.SvVac2);
 
+                GDefineMHS.RefreshInput(lbl_Pos_SensPsnt, TaskConv.Pos.SensPsnt);
+                GDefineMHS.RefreshInput(lbl_Pos_SensStopperUp, TaskConv.Pos.SensStopperUp);
+                GDefineMHS.RefreshOutput(btn_Pos_SvStopperUp, TaskConv.Pos.SvStopperUp);
+                GDefineMHS.RefreshInput(lbl_Pos_SensLifterUp, TaskConv.Pos.SensLifterUp);
+                GDefineMHS.RefreshInput(lbl_Pos_SensLifterDn, TaskConv.Pos.SensLifterDn);
+                GDefineMHS.RefreshOutput(btn_Pos_SvLifterUp, TaskConv.Pos.SvLifterUp);
+                GDefineMHS.RefreshInput(lbl_Pos_VacSw, TaskConv.Pos.SensVac);
+                GDefineMHS.RefreshOutput(btn_Pos_SvVac, TaskConv.Pos.SvVac);
+
                 GDefineMHS.RefreshInput(lbl_Out_SensPsnt, TaskConv.Out.SensPsnt);
                 GDefineMHS.RefreshInput(lbl_Out_SensLFPsnt, TaskConv.Out.SensLFPsnt);
                 GDefineMHS.RefreshInput(lbl_Out_SensKickerExt, TaskConv.Out.SensKickerExt);
@@ -310,6 +319,19 @@ namespace NDispWin
             TaskConv.Pro.SvVac2 = !TaskConv.Pro.SvVac2;
         }
 
+        private void btn_Pos_SvStopperUp_Click(object sender, EventArgs e)
+        {
+            TaskConv.Pos.SvStopperUp = !TaskConv.Pos.SvStopperUp;
+        }
+        private void btn_Pos_SvLifterUp_Click(object sender, EventArgs e)
+        {
+            TaskConv.Pos.SvLifterUp = !TaskConv.Pos.SvLifterUp;
+        }
+        private void btn_Pos_SvVac_Click(object sender, EventArgs e)
+        {
+            TaskConv.Pos.SvVac = !TaskConv.Pos.SvVac;
+        }
+
         private void btn_Out_SvKickerExt_Click(object sender, EventArgs e)
         {
             TaskConv.Out.SvKickerExt = !TaskConv.Out.SvKickerExt;
@@ -386,22 +408,18 @@ namespace NDispWin
                 MessageBox.Show(ex.Message.ToString());
             }
         }
-
         private void btn_Pos2_SvStopperUp_Click(object sender, EventArgs e)
         {
             TaskConv.Pos2.SvStopperUp = !TaskConv.Pos2.SvStopperUp;
         }
-
         private void btn_Pos2_SvLifterUp_Click(object sender, EventArgs e)
         {
             TaskConv.Pos2.SvLifterUp = !TaskConv.Pos2.SvLifterUp;
         }
-
         private void btn_Pos2_SvVac_Click(object sender, EventArgs e)
         {
             TaskConv.Pos2.SvVac = !TaskConv.Pos2.SvVac;
         }
-
         private void btn_Out2_SvKickerExt_Click(object sender, EventArgs e)
         {
             TaskConv.Out2.SvKickerExt = !TaskConv.Out2.SvKickerExt;
