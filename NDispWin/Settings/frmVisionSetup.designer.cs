@@ -135,7 +135,6 @@
             this.label13.TabIndex = 151;
             this.label13.Text = "Cam 3";
             this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label13.Click += new System.EventHandler(this.label13_Click);
             // 
             // btn_CalCam3
             // 
