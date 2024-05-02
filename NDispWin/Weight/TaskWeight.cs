@@ -1016,10 +1016,6 @@ namespace NDispWin
                     frm_Message.Message = "Weight Cal - Purge in Progress. Pls wait...";
                     frm_Message.Show();
 
-                    //s_Log = "[Head" + HeadNo + " Purge " + (list_WC_PurgeWeight.Count + 1).ToString() + "]";
-                    //ListBox.Items.Add(s_Log);
-                    //Log.WeightCal.WriteByMonthDay(s_Log);
-
                     if (!WeightCal_ExecuteSingle(ListBox, HeadNo, ref d_mg)) goto _Abort;
                     if (!CheckWeightLowError()) goto _Abort;
                     list_WC_PurgeWeight.Add(d_mg);
@@ -1027,8 +1023,8 @@ namespace NDispWin
                     switch (TaskWeight.CalMeasType)
                     {
                         case TaskWeight.ECalMeasType.Density:
-                            double d_Density = d_mg / (d_DispVol);
-                            double pumpTime = TaskDisp.CalcPPDispTime(d_DispVol);// + d_BSVol);
+                            double d_Density = d_mg / d_DispVol;
+                            double pumpTime = TaskDisp.CalcPPDispTime(d_DispVol) + TaskDisp.CalcPPDispTime(d_BSVol);
                             dApproxFR = d_mg / pumpTime;
                             s_Log = $"Purge {list_WC_PurgeWeight.Count}\t{d_DispVol + d_BSVol:f4}-{d_BSVol:f4}\t{d_mg:f3}\t{d_Density:f4}\t{dApproxFR:f4}";
                             break;
@@ -1075,49 +1071,47 @@ namespace NDispWin
                         switch (TaskWeight.CalMeasType)
                         {
                             case TaskWeight.ECalMeasType.Density:
-                                #region
-                                //double HA_Vol = DispProg.PP_HeadA_DispBaseVol + DispProg.PP_HeadA_DispVol_Adj + DispProg.rt_Head1VolumeOfst;
-                                //double HB_Vol = DispProg.PP_HeadB_DispBaseVol + DispProg.PP_HeadB_DispVol_Adj + DispProg.rt_Head2VolumeOfst;
-                                if (HeadNo == 1)
                                 {
-                                    d_DispVol = (Target_Weight / list_WC_MeasWeight[list_WC_MeasWeight.Count - 1]) * (d_DispVol - d_BSVol);//(DispProg.PP_HeadA_DispBaseVol - DispProg.PP_HeadA_BackSuckVol);//DispProg.PP_HeadA_DispBaseVol;
-                                    DispProg.PP_HeadA_DispBaseVol = d_DispVol + d_BSVol;// DispProg.PP_HeadA_BackSuckVol;
-                                    TaskDisp.SetDispVolume(true, false, DispProg.PP_HeadA_DispBaseVol, d_BSVol);// DispProg.PP_HeadB_DispBaseVol);
+                                    if (HeadNo == 1)
+                                    {
+                                        d_DispVol = (Target_Weight / list_WC_MeasWeight[list_WC_MeasWeight.Count - 1]) * d_DispVol;//6.0.2
+                                        DispProg.PP_HeadA_DispBaseVol = d_DispVol + d_BSVol;
+                                        TaskDisp.SetDispVolume(true, false, DispProg.PP_HeadA_DispBaseVol, DispProg.PP_HeadB_DispBaseVol);
+                                    }
+                                    else
+                                    {
+                                        d_DispVol = (Target_Weight / list_WC_MeasWeight[list_WC_MeasWeight.Count - 1]) * d_DispVol;//6.0.2 
+                                        DispProg.PP_HeadB_DispBaseVol = d_DispVol + d_BSVol;
+                                        TaskDisp.SetDispVolume(false, true, DispProg.PP_HeadA_DispBaseVol, DispProg.PP_HeadB_DispBaseVol);
+                                    }
+                                    break;
                                 }
-                                else
-                                {
-                                    d_DispVol = (Target_Weight / list_WC_MeasWeight[list_WC_MeasWeight.Count - 1]) * (d_DispVol - d_BSVol);//(DispProg.PP_HeadB_DispBaseVol - DispProg.PP_HeadB_BackSuckVol);//DispProg.PP_HeadB_DispBaseVol;
-                                    DispProg.PP_HeadB_DispBaseVol = d_DispVol + d_BSVol;// + DispProg.PP_HeadB_BackSuckVol;
-                                    TaskDisp.SetDispVolume(false, true, DispProg.PP_HeadA_DispBaseVol, d_BSVol);//DispProg.PP_HeadB_DispBaseVol);
-                                }
-                                break;
-                            #endregion
                             case TaskWeight.ECalMeasType.FR_mg_s:
-                                #region
-                                if (HeadNo == 1)
                                 {
-                                    d_Speed = Math.Min(DispProg.HM_HeadA_Disp_RPM * (Target_Weight * (TaskWeight.DispTime / 1000) / list_WC_MeasWeight[list_WC_MeasWeight.Count - 1]), 1000);
-                                    if (d_Speed <= 0)
+                                    if (HeadNo == 1)
                                     {
-                                        frm_Message.Close();
-                                        goto _SpeedError;
+                                        d_Speed = Math.Min(DispProg.HM_HeadA_Disp_RPM * (Target_Weight * (TaskWeight.DispTime / 1000) / list_WC_MeasWeight[list_WC_MeasWeight.Count - 1]), 1000);
+                                        if (d_Speed <= 0)
+                                        {
+                                            frm_Message.Close();
+                                            goto _SpeedError;
+                                        }
+                                        DispProg.HM_HeadA_Disp_RPM = d_Speed;
+                                        TaskDisp.SetDispSpeed(true, false, DispProg.HM_HeadA_Disp_RPM, DispProg.HM_HeadB_Disp_RPM);
                                     }
-                                    DispProg.HM_HeadA_Disp_RPM = d_Speed;
-                                    TaskDisp.SetDispSpeed(true, false, DispProg.HM_HeadA_Disp_RPM, DispProg.HM_HeadB_Disp_RPM);
-                                }
-                                else
-                                {
-                                    d_Speed = Math.Min(DispProg.HM_HeadB_Disp_RPM * (Target_Weight * (TaskWeight.DispTime / 1000) / list_WC_MeasWeight[list_WC_MeasWeight.Count - 1]), 1000);
-                                    if (d_Speed <= 0)
+                                    else
                                     {
-                                        frm_Message.Close();
-                                        goto _SpeedError;
+                                        d_Speed = Math.Min(DispProg.HM_HeadB_Disp_RPM * (Target_Weight * (TaskWeight.DispTime / 1000) / list_WC_MeasWeight[list_WC_MeasWeight.Count - 1]), 1000);
+                                        if (d_Speed <= 0)
+                                        {
+                                            frm_Message.Close();
+                                            goto _SpeedError;
+                                        }
+                                        DispProg.HM_HeadB_Disp_RPM = d_Speed;
+                                        TaskDisp.SetDispSpeed(false, true, DispProg.HM_HeadA_Disp_RPM, DispProg.HM_HeadB_Disp_RPM);
                                     }
-                                    DispProg.HM_HeadB_Disp_RPM = d_Speed;
-                                    TaskDisp.SetDispSpeed(false, true, DispProg.HM_HeadA_Disp_RPM, DispProg.HM_HeadB_Disp_RPM);
+                                    break;
                                 }
-                                break;
-                            #endregion
                             case TaskWeight.ECalMeasType.FR_mg_dot:
                                 int i_HeadNo = HeadNo - 1;
 
@@ -1178,9 +1172,9 @@ namespace NDispWin
                     switch (TaskWeight.CalMeasType)
                     {
                         case TaskWeight.ECalMeasType.Density:
-                            double d_Density = d_mg / (d_DispVol);
+                            double d_Density = d_mg / d_DispVol;
                             list_WC_MeasDensity.Add(d_Density);
-                            double pumpTime = TaskDisp.CalcPPDispTime(d_DispVol);// + d_BSVol);
+                            double pumpTime = TaskDisp.CalcPPDispTime(d_DispVol) + TaskDisp.CalcPPDispTime(d_BSVol);
                             dApproxFR = d_mg / pumpTime;
                             s_Log = $"Cal {list_WC_MeasWeight.Count}\t{d_DispVol + d_BSVol:f4}-{d_BSVol:f4}\t{d_mg:f3}\t{d_Density:f4}\t{dApproxFR:f4}";
                             break;

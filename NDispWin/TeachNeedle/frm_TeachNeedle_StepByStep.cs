@@ -73,7 +73,7 @@ namespace NDispWin
                 TaskVision.frmMVCGenTLCamera.ShowCamReticles = false;
                 TaskVision.genTLCamera[0].StartGrab();
             }
-            if (GDefine.CameraType[0] == GDefine.ECameraType.MVCGenTL)
+            if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL)
             {
                 TaskVision.frmMVCGenTLCamera.Width = 800;
                 TaskVision.frmMVCGenTLCamera.Height = 600;
@@ -92,7 +92,7 @@ namespace NDispWin
             switch (GDefine.CameraType[0])
             {
                 case GDefine.ECameraType.Spinnaker2:
-                case GDefine.ECameraType.MVCGenTL:
+                case GDefine.ECameraType.MVSGenTL:
                     break;
 
                 case GDefine.ECameraType.Spinnaker:
@@ -143,7 +143,7 @@ namespace NDispWin
             tmr_Reticle.Enabled = false;
 
             if (GDefine.CameraType[0] == GDefine.ECameraType.Spinnaker2) TaskVision.frmMVCGenTLCamera.Close();//TaskVision.frmCamera.Close();
-            if (GDefine.CameraType[0] == GDefine.ECameraType.MVCGenTL) TaskVision.frmMVCGenTLCamera.Close();
+            if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL) TaskVision.frmMVCGenTLCamera.Close();
 
             TaskVision.SelectedCam = ECamNo.Cam00;
             TaskVision.LightingOn(TaskVision.DefLightRGB);
@@ -377,7 +377,7 @@ namespace NDispWin
                         TaskVision.genTLCamera[0].StartGrab();
                         break;
                     }
-                case GDefine.ECameraType.MVCGenTL:
+                case GDefine.ECameraType.MVSGenTL:
                     {
                         TaskVision.frmMVCGenTLCamera.SelectCamera(0);
                         TaskVision.genTLCamera[0].StartGrab();
@@ -417,7 +417,7 @@ namespace NDispWin
                     case GDefine.ECameraType.Spinnaker2:
                         Image = TaskVision.flirCamera2[(int)ECamNo.Cam00].m_ImageEmgu.m_Image.Clone();
                         break;
-                    case GDefine.ECameraType.MVCGenTL:
+                    case GDefine.ECameraType.MVSGenTL:
                         Image = TaskVision.genTLCamera[(int)ECamNo.Cam00].mImage.Clone();
                         break;
                     default:
@@ -546,7 +546,7 @@ namespace NDispWin
                     case GDefine.ECameraType.Spinnaker2:
                         Image = TaskVision.flirCamera2[(int)ECamNo.Cam00].m_ImageEmgu.m_Image.Clone();
                         break;
-                    case GDefine.ECameraType.MVCGenTL:
+                    case GDefine.ECameraType.MVSGenTL:
                         Image = TaskVision.genTLCamera[(int)ECamNo.Cam00].mImage.Clone();
                         break;
                     default:

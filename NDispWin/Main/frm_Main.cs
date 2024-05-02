@@ -58,7 +58,7 @@ namespace NDispWin
                 Event.APP_INFO.Set("OS", "64bit");
                 SetDllDirectory(@"C:\Program Files (x86)\Point Grey Research\FlyCapture2\bin");
                 SetDllDirectory(@"C:\Program Files (x86)\Point Grey Research\Spinnaker\bin\vs2015");
-            }
+           }
             else
             {
                 Event.APP_INFO.Set("OS", "32bit");
@@ -67,6 +67,7 @@ namespace NDispWin
             }
 
             SetDllDirectory(@"C:\Emgu\emgucv-windows-universal 3.0.0.2157\bin\x86");
+
 
             if (Environment.Is64BitOperatingSystem)
             {
@@ -380,7 +381,7 @@ namespace NDispWin
             switch (GDefine.CameraType[0])
             {
                 case GDefine.ECameraType.Spinnaker2:
-                case GDefine.ECameraType.MVCGenTL:
+                case GDefine.ECameraType.MVSGenTL:
                     try
                     {
                         frm_DispProg2 frm = new frm_DispProg2();

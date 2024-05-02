@@ -221,6 +221,7 @@ namespace NDispWin
         #region 3600 Camera
         public static TEMessage CAMERA_COMM_EX_ERR = new TEMessage(3600, "Camera Comm Exception Error.", "Check ExMessage and feedback to NSW Automation.", TEMessage.EType.Error, false);
         public static TEMessage CAMERA_INIT_ERR = new TEMessage(3601, "Camera Init Error.", "Check Vision Drivers.", TEMessage.EType.Error, false);
+        public static TEMessage CAMERA_DRIVER_NOT_SUPPORT = new TEMessage(3602, "Camera Driver Support Error.", "Camera Driver is not Supported.", TEMessage.EType.Error, false);
         public static TEMessage CAMERA_OPEN_ERR = new TEMessage(3610, "Camera Open Error.", "1. Check Camera connection.@2. Check Camera Drivers.", TEMessage.EType.Error, false);
         public static TEMessage CAMERA_NOT_CONFIG_ERR = new TEMessage(3620, "Camera Not Configured.", "1. Check System Config.@2. Check Camera configuration.", TEMessage.EType.Notification, false);
         public static TEMessage CAMERA_GRAB_TIMEOUT = new TEMessage(3621, "Camera Grab TimeOut.", "1. Check Camera settings.@2. Check Camera configuration.", TEMessage.EType.Error, false);

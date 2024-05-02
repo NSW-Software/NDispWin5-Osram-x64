@@ -294,7 +294,7 @@ namespace NDispWin
                 double Max = 24;
                 UC.AdjustExec(CmdName + ", Gain", ref CmdLine.DPara[6], Min, Max);
             }
-            if (GDefine.CameraType[0] == GDefine.ECameraType.MVCGenTL)
+            if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL)
             {
                 double Min = 1;
                 double Max = 24;
@@ -401,7 +401,7 @@ namespace NDispWin
                     case GDefine.ECameraType.Spinnaker2:
                         TaskVision.flirCamera2[(int)TaskVision.SelectedCam].GrabCont();
                         break;
-                    case GDefine.ECameraType.MVCGenTL:
+                    case GDefine.ECameraType.MVSGenTL:
                         TaskVision.genTLCamera[(int)TaskVision.SelectedCam].StartGrab();
                         break;
                     default:
@@ -438,7 +438,7 @@ namespace NDispWin
 
             switch (GDefine.CameraType[(int)TaskVision.SelectedCam])
             {
-                case GDefine.ECameraType.MVCGenTL:
+                case GDefine.ECameraType.MVSGenTL:
                     if (TaskVision.genTLCamera[(int)TaskVision.SelectedCam].IsConnected)
                     {
                         int camMin = Math.Max((int)TaskVision.genTLCamera[(int)TaskVision.SelectedCam].ImageHeightMin, (int)TaskVision.genTLCamera[(int)TaskVision.SelectedCam].ImageWidthMin);

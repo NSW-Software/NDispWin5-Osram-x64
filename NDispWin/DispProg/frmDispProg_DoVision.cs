@@ -282,7 +282,7 @@ namespace NDispWin
                     TaskVision.flirCamera2[0].GrabCont();
                 }
                 else
-                if (GDefine.CameraType[CamID] == GDefine.ECameraType.MVCGenTL)
+                if (GDefine.CameraType[CamID] == GDefine.ECameraType.MVSGenTL)
                 {
                     TaskVision.genTLCamera[CamID].GrabOneImage();
                     Image = TaskVision.genTLCamera[CamID].mImage.Clone();
@@ -437,7 +437,7 @@ namespace NDispWin
                 {
                     TaskVision.flirCamera2[0].GrabCont();
                 }
-                if (GDefine.CameraType[CamID] == GDefine.ECameraType.MVCGenTL)
+                if (GDefine.CameraType[CamID] == GDefine.ECameraType.MVSGenTL)
                 {
                     TaskVision.genTLCamera[0].StartGrab();
                 }

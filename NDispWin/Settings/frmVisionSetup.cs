@@ -41,9 +41,12 @@ namespace NDispWin
         private void UpdateDisplay()
         {
             lbl_VisionSettleTime.Text = TaskVision.SettleTime.ToString();
-            lbl_Cam1DistPerPixXY.Text = TaskVision.DistPerPixelX[0].ToString("F6") + "," + TaskVision.DistPerPixelY[0].ToString("F6");
-            lbl_Cam2DistPerPixXY.Text = TaskVision.DistPerPixelX[1].ToString("F6") + "," + TaskVision.DistPerPixelY[1].ToString("F6");
-            lbl_Cam3DistPerPixXY.Text = TaskVision.DistPerPixelX[2].ToString("F6") + "," + TaskVision.DistPerPixelY[2].ToString("F6");
+            lblCam1DistPerPixX.Text = $"{TaskVision.DistPerPixelX[0]:f6}";
+            lblCam1DistPerPixY.Text = $"{TaskVision.DistPerPixelY[0]:f6}";
+            lblCam2DistPerPixX.Text = $"{TaskVision.DistPerPixelX[1]:f6}";
+            lblCam2DistPerPixY.Text = $"{TaskVision.DistPerPixelY[1]:f6}";
+            lblCam3DistPerPixX.Text = $"{TaskVision.DistPerPixelX[2]:f6}";
+            lblCam3DistPerPixY.Text = $"{TaskVision.DistPerPixelY[2]:f6}";
 
             lbl_LaserSettleTime.Text = TaskLaser.SettleTime.ToString();
         }
@@ -96,6 +99,37 @@ namespace NDispWin
 
             frm.CamNo = 2;
             frm.ShowDialog();
+        }
+
+        private void lblCam1DistPerPixX_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec("Vision Setup, Cam1 DistPerPixX", ref TaskVision.DistPerPixelX[0], 0, 1);
+            UpdateDisplay();
+        }
+        private void lblCam1DistPerPixY_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec("Vision Setup, Cam1 DistPerPixY", ref TaskVision.DistPerPixelY[0], 0, 1);
+            UpdateDisplay();
+        }
+        private void lblCam2DistPerPixX_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec("Vision Setup, Cam2 DistPerPixX", ref TaskVision.DistPerPixelX[1], 0, 1);
+            UpdateDisplay();
+        }
+        private void lblCam2DistPerPixY_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec("Vision Setup, Cam2 DistPerPixY", ref TaskVision.DistPerPixelY[1], 0, 1);
+            UpdateDisplay();
+        }
+        private void lblCam3DistPerPixX_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec("Vision Setup, Cam3 DistPerPixX", ref TaskVision.DistPerPixelX[2], 0, 1);
+            UpdateDisplay();
+        }
+        private void lblCam3DistPerPixY_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec("Vision Setup, Cam3 DistPerPixY", ref TaskVision.DistPerPixelY[2], 0, 1);
+            UpdateDisplay();
         }
     }
 }

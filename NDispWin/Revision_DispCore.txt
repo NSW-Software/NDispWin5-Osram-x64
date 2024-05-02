@@ -3,7 +3,18 @@
 Known issues - none
 In Prog, after DO_REF not found, camera cannot live
 
-Ver 6.0.1 - KN - 20240501
+Todo
+- Integrate LEDStudio
+
+Ver 6.0.3 - KN - 20240502 -Gitted
+[BugFix] Update StructEnum from 5.6.11
+[Feature] Added manual entry for DistPerPix
+
+Ver 6.0.2 - KN - 20240501
+[BugFix] TaskWeight WeightCal_Execute set DispVolume
+[Changes] TaskWeight WeightCal_Execute include BackSuck as total disp time.
+
+Ver 6.0.1 - KN - 20240501 - Gitted
 [Updates] Replicated changes from 5.6.11 
 [Replicate] DispProg, frmDispProg2, TaskWeight, TaskDisp, frmWeightCal, GDefine from 5.6.11
 [Copy] frmDispProg_ParallelLines, DispProgCmd, ErrCode, ZKA, TaskMHS, frm_MHSConvIO, TEvent from 5.6.11

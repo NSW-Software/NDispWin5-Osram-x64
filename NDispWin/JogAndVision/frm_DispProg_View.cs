@@ -119,7 +119,7 @@ namespace NDispWin
                 TaskVision.frmMVCGenTLCamera.SelectCamera(0);
                 TaskVision.frmMVCGenTLCamera.ShowCamReticles = true;
             }
-            if (GDefine.CameraType[0] == GDefine.ECameraType.MVCGenTL)
+            if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL)
             {
                 JogWindPos = EJogWindPos.TR;
                 UpdateDisplay();
@@ -156,7 +156,7 @@ namespace NDispWin
                 }
             }
             if (GDefine.CameraType[0] == GDefine.ECameraType.Spinnaker2) TaskVision.frmMVCGenTLCamera.Close();//TaskVision.frmCamera.Close();
-            if (GDefine.CameraType[0] == GDefine.ECameraType.MVCGenTL) TaskVision.frmMVCGenTLCamera.Close();
+            if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL) TaskVision.frmMVCGenTLCamera.Close();
         }
         private void frm_DispProg_View_FormClosed(object sender, FormClosedEventArgs e)
         {

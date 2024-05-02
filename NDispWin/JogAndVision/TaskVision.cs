@@ -1558,259 +1558,77 @@ namespace NDispWin
         public static bool OpenCamera(int CamNo)
         {
             string EMsg = "OpenCamera";
-            if (GDefine.CameraType[CamNo] == GDefine.ECameraType.None) return true;
 
-            if (GDefine.CameraType[CamNo] == GDefine.ECameraType.Basler)
+            switch (GDefine.CameraType[CamNo])
             {
-                #region
-                //try
-                //{
-                //    if (!Basler.Initialized)
-                //        if (!Basler.Initialize())
-                //        {
-                //            Msg MsgBox = new Msg();
-                //            MsgBox.Show((int)EErrCode.CAMERA_INIT_ERR);
-                //            return false;
-                //        }
-                //    if (!TaskVision.CameraN[CamNo].b_IsOpened)
-                //    {
-                //        if (!TaskVision.CameraN[CamNo].Open(GDefine.CameraIPAddress[CamNo]))
-                //        {
-                //            CloseCamera(CamNo);
-                //            //if (!Basler.Initialize()) goto _Error;
-                //            if (!TaskVision.CameraN[CamNo].Open(GDefine.CameraIPAddress[CamNo]))
-                //            {
-                //                Msg MsgBox = new Msg();
-                //                int i_Err = 0;
-                //                if (CamNo == 0) i_Err = (int)EErrCode.CAMERA1_OPEN_ERR;
-                //                if (CamNo == 1) i_Err = (int)EErrCode.CAMERA2_OPEN_ERR;
-                //                if (CamNo == 2) i_Err = (int)EErrCode.CAMERA3_OPEN_ERR;
-
-                //                EMsgRes MsgRes = MsgBox.Show(i_Err, EMcState.Error, EMsgBtn.smbOK_Cancel, false);
-                //                if (MsgRes == EMsgRes.smrCancel)
-                //                {
-                //                    Intf.Terminate = true;
-                //                }
-                //                return false;
-                //            }
-                //        }
-                //        if (CamNo == 1)
-                //        {
-                //            //if (!
-                //            TaskVision.CameraN[CamNo].SetBoolFeature("ReverseX", true);// goto _Error;
-                //            //if (!
-                //            TaskVision.CameraN[CamNo].SetIntFeature("ExposureTimeRaw", 8000);// goto _Error;
-                //        }
-                //        bool b_IsAvail = false;
-                //        bool b_IsWritable = false;
-                //        Int64 Min = 0;
-                //        Int64 Max = 0;
-                //        Int64 Width = 0;
-                //        Int64 Height = 0;
-                //        TaskVision.CameraN[CamNo].GetIntFeature("Width", ref b_IsAvail, ref b_IsWritable, ref Min, ref Max, ref Width);
-                //        TaskVision.CameraN[CamNo].GetIntFeature("Height", ref b_IsAvail, ref b_IsWritable, ref Min, ref Max, ref Height);
-                //        ImgHN[CamNo] = 494;// (int)Height;
-                //        ImgWN[CamNo] = 659;// (int)Width;
-
-                //        Emgu.CV.Image<Emgu.CV.Structure.Gray, byte> DummyImage = new Emgu.CV.Image<Emgu.CV.Structure.Gray, byte>(480, 480);
-                //        //using (Emgu.CV.Image<Emgu.CV.Structure.Gray, byte> DummyImage = new Emgu.CV.Image<Emgu.CV.Structure.Gray, byte>(480, 480))
-                //        {
-                //            GrabN(CamNo, ref DummyImage);
-                //        }
-                //    }
-                //}
-                //catch (Exception Ex)
-                //{
-                //    //frm_DispCore_Msg.Page.ShowMsg(Ex.Message.ToString(), frm_DispCore_Msg.TMsgBtn.smbAlmClr | frm_DispCore_Msg.TMsgBtn.smbOK);
-                //    EMsg = EMsg + Ex.Message;
-                //    Msg MsgBox = new Msg();
-                //    MsgBox.Show((int)EErrCode.CAMERA_COMM_EX_ERR, EMsg);
-                //    return false;
-                //}
-                #endregion
-            }
-
-            if (GDefine.CameraType[CamNo] == GDefine.ECameraType.PtGrey)
-            {
-                //#region
-                //try
-                //{
-                //    if (!TaskVision.CameraOpened(CamNo))
-                //    {
-                //        if (PGCamera[CamNo] == null) PGCamera[CamNo] = new PtGrey.TCamera();
-
-                //        if (!TaskVision.PGCamera[CamNo].Open(GDefine.CameraIPAddress[CamNo]))
-                //        {
-                //            Msg MsgBox = new Msg();
-                //            //int i_Err = 0;
-                //            //if (CamNo == 0) i_Err = (int)EErrCode.CAMERA1_OPEN_ERR;
-                //            //if (CamNo == 1) i_Err = (int)EErrCode.CAMERA2_OPEN_ERR;
-                //            //if (CamNo == 2) i_Err = (int)EErrCode.CAMERA3_OPEN_ERR;
-                //            //EMsgRes MsgRes = MsgBox.Show(i_Err, EMcState.Error, EMsgBtn.smbOK_Cancel, false);
-                //            EMsgRes MsgRes = MsgBox.Show(Messages.CAMERA_OPEN_ERR, $"CamNo {CamNo + 1}", EMsgBtn.smbOK_Cancel);
-                //            if (MsgRes == EMsgRes.smrCancel)
-                //            {
-                //                Intf.Terminate = true;
-                //            }
-
-                //            PGCamera[CamNo].Close();
-                //            PGCamera[CamNo] = null;
-                //            return false;
-                //        }
-
-                //        //PGCamera[CamNo].SetProperty(PtGrey.TCamera.EProperty.Shutter, ExposureTime[CamNo]);
-                //        //PGCamera[CamNo].SetProperty(PtGrey.TCamera.EProperty.Gain, Gain[CamNo]);
-
-                //        if (CamNo == 0)
-                //        {
-                //            PGCamera[CamNo].GrabbedEvent += new PtGrey.TCamera.OnGrabbedEventHandler(TaskVision_GrabbedEvent1);
-                //        }
-
-                //        if (CamNo == 1)
-                //        {
-                //            PGCamera[CamNo].GrabbedEvent += new PtGrey.TCamera.OnGrabbedEventHandler(TaskVision_GrabbedEvent2);
-
-                //            PGCamera[CamNo].SetRegister_Mirror(1);
-                //        }
-
-                //        if (CamNo == 2)
-                //        {
-                //            PGCamera[CamNo].GrabbedEvent += new PtGrey.TCamera.OnGrabbedEventHandler(TaskVision_GrabbedEvent3);
-                //        }
-
-                //        ImgHN[CamNo] = 608;
-                //        ImgWN[CamNo] = 808;
-
-                //        PGCamera[CamNo].TriggerMode = false;
-                //        PGCamera[CamNo].StartGrab();
-                //        PGCamera[CamNo].StopGrab();
-                //    }
-                //}
-                //catch (Exception Ex)
-                //{
-                //    PGCamera[CamNo].Close();
-                //    PGCamera[CamNo] = null;
-
-                //    EMsg = EMsg + Ex.Message;
-                //    Msg MsgBox = new Msg();
-                //    MsgBox.Show(Messages.CAMERA_COMM_EX_ERR, EMsg);
-                //    return false;
-                //}
-                //#endregion
-            }
-
-            if (GDefine.CameraType[CamNo] == GDefine.ECameraType.Spinnaker)
-            {
-   
-            }
-
-            if (GDefine.CameraType[CamNo] == GDefine.ECameraType.Spinnaker2)
-            {
-                #region
-                try
-                {
-                    if (!flirCamera2[CamNo].IsConnected)
+                case GDefine.ECameraType.None:
+                    return true;
+                case GDefine.ECameraType.Basler:
+                case GDefine.ECameraType.PtGrey:
+                case GDefine.ECameraType.Spinnaker:
+                case GDefine.ECameraType.Spinnaker2:
                     {
-                        flirCamera2[CamNo].Connect(GDefine.CameraIPAddress[CamNo]);
-
-                        if (!flirCamera2[CamNo].IsConnected)
+                        Msg MsgBox = new Msg();
+                        MsgBox.Show(Messages.CAMERA_DRIVER_NOT_SUPPORT);
+                        return false;
+                    }
+                case GDefine.ECameraType.MVSGenTL:
+                    {
+                        try
                         {
-                            Msg MsgBox = new Msg();
-                            //TEMessage i_Err = Message.CAMERA1_OPEN_ERR;
-                            //if (CamNo == 0) i_Err = Message.CAMERA1_OPEN_ERR;
-                            //if (CamNo == 1) i_Err = Message.CAMERA2_OPEN_ERR;
-                            //if (CamNo == 2) i_Err = Message.CAMERA3_OPEN_ERR;
-                            EMsgRes MsgRes = MsgBox.Show(Messages.CAMERA_OPEN_ERR, $"CamNo {CamNo + 1}", EMsgBtn.smbOK_Cancel);
-                            if (MsgRes == EMsgRes.smrCancel)
+                            if (!genTLCamera[CamNo].IsConnected)
                             {
-                                Intf.Terminate = true;
-                            }
+                                string ctifile = @"C:\Program Files (x86)\Common Files\MVS\Runtime\Win32_i86\MvProducerGEV.cti";
+                                //string ctifile = @"C:\Program Files (x86)\FLIR Systems\Spinnaker\cti\vs2015\FLIR_GenTL_v140.cti";
+                                if (GDefine.CameraSerialNo[CamNo] != null && GDefine.CameraSerialNo[CamNo].Length > 0)
+                                    genTLCamera[CamNo].OpenDevice($"Cam{CamNo + 1}", GDefine.CameraSerialNo[CamNo], ctifile);
+                                else
+                                    genTLCamera[CamNo].OpenDevice($"Cam{CamNo + 1}", GDefine.CameraIPAddress[CamNo]);
 
-                            flirCamera2[CamNo].DisConnect();
+                                if (!genTLCamera[CamNo].IsConnected)
+                                {
+                                    Msg MsgBox = new Msg();
+                                    //TEMessage i_Err = Message.CAMERA_OPEN_ERR;
+                                    //if (CamNo == 0) i_Err = Message.CAMERA_OPEN_ERR;
+                                    //if (CamNo == 1) i_Err = Message.CAMERA2_OPEN_ERR;
+                                    //if (CamNo == 2) i_Err = Message.CAMERA3_OPEN_ERR;
+
+                                    //EMsgRes MsgRes = MsgBox.Show(i_Err, "", EMsgBtn.smbOK_Cancel);
+                                    EMsgRes MsgRes = MsgBox.Show(Messages.CAMERA_OPEN_ERR, $"CamNo {CamNo + 1}", EMsgBtn.smbOK_Cancel);
+                                    if (MsgRes == EMsgRes.smrCancel)
+                                    {
+                                        Intf.Terminate = true;
+                                    }
+
+                                    genTLCamera[CamNo].CloseDevice();
+                                    return false;
+                                }
+
+                                genTLCamera[CamNo].Exposure = ExposureTime[CamNo] * 1000;
+                                genTLCamera[CamNo].Gain = Gain[CamNo];
+
+                                genTLCamera[CamNo].GrabOneImage();
+                                ImgHN[CamNo] = (int)genTLCamera[CamNo].ImageHeight;
+                                ImgWN[CamNo] = (int)genTLCamera[CamNo].ImageWidth;
+                                //genTLCamera[0].StartGrab();
+                            }
+                        }
+                        catch (Exception Ex)
+                        {
+                            try
+                            {
+                                genTLCamera[CamNo].CloseDevice();
+                            }
+                            catch { }
+
+                            EMsg = EMsg + Ex.Message;
+                            Msg MsgBox = new Msg();
+                            MsgBox.Show(Messages.CAMERA_COMM_EX_ERR, EMsg);
                             return false;
                         }
-
-                        flirCamera2[CamNo].Exposure = ExposureTime[CamNo] * 1000;
-                        flirCamera2[CamNo].Gain = Gain[CamNo];
-
-                        ImgHN[CamNo] = flirCamera2[CamNo].ImageHeight;
-                        ImgWN[CamNo] = flirCamera2[CamNo].ImageWidth;
+                        break;
                     }
-                }
-                catch (Exception Ex)
-                {
-                    try
-                    {
-                        flirCamera2[CamNo].DisConnect();
-                    }
-                    catch { }
-
-                    EMsg = EMsg + Ex.Message;
-                    Msg MsgBox = new Msg();
-                    MsgBox.Show(Messages.CAMERA_COMM_EX_ERR, EMsg);
-                    return false;
-                }
-                #endregion
             }
-
-            if (GDefine.CameraType[CamNo] == GDefine.ECameraType.MVCGenTL)
-            {
-                #region
-                try
-                {
-                    if (!genTLCamera[CamNo].IsConnected)
-                    {
-                        string ctifile = @"C:\Program Files (x86)\Common Files\MVS\Runtime\Win32_i86\MvProducerGEV.cti";
-                        //string ctifile = @"C:\Program Files (x86)\FLIR Systems\Spinnaker\cti\vs2015\FLIR_GenTL_v140.cti";
-                        if (GDefine.CameraSerialNo[CamNo] != null && GDefine.CameraSerialNo[CamNo].Length > 0)
-                            genTLCamera[CamNo].OpenDevice($"Cam{CamNo + 1}", GDefine.CameraSerialNo[CamNo], ctifile);
-                        else
-                            genTLCamera[CamNo].OpenDevice($"Cam{CamNo + 1}", GDefine.CameraIPAddress[CamNo]);
-    
-                        if (!genTLCamera[CamNo].IsConnected)
-                        {
-                            Msg MsgBox = new Msg();
-                            //TEMessage i_Err = Message.CAMERA_OPEN_ERR;
-                            //if (CamNo == 0) i_Err = Message.CAMERA_OPEN_ERR;
-                            //if (CamNo == 1) i_Err = Message.CAMERA2_OPEN_ERR;
-                            //if (CamNo == 2) i_Err = Message.CAMERA3_OPEN_ERR;
-
-                            //EMsgRes MsgRes = MsgBox.Show(i_Err, "", EMsgBtn.smbOK_Cancel);
-                            EMsgRes MsgRes = MsgBox.Show(Messages.CAMERA_OPEN_ERR, $"CamNo {CamNo + 1}", EMsgBtn.smbOK_Cancel);
-                            if (MsgRes == EMsgRes.smrCancel)
-                            {
-                                Intf.Terminate = true;
-                            }
-
-                            genTLCamera[CamNo].CloseDevice();
-                            return false;
-                        }
-
-                        genTLCamera[CamNo].Exposure = ExposureTime[CamNo] * 1000;
-                        genTLCamera[CamNo].Gain = Gain[CamNo];
-
-                        genTLCamera[CamNo].GrabOneImage();
-                        ImgHN[CamNo] = (int)genTLCamera[CamNo].ImageHeight;
-                        ImgWN[CamNo] = (int)genTLCamera[CamNo].ImageWidth;
-                        //genTLCamera[0].StartGrab();
-                    }
-                }
-                catch (Exception Ex)
-                {
-                    try
-                    {
-                        genTLCamera[CamNo].CloseDevice();
-                    }
-                    catch { }
-
-                    EMsg = EMsg + Ex.Message;
-                    Msg MsgBox = new Msg();
-                    MsgBox.Show(Messages.CAMERA_COMM_EX_ERR, EMsg);
-                    return false;
-                }
-                #endregion
-            }
-            
             return true;
         }
         public static bool OpenCameras()
@@ -1842,7 +1660,7 @@ namespace NDispWin
             {
                 flirCamera2[CamNo].DisConnect();
             }
-            if (GDefine.CameraType[CamNo] == GDefine.ECameraType.MVCGenTL)
+            if (GDefine.CameraType[CamNo] == GDefine.ECameraType.MVSGenTL)
             {
                 genTLCamera[CamNo].CloseDevice();
             }
@@ -1877,7 +1695,7 @@ namespace NDispWin
             {
                 return flirCamera2[CamNo].IsConnected;
             }
-            if (GDefine.CameraType[CamNo] == GDefine.ECameraType.MVCGenTL)
+            if (GDefine.CameraType[CamNo] == GDefine.ECameraType.MVSGenTL)
             {
                 return genTLCamera[CamNo].IsConnected;
             }
@@ -1937,7 +1755,7 @@ namespace NDispWin
                 case GDefine.ECameraType.Spinnaker:
                     throw new Exception(MethodBase.GetCurrentMethod().Name.ToString() + " function is not deprecated.");
                 case GDefine.ECameraType.Spinnaker2:
-                case GDefine.ECameraType.MVCGenTL:
+                case GDefine.ECameraType.MVSGenTL:
                     throw new Exception(MethodBase.GetCurrentMethod().Name.ToString() + "  funtion is not supported.");
             }
             return true;
@@ -2087,7 +1905,7 @@ namespace NDispWin
                     TaskVision.flirCamera2[(int)ECamNo.Cam00].Snap();
                     img = TaskVision.flirCamera2[(int)ECamNo.Cam00].m_ImageEmgu.m_Image.Clone();
                     break;
-                case GDefine.ECameraType.MVCGenTL:
+                case GDefine.ECameraType.MVSGenTL:
                     genTLCamera[(int)ECamNo.Cam00].GrabOneImage();
                     img = genTLCamera[(int)ECamNo.Cam00].mImage.Clone();
                     if (TaskVision.frmMVCGenTLCamera.Visible) TaskVision.genTLCamera[(int)ECamNo.Cam00].StartGrab();
@@ -2975,7 +2793,7 @@ namespace NDispWin
                                     TaskVision.frmMVCGenTLCamera.SelectCamera(0);
                                 }
                                 else
-                                if (GDefine.CameraType[0] == GDefine.ECameraType.MVCGenTL)
+                                if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL)
                                 {
                                     TReticles reticles = new TReticles();
                                     reticles.Reticle[0] = new TReticle2(TReticle2.EType.Cross, new PointF(50, 50), new SizeF(100, 100), Color.Green);
@@ -3035,7 +2853,7 @@ namespace NDispWin
                                     TaskVision.frmMVCGenTLCamera.SelectCamera(0);
                                 }
                                 else
-                                if (GDefine.CameraType[0] == GDefine.ECameraType.MVCGenTL)
+                                if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL)
                                 {
                                     TReticles reticles = new TReticles();
                                     reticles.Reticle[0] = new TReticle2(TReticle2.EType.Cross, new PointF(ImgWN[(int)CamID] - 50, 50), new SizeF(100, 100), Color.Green);
@@ -3092,7 +2910,7 @@ namespace NDispWin
                                     TaskVision.frmMVCGenTLCamera.SelectCamera(0);
                                 }
                                 else
-                                if (GDefine.CameraType[0] == GDefine.ECameraType.MVCGenTL)
+                                if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL)
                                 {
                                     TReticles reticles = new TReticles();
                                     reticles.Reticle[0] = new TReticle2(TReticle2.EType.Cross, new PointF(ImgWN[(int)CamID] - 50, ImgHN[(int)CamID] - 50), new SizeF(100, 100), Color.Green);
@@ -3150,7 +2968,7 @@ namespace NDispWin
                                     TaskVision.frmMVCGenTLCamera.SelectCamera(0);
                                 }
                                 else
-                                if (GDefine.CameraType[0] == GDefine.ECameraType.MVCGenTL)
+                                if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL)
                                 {
                                     TReticles reticles = new TReticles();
                                     reticles.Reticle[0] = new TReticle2(TReticle2.EType.Cross, new PointF(50, ImgHN[(int)CamID] - 50), new SizeF(100, 100), Color.Green);
@@ -3226,7 +3044,7 @@ namespace NDispWin
                                     TaskVision.frmMVCGenTLCamera.SelectCamera((int)CamID);
                                 }
                                 else
-                                if (GDefine.CameraType[0] == GDefine.ECameraType.MVCGenTL)
+                                if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL)
                                 {
                                     TReticles reticles = new TReticles();
                                     reticles.Reticle[0] = new TReticle2(TReticle2.EType.Cross, new PointF(50, ImgHN[(int)CamID] / 2), new SizeF(100, 100), Color.Green);
@@ -3288,7 +3106,7 @@ namespace NDispWin
                                     TaskVision.frmMVCGenTLCamera.SelectCamera((int)CamID);
                                 }
                                 else
-                                if (GDefine.CameraType[0] == GDefine.ECameraType.MVCGenTL)
+                                if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL)
                                 {
                                     TReticles reticles = new TReticles();
                                     reticles.Reticle[0] = new TReticle2(TReticle2.EType.Cross, new PointF(ImgWN[(int)CamID] - 50, ImgHN[(int)CamID] / 2), new SizeF(100, 100), Color.Green);
@@ -3371,7 +3189,7 @@ namespace NDispWin
                                     TaskVision.frmMVCGenTLCamera.SelectCamera((int)CamID);
                                 }
                                 else
-                                if (GDefine.CameraType[0] == GDefine.ECameraType.MVCGenTL)
+                                if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL)
                                 {
                                     TReticles reticles = new TReticles();
                                     reticles.Reticle[0] = new TReticle2(TReticle2.EType.Cross, new PointF(ImgWN[(int)CamID] / 2, 50), new SizeF(100, 100), Color.Green);
@@ -3432,7 +3250,7 @@ namespace NDispWin
                                     TaskVision.frmMVCGenTLCamera.SelectCamera((int)CamID);
                                 }
                                 else
-                                if (GDefine.CameraType[0] == GDefine.ECameraType.MVCGenTL)
+                                if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL)
                                 {
                                     TReticles reticles = new TReticles();
                                     reticles.Reticle[0] = new TReticle2(TReticle2.EType.Cross, new PointF(ImgWN[(int)CamID] / 2, ImgHN[(int)CamID] - 50), new SizeF(100, 100), Color.Green);
@@ -3681,7 +3499,7 @@ namespace NDispWin
                 {
                     Image = flirCamera2[CamNo].m_ImageEmgu.m_Image.Clone();
                 }
-                if (GDefine.CameraType[CamNo] == GDefine.ECameraType.MVCGenTL)
+                if (GDefine.CameraType[CamNo] == GDefine.ECameraType.MVSGenTL)
                 {
                     genTLCamera[CamNo].GrabOneImage();
                     Image = genTLCamera[CamNo].mImage.Clone();
@@ -3776,7 +3594,7 @@ namespace NDispWin
                     TaskVision.flirCamera2[CamNo].Snap();
                     Image = flirCamera2[CamNo].m_ImageEmgu.m_Image.Clone();
                 }
-                if (GDefine.CameraType[CamNo] == GDefine.ECameraType.MVCGenTL)
+                if (GDefine.CameraType[CamNo] == GDefine.ECameraType.MVSGenTL)
                 {
                     genTLCamera[CamNo].GrabOneImage();
                     Image = genTLCamera[CamNo].mImage.Clone();
@@ -3852,7 +3670,7 @@ namespace NDispWin
                     TaskVision.flirCamera2[0].Snap();
                     Image = flirCamera2[CamNo].m_ImageEmgu.m_Image.Clone();
                 }
-                if (GDefine.CameraType[CamNo] == GDefine.ECameraType.MVCGenTL)
+                if (GDefine.CameraType[CamNo] == GDefine.ECameraType.MVSGenTL)
                 {
                     genTLCamera[CamNo].GrabOneImage();
                     Image = genTLCamera[CamNo].mImage.Clone();
@@ -4005,7 +3823,7 @@ namespace NDispWin
                     if (!TaskVision.flirCamera2[CamNo].Snap()) return false;
                     Image = flirCamera2[CamNo].m_ImageEmgu.m_Image.Clone();
                 }
-                if (GDefine.CameraType[CamNo] == GDefine.ECameraType.MVCGenTL)
+                if (GDefine.CameraType[CamNo] == GDefine.ECameraType.MVSGenTL)
                 {
                     X = 0; Y = 0; S = 0;
                     genTLCamera[CamNo].GrabOneImage();
@@ -4052,7 +3870,7 @@ namespace NDispWin
                     Image = TaskVision.flirCamera2[CamNo].m_ImageEmgu.m_Image.Clone();
                 }
                 else
-                if (GDefine.CameraType[CamNo] == GDefine.ECameraType.MVCGenTL)
+                if (GDefine.CameraType[CamNo] == GDefine.ECameraType.MVSGenTL)
                 {
                     genTLCamera[CamNo].GrabOneImage();
                     Image = genTLCamera[CamNo].mImage.Clone();
@@ -4269,7 +4087,7 @@ namespace NDispWin
             {
                 TaskVision.flirCamera2[0].GrabCont();
             }
-            if (GDefine.CameraType[0] == GDefine.ECameraType.MVCGenTL)
+            if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL)
             {
                 if (TaskVision.frmMVCGenTLCamera.Visible) genTLCamera[0].StartGrab();
             }
@@ -4697,7 +4515,7 @@ namespace NDispWin
             switch (GDefine.MCameraType[CamNo])
             {
                 default: throw new Exception("Camera type not supported.");
-                case GDefine.ECameraType.MVCGenTL:
+                case GDefine.ECameraType.MVSGenTL:
                     #region
                     try
                     {
@@ -4767,7 +4585,7 @@ namespace NDispWin
             switch (GDefine.MCameraType[CamNo])
             {
                 default: break;
-                case GDefine.ECameraType.MVCGenTL:
+                case GDefine.ECameraType.MVSGenTL:
                     MCamera[CamNo].CloseDevice();
                     break;
             }
@@ -4784,7 +4602,7 @@ namespace NDispWin
             switch (GDefine.MCameraType[CamNo])
             {
                 default: return false;
-                case GDefine.ECameraType.MVCGenTL:
+                case GDefine.ECameraType.MVSGenTL:
                     {
                         return MCamera[CamNo].IsConnected;
                     }

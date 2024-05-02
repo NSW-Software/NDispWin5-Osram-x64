@@ -425,33 +425,18 @@ namespace NDispWin
             SBrush[(byte)EMapBin.RefNG] = new SolidBrush(Color.Red);
             Pen[(byte)EMapBin.HeightOK] = new Pen(Color.Black);
             SBrush[(byte)EMapBin.HeightOK] = new SolidBrush(Color.Orange);
+
             Pen[(byte)EMapBin.HeightNG] = new Pen(Color.Black);
             SBrush[(byte)EMapBin.HeightNG] = new SolidBrush(Color.Red);
-            Pen[(byte)EMapBin.UnitMarkOK] = new Pen(Color.Black);
-            SBrush[(byte)EMapBin.UnitMarkOK] = new SolidBrush(Color.OrangeRed);
-            Pen[(byte)EMapBin.UnitMarkNG] = new Pen(Color.Black);
-            SBrush[(byte)EMapBin.UnitMarkNG] = new SolidBrush(Color.Red);
+
             Pen[(byte)EMapBin.VVIOK] = new Pen(Color.Black);
             SBrush[(byte)EMapBin.VVIOK] = new SolidBrush(Color.DarkGreen);
             Pen[(byte)EMapBin.VVING] = new Pen(Color.Black);
             SBrush[(byte)EMapBin.VVING] = new SolidBrush(Color.Pink);
-
-            Pen[(byte)EMapBin.Continue1] = new Pen(Color.Black);
-            SBrush[(byte)EMapBin.Continue1] = new SolidBrush(Color.PaleGreen);
-            Pen[(byte)EMapBin.Continue2] = new Pen(Color.Black);
-            SBrush[(byte)EMapBin.Continue2] = new SolidBrush(Color.PaleGreen);
-            Pen[(byte)EMapBin.Continue3] = new Pen(Color.Black);
-            SBrush[(byte)EMapBin.Continue3] = new SolidBrush(Color.PaleGreen);
-            Pen[(byte)EMapBin.Continue4] = new Pen(Color.Black);
-            SBrush[(byte)EMapBin.Continue4] = new SolidBrush(Color.PaleGreen);
-            Pen[(byte)EMapBin.Continue5] = new Pen(Color.Black);
-            SBrush[(byte)EMapBin.Continue5] = new SolidBrush(Color.PaleGreen);
-            Pen[(byte)EMapBin.Continue6] = new Pen(Color.Black);
-            SBrush[(byte)EMapBin.Continue6] = new SolidBrush(Color.PaleGreen);
-            Pen[(byte)EMapBin.Continue7] = new Pen(Color.Black);
-            SBrush[(byte)EMapBin.Continue7] = new SolidBrush(Color.PaleGreen);
-            Pen[(byte)EMapBin.Continue8] = new Pen(Color.Black);
-            SBrush[(byte)EMapBin.Continue8] = new SolidBrush(Color.PaleGreen);
+            Pen[(byte)EMapBin.UnitMarkOK] = new Pen(Color.Black);
+            SBrush[(byte)EMapBin.UnitMarkOK] = new SolidBrush(Color.OrangeRed);
+            Pen[(byte)EMapBin.UnitMarkNG] = new Pen(Color.Black);
+            SBrush[(byte)EMapBin.UnitMarkNG] = new SolidBrush(Color.Red);
 
             Pen[(byte)EMapBin.Complete] = new Pen(Color.Black);
             SBrush[(byte)EMapBin.Complete] = new SolidBrush(Color.Lime);
@@ -478,14 +463,6 @@ namespace NDispWin
         HeightOK = 3, HeightNG = 103,
         UnitMarkOK = 4, UnitMarkNG = 104,
         VVIOK = 6, VVING = 106,
-        Continue1 = 10,
-        Continue2 = 11,
-        Continue3 = 12,
-        Continue4 = 13,
-        Continue5 = 14,
-        Continue6 = 15,
-        Continue7 = 16,
-        Continue8 = 17,
         Complete = 200,
         CompleteOK = 201,
         CompleteNG = 202,
@@ -497,7 +474,7 @@ namespace NDispWin
     internal class TModelList
     {
         public const int MAX_MODEL = 16;
-        public const int MAX_PARA = 29;
+        public const int MAX_PARA = 28;
         public enum EModel
         {
             DnStartV,
@@ -515,7 +492,6 @@ namespace NDispWin
             LineSpd2,
             LineAccel,
             PumpSpeed,
-            Pump2Speed,
 
             FPressA,
             FPressB,
@@ -562,7 +538,6 @@ namespace NDispWin
                 Para[(int)EModel.LineSpd2] = 0;
                 Para[(int)EModel.LineAccel] = 0;
                 Para[(int)EModel.PumpSpeed] = 0;
-                Para[(int)EModel.Pump2Speed] = 0;
 
                 Para[(int)EModel.FPressA] = 0;
                 Para[(int)EModel.FPressB] = 0;
@@ -587,7 +562,7 @@ namespace NDispWin
         }
         public static string[] PPModelUnits = { "mm/s", "mm/s", "mm/s2", "mm", 
                                                     "ms", "ms", 
-                                                    "ul", "ul", "mm/s", "mm/s", "mm/s","mm/s2", "mm/s", "mm/s",
+                                                    "ul", "ul", "mm/s", "mm/s", "mm/s","mm/s2", "mm/s",
                                                     "unit","unit",
                                                     "ms", "ms", 
                                                     "mm/s", "mm/s", "mm/s2", "mm", "ms", 
@@ -596,7 +571,7 @@ namespace NDispWin
 
         public static string[] HMModelUnits = { "mm/s", "mm/s", "mm/s2", "mm", 
                                                     "ms", "ms", 
-                                                    "ms", "ms", "mm/s", "mm/s", "mm/s", "mm/s2", "rpm", "rpm",
+                                                    "ms", "ms", "mm/s", "mm/s", "mm/s", "mm/s2", "rpm",
                                                     "unit","unit",
                                                     "ms", "ms", 
                                                     "mm/s", "mm/s", "mm/s2", "mm", "ms", 
@@ -606,7 +581,7 @@ namespace NDispWin
         public List<int> BasicPara = new List<int>();
         public static double[] WarnLLimit = {1,1,100,0,
                                                     0, 0, 
-                                                    0, 0, 0, 1, 1, 5, 0, 0,
+                                                    0, 0, 0, 1, 1, 5, 0,
                                                     0, 0,
                                                     0, 0,
                                                     0, 0, 100, 4, 0,
@@ -614,7 +589,7 @@ namespace NDispWin
                                                     -2};
         public static double[] WarnULimit = {200,600,5000,50,
                                                     0, 0, 
-                                                    1000, 1000, 200, 25, 25, 5000, 500, 500,
+                                                    1000, 1000, 200, 25, 25, 5000, 500,
                                                     130, 130,
                                                     0, 0,
                                                     200, 600, 5000, 50, 0,
@@ -1258,7 +1233,6 @@ namespace NDispWin
         public double LineSpeedAct = 0;
         public double LineAccel = 0;
         public double PumpSpeed = 0;
-        public double Pump2Speed = 0;
 
         public double FPressA = 0;
         public double FPressB = 0;
@@ -1321,11 +1295,6 @@ namespace NDispWin
                     PumpSpeed = 0;
                 else
                     PumpSpeed = ModelList.Model[ModelNo].Para[(int)TModelList.EModel.PumpSpeed];
-
-                if (ModelList.Model[ModelNo].Para[(int)TModelList.EModel.Pump2Speed] == 0)
-                    Pump2Speed = PumpSpeed;
-                else
-                    Pump2Speed = ModelList.Model[ModelNo].Para[(int)TModelList.EModel.Pump2Speed];
 
                 if (ModelList.Model[ModelNo].Para[(int)TModelList.EModel.LineStartV] == 0)
                     LineStartV = TaskGantry.GXAxis.Para.StartV;

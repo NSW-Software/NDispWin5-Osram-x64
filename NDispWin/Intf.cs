@@ -765,7 +765,7 @@ namespace NDispWin
                     return frm.ShowDialog();
                 }
                 else
-                                if (GDefine.CameraType[0] == GDefine.ECameraType.MVCGenTL)
+                                if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL)
                 {
                     frm_DispProg2 frm = new frm_DispProg2();
                     return frm.ShowDialog();

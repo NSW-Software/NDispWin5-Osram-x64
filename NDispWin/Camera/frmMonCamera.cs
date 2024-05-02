@@ -22,12 +22,12 @@ namespace NDispWin
             pbox1.Dock = DockStyle.Fill;
             pbox2.Dock = DockStyle.Fill;
 
-            if (GDefine.MCameraType[0] == GDefine.ECameraType.MVCGenTL) camCount++;
-            if (GDefine.MCameraType[1] == GDefine.ECameraType.MVCGenTL) camCount++;
+            if (GDefine.MCameraType[0] == GDefine.ECameraType.MVSGenTL) camCount++;
+            if (GDefine.MCameraType[1] == GDefine.ECameraType.MVSGenTL) camCount++;
             panel2.Visible = camCount == 2;
 
-            tsslCam1Status.Visible = (GDefine.MCameraType[0] == GDefine.ECameraType.MVCGenTL);
-            tsslCam2Status.Visible = (GDefine.MCameraType[1] == GDefine.ECameraType.MVCGenTL);
+            tsslCam1Status.Visible = (GDefine.MCameraType[0] == GDefine.ECameraType.MVSGenTL);
+            tsslCam2Status.Visible = (GDefine.MCameraType[1] == GDefine.ECameraType.MVSGenTL);
 
             if (GDefine.MCameraLocation.Width > 0)
             {
@@ -37,7 +37,7 @@ namespace NDispWin
                 this.Height = GDefine.MCameraLocation.Height;
             }
 
-            if (!(GDefine.MCameraType[0] == GDefine.ECameraType.MVCGenTL || GDefine.MCameraType[1] == GDefine.ECameraType.MVCGenTL))
+            if (!(GDefine.MCameraType[0] == GDefine.ECameraType.MVSGenTL || GDefine.MCameraType[1] == GDefine.ECameraType.MVSGenTL))
             {
                 GDefine.MCameraAutoShow = false;
                 Close();

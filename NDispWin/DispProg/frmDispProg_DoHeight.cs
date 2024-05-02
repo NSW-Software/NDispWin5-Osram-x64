@@ -363,7 +363,7 @@ namespace NDispWin
 
         private void btnTest_Click(object sender, EventArgs e)
         {
-            if (GDefine.CameraType[0] == GDefine.ECameraType.MVCGenTL) TaskVision.genTLCamera[0].StopGrab();
+            if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL) TaskVision.genTLCamera[0].StopGrab();
 
             lbox_Info.Items.Clear();
 
@@ -622,12 +622,12 @@ namespace NDispWin
             }
             finally
             {
-                if (GDefine.CameraType[0] == GDefine.ECameraType.MVCGenTL) TaskVision.genTLCamera[0].StartGrab();
+                if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL) TaskVision.genTLCamera[0].StartGrab();
             }
         }
         private void btn_Test_Click(object sender, EventArgs e)
         {
-            if (GDefine.CameraType[0] == GDefine.ECameraType.MVCGenTL) TaskVision.genTLCamera[0].StopGrab();
+            if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL) TaskVision.genTLCamera[0].StopGrab();
 
             lbox_Info.Items.Clear();
 
@@ -823,7 +823,7 @@ namespace NDispWin
             }
             finally
             {
-                if (GDefine.CameraType[0] == GDefine.ECameraType.MVCGenTL) TaskVision.genTLCamera[0].StartGrab();
+                if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL) TaskVision.genTLCamera[0].StartGrab();
             }
         }
 

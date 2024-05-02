@@ -60,7 +60,7 @@ namespace NDispWin
                     //pnl_Main.Top = 0;
                     //pnl_Main.Anchor = AnchorStyles.Right | AnchorStyles.Top;
                     //break;
-                case GDefine.ECameraType.MVCGenTL:
+                case GDefine.ECameraType.MVSGenTL:
                     this.FormBorderStyle = FormBorderStyle.Sizable;
                     this.ControlBox = false;
                     this.StartPosition = FormStartPosition.CenterScreen;
@@ -142,7 +142,7 @@ namespace NDispWin
         private void frmCameraSetting_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (GDefine.CameraType[0] == GDefine.ECameraType.Spinnaker2) TaskVision.frmMVCGenTLCamera.Close();//TaskVision.frmCamera.Close();
-            if (GDefine.CameraType[0] == GDefine.ECameraType.MVCGenTL) TaskVision.frmMVCGenTLCamera.Close();
+            if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL) TaskVision.frmMVCGenTLCamera.Close();
         }
 
         private void UpdateDisplay()
@@ -203,7 +203,7 @@ namespace NDispWin
                         TaskVision.flirCamera2[CamNo].Exposure = d * 1000;
                         break;
                     }
-                case GDefine.ECameraType.MVCGenTL:
+                case GDefine.ECameraType.MVSGenTL:
                     {
                         double Min = 0;
                         double Max = 20;
@@ -249,7 +249,7 @@ namespace NDispWin
                         TaskVision.flirCamera2[CamNo].Gain = TaskVision.Gain[CamNo];
                         break;
                     }
-                case GDefine.ECameraType.MVCGenTL:
+                case GDefine.ECameraType.MVSGenTL:
                     {
                         double Min = 0;
                         double Max = 24;

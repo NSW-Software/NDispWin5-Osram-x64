@@ -53,7 +53,7 @@ namespace NDispWin
             switch (GDefine.CameraType[0])
             {
                 case GDefine.ECameraType.Spinnaker2:
-                case GDefine.ECameraType.MVCGenTL:
+                case GDefine.ECameraType.MVSGenTL:
                     //do nothing
                     break;
                 default:
@@ -1120,7 +1120,7 @@ namespace NDispWin
                 frm_Jog.Show();
             }
             else
-            if (GDefine.CameraType[0] == GDefine.ECameraType.MVCGenTL)
+            if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL)
             {
                 Invoke(new Action(() =>
                 {
@@ -1291,7 +1291,7 @@ namespace NDispWin
             }
 
             if (GDefine.CameraType[0] == GDefine.ECameraType.Spinnaker2) TaskVision.frmMVCGenTLCamera.Close();//TaskVision.frmCamera.Close();
-            if (GDefine.CameraType[0] == GDefine.ECameraType.MVCGenTL) TaskVision.frmMVCGenTLCamera.Close();
+            if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL) TaskVision.frmMVCGenTLCamera.Close();
 
             if (frmMonCamera != null && frmMonCamera.Visible)
             {
@@ -1304,7 +1304,7 @@ namespace NDispWin
         }
         private void frm_DispProg2_Shown(object sender, EventArgs e)
         {
-            if (GDefine.CameraType[0] == GDefine.ECameraType.MVCGenTL)
+            if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL)
             {
                 TaskVision.frmMVCGenTLCamera.ZoomFit();
             }
@@ -1315,7 +1315,7 @@ namespace NDispWin
             switch (GDefine.CameraType[0])
             {
                 case GDefine.ECameraType.Spinnaker2:
-                case GDefine.ECameraType.MVCGenTL:
+                case GDefine.ECameraType.MVSGenTL:
                     //do nothing
                     break;
                 default:
@@ -3113,7 +3113,7 @@ namespace NDispWin
                     TaskVision.frmMVCGenTLCamera.SelectCamera(0);
                     TaskVision.genTLCamera[0].StartGrab();
                 }
-                if (GDefine.CameraType[0] == GDefine.ECameraType.MVCGenTL)
+                if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL)
                 {
                     TaskVision.frmMVCGenTLCamera.SelectCamera(0);
                     TaskVision.genTLCamera[0].StartGrab();
@@ -3176,7 +3176,7 @@ namespace NDispWin
                     TaskVision.frmMVCGenTLCamera.SelectCamera(0);
                     TaskVision.genTLCamera[0].StartGrab();
                 }
-                if (GDefine.CameraType[0] == GDefine.ECameraType.MVCGenTL)
+                if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL)
                 {
                     TaskVision.frmMVCGenTLCamera.SelectCamera(0);
                     TaskVision.genTLCamera[0].StartGrab();

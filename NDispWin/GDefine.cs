@@ -1855,7 +1855,7 @@ namespace NDispWin
         public enum EHeadConfig { Single, Dual };
         public static EHeadConfig HeadConfig = EHeadConfig.Single;
 
-        public enum ECameraType { None, Basler, Emulator, PtGrey, Spinnaker, Spinnaker2, MVCGenTL };
+        public enum ECameraType { None, Basler, Emulator, PtGrey, Spinnaker, Spinnaker2, MVSGenTL };
         public enum ELCType { None, LCSerial, LCSerLegacy };
 
         public enum EHeightSensorType { None, ILD1700, ILD1302, IFD2451, DONOTUSE, ILD1X20, IFD2421, ILD1750, IFD2422, CL3000, ILD1900 };

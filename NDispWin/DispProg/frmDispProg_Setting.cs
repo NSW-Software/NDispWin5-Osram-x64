@@ -120,8 +120,9 @@ namespace NDispWin
             lbl_DotsPerSampleCal.Text = DispProg.DotsPerSample_Cal == 0 ? "(Default)" : DispProg.DotsPerSample_Cal.ToString();
             lbl_OutputResultCal.Text = DispProg.DotsPerSample_Cal == 0 ? "(Default)" : DispProg.OutputResult_Cal.ToString();
 
-            lblMeasWeight.Text = $"{DispProg.Meas_Weight:f4}";
-            lbl_MeasSpec.Text = DispProg.Meas_Spec.ToString("f4");
+            lblMeasWeight.Text = DispProg.Meas_Weight > 0 ? $"{DispProg.Meas_Weight:f4}" : $"({DispProg.Target_Weight:f4})";
+            lbl_MeasSpec.Text = DispProg.Meas_Spec > 0 ? $"{DispProg.Meas_Spec:f4}" : DispProg.Meas_Weight > 0 ? $"({DispProg.Meas_Weight:f4})" : $"({DispProg.Target_Weight:f4})";
+
             lbl_MeasSpecTol.Text = DispProg.Meas_Spec_Tol.ToString("f4");
             lbl_DotsPerSample.Text = DispProg.DotsPerSample_Meas == 0 ? "(Default)" : DispProg.DotsPerSample_Meas.ToString();
             lbl_OutputResult.Text = DispProg.DotsPerSample_Meas == 0 ? "(Default)" : DispProg.OutputResult_Meas.ToString();

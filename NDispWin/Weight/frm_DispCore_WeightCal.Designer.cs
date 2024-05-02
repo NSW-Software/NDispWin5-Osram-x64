@@ -33,9 +33,6 @@
             this.lbl_WeightCurrentValue = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.btn_Start = new System.Windows.Forms.Button();
-            this.label22 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.lbl_DotsPerSample = new System.Windows.Forms.Label();
             this.lbl_CalTarget = new System.Windows.Forms.Label();
             this.lbl_TargetName = new System.Windows.Forms.Label();
             this.lbox_Result = new System.Windows.Forms.ListBox();
@@ -59,9 +56,6 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lbl_CalTargetRange = new System.Windows.Forms.Label();
             this.lbl_TargetUnit = new System.Windows.Forms.Label();
-            this.lbl_OutputResult = new System.Windows.Forms.Label();
-            this.label35 = new System.Windows.Forms.Label();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.btn_Ctrl1 = new System.Windows.Forms.Button();
             this.btn_Ctrl2 = new System.Windows.Forms.Button();
             this.tmr_Start = new System.Windows.Forms.Timer(this.components);
@@ -72,7 +66,6 @@
             this.rtbSettings = new System.Windows.Forms.RichTextBox();
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -122,40 +115,6 @@
             this.btn_Start.Text = "Start";
             this.btn_Start.UseVisualStyleBackColor = true;
             this.btn_Start.Click += new System.EventHandler(this.btn_Start_Click);
-            // 
-            // label22
-            // 
-            this.label22.AccessibleDescription = "";
-            this.label22.Location = new System.Drawing.Point(98, 20);
-            this.label22.Margin = new System.Windows.Forms.Padding(2);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(51, 23);
-            this.label22.TabIndex = 199;
-            this.label22.Text = "(count)";
-            this.label22.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label11
-            // 
-            this.label11.AccessibleDescription = "Dots/Sample";
-            this.label11.Location = new System.Drawing.Point(5, 20);
-            this.label11.Margin = new System.Windows.Forms.Padding(2);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(144, 23);
-            this.label11.TabIndex = 195;
-            this.label11.Text = "Dots/Sample";
-            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lbl_DotsPerSample
-            // 
-            this.lbl_DotsPerSample.BackColor = System.Drawing.SystemColors.Control;
-            this.lbl_DotsPerSample.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_DotsPerSample.Location = new System.Drawing.Point(228, 20);
-            this.lbl_DotsPerSample.Margin = new System.Windows.Forms.Padding(2);
-            this.lbl_DotsPerSample.Name = "lbl_DotsPerSample";
-            this.lbl_DotsPerSample.Size = new System.Drawing.Size(70, 23);
-            this.lbl_DotsPerSample.TabIndex = 196;
-            this.lbl_DotsPerSample.Text = "10";
-            this.lbl_DotsPerSample.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lbl_CalTarget
             // 
@@ -430,46 +389,6 @@
             this.lbl_TargetUnit.Text = "(mg)";
             this.lbl_TargetUnit.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // lbl_OutputResult
-            // 
-            this.lbl_OutputResult.BackColor = System.Drawing.SystemColors.Control;
-            this.lbl_OutputResult.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_OutputResult.Location = new System.Drawing.Point(228, 47);
-            this.lbl_OutputResult.Margin = new System.Windows.Forms.Padding(2);
-            this.lbl_OutputResult.Name = "lbl_OutputResult";
-            this.lbl_OutputResult.Size = new System.Drawing.Size(70, 23);
-            this.lbl_OutputResult.TabIndex = 216;
-            this.lbl_OutputResult.Text = "Total";
-            this.lbl_OutputResult.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label35
-            // 
-            this.label35.AccessibleDescription = "Output Result";
-            this.label35.Location = new System.Drawing.Point(5, 47);
-            this.label35.Margin = new System.Windows.Forms.Padding(2);
-            this.label35.Name = "label35";
-            this.label35.Size = new System.Drawing.Size(144, 23);
-            this.label35.TabIndex = 215;
-            this.label35.Text = "Output Result";
-            this.label35.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.AccessibleDescription = "Sample/Result";
-            this.groupBox2.AutoSize = true;
-            this.groupBox2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.groupBox2.Controls.Add(this.label11);
-            this.groupBox2.Controls.Add(this.lbl_DotsPerSample);
-            this.groupBox2.Controls.Add(this.label22);
-            this.groupBox2.Controls.Add(this.lbl_OutputResult);
-            this.groupBox2.Controls.Add(this.label35);
-            this.groupBox2.Location = new System.Drawing.Point(11, 472);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(303, 94);
-            this.groupBox2.TabIndex = 194;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Sample/Result";
-            // 
             // btn_Ctrl1
             // 
             this.btn_Ctrl1.AccessibleDescription = "";
@@ -536,7 +455,7 @@
             this.groupBox4.AutoSize = true;
             this.groupBox4.Controls.Add(this.button1);
             this.groupBox4.Controls.Add(this.button2);
-            this.groupBox4.Location = new System.Drawing.Point(314, 483);
+            this.groupBox4.Location = new System.Drawing.Point(314, 464);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(376, 69);
             this.groupBox4.TabIndex = 200;
@@ -564,7 +483,6 @@
             this.Controls.Add(this.lbl_Status);
             this.Controls.Add(this.btn_Ctrl2);
             this.Controls.Add(this.btn_Ctrl1);
-            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.lbox_Result);
@@ -585,7 +503,6 @@
             this.Load += new System.EventHandler(this.frmWeightSetup_Load);
             this.groupBox3.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -608,17 +525,11 @@
         private System.Windows.Forms.Button btn_Setting;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label lbl_DotsPerSample;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label lbl_TargetUnit;
-        private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.Label lbl_OutputResult;
-        private System.Windows.Forms.Label label35;
         private System.Windows.Forms.Label lbl_CurrentCalName;
         private System.Windows.Forms.Label lbl_CurrentCal2;
         private System.Windows.Forms.Label lbl_CurrentCal1;
-        private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label lbl_CalTargetRange;
         private System.Windows.Forms.Button btn_Tare;
         private System.Windows.Forms.Button btn_Ctrl1;

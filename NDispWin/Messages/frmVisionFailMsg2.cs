@@ -91,7 +91,7 @@ namespace NDispWin
                 TaskVision.genTLCamera[0].StartGrab();
             }
 
-            if (GDefine.CameraType[0] == GDefine.ECameraType.MVCGenTL)
+            if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL)
             {
                 this.WindowState = FormWindowState.Maximized;
                 AutoSize = false;
@@ -120,7 +120,7 @@ namespace NDispWin
         private void frmVisionFailMsg2_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (GDefine.CameraType[0] == GDefine.ECameraType.Spinnaker2) TaskVision.frmMVCGenTLCamera.Close();//TaskVision.frmCamera.Close();
-            if (GDefine.CameraType[0] == GDefine.ECameraType.MVCGenTL) TaskVision.frmMVCGenTLCamera.Close();
+            if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL) TaskVision.frmMVCGenTLCamera.Close();
         }
 
         enum EJogWindPos { TR, BR, BL, TL };

@@ -152,7 +152,7 @@ namespace NDispWin
                     TaskVision.frmMVCGenTLCamera.ShowReticles = false;
                     TaskVision.frmMVCGenTLCamera.SelectCamera(0);
                 }
-                if (GDefine.CameraType[0] == GDefine.ECameraType.MVCGenTL)
+                if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL)
                 {
                     this.TopMost = false;
                     TaskVision.frmMVCGenTLCamera.ShowCamReticles = true;

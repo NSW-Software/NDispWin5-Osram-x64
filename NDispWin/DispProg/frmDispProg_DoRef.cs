@@ -331,7 +331,7 @@ namespace NDispWin
             {
                 TaskVision.flirCamera2[0].GrabCont();
             }
-            if (GDefine.CameraType[0] == GDefine.ECameraType.MVCGenTL)
+            if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL)
             {
                 TaskVision.genTLCamera[0].StartGrab();
             }
@@ -362,7 +362,7 @@ namespace NDispWin
             {
                 TaskVision.flirCamera2[0].GrabCont();
             }
-            if (GDefine.CameraType[0] == GDefine.ECameraType.MVCGenTL)
+            if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL)
             {
                 TaskVision.genTLCamera[0].StartGrab();
             }
@@ -451,7 +451,7 @@ namespace NDispWin
                 {
                     TaskVision.flirCamera2[0].GrabCont();
                 }
-                if (GDefine.CameraType[0] == GDefine.ECameraType.MVCGenTL)
+                if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL)
                 {
                     TaskVision.genTLCamera[0].StartGrab();
                 }
@@ -517,7 +517,7 @@ namespace NDispWin
                     TaskVision.flirCamera2[0].GrabCont();
                 }
 
-                if (GDefine.CameraType[0] == GDefine.ECameraType.MVCGenTL)
+                if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL)
                 {
                     TaskVision.genTLCamera[0].StartGrab();
                 }

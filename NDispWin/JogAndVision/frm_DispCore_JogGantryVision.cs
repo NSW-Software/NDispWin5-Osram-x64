@@ -42,7 +42,7 @@ namespace NDispWin
                 this.BringToFront();
             }
             else
-            if (GDefine.CameraType[0] == GDefine.ECameraType.MVCGenTL)
+            if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL)
             {
                 this.WindowState = FormWindowState.Maximized;
                 this.BringToFront();
@@ -95,7 +95,7 @@ namespace NDispWin
                 TaskVision.frmMVCGenTLCamera.SelectCamera(0);
                 TaskVision.frmMVCGenTLCamera.ShowCamReticles = true;
             }
-            if (GDefine.CameraType[0] == GDefine.ECameraType.MVCGenTL)
+            if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL)
             {
                 TaskVision.frmMVCGenTLCamera = new frmMVCGenTLCamera();
                 TaskVision.frmMVCGenTLCamera.CamReticles = Reticle.Reticles;
@@ -115,7 +115,7 @@ namespace NDispWin
                 switch (GDefine.CameraType[0])
                 {
                     case GDefine.ECameraType.Spinnaker2:
-                    case GDefine.ECameraType.MVCGenTL:
+                    case GDefine.ECameraType.MVSGenTL:
                         //
                         break;
                     default:
@@ -158,7 +158,7 @@ namespace NDispWin
             switch (GDefine.CameraType[0])
             {
                 case GDefine.ECameraType.Spinnaker2:
-                case GDefine.ECameraType.MVCGenTL:
+                case GDefine.ECameraType.MVSGenTL:
                     //
                     break;
                 default:
@@ -206,7 +206,7 @@ namespace NDispWin
         private void frm_DispCore_JogGantryVision_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (GDefine.CameraType[0] == GDefine.ECameraType.Spinnaker2) TaskVision.frmMVCGenTLCamera.Close();//TaskVision.frmCamera.Close();
-            if (GDefine.CameraType[0] == GDefine.ECameraType.MVCGenTL) TaskVision.frmMVCGenTLCamera.Close();
+            if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL) TaskVision.frmMVCGenTLCamera.Close();
 
             PageVision.Close();
             PageJog.Close();

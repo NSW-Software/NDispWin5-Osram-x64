@@ -34,21 +34,24 @@
             this.btn_Cam1Setting = new System.Windows.Forms.Button();
             this.label13 = new System.Windows.Forms.Label();
             this.btn_CalCam3 = new System.Windows.Forms.Button();
-            this.lbl_Cam3DistPerPixXY = new System.Windows.Forms.Label();
+            this.lblCam3DistPerPixX = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.lbl_VisionSettleTime = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.btn_CalCam2 = new System.Windows.Forms.Button();
-            this.lbl_Cam2DistPerPixXY = new System.Windows.Forms.Label();
+            this.lblCam2DistPerPixX = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.btn_CalCam1 = new System.Windows.Forms.Button();
-            this.lbl_Cam1DistPerPixXY = new System.Windows.Forms.Label();
+            this.lblCam1DistPerPixX = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.gbox_Laser = new System.Windows.Forms.GroupBox();
             this.lbl_LaserSettleTime = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.lblCam1DistPerPixY = new System.Windows.Forms.Label();
+            this.lblCam3DistPerPixY = new System.Windows.Forms.Label();
+            this.lblCam2DistPerPixY = new System.Windows.Forms.Label();
             this.groupBox3.SuspendLayout();
             this.gbox_Laser.SuspendLayout();
             this.SuspendLayout();
@@ -58,22 +61,25 @@
             this.groupBox3.AccessibleDescription = "Vision";
             this.groupBox3.AutoSize = true;
             this.groupBox3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox3.Controls.Add(this.lblCam3DistPerPixY);
+            this.groupBox3.Controls.Add(this.lblCam2DistPerPixY);
+            this.groupBox3.Controls.Add(this.lblCam1DistPerPixY);
             this.groupBox3.Controls.Add(this.btn_Cam3Setting);
             this.groupBox3.Controls.Add(this.btn_Cam2Setting);
             this.groupBox3.Controls.Add(this.btn_Cam1Setting);
             this.groupBox3.Controls.Add(this.label13);
             this.groupBox3.Controls.Add(this.btn_CalCam3);
-            this.groupBox3.Controls.Add(this.lbl_Cam3DistPerPixXY);
+            this.groupBox3.Controls.Add(this.lblCam3DistPerPixX);
             this.groupBox3.Controls.Add(this.label15);
             this.groupBox3.Controls.Add(this.label10);
             this.groupBox3.Controls.Add(this.lbl_VisionSettleTime);
             this.groupBox3.Controls.Add(this.label3);
             this.groupBox3.Controls.Add(this.btn_CalCam2);
-            this.groupBox3.Controls.Add(this.lbl_Cam2DistPerPixXY);
+            this.groupBox3.Controls.Add(this.lblCam2DistPerPixX);
             this.groupBox3.Controls.Add(this.label12);
             this.groupBox3.Controls.Add(this.label7);
             this.groupBox3.Controls.Add(this.btn_CalCam1);
-            this.groupBox3.Controls.Add(this.lbl_Cam1DistPerPixXY);
+            this.groupBox3.Controls.Add(this.lblCam1DistPerPixX);
             this.groupBox3.Controls.Add(this.label8);
             this.groupBox3.Location = new System.Drawing.Point(7, 7);
             this.groupBox3.Name = "groupBox3";
@@ -129,6 +135,7 @@
             this.label13.TabIndex = 151;
             this.label13.Text = "Cam 3";
             this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label13.Click += new System.EventHandler(this.label13_Click);
             // 
             // btn_CalCam3
             // 
@@ -142,17 +149,18 @@
             this.btn_CalCam3.UseVisualStyleBackColor = true;
             this.btn_CalCam3.Click += new System.EventHandler(this.btn_CalCam3_Click);
             // 
-            // lbl_Cam3DistPerPixXY
+            // lblCam3DistPerPixX
             // 
-            this.lbl_Cam3DistPerPixXY.BackColor = System.Drawing.SystemColors.Control;
-            this.lbl_Cam3DistPerPixXY.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_Cam3DistPerPixXY.Location = new System.Drawing.Point(161, 157);
-            this.lbl_Cam3DistPerPixXY.Margin = new System.Windows.Forms.Padding(2);
-            this.lbl_Cam3DistPerPixXY.Name = "lbl_Cam3DistPerPixXY";
-            this.lbl_Cam3DistPerPixXY.Size = new System.Drawing.Size(150, 23);
-            this.lbl_Cam3DistPerPixXY.TabIndex = 149;
-            this.lbl_Cam3DistPerPixXY.Text = "10.00000, 10.000000";
-            this.lbl_Cam3DistPerPixXY.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblCam3DistPerPixX.BackColor = System.Drawing.Color.White;
+            this.lblCam3DistPerPixX.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblCam3DistPerPixX.Location = new System.Drawing.Point(161, 157);
+            this.lblCam3DistPerPixX.Margin = new System.Windows.Forms.Padding(2);
+            this.lblCam3DistPerPixX.Name = "lblCam3DistPerPixX";
+            this.lblCam3DistPerPixX.Size = new System.Drawing.Size(71, 23);
+            this.lblCam3DistPerPixX.TabIndex = 149;
+            this.lblCam3DistPerPixX.Text = "10.00000, 10.000000";
+            this.lblCam3DistPerPixX.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblCam3DistPerPixX.Click += new System.EventHandler(this.lblCam3DistPerPixX_Click);
             // 
             // label15
             // 
@@ -212,17 +220,18 @@
             this.btn_CalCam2.UseVisualStyleBackColor = true;
             this.btn_CalCam2.Click += new System.EventHandler(this.btn_CalCam2_Click);
             // 
-            // lbl_Cam2DistPerPixXY
+            // lblCam2DistPerPixX
             // 
-            this.lbl_Cam2DistPerPixXY.BackColor = System.Drawing.SystemColors.Control;
-            this.lbl_Cam2DistPerPixXY.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_Cam2DistPerPixXY.Location = new System.Drawing.Point(161, 103);
-            this.lbl_Cam2DistPerPixXY.Margin = new System.Windows.Forms.Padding(2);
-            this.lbl_Cam2DistPerPixXY.Name = "lbl_Cam2DistPerPixXY";
-            this.lbl_Cam2DistPerPixXY.Size = new System.Drawing.Size(150, 23);
-            this.lbl_Cam2DistPerPixXY.TabIndex = 145;
-            this.lbl_Cam2DistPerPixXY.Text = "10.00000, 10.000000";
-            this.lbl_Cam2DistPerPixXY.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblCam2DistPerPixX.BackColor = System.Drawing.Color.White;
+            this.lblCam2DistPerPixX.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblCam2DistPerPixX.Location = new System.Drawing.Point(161, 103);
+            this.lblCam2DistPerPixX.Margin = new System.Windows.Forms.Padding(2);
+            this.lblCam2DistPerPixX.Name = "lblCam2DistPerPixX";
+            this.lblCam2DistPerPixX.Size = new System.Drawing.Size(71, 23);
+            this.lblCam2DistPerPixX.TabIndex = 145;
+            this.lblCam2DistPerPixX.Text = "10.00000, 10.000000";
+            this.lblCam2DistPerPixX.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblCam2DistPerPixX.Click += new System.EventHandler(this.lblCam2DistPerPixX_Click);
             // 
             // label12
             // 
@@ -258,17 +267,18 @@
             this.btn_CalCam1.UseVisualStyleBackColor = true;
             this.btn_CalCam1.Click += new System.EventHandler(this.btn_CalCam1_Click);
             // 
-            // lbl_Cam1DistPerPixXY
+            // lblCam1DistPerPixX
             // 
-            this.lbl_Cam1DistPerPixXY.BackColor = System.Drawing.SystemColors.Control;
-            this.lbl_Cam1DistPerPixXY.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_Cam1DistPerPixXY.Location = new System.Drawing.Point(161, 49);
-            this.lbl_Cam1DistPerPixXY.Margin = new System.Windows.Forms.Padding(2);
-            this.lbl_Cam1DistPerPixXY.Name = "lbl_Cam1DistPerPixXY";
-            this.lbl_Cam1DistPerPixXY.Size = new System.Drawing.Size(150, 23);
-            this.lbl_Cam1DistPerPixXY.TabIndex = 141;
-            this.lbl_Cam1DistPerPixXY.Text = "10.00000, 10.000000";
-            this.lbl_Cam1DistPerPixXY.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblCam1DistPerPixX.BackColor = System.Drawing.Color.White;
+            this.lblCam1DistPerPixX.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblCam1DistPerPixX.Location = new System.Drawing.Point(161, 49);
+            this.lblCam1DistPerPixX.Margin = new System.Windows.Forms.Padding(2);
+            this.lblCam1DistPerPixX.Name = "lblCam1DistPerPixX";
+            this.lblCam1DistPerPixX.Size = new System.Drawing.Size(71, 23);
+            this.lblCam1DistPerPixX.TabIndex = 141;
+            this.lblCam1DistPerPixX.Text = "0.123456";
+            this.lblCam1DistPerPixX.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblCam1DistPerPixX.Click += new System.EventHandler(this.lblCam1DistPerPixX_Click);
             // 
             // label8
             // 
@@ -318,6 +328,45 @@
             this.label2.Text = "Settle Time (ms)";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // lblCam1DistPerPixY
+            // 
+            this.lblCam1DistPerPixY.BackColor = System.Drawing.Color.White;
+            this.lblCam1DistPerPixY.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblCam1DistPerPixY.Location = new System.Drawing.Point(239, 49);
+            this.lblCam1DistPerPixY.Margin = new System.Windows.Forms.Padding(2);
+            this.lblCam1DistPerPixY.Name = "lblCam1DistPerPixY";
+            this.lblCam1DistPerPixY.Size = new System.Drawing.Size(71, 23);
+            this.lblCam1DistPerPixY.TabIndex = 155;
+            this.lblCam1DistPerPixY.Text = "0.123456";
+            this.lblCam1DistPerPixY.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblCam1DistPerPixY.Click += new System.EventHandler(this.lblCam1DistPerPixY_Click);
+            // 
+            // lblCam3DistPerPixY
+            // 
+            this.lblCam3DistPerPixY.BackColor = System.Drawing.Color.White;
+            this.lblCam3DistPerPixY.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblCam3DistPerPixY.Location = new System.Drawing.Point(239, 157);
+            this.lblCam3DistPerPixY.Margin = new System.Windows.Forms.Padding(2);
+            this.lblCam3DistPerPixY.Name = "lblCam3DistPerPixY";
+            this.lblCam3DistPerPixY.Size = new System.Drawing.Size(71, 23);
+            this.lblCam3DistPerPixY.TabIndex = 157;
+            this.lblCam3DistPerPixY.Text = "10.00000, 10.000000";
+            this.lblCam3DistPerPixY.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblCam3DistPerPixY.Click += new System.EventHandler(this.lblCam3DistPerPixY_Click);
+            // 
+            // lblCam2DistPerPixY
+            // 
+            this.lblCam2DistPerPixY.BackColor = System.Drawing.Color.White;
+            this.lblCam2DistPerPixY.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblCam2DistPerPixY.Location = new System.Drawing.Point(239, 103);
+            this.lblCam2DistPerPixY.Margin = new System.Windows.Forms.Padding(2);
+            this.lblCam2DistPerPixY.Name = "lblCam2DistPerPixY";
+            this.lblCam2DistPerPixY.Size = new System.Drawing.Size(71, 23);
+            this.lblCam2DistPerPixY.TabIndex = 156;
+            this.lblCam2DistPerPixY.Text = "10.00000, 10.000000";
+            this.lblCam2DistPerPixY.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblCam2DistPerPixY.Click += new System.EventHandler(this.lblCam2DistPerPixY_Click);
+            // 
             // frmVisionSetup
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -350,15 +399,15 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label lbl_VisionSettleTime;
-        private System.Windows.Forms.Label lbl_Cam1DistPerPixXY;
+        private System.Windows.Forms.Label lblCam1DistPerPixX;
         private System.Windows.Forms.Button btn_CalCam1;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Button btn_CalCam3;
-        private System.Windows.Forms.Label lbl_Cam3DistPerPixXY;
+        private System.Windows.Forms.Label lblCam3DistPerPixX;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Button btn_CalCam2;
-        private System.Windows.Forms.Label lbl_Cam2DistPerPixXY;
+        private System.Windows.Forms.Label lblCam2DistPerPixX;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.GroupBox gbox_Laser;
@@ -367,5 +416,8 @@
         private System.Windows.Forms.Button btn_Cam1Setting;
         private System.Windows.Forms.Button btn_Cam3Setting;
         private System.Windows.Forms.Button btn_Cam2Setting;
+        private System.Windows.Forms.Label lblCam1DistPerPixY;
+        private System.Windows.Forms.Label lblCam3DistPerPixY;
+        private System.Windows.Forms.Label lblCam2DistPerPixY;
     }
 }

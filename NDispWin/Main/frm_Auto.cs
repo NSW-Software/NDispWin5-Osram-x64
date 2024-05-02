@@ -42,7 +42,7 @@ namespace NDispWin
 
             tsslblDoorLock.Visible = GDefineN.EnableDoorLock;
 
-            tsslMonCamera.Visible = GDefine.MCameraType[0] == GDefine.ECameraType.MVCGenTL || GDefine.MCameraType[1] == GDefine.ECameraType.MVCGenTL;
+            tsslMonCamera.Visible = GDefine.MCameraType[0] == GDefine.ECameraType.MVSGenTL || GDefine.MCameraType[1] == GDefine.ECameraType.MVSGenTL;
         }
 
         private void StartUp()
