@@ -107,9 +107,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\dll x64\Emgu.CV.World.Netstandard.dll</HintPath>
     </Reference>
-    <Reference Include="FlyCap2CameraControl">
-      <HintPath>..\dll x64\FlyCap2CameraControl.dll</HintPath>
-    </Reference>
     <Reference Include="FlyCap2CameraControld_v110">
       <HintPath>..\dll x64\FlyCap2CameraControld_v110.dll</HintPath>
     </Reference>

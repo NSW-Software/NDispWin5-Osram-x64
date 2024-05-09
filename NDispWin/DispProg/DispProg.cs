@@ -24871,6 +24871,7 @@ namespace NDispWin
         //#endregion
 
         _RetryHeight:
+            bool lessThanVal = false;
             bool doOK;// = false;
             if (!DoHeight(ActiveLine, ActiveLine.IPara[1], X, Y, Z, out doOK)) return EExecuteDoHeight.Pause;
             int OK = doOK ? 0 : 100;//0 - OK, 1 - FailRefHeightTol, 2-FailRefHeightSkipTol, 3 - FailRange  100 - DoHeight Fail
@@ -24890,6 +24891,7 @@ namespace NDispWin
             {
                 Z_Ave = 0.00001;
                 if (Z.Average() < 0) Z_Ave = -Z_Ave;
+                lessThanVal = true;
             }
             string s_HeightData = "";
             s_HeightData = s_HeightData + "Ave" + (char)9 + Z_Ave.ToString("f5") + (char)9;
@@ -24926,7 +24928,7 @@ namespace NDispWin
             double d_RefHeightSkipTol = ActiveLine.DPara[7];
 
             //Prompt Error when exceed Error Tolerance
-            if (d_RefHeightErrorTol > 0)
+            if (d_RefHeightErrorTol > 0 || lessThanVal)
             {
                 foreach (double d in Z)
                 {
@@ -24934,7 +24936,8 @@ namespace NDispWin
                     {
                         HeightData.OK = false;
                         Msg MsgBox = new Msg();
-                        EMsgRes MsgRes = MsgBox.Show(Messages.LASER_OUT_OF_REF_HEIGHT_TOL, "Ref Height = " + d_RefHeight.ToString("f4") + "\rCurrent Height = " + d.ToString("f4"), EMsgBtn.smbRetry_Stop);
+                        EMsgRes MsgRes = MsgBox.Show(Messages.LASER_OUT_OF_REF_HEIGHT_TOL, "Ref Height = " + d_RefHeight.ToString("f4") + "\rCurrent Height = " + d.ToString("f4") + 
+                            "\rPossible Average Error = 0.00001" + $"\rCurrent Average = {Z_Ave}", EMsgBtn.smbRetry_Stop);
 
                         switch (MsgRes)
                         {

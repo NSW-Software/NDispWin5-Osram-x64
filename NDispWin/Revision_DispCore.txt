@@ -6,6 +6,10 @@ In Prog, after DO_REF not found, camera cannot live
 Todo
 - Integrate LEDStudio
 
+Ver 6.0.4 - YH - 20240509
+[Feedback] Z Axis will not move down to dispense when Average Height value is 0.00001
+[Changes] Created flag to check condition. Alarm will be prompted when Average Height value is 0.00001
+
 Ver 6.0.3 - KN - 20240502 -Gitted
 [BugFix] Update StructEnum from 5.6.11
 [Feature] Added manual entry for DistPerPix
