@@ -6,6 +6,13 @@ In Prog, after DO_REF not found, camera cannot live
 Todo
 - Integrate LEDStudio
 
+Ver 6.0.5 - KN - 20240518
+[BugFix] Corrected WeightMeas_Execute to reset IsFilling.
+[Library] Uses MEDALiq 5.0.1
+[Library] NImager.dll, Zing.dll
+[Library] Remove FlyCapture2Managed FlyCap2CameraControld references and dependencies
+[Library] Remove CReader references and dependencies. DataMan is not longer supported
+
 Ver 6.0.4 - YH - 20240509
 [Feedback] Z Axis will not move down to dispense when Average Height value is 0.00001
 [Changes] Created flag to check condition. Alarm will be prompted when Average Height value is 0.00001

@@ -91,14 +91,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\dll x64\Automation.BDaq4.dll</HintPath>
     </Reference>
-    <Reference Include="Cognex.DataMan.SDK.PC, Version=5.6.0.83, Culture=neutral, PublicKeyToken=9f98866f2a3a2e78, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\dll x64\Cognex.DataMan.SDK.PC.dll</HintPath>
-    </Reference>
-    <Reference Include="CReader, Version=1.0.1.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\dll x64\CReader.dll</HintPath>
-    </Reference>
     <Reference Include="Emgu.CV.UI, Version=3.0.0.2158, Culture=neutral, PublicKeyToken=7281126722ab4438, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\dll x64\Emgu.CV.UI.dll</HintPath>
@@ -106,12 +98,6 @@
     <Reference Include="Emgu.CV.World.Netstandard, Version=1.0.0.0, Culture=neutral, PublicKeyToken=7281126722ab4438, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\dll x64\Emgu.CV.World.Netstandard.dll</HintPath>
-    </Reference>
-    <Reference Include="FlyCap2CameraControld_v110">
-      <HintPath>..\dll x64\FlyCap2CameraControld_v110.dll</HintPath>
-    </Reference>
-    <Reference Include="FlyCapture2Managed">
-      <HintPath>..\dll x64\FlyCapture2Managed.dll</HintPath>
     </Reference>
     <Reference Include="GCBaseNet, Version=1.0.0.0, Culture=neutral, PublicKeyToken=234183bb65cf3bd2, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -129,12 +115,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\dll x64\LEDStudio.Net.dll</HintPath>
     </Reference>
-    <Reference Include="LHS_ILD_Series, Version=1.0.0.5, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\dll x64\LHS_ILD_Series.dll</HintPath>
-    </Reference>
-    <Reference Include="MEDAQLib.NET, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="MEDAQLib.NET">
       <HintPath>..\dll x64\MEDAQLib.NET.dll</HintPath>
     </Reference>
     <Reference Include="Modbus, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -149,10 +130,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\dll x64\NDispLicense.dll</HintPath>
     </Reference>
-    <Reference Include="NImager, Version=1.0.35.26241, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\dll x64\NImager.dll</HintPath>
-    </Reference>
     <Reference Include="Nspira_HPC_Series, Version=1.0.2.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\dll x64\Nspira_HPC_Series.dll</HintPath>
@@ -165,17 +142,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\dll x64\NUtils.dll</HintPath>
     </Reference>
-    <Reference Include="NVision, Version=2.2.33.35903, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="NVision">
       <HintPath>..\dll x64\NVision.dll</HintPath>
     </Reference>
     <Reference Include="Open_eVision_NetApi_2_5, Version=2.5.0.11304, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\dll x64\Open_eVision_NetApi_2_5.dll</HintPath>
-    </Reference>
-    <Reference Include="PylonC.NET, Version=2.3.0.2279, Culture=neutral, PublicKeyToken=a77e8471c5919d5a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\dll x64\PylonC.NET.dll</HintPath>
     </Reference>
     <Reference Include="SocketV1, Version=1.0.0.7, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
@@ -215,10 +187,6 @@
     </Reference>
     <Reference Include="ZKANet64">
       <HintPath>..\dll x64\ZKANet64.dll</HintPath>
-    </Reference>
-    <Reference Include="zxing, Version=0.16.0.0, Culture=neutral, PublicKeyToken=830ae994e36ac27d, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\dll x64\zxing.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

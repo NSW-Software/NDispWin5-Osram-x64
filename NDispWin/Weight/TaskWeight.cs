@@ -1725,6 +1725,7 @@ namespace NDispWin
 
                     if (b_IsFilling)
                     {
+                        b_IsFilling = false;
                         b_Ignore = true;
                     }
 

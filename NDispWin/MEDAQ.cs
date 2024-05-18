@@ -198,8 +198,8 @@ namespace CLaser
 
                 switch (SensorType)
                 {
-                    //case ESensorType.ILD1700: Sensor = new MEDAQLib(ME_SENSOR.SENSOR_ILD1700); break;
-                    //case ESensorType.ILD1302: Sensor = new MEDAQLib(ME_SENSOR.SENSOR_ILD1302); break;
+                    case ESensorType.ILD1700: Sensor = new MEDAQLib("ILD1700"); break;
+                    case ESensorType.ILD1302: Sensor = new MEDAQLib((ME_SENSOR)1); break;
                     case ESensorType.IFD2451: Sensor = new MEDAQLib(ME_SENSOR.SENSOR_IFD2451); break;
                     case ESensorType.ILD1X20: Sensor = new MEDAQLib(ME_SENSOR.SENSOR_ILD1320); break;
                     case ESensorType.ILD2300: Sensor = new MEDAQLib(ME_SENSOR.SENSOR_ILD2300); break;

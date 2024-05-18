@@ -45,18 +45,16 @@
             this.label2 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.cbox_Enabled = new System.Windows.Forms.CheckBox();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.label19 = new System.Windows.Forms.Label();
             this.lbl_FocusNo = new System.Windows.Forms.Label();
             this.gbox_Pos1.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btn_Cancel
             // 
             this.btn_Cancel.AccessibleDescription = "Cancel";
-            this.btn_Cancel.Location = new System.Drawing.Point(326, 100);
+            this.btn_Cancel.Location = new System.Drawing.Point(330, 244);
             this.btn_Cancel.Margin = new System.Windows.Forms.Padding(2);
             this.btn_Cancel.Name = "btn_Cancel";
             this.btn_Cancel.Size = new System.Drawing.Size(75, 36);
@@ -68,7 +66,7 @@
             // btn_OK
             // 
             this.btn_OK.AccessibleDescription = "OK";
-            this.btn_OK.Location = new System.Drawing.Point(245, 100);
+            this.btn_OK.Location = new System.Drawing.Point(249, 244);
             this.btn_OK.Margin = new System.Windows.Forms.Padding(2);
             this.btn_OK.Name = "btn_OK";
             this.btn_OK.Size = new System.Drawing.Size(75, 36);
@@ -90,7 +88,7 @@
             this.gbox_Pos1.Margin = new System.Windows.Forms.Padding(2);
             this.gbox_Pos1.Name = "gbox_Pos1";
             this.gbox_Pos1.Padding = new System.Windows.Forms.Padding(5, 5, 5, 0);
-            this.gbox_Pos1.Size = new System.Drawing.Size(401, 69);
+            this.gbox_Pos1.Size = new System.Drawing.Size(401, 73);
             this.gbox_Pos1.TabIndex = 20;
             this.gbox_Pos1.TabStop = false;
             this.gbox_Pos1.Text = "Position";
@@ -144,7 +142,7 @@
             // btn_Exec
             // 
             this.btn_Exec.AccessibleDescription = "Exec";
-            this.btn_Exec.Location = new System.Drawing.Point(7, 100);
+            this.btn_Exec.Location = new System.Drawing.Point(4, 244);
             this.btn_Exec.Margin = new System.Windows.Forms.Padding(2, 2, 2, 0);
             this.btn_Exec.Name = "btn_Exec";
             this.btn_Exec.Size = new System.Drawing.Size(75, 36);
@@ -159,11 +157,11 @@
             this.groupBox1.AutoSize = true;
             this.groupBox1.Controls.Add(this.lbl_SettleTime);
             this.groupBox1.Controls.Add(this.label10);
-            this.groupBox1.Location = new System.Drawing.Point(0, 34);
+            this.groupBox1.Location = new System.Drawing.Point(4, 174);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(5, 5, 5, 0);
-            this.groupBox1.Size = new System.Drawing.Size(401, 62);
+            this.groupBox1.Size = new System.Drawing.Size(401, 66);
             this.groupBox1.TabIndex = 25;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Setting";
@@ -196,7 +194,7 @@
             // 
             this.lbl_Result.BackColor = System.Drawing.SystemColors.Control;
             this.lbl_Result.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_Result.Location = new System.Drawing.Point(84, 6);
+            this.lbl_Result.Location = new System.Drawing.Point(88, 143);
             this.lbl_Result.Margin = new System.Windows.Forms.Padding(2);
             this.lbl_Result.Name = "lbl_Result";
             this.lbl_Result.Size = new System.Drawing.Size(231, 23);
@@ -207,7 +205,7 @@
             // label4
             // 
             this.label4.AccessibleDescription = "Result";
-            this.label4.Location = new System.Drawing.Point(0, 6);
+            this.label4.Location = new System.Drawing.Point(8, 143);
             this.label4.Margin = new System.Windows.Forms.Padding(2);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(75, 23);
@@ -241,9 +239,9 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(319, 6);
+            this.button1.Location = new System.Drawing.Point(323, 139);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(75, 30);
             this.button1.TabIndex = 46;
             this.button1.Text = "Read";
             this.button1.UseVisualStyleBackColor = true;
@@ -254,26 +252,11 @@
             this.cbox_Enabled.AutoSize = true;
             this.cbox_Enabled.Location = new System.Drawing.Point(168, 7);
             this.cbox_Enabled.Name = "cbox_Enabled";
-            this.cbox_Enabled.Size = new System.Drawing.Size(62, 18);
+            this.cbox_Enabled.Size = new System.Drawing.Size(72, 22);
             this.cbox_Enabled.TabIndex = 220;
             this.cbox_Enabled.Text = "Enable";
             this.cbox_Enabled.UseVisualStyleBackColor = true;
             this.cbox_Enabled.Click += new System.EventHandler(this.cbox_Enabled_Click);
-            // 
-            // panel1
-            // 
-            this.panel1.AutoSize = true;
-            this.panel1.Controls.Add(this.label4);
-            this.panel1.Controls.Add(this.btn_Exec);
-            this.panel1.Controls.Add(this.button1);
-            this.panel1.Controls.Add(this.btn_OK);
-            this.panel1.Controls.Add(this.lbl_Result);
-            this.panel1.Controls.Add(this.btn_Cancel);
-            this.panel1.Controls.Add(this.groupBox1);
-            this.panel1.Location = new System.Drawing.Point(4, 135);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(403, 139);
-            this.panel1.TabIndex = 221;
             // 
             // label19
             // 
@@ -304,12 +287,18 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(411, 577);
+            this.ClientSize = new System.Drawing.Size(411, 301);
             this.ControlBox = false;
+            this.Controls.Add(this.btn_OK);
+            this.Controls.Add(this.btn_Exec);
+            this.Controls.Add(this.btn_Cancel);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.label19);
             this.Controls.Add(this.lbl_FocusNo);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.cbox_Enabled);
+            this.Controls.Add(this.lbl_Result);
             this.Controls.Add(this.lbl_ID);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.gbox_Pos1);
@@ -323,8 +312,6 @@
             this.Load += new System.EventHandler(this.frmDispProg_ReadID_Load);
             this.gbox_Pos1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -349,7 +336,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.CheckBox cbox_Enabled;
-        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Label lbl_FocusNo;
     }

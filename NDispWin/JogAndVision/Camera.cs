@@ -146,7 +146,7 @@ namespace NDispWin
     public class FlirCamera
     {
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        public static extern bool SetDllDirectory(string lpPathName);   
+        public static extern bool SetDllDirectory(string lpPathName);
 
         IManagedCamera m_Camera = null;
 
@@ -417,7 +417,7 @@ namespace NDispWin
                 iCountFPS++;
 
                 bStatus = GetFrame(m_grabTimeOut);
-                
+
                 swSnap.Stop();
 
                 if (iCountFPS >= 25) m_dFPS = (1000.0 / swSnap.ElapsedMilliseconds) * iCountFPS;
@@ -677,7 +677,7 @@ namespace NDispWin
                 }
             }
         }
-   
+
         public int ImageWidth
         {
             get

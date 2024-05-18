@@ -13,10 +13,6 @@ using System.Threading.Tasks;
 using System.Net.Sockets;
 using System.Reflection;
 
-using ZXing;
-using ZXing.QrCode;
-using ZXing.Common;
-
 using Euresys.Open_eVision_2_5;
 using Emgu.CV;
 
@@ -9123,110 +9119,13 @@ namespace NDispWin
             }
         }
 
-        public static CReader.DataMan DataMan = new CReader.DataMan();
         public static bool IDReader_Enabled = true;
-        public static void IDReader_Open()
-        {
-            if (GDefine.IDReader_Type == GDefine.EIDReader.DataMan)
-                DataMan.Connect(GDefine.IDReader_Addr);
-
-            //if (GDefine.IDReader_Type == GDefine.EIDReader.DataMatrix)
-            //{
-            //    try
-            //    {
-            //        EImageBW8 m_Source = new EImageBW8();
-            //        EMatrixCode m_MatrixCode = new EMatrixCode();
-            //        EMatrixCodeReader m_MatrixCodeReader = new EMatrixCodeReader();
-            //    }
-            //    catch (Exception Ex)
-            //    {
-            //        MessageBox.Show(Ex.Message.ToString());
-            //    }
-            //}
-        }
-        public static bool IDReader_IsConnected
-        {
-            get
-            {
-                if (GDefine.IDReader_Type == GDefine.EIDReader.DataMan)
-                    return DataMan.IsConnected;
-
-                return false;
-            }
-        }
-        public static void IDReader_Close()
-        {
-            if (GDefine.IDReader_Type == GDefine.EIDReader.DataMan)
-                DataMan.Disconnect();
-        }
         public static bool IDReader_Read(bool ShowImg, ref string ReadData)
         {
             switch (GDefine.IDReader_Type)
             {
                 case GDefine.EIDReader.None:
                     throw new Exception("IDReader Type not defined.");
-                case GDefine.EIDReader.DataMan:
-                    DataMan.Trig(ShowImg);
-                    ReadData = TaskDisp.DataMan._sReadData;
-                    return true;
-                case GDefine.EIDReader.QRCode:
-                    {
-                        Emgu.CV.Image<Emgu.CV.Structure.Gray, byte> Image = null;
-
-                        if (GDefine.CameraType[0] == GDefine.ECameraType.Basler)
-                        {
-                            TaskVision.GrabN(0, ref Image);
-                        }
-                        if (GDefine.CameraType[0] == GDefine.ECameraType.PtGrey)
-                        {
-                            TaskVision.PtGrey_CamStop();
-                            TaskVision.PtGrey_CamArm(0);
-                            TaskVision.PtGrey_CamTrig(0);
-                            TaskVision.PtGrey_CamImage(0, ref Image);
-                            TaskVision.PtGrey_CamLive(0);
-                        }
-                        if (GDefine.CameraType[0] == GDefine.ECameraType.Spinnaker)
-                        {
-                            TaskVision.GrabN(0, ref Image);
-                        }
-                        if (GDefine.CameraType[0] == GDefine.ECameraType.Spinnaker2)
-                        {
-                            TaskVision.flirCamera2[0].Snap();
-                            Image = TaskVision.flirCamera2[0].m_ImageEmgu.m_Image.Clone();
-                            TaskVision.flirCamera2[0].GrabCont();
-                        }
-                        if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL)
-                        {
-                            TaskVision.genTLCamera[0].GrabOneImage();
-                            Image = TaskVision.genTLCamera[0].mImage.Clone();
-                            if (TaskVision.frmMVCGenTLCamera.Visible) TaskVision.genTLCamera[0].StartGrab();
-                        }
-                        if (DispProg.frm_CamView.Visible) DispProg.frm_CamView.Image = Image.ToBitmap();
-
-                        using (Image)
-                        {
-                            Bitmap bmp = Image.ToBitmap();
-
-                            LuminanceSource source;
-                            source = new BitmapLuminanceSource(bmp);
-                            BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
-
-                            if (bitmap == null) return false;
-
-                            QRCodeReader reader = new QRCodeReader();
-                            Result result = reader.decode(bitmap);
-
-                            if (result != null)
-                            {
-                                ReadData = result.Text;
-                                return true;
-                            }
-                            else
-                            {
-                                return false;
-                            }
-                        }
-                    }
                 case GDefine.EIDReader.DataMatrix:
                     {
                         Emgu.CV.Image<Emgu.CV.Structure.Gray, byte> Image = null;
@@ -9308,7 +9207,6 @@ namespace NDispWin
                         }
                         catch (Exception Ex)
                         {
-                            //MessageBox.Show("read fail");
                             Msg MsgBox = new Msg();
                             EMsgRes Resp = MsgBox.Show("IDReader_Read DataMatrix Error.", Ex.Message.ToString(), TEMessage.EType.Error, EMsgBtn.smbRetry_Cancel);
                             switch (Resp)
@@ -9327,18 +9225,6 @@ namespace NDispWin
                     }
                 default:
                     throw new Exception("IDReader Type not supported.");
-            }
-        }
-        public static void IDReader_ShowCtrlDlg(bool SetupMode, bool SetLive)
-        {
-            if (GDefine.IDReader_Type == GDefine.EIDReader.DataMan)
-            {
-                CReader.frm_DataMan frm_DataMan = new CReader.frm_DataMan();
-                frm_DataMan.DM = DataMan;
-                frm_DataMan.SetupMode = SetupMode;
-                frm_DataMan.SetLive = SetLive;
-                frm_DataMan.TopMost = true;
-                frm_DataMan.Show();
             }
         }
 

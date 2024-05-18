@@ -80,9 +80,6 @@ namespace NDispWin
             #endregion
 
             #region Tab - Others
-            combox_IDReader_Type.DataSource = Enum.GetNames(typeof(GDefine.EIDReader));
-            combox_IDReaderAddr.DataSource = Enum.GetNames(typeof(ECom));
-
             cbxTempSensorType.DataSource = Enum.GetNames(typeof(SysConfig.ETempSensorType));
             cbxTempSensorComport.DataSource = Enum.GetNames(typeof(SysConfig.EComPorts));
 
@@ -198,10 +195,6 @@ namespace NDispWin
             #endregion
 
             #region Others
-            combox_IDReader_Type.SelectedIndex = 0; try { combox_IDReader_Type.SelectedIndex = (int)GDefine.IDReader_Type; } catch { }
-            combox_IDReaderAddr.Text = GDefine.IDReader_Addr;
-            pnl_IDReaderSetting.Visible = GDefine.IDReader_Type == GDefine.EIDReader.DataMan;
-
             cbxTempSensorType.Text = SysConfig.TempSensorType.ToString();
             cbxTempSensorComport.Text = SysConfig.TempSensorComport.ToString();
 
@@ -212,10 +205,6 @@ namespace NDispWin
             try { combox_TempCtrl1.SelectedIndex = (int)GDefine.TempCtrl_Module[1]; } catch { combox_TempCtrl0.SelectedIndex = 1; }
             try { combox_TempCtrl2.SelectedIndex = (int)GDefine.TempCtrl_Module[2]; } catch { combox_TempCtrl0.SelectedIndex = 2; }
             try { combox_TempCtrl3.SelectedIndex = (int)GDefine.TempCtrl_Module[3]; } catch { combox_TempCtrl0.SelectedIndex = 3; }
-
-
-            btn_IDReader_Connect.Text = TaskDisp.IDReader_IsConnected ? Lang_Disconnect : Lang_Connect;
-            btn_IDReader_Connect.BackColor = TaskDisp.IDReader_IsConnected ? Color.Lime : this.BackColor;
 
             btnTempSensorConnect.Enabled = !TFTempSensor.IsOpen;
             btnTempSensorDisconnect.Enabled = TFTempSensor.IsOpen;
@@ -773,40 +762,6 @@ namespace NDispWin
         #endregion
 
         #region Others
-        private void combox_IDReader_Type_SelectionChangeCommitted(object sender, EventArgs e)
-        {
-            GDefine.IDReader_Type = (GDefine.EIDReader)combox_IDReader_Type.SelectedIndex;
-            UpdateDisplay();
-        }
-        private void combox_IDReaderAddr_SelectionChangeCommitted(object sender, EventArgs e)
-        {
-            GDefine.IDReader_Addr = combox_IDReaderAddr.Text;
-        }
-        private void btn_IDReader_CtrlDlg_Click(object sender, EventArgs e)
-        {
-            TaskDisp.IDReader_ShowCtrlDlg(true, false);
-
-            UpdateDisplay();
-        }
-        private void btn_IDReader_Connect_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                GDefine.IDReader_Addr = combox_IDReaderAddr.Text;
-
-                if (!TaskDisp.IDReader_IsConnected)
-                    TaskDisp.IDReader_Open();
-                else
-                    TaskDisp.IDReader_Close();
-
-                UpdateDisplay();
-            }
-            catch (Exception Ex)
-            {
-                MessageBox.Show(Ex.Message.ToString());
-            }
-        }
-
         private void cbxTempSensorType_SelectionChangeCommitted(object sender, EventArgs e)
         {
             SysConfig.TempSensorType = (SysConfig.ETempSensorType)cbxTempSensorType.SelectedIndex;

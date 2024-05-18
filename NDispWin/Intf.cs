@@ -375,12 +375,6 @@ namespace NDispWin
 
             try
             {
-                TaskDisp.IDReader_Open();
-            }
-            catch { };
-
-            try
-            {
                 TempCtrl.Open();
                 TempCtrl.Init();
             }
@@ -477,12 +471,6 @@ namespace NDispWin
             try
             {
                 TaskDisp.OsramSCC.Server_Stop();
-            }
-            catch { };
-
-            try
-            {
-                TaskDisp.IDReader_Close();
             }
             catch { };
 
