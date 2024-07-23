@@ -5339,14 +5339,16 @@ namespace NDispWin
                     OK = TaskDisp.TaskTeachNeedle_ZSensor_BCamera();
                     break;
                 case TaskDisp.ETeachNeedleMethod.StepByStep:
-                    frm_TeachNeedle_StepByStep frm = new frm_TeachNeedle_StepByStep();
-                    //return
-                    OK = frm.ShowDialog() == DialogResult.OK;
+                    {
+                        Msg MsgBox = new Msg();
+                        MsgBox.Show(Messages.FEATURE_NOT_SUPPORT);
+                    }
                     break;
                 case TaskDisp.ETeachNeedleMethod.Laser_CrossHair:
-                    frm_TeachNeedle_LaserCrosshair frm2 = new frm_TeachNeedle_LaserCrosshair();
-                    //return
-                    OK = frm2.ShowDialog() == DialogResult.OK;
+                    {
+                        Msg MsgBox = new Msg();
+                        MsgBox.Show(Messages.FEATURE_NOT_SUPPORT);
+                    }
                     break;
                 case TaskDisp.ETeachNeedleMethod.Laser_ZSensor_Dot_Set:
                     //return

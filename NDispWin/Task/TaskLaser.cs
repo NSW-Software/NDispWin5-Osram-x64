@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Reflection;
+using System.Threading;
 
 namespace NDispWin
 {
     public class TaskLaser
     {
-#pragma warning disable CS0436 // Type conflicts with imported type
         public static CLaser.MEDAQ Sensor = new CLaser.MEDAQ();
-#pragma warning restore CS0436 // Type conflicts with imported type
+        public static TFCL3 CL3 = new TFCL3();
 
         public static int SettleTime = 0;
         public static int TempSensor_SettleTime = 100;
@@ -49,6 +50,8 @@ namespace NDispWin
                     case GDefine.EHeightSensorType.IFD2422:
                     case GDefine.EHeightSensorType.ILD1900:
                         return Sensor.IsConnected;
+                    case GDefine.EHeightSensorType.CL3000:
+                        return CL3.IsConnected;
                     default:
                         return false;
                 }
@@ -57,8 +60,6 @@ namespace NDispWin
 
         public static void OpenLaser()
         {
-            string EMsg = "Open Laser";
-
             try
             {
                 string ComPort = "COM" + GDefine.HSensorComport.ToString();
@@ -104,28 +105,44 @@ namespace NDispWin
                         else
                             Sensor.Open(CLaser.MEDAQ.ESensorType.ILD1900, ComPort);
                         break;
+                    case GDefine.EHeightSensorType.CL3000:
+                        bool openCL3Retried = false;
+                    _retryCL3:
+                        try
+                        {
+                            CL3.Open(GDefine.HSensorIPAddress);
+                        }
+                        catch
+                        {
+                            if (openCL3Retried) throw;
+                            Thread.Sleep(500);
+                            goto _retryCL3;
+                        }
+                        break;
                 }
             }
             catch (Exception Ex)
             {
-                EMsg = EMsg + (char)13 + Ex.Message;
                 Msg MsgBox = new Msg();
-                MsgBox.Show(Messages.LASER_OPEN_ERR, EMsg);
+                MsgBox.Show(Messages.LASER_OPEN_ERR, MethodBase.GetCurrentMethod().Name.ToString() + " " + GDefine.HSensorType.ToString() + " " + Ex.Message.ToString());
             }
         }
         public static void CloseLaser()
         {
             try
             {
-                Sensor.Close();
+                switch (GDefine.HSensorType)
+                {
+                    case GDefine.EHeightSensorType.None: break;
+                    default: Sensor.Close(); break;
+                    case GDefine.EHeightSensorType.CL3000: CL3.Close(); break;
+                }
             }
             catch { }
         }
 
         public static bool GetHeight(ref double Value, bool PromptError)
         {
-            string EMsg = "LaserGetDistance";
-
             try
             {
                 switch (GDefine.HSensorType)
@@ -135,7 +152,7 @@ namespace NDispWin
                         if (PromptError)
                         {
                             Msg MsgBox = new Msg();
-                            MsgBox.Show(Messages.LASER_NOT_CONFIG_ERR, EMsg);
+                            MsgBox.Show(Messages.LASER_NOT_CONFIG_ERR, MethodBase.GetCurrentMethod().Name.ToString());
                         }
                         return false;
                     case GDefine.EHeightSensorType.ILD1X20:
@@ -165,11 +182,14 @@ namespace NDispWin
                             {
                                 if (retried > 0) throw;
 
-                                Log.AddToLog(EMsg + " " + ex.Message.ToString() + " - Retry");
+                                Log.AddToLog(MethodBase.GetCurrentMethod().Name.ToString() + " " + GDefine.HSensorType.ToString() + " " + ex.Message.ToString() + " - Retry");
                                 retried++;
                                 goto _Retry;
                             }
                         }
+                        break;
+                    case GDefine.EHeightSensorType.CL3000:
+                        CL3.GetValue(0, out Value);
                         break;
                 }
             }
@@ -177,9 +197,8 @@ namespace NDispWin
             {
                 if (PromptError)
                 {
-                    EMsg = EMsg + (char)13 + ex.Message;
                     Msg MsgBox = new Msg();
-                    MsgBox.Show(Messages.LASER_COMM_EX_ERR, EMsg);
+                    MsgBox.Show(Messages.LASER_COMM_EX_ERR, MethodBase.GetCurrentMethod().Name.ToString() + " " + GDefine.HSensorType.ToString() + " " + ex.Message.ToString());
                     return false;
                 }
             }

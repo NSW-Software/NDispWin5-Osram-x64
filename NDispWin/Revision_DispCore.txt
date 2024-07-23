@@ -6,7 +6,19 @@ In Prog, after DO_REF not found, camera cannot live
 Todo
 - Integrate LEDStudio
 
-Ver 6.0.5 - KN - 20240518
+
+Ver 6.0.6.4 - KN - 20240723 - Released to OsKulim - Gitted
+[Enhance] Refactor Image Acquisition for stable memory utilization
+- MVC_GenTL.cs > m_hReceiveThread.Abort();//Join(); 3 locations
+- frmCameraSetting uses local instance frmMVCGenTLCamera TaskVisionfrmMVCGenTLCamera
+- Removed GDefine.ECameraType.Spinaker and default and dependencies 
+- frmMVCGenTLCamera.SelectCamera(int index) refactor
+- Refactor frmCameraSetting
+- Removed Intf.frmJogGantry, Intf.JogGantry, ShowJogGantry() not used
+- Added CL3 Confocal Support
+- Removed unused controls and sources
+
+Ver 6.0.5 - KN - 20240518 - Released to Osram Kulim
 [BugFix] Corrected WeightMeas_Execute to reset IsFilling.
 [Library] Uses MEDALiq 5.0.1
 [Library] NImager.dll, Zing.dll

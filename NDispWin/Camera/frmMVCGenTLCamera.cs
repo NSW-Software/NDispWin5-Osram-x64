@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Threading;
 
 using Emgu.CV;
 using Emgu.CV.Structure;
@@ -27,14 +28,23 @@ namespace NDispWin
         public bool ShowReticles = false;
         public TReticles Reticles = new TReticles();
 
-        public frmMVCGenTLCamera()
+        public frmMVCGenTLCamera(TReticles reticles, bool show)
         {
             InitializeComponent();
 
             pnl_Image.Dock = DockStyle.Fill;
             imgBoxEmgu.Dock = DockStyle.Fill;
+
+            Reticles = new TReticles(reticles);
+            ShowReticles = true;
+        }
+        public frmMVCGenTLCamera() : this(new TReticles(), false)
+        {
         }
 
+        public void SetReticles(TReticles reticles)
+        {
+        }
         private void UpdateControls()
         {
             if (TaskVision.genTLCamera[m_iSelectedCam] == null) return;
@@ -68,25 +78,37 @@ namespace NDispWin
         }
         public void SelectCamera(int index)
         {
-            if (TaskVision.genTLCamera[m_iSelectedCam] == null) return;
+            if (TaskVision.genTLCamera[index] == null) return;
 
-            bool IsGrabbing = TaskVision.genTLCamera[m_iSelectedCam].IsGrabbing;
+            //bool IsGrabbing = TaskVision.genTLCamera[m_iSelectedCam].IsGrabbing;
+            if (TaskVision.genTLCamera[m_iSelectedCam] != null)// return;
             TaskVision.genTLCamera[m_iSelectedCam].StopGrab();
+            
             m_iSelectedCam = index;
             TaskVision.genTLCamera[m_iSelectedCam].RegisterPictureBox(imgBoxEmgu);
-            ZoomFit();
-            if (IsGrabbing) TaskVision.genTLCamera[m_iSelectedCam].StartGrab();
-            UpdateControls();
+            //ZoomFit();
+            //if (IsGrabbing) 
+                TaskVision.genTLCamera[m_iSelectedCam].StartGrab();
 
-            Invalidate();
-            Refresh();
+            //Invalidate();
+            //Refresh();
+            //System.Threading.Thread.Sleep(50);
+            //ZoomFit();
+
             System.Threading.Thread.Sleep(50);
-            ZoomFit();
+            while (Monitor.TryEnter(imgBoxEmgu))
+            {
+                ZoomFit();
+                Monitor.Exit(imgBoxEmgu);
+                break;
+            }
+            UpdateControls();
         }
 
         private void frmCamera_Load(object sender, EventArgs e)
         {
             UpdateControls();
+            //ZoomFit();
         }
         private void frmCamera_FormClosing(object sender, FormClosingEventArgs e)
         {

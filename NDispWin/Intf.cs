@@ -265,21 +265,12 @@ namespace NDispWin
             #endregion
 
             AppLanguage.Func2.WriteLangFile(new frm_DispCore_JogGantryVision());
-            AppLanguage.Func2.WriteLangFile(new frm_DispCore_Lighting());
-            AppLanguage.Func2.WriteLangFile(new frm_DispCore_ReticleSetup());
             AppLanguage.Func2.WriteLangFile(new frm_DispCore_HeightFailMsg());
             AppLanguage.Func2.WriteLangFile(new frm_DispCore_VisionFailMsg());
             AppLanguage.Func2.WriteLangFile(new frm_DispCore_VisionSelectBox());
             AppLanguage.Func2.WriteLangFile(new frmCameraSetting());
 
             AppLanguage.Func2.WriteLangFile(new frm_DispCore_Map());
-
-            #region TeachNeedle
-            AppLanguage.Func2.WriteLangFile(new frm_TeachNeedle_LaserCrosshair());
-            AppLanguage.Func2.WriteLangFile(new frm_TeachNeedle_StepByStep());
-            #endregion
-
-            //ErrCode ErrCode = new ErrCode();
 
             DispProg.Init();
 
@@ -493,42 +484,6 @@ namespace NDispWin
             catch { };
         }
 
-        public class frmJogGantry
-        {
-            static frm_DispCore_JogGantryVision frmJogGantryVision = new frm_DispCore_JogGantryVision();
-            public static void Show()
-            {
-                if (frmJogGantryVision == null)
-                {
-                    frmJogGantryVision = new frm_DispCore_JogGantryVision();
-                }
-                frmJogGantryVision.ShowVision = false;
-                frmJogGantryVision.Inst = "";
-                frmJogGantryVision.Visible = true;
-            }
-            public static void Hide()
-            {
-                frmJogGantryVision.Visible = false;
-            }
-            public static bool Visible
-            {
-                get { return frmJogGantryVision.Visible; }
-                set
-                {
-                    if (value)
-                    {
-                        frmJogGantryVision.ShowVision = false;
-                        frmJogGantryVision.Inst = "";
-                        frmJogGantryVision.TopMost = true;
-                        frmJogGantryVision.Visible = true;
-                    }
-                    else
-                    {
-                        frmJogGantryVision.Visible = false;
-                    }
-                }
-            }
-        }
 
         public static class Config
         {
@@ -779,58 +734,6 @@ namespace NDispWin
 
                 //    return frm.ShowDialog();
                 //}
-            }
-        }
-        public static DialogResult ShowJogGantry()
-        {
-            //frm_DispCore_JogGantryVision frm = new frm_DispCore_JogGantryVision();
-            //frm.ShowVision = false;
-            //frm.Inst = "";
-            //return frm.ShowDialog();
-            return ShowJogGantry("");
-        }
-        public static DialogResult ShowJogGantry(string Instruction)
-        {
-            frm_DispCore_JogGantryVision frm = new frm_DispCore_JogGantryVision();
-            frm.ShowVision = false;
-            frm.Inst = Instruction;
-            return frm.ShowDialog();
-        }
-
-        static frm_DispCore_JogGantryVision frmJogGantryVision = new frm_DispCore_JogGantryVision();
-        public static class JogGantry
-        {
-            public static void Show()
-            {
-                if (frmJogGantryVision == null)
-                {
-                    frmJogGantryVision = new frm_DispCore_JogGantryVision();
-                }
-                frmJogGantryVision.ShowVision = false;
-                frmJogGantryVision.Inst = "";
-                frmJogGantryVision.Visible = true;
-            }
-            public static void Hide()
-            {
-                frmJogGantryVision.Visible = false;
-            }
-            public static bool Visible
-            {
-                get { return frmJogGantryVision.Visible; }
-                set
-                {
-                    if (value)
-                    {
-                        frmJogGantryVision.ShowVision = false;
-                        frmJogGantryVision.Inst = "";
-                        frmJogGantryVision.TopMost = true;
-                        frmJogGantryVision.Visible = true;
-                    }
-                    else
-                    {
-                        frmJogGantryVision.Visible = false;
-                    }
-                }
             }
         }
     }

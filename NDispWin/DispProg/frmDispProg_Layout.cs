@@ -1816,8 +1816,8 @@ namespace NDispWin
         private void btnAlignTheta_Click(object sender, EventArgs e)
         {
             frm_DispCore_JogGantryVision frm = new frm_DispCore_JogGantryVision();
-            frm.PageVision.SelectedCam = 0;
-            frm.ShowVision = true;
+            //frm.PageVision.SelectedCam = 0;
+            //frm.ShowVision = true;
 
             double tempTLX = CmdLine.DPara[0];
             double tempTLY = CmdLine.DPara[1];

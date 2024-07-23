@@ -86,6 +86,7 @@ namespace NDispWin
         #endregion
         public static TEMessage ZSENSOR_NOT_CONFIG = new TEMessage(2200, "ZSensor is not configured.", "Check ZSensor configuration.", TEMessage.EType.Fault, false);
         public static TEMessage GANTRY_CONFIG_NOT_SUPPORT = new TEMessage(2201, "Gantry configuration is not supported.", "Check gantry configuration.", TEMessage.EType.Notification, false);
+        public static TEMessage FEATURE_NOT_SUPPORT = new TEMessage(2201, "Feature is not supported.", "", TEMessage.EType.Notification, false);
         #region 2300-2700 Motor, Motion
         public static TEMessage INVALID_AXIS = new TEMessage(2350, "Gantry Invalid Axis.", "1. Check Axis Status. @2. Check Axis Name.", TEMessage.EType.Fault, false);
         public static TEMessage AXIS_ERR = new TEMessage(2355, "Gantry Axis Error.", "1. Check Axis Status. @2. Check Limit Sensor.", TEMessage.EType.Fault, false);

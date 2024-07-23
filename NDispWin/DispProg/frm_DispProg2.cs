@@ -17,8 +17,7 @@ namespace NDispWin
 {
     internal partial class frm_DispProg2 : Form
     {
-        frmJogGantry frm_Jog = null;
-        frmVisionView frm_Vision = null;
+        frmJogControl frm_Jog = null;
 
         frm_DispCore_DispProg_Setting frm_Setting = new frm_DispCore_DispProg_Setting();
         frm_DispCore_Map frmMap = new frm_DispCore_Map();
@@ -46,22 +45,15 @@ namespace NDispWin
 
             RefreshFunction();
 
-            //if (GDefine.CameraType[0] != GDefine.ECameraType.Spinnaker2)
-            //{
-            //    this.FormBorderStyle = FormBorderStyle.None;
-            //}
-            switch (GDefine.CameraType[0])
-            {
-                case GDefine.ECameraType.Spinnaker2:
-                case GDefine.ECameraType.MVSGenTL:
-                    //do nothing
-                    break;
-                default:
-                    this.FormBorderStyle = FormBorderStyle.None;
-                    break;
-            }
-
             this.WindowState = FormWindowState.Maximized;
+
+            TaskVision.frmMVCGenTLCamera = new frmMVCGenTLCamera();
+            TaskVision.frmMVCGenTLCamera.CamReticles = Reticle.Reticles;
+            TaskVision.frmMVCGenTLCamera.FormBorderStyle = FormBorderStyle.None;
+            TaskVision.frmMVCGenTLCamera.TopLevel = false;
+            TaskVision.frmMVCGenTLCamera.Parent = splitContainer2.Panel1;
+            TaskVision.frmMVCGenTLCamera.Dock = DockStyle.Fill;
+            TaskVision.frmMVCGenTLCamera.Show();
         }
 
         private void UpdateDisplay()
@@ -1030,45 +1022,6 @@ namespace NDispWin
             UpdateDisplay();
         }
 
-        private void ShowVision()
-        {
-            if (frm_Vision == null) frm_Vision = new frmVisionView();
-            if (frm_Vision.IsDisposed)
-            {
-                frm_Vision.Close();
-                frm_Vision = new frmVisionView();
-            }
-
-            frm_Vision.FormBorderStyle = FormBorderStyle.None;
-
-            frm_Vision.Left = this.Width - frm_Vision.Width;
-            frm_Vision.Top = ts_Function.Bottom + 40;
-
-            frm_Vision.TopLevel = false;
-            frm_Vision.Parent = this;
-
-            frm_Vision.BringToFront();
-            frm_Vision.Show();
-        }
-        private void ShowJog()
-        {
-            if (frm_Jog == null) frm_Jog = new frmJogGantry();
-            if (frm_Jog.IsDisposed)
-            {
-                frm_Jog.Close();
-                frm_Jog = new frmJogGantry();
-            }
-            frm_Jog.FormBorderStyle = FormBorderStyle.None;
-            frm_Jog.Left = this.Bounds.Width - frm_Jog.Width - 8;// -16;
-            frm_Jog.Top = this.Height - frm_Jog.Height - 30;// -40;
-
-            frm_Jog.TopLevel = false;
-            frm_Jog.Parent = this;
-
-            frm_Jog.BringToFront();
-            frm_Jog.Show();
-        }
-        //private frmCamera frmCamera = null;
         private void frmDispProg_Load(object sender, EventArgs e)
         {
             GControl.UpdateFormControl(this);
@@ -1079,81 +1032,24 @@ namespace NDispWin
 
             if (!Modal) this.WindowState = FormWindowState.Maximized;
 
-            if (GDefine.CameraType[0] == GDefine.ECameraType.Spinnaker2)
+            //frm_Jog = new frmJogGantry();
+            frm_Jog = new frmJogControl();// Gantry();
+            frm_Jog.FormBorderStyle = FormBorderStyle.None;
+            frm_Jog.TopLevel = false;
+            frm_Jog.Parent = splitContainer2.Panel2;
+            frm_Jog.Dock = DockStyle.Right;
+            frm_Jog.Show();
+
+            //Invoke(new Action(() =>
+            //{
+
+            if (TaskVision.genTLCamera[0].IsConnected)
             {
-                Invoke(new Action(() =>
-                {
-                    //TaskVision.frmCamera = new frmCamera();
-                    //TaskVision.frmCamera.flirCamera = TaskVision.flirCamera2;
-                    //TaskVision.frmCamera.CamReticles = Reticle.Reticles;
-                    //TaskVision.frmCamera.FormBorderStyle = FormBorderStyle.None;
-                    //TaskVision.frmCamera.TopLevel = false;
-                    //TaskVision.frmCamera.Parent = splitContainer2.Panel1;
-                    //TaskVision.frmCamera.Dock = DockStyle.Fill;
-                    //TaskVision.frmCamera.Show();
-
-                    //TaskVision.frmCamera.SelectCamera(0);
-                    //TaskVision.frmCamera.ShowCamReticles = true;
-                    //TaskVision.frmCamera.Grab();
-
-                    TaskVision.frmMVCGenTLCamera = new frmMVCGenTLCamera();
-                    TaskVision.frmMVCGenTLCamera.CamReticles = Reticle.Reticles;
-                    TaskVision.frmMVCGenTLCamera.FormBorderStyle = FormBorderStyle.None;
-                    TaskVision.frmMVCGenTLCamera.TopLevel = false;
-                    TaskVision.frmMVCGenTLCamera.Parent = splitContainer2.Panel1;
-                    TaskVision.frmMVCGenTLCamera.Dock = DockStyle.Fill;
-                    TaskVision.frmMVCGenTLCamera.Show();
-
-                    if (TaskVision.genTLCamera[0].IsConnected)
-                    {
-                        TaskVision.frmMVCGenTLCamera.SelectCamera(0);
-                        TaskVision.frmMVCGenTLCamera.ShowCamReticles = true;
-                        TaskVision.genTLCamera[0].StartGrab();
-                    }
-                }));
-
-                frm_Jog = new frmJogGantry();
-                frm_Jog.FormBorderStyle = FormBorderStyle.None;
-                frm_Jog.TopLevel = false;
-                frm_Jog.Parent = splitContainer2.Panel2;
-                frm_Jog.Dock = DockStyle.Right;
-                frm_Jog.Show();
+                TaskVision.frmMVCGenTLCamera.SelectCamera(0);
+                TaskVision.frmMVCGenTLCamera.ShowCamReticles = true;
+                TaskVision.genTLCamera[0].StartGrab();
             }
-            else
-            if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL)
-            {
-                Invoke(new Action(() =>
-                {
-                    TaskVision.frmMVCGenTLCamera = new frmMVCGenTLCamera();
-                    TaskVision.frmMVCGenTLCamera.CamReticles = Reticle.Reticles;
-                    TaskVision.frmMVCGenTLCamera.FormBorderStyle = FormBorderStyle.None;
-                    TaskVision.frmMVCGenTLCamera.TopLevel = false;
-                    TaskVision.frmMVCGenTLCamera.Parent = splitContainer2.Panel1;
-                    TaskVision.frmMVCGenTLCamera.Dock = DockStyle.Fill;
-                    TaskVision.frmMVCGenTLCamera.Show();
-
-                    if (TaskVision.genTLCamera[0].IsConnected)
-                    {
-                        TaskVision.frmMVCGenTLCamera.SelectCamera(0);
-                        TaskVision.frmMVCGenTLCamera.ShowCamReticles = true;
-                        TaskVision.genTLCamera[0].StartGrab();
-                    }
-                }));
-
-                frm_Jog = new frmJogGantry();
-                frm_Jog.FormBorderStyle = FormBorderStyle.None;
-                frm_Jog.TopLevel = false;
-                frm_Jog.Parent = splitContainer2.Panel2;
-                frm_Jog.Dock = DockStyle.Right;
-                frm_Jog.Show();
-            }
-            else
-            {
-                ShowVision();
-                ShowJog();
-            }
-
-            //Thread.Sleep(100);
+            //               }));
 
             splitContainer1.Panel1MinSize = 200;
             splitContainer1.SplitterDistance = 500;
@@ -1165,7 +1061,6 @@ namespace NDispWin
             RefreshProgramList();
 
             AppLanguage.Func2.UpdateText(this);
-
 
             if (DispProg.rt_StationNo < 0) DispProg.rt_StationNo = 0;
 
@@ -1210,29 +1105,6 @@ namespace NDispWin
                 RefreshProgramList();
             }
 
-            if (GDefine.CameraType[(int)TaskVision.SelectedCam] == GDefine.ECameraType.PtGrey)
-            {
-                TaskVision.PtGrey_CamLive((int)TaskVision.SelectedCam);
-            }
-
-            if (GDefine.CameraType[0] == GDefine.ECameraType.Spinnaker)
-            {
-                //TaskVision.frmGenImageView.SelectIndex((int)TaskVision.SelectedCam);
-                //TaskVision.frmGenImageView.Show();
-                //TaskVision.frmGenImageView.TopMost = true;
-
-                //TaskVision.frmGenImageView.Left = this.Width - frm_Vision.Width;
-                //TaskVision.frmGenImageView.Top = ts_Function.Bottom + 40;
-                //TaskVision.frmGenImageView.Left = splitContainer1.Panel1.Width;
-                //TaskVision.frmGenImageView.Width = this.Width - splitContainer1.Panel1.Width;
-                //TaskVision.frmGenImageView.Top = ts_Function.Bottom + 40;
-                //TaskVision.frmGenImageView.Height = frm_Jog.Top - ts_Function.Bottom - 40;
-
-                //TaskVision.frmGenImageView.EnableCamReticles = true;
-                //TaskVision.frmGenImageView.Grab();
-                //TaskVision.frmGenImageView.ZoomFit();
-            }
-
             if (GDefine.MCameraAutoShow)
             {
                 if (frmMonCamera != null && frmMonCamera.Visible) return;
@@ -1258,12 +1130,6 @@ namespace NDispWin
             DispProg.SetupMode = false;
             DispProg.SaveDoVisionImages = false;
 
-            if (frm_Vision != null) frm_Vision.Close();
-            if (frm_Jog != null)
-            {
-                frm_Jog.Close();
-                frm_Jog.Dispose();
-            }
             if (frm_Setting != null) frm_Setting.Close();
 
             NUtils.RegistryWR Reg = new NUtils.RegistryWR();
@@ -1277,21 +1143,7 @@ namespace NDispWin
             if (frmSP != null) frmSP.Close();
             if (frmPJ != null) frmPJ.Close();
 
-
-            if (GDefine.CameraType[0] == GDefine.ECameraType.PtGrey)
-            {
-                TaskVision.PtGrey_CamStop();
-            }
-
-            if (GDefine.CameraType[0] == GDefine.ECameraType.Spinnaker)
-            {
-                //TaskVision.frmGenImageView.GrabStop();
-                //TaskVision.frmGenImageView.Hide();
-                //TaskVision.frmGenImageView.EnableCamReticles = true;
-            }
-
-            if (GDefine.CameraType[0] == GDefine.ECameraType.Spinnaker2) TaskVision.frmMVCGenTLCamera.Close();//TaskVision.frmCamera.Close();
-            if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL) TaskVision.frmMVCGenTLCamera.Close();
+            TaskVision.frmMVCGenTLCamera.Close();
 
             if (frmMonCamera != null && frmMonCamera.Visible)
             {
@@ -1304,25 +1156,10 @@ namespace NDispWin
         }
         private void frm_DispProg2_Shown(object sender, EventArgs e)
         {
-            if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL)
-            {
-                TaskVision.frmMVCGenTLCamera.ZoomFit();
-            }
+            TaskVision.frmMVCGenTLCamera.ZoomFit();
         }
-
         private void frm_DispProg2_Resize(object sender, EventArgs e)
         {
-            switch (GDefine.CameraType[0])
-            {
-                case GDefine.ECameraType.Spinnaker2:
-                case GDefine.ECameraType.MVSGenTL:
-                    //do nothing
-                    break;
-                default:
-                    ShowVision();
-                    ShowJog();
-                    break;
-            }
         }
         private void frm_DispProg2_VisibleChanged(object sender, EventArgs e)
         {
@@ -1391,9 +1228,6 @@ namespace NDispWin
         }
         private void tsbtn_SetZ_Click(object sender, EventArgs e)
         {
-            if (frm_Vision != null) frm_Vision.TopMost = false;
-            if (frm_Jog != null) frm_Jog.TopMost = false;
-
             frm_ProgressReport frm = new frm_ProgressReport();
             frm.Message = "Set ProductZ?";
             if (frm.ShowDialog() == DialogResult.OK)
@@ -1415,15 +1249,9 @@ namespace NDispWin
                     frm1.Done = true;
                 });
             }
-
-            if (frm_Vision != null) frm_Vision.TopMost = true;
-            if (frm_Jog != null) frm_Jog.TopMost = true;
         }
         private void tsbtn_SetOrigin_Click(object sender, EventArgs e)
         {
-            if (frm_Vision != null) frm_Vision.TopMost = false;
-            if (frm_Jog != null) frm_Jog.TopMost = false;
-          
             frm_ProgressReport frm = new frm_ProgressReport();
             frm.Message = "Set Origin?";
             if (frm.ShowDialog() == DialogResult.OK)
@@ -1447,20 +1275,11 @@ namespace NDispWin
 
                         Log.OnSet("Origin", new NSW.Net.Point2D(x, y), new NSW.Net.Point2D(DispProg.OriginBase[(int)DispProg.rt_StationNo].X, DispProg.OriginBase[(int)DispProg.rt_StationNo].Y));
                     }
-                    //else
-                    //{
-                    //    DispProg.OriginBase[(int)DispProg.rt_StationNo].X = TaskGantry.GXPos() - TaskDisp.Head_Ofst[0].X;
-                    //    DispProg.OriginBase[(int)DispProg.rt_StationNo].Y = TaskGantry.GYPos() - TaskDisp.Head_Ofst[0].Y;
-                    //}
-
                     frm1.Done = true;
                 });
             }
             
             DispProg.RunTime.UIndex = 0;
-
-            if (frm_Vision != null) frm_Vision.TopMost = true;
-            if (frm_Jog != null) frm_Jog.TopMost = true;
         }
         private void tsbtn_CamGoOrigin_Click(object sender, EventArgs e)
         {

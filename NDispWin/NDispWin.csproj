@@ -334,6 +334,7 @@
       <DependentUpon>frmVisionSetup.cs</DependentUpon>
     </Compile>
     <Compile Include="TEThermoCT.cs" />
+    <Compile Include="TFCL3.cs" />
     <Compile Include="TFMatrix.cs" />
     <Compile Include="TFMisc.cs" />
     <Compile Include="Vermes\frmVermesMDS3200.cs">
@@ -972,18 +973,6 @@
     <Compile Include="Custom_VolumeAdjust\frm_OsramSCC_Setup.designer.cs">
       <DependentUpon>frm_OsramSCC_Setup.cs</DependentUpon>
     </Compile>
-    <Compile Include="TeachNeedle\frm_TeachNeedle_LaserCrosshair.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TeachNeedle\frm_TeachNeedle_LaserCrosshair.Designer.cs">
-      <DependentUpon>frm_TeachNeedle_LaserCrosshair.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TeachNeedle\frm_TeachNeedle_StepByStep.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TeachNeedle\frm_TeachNeedle_StepByStep.Designer.cs">
-      <DependentUpon>frm_TeachNeedle_StepByStep.cs</DependentUpon>
-    </Compile>
     <Compile Include="frm_DispCore_DispInfo.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1032,23 +1021,11 @@
     <Compile Include="JogAndVision\frm_DispCore_JogGantryVision.designer.cs">
       <DependentUpon>frm_DispCore_JogGantryVision.cs</DependentUpon>
     </Compile>
-    <Compile Include="JogAndVision\frm_DispCore_Lighting.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="JogAndVision\frm_DispCore_Lighting.Designer.cs">
-      <DependentUpon>frm_DispCore_Lighting.cs</DependentUpon>
-    </Compile>
     <Compile Include="Messages\frmHeightFailMsg.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Messages\frmHeightFailMsg.Designer.cs">
       <DependentUpon>frmHeightFailMsg.cs</DependentUpon>
-    </Compile>
-    <Compile Include="JogAndVision\frmReticleSetup.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="JogAndVision\frmReticleSetup.Designer.cs">
-      <DependentUpon>frmReticleSetup.cs</DependentUpon>
     </Compile>
     <Compile Include="Settings\frmSystemConfig.cs">
       <SubType>Form</SubType>
@@ -1175,12 +1152,6 @@
     </Compile>
     <Compile Include="JogAndVision\frmVisionSelectBox.designer.cs">
       <DependentUpon>frmVisionSelectBox.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Camera\frmVisionView.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Camera\frmVisionView.designer.cs">
-      <DependentUpon>frmVisionView.cs</DependentUpon>
     </Compile>
     <Compile Include="GDefine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -1714,24 +1685,12 @@
       <DependentUpon>frm_OsramSCC_Setup.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="TeachNeedle\frm_TeachNeedle_LaserCrosshair.resx">
-      <DependentUpon>frm_TeachNeedle_LaserCrosshair.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TeachNeedle\frm_TeachNeedle_StepByStep.resx">
-      <DependentUpon>frm_TeachNeedle_StepByStep.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="frm_DispTool_VolumeAdjust.resx">
       <DependentUpon>frm_DispTool_VolumeAdjust.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="JogAndVision\frm_DispCore_JogGantryVision.resx">
       <DependentUpon>frm_DispCore_JogGantryVision.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="JogAndVision\frm_DispCore_Lighting.resx">
-      <DependentUpon>frm_DispCore_Lighting.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Messages\frmHeightFailMsg.resx">
@@ -1746,10 +1705,6 @@
       <DependentUpon>frmIODiag.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="JogAndVision\frmReticleSetup.resx">
-      <DependentUpon>frmReticleSetup.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Settings\frmMotorDiag.resx">
       <DependentUpon>frmMotorDiag.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -1760,10 +1715,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="JogAndVision\frmVisionSelectBox.resx">
       <DependentUpon>frmVisionSelectBox.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Camera\frmVisionView.resx">
-      <DependentUpon>frmVisionView.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Messages\frmVisionFailMsg.resx">
@@ -1836,6 +1787,9 @@
   </ItemGroup>
   <ItemGroup>
     <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="TeachNeedle\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

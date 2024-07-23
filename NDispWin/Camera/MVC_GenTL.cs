@@ -247,7 +247,7 @@ namespace MVC
         {
             //Reset flow flag bit
             m_bGrabbing = false;
-            if (m_hReceiveThread != null) m_hReceiveThread.Join();
+            if (m_hReceiveThread != null) m_hReceiveThread.Abort();//Join();
 
             if (m_BufForDriver != IntPtr.Zero)
             {
@@ -329,9 +329,9 @@ namespace MVC
 
                                 if (!usePictureBox)
                                 {
-                                    //mImage = new Image<Gray, byte>(stDisplayInfo.nWidth, stDisplayInfo.nHeight, stride, stDisplayInfo.pData);
-                                    //m_emguBox.Image = mImage;
-                                    //m_emguBox.Invalidate();
+                                    mImage = new Image<Gray, byte>(stDisplayInfo.nWidth, stDisplayInfo.nHeight, stride, stDisplayInfo.pData);
+                                    m_emguBox.Image = mImage;
+                                    m_emguBox.Invalidate();
                                 }
                                 else
                                 {
@@ -384,9 +384,9 @@ namespace MVC
 
                             if (!usePictureBox)
                             {
-                                //mImage = new Image<Gray, byte>(stDisplayInfo.nWidth, stDisplayInfo.nHeight, stride, stDisplayInfo.pData);
-                                //m_emguBox.Image = mImage;
-                                //m_emguBox.Invalidate();
+                                mImage = new Image<Gray, byte>(stDisplayInfo.nWidth, stDisplayInfo.nHeight, stride, stDisplayInfo.pData);
+                                m_emguBox.Image = mImage;
+                                m_emguBox.Invalidate();
                             }
                             else
                             {
@@ -429,7 +429,7 @@ namespace MVC
             if (MyCamera.MV_OK != nRet)
             {
                 m_bGrabbing = false;
-                m_hReceiveThread.Join();
+                m_hReceiveThread.Abort();//Join();
                 throw new Exception(GetErrorMsg("Start Grabbing Fail!", nRet));
             }
             m_hReceiveThread = new Thread(ReceiveThreadProcess);
@@ -443,7 +443,7 @@ namespace MVC
 
             //Set flag bit false
             m_bGrabbing = false;
-            if (m_hReceiveThread != null) m_hReceiveThread.Join();
+            if (m_hReceiveThread != null) m_hReceiveThread.Abort();//Join();
 
             //Stop Grabbing
             int nRet = m_MyCamera.MV_CC_StopGrabbing_NET();
@@ -611,7 +611,7 @@ namespace MVC
         }
         public bool IsRecording => m_bRecording;
 
-        bool usePictureBox = true;
+        bool usePictureBox = false;
         //Register picturebox for display - mehtod 1: manual rendering
         PictureBox m_picBox = new PictureBox();
         public void RegisterPictureBox(PictureBox pictureBox)
@@ -621,14 +621,14 @@ namespace MVC
                 m_picBox = pictureBox;
             }
         }
-        //ImageBox m_emguBox = new ImageBox();
-        //public void RegisterPictureBox(ImageBox imageBox)
-        //{
-        //    lock (lockObject)
-        //    {
-        //        m_emguBox = imageBox;
-        //    }
-        //}
+        ImageBox m_emguBox = new ImageBox();
+        public void RegisterPictureBox(ImageBox imageBox)
+        {
+            lock (lockObject)
+            {
+                m_emguBox = imageBox;
+            }
+        }
 
         //Register PictureBox for display - Mehtod 2: Handled by API. Image is always strectched.
         public void RegisterPictureBoxHandle(PictureBox picBox)
