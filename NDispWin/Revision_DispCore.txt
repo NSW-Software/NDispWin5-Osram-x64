@@ -7,7 +7,11 @@ Todo
 - Integrate LEDStudio
 
 
-Ver 6.0.6.4 - KN - 20240723 - Released to OsKulim - Gitted
+Ver 6.0.7.2 - KN - 20240727 - Released to OsWuxi - Gitted
+- MVC_GenTL.cs set Debouunce 50us, prevent low logic interterence.
+- Added TFPress_RS232.Open DiscardInBuffer to clear any in buffers that cause return incorrect value 
+
+Ver 6.0.6.4 - KN - 20240723 - Released to OsWuxi - Gitted
 [Enhance] Refactor Image Acquisition for stable memory utilization
 - MVC_GenTL.cs > m_hReceiveThread.Abort();//Join(); 3 locations
 - frmCameraSetting uses local instance frmMVCGenTLCamera TaskVisionfrmMVCGenTLCamera

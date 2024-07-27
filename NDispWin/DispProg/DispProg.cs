@@ -7747,19 +7747,17 @@ namespace NDispWin
                                         {
                                             Running = false;
                                         }
-                                        switch (GDefine.CameraType[0])
+                                        Application.OpenForms[0].Invoke(new Action(() =>
                                         {
-                                            case GDefine.ECameraType.Spinnaker2:
-                                                TaskVision.flirCamera2[0].GrabCont();
-                                                break;
-                                            case GDefine.ECameraType.MVSGenTL:
+                                            if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL)
+                                            {
                                                 if (TaskVision.frmMVCGenTLCamera.Visible)
                                                 {
                                                     TaskVision.frmMVCGenTLCamera.SelectCamera(0);
                                                     if (TaskVision.frmMVCGenTLCamera.Visible) TaskVision.genTLCamera[0].StartGrab();
                                                 }
-                                                break;
-                                        }
+                                            }
+                                        }));
 
                                         try
                                         {
@@ -22713,40 +22711,27 @@ namespace NDispWin
             double ADist = 10;
 
 
-        //Emgu.CV.Image<Emgu.CV.Structure.Gray, byte> Img_Strip = null;
-        List<Emgu.CV.Image<Emgu.CV.Structure.Gray, byte>> imgVertSlices = new List<Emgu.CV.Image<Emgu.CV.Structure.Gray, byte>>();//vertical image slices
-        Emgu.CV.Image<Emgu.CV.Structure.Gray, byte> imgVertMerged = null;//merged vertical slices
+
+            List<Emgu.CV.Image<Emgu.CV.Structure.Gray, byte>> imgVertSlices = new List<Emgu.CV.Image<Emgu.CV.Structure.Gray, byte>>();//vertical image slices
+            Emgu.CV.Image<Emgu.CV.Structure.Gray, byte> imgVertMerged = null;//merged vertical slices
             Emgu.CV.Image<Emgu.CV.Structure.Gray, byte> imgMerged = null;//final image
 
             try
             {
-                switch (GDefine.CameraType[0])
-                {
-                    case GDefine.ECameraType.PtGrey:
-                        TaskVision.PtGrey_CamStop();
-                        break;
-                    case GDefine.ECameraType.Spinnaker2:
-                        TaskVision.flirCamera2[0].GrabStop();
-                        TaskVision.flirCamera2[CamNo].GrabStop();
-                        break;
-                    case GDefine.ECameraType.MVSGenTL:
-                        TaskVision.genTLCamera[0].StopGrab();
-                        TaskVision.genTLCamera[CamNo].StopGrab();
-                        break;
-                    default:
-                        throw new Exception("Camera not supported.");
-                }
+                int Retried = 0;
+            _Retry:
+
+                TaskVision.genTLCamera[0].StopGrab();
+                TaskVision.genTLCamera[CamNo].StopGrab();
 
                 if (!TaskDisp.TaskMoveGZFocus(Line.IPara[21])) goto _Error;
 
                 int ImageID = Line.ID;
 
-
-                double LineW_Pix = (Line.IPara[10] + 1) * 2;
+                double LineW_Pix = Line.IPara[10];
 
                 bool ScanRight = (EndX > StartX);
                 double d_LineW = (double)(LineW_Pix * TaskVision.DistPerPixelX[CamNo]);
-
 
                 #region Calc Index Count in Y-direction
                 int rotateAngle = 0;
@@ -22786,38 +22771,16 @@ namespace NDispWin
                 double ScanSpeed = Line.DPara[13];
                 if (ScanSpeed == 0)
                 {
-                    ScanSpeed = (double)((Line.IPara[10] + 1) * 2 * 4);
+                    ScanSpeed = d_LineW / 0.02;//20ms, 50Hz fraem rate
                 }
 
                 uint MaxW = 0; uint MaxH = 0;
                 //uint L = 0; uint T = 0; uint W = 0; uint H = 0;
                 #region Set Camera
-                switch (GDefine.CameraType[0])
-                {
-                    case GDefine.ECameraType.PtGrey:
-                        {
-                            //TaskVision.PGCamera[CamNo].SetProperty(GrabberNET.PtGrey.TCamera.EProperty.Shutter, Line.DPara[5]);
-                            //TaskVision.PGCamera[CamNo].SetProperty(GrabberNET.PtGrey.TCamera.EProperty.Gain, Line.DPara[6]);
-                            //TaskVision.PGCamera[CamNo].GetImageSettings(ref MaxH, ref MaxW, ref L, ref T, ref W, ref H);
-                            break;
-                        }
-                    case GDefine.ECameraType.Spinnaker2:
-                        {
-                            TaskVision.flirCamera2[CamNo].Exposure = Line.DPara[5] * 1000;
-                            TaskVision.flirCamera2[CamNo].Gain = Line.DPara[6];
-                            MaxH = (uint)TaskVision.flirCamera2[CamNo].m_iCamHeight;
-                            MaxW = (uint)TaskVision.flirCamera2[CamNo].m_iCamWidth;
-                            break;
-                        }
-                    case GDefine.ECameraType.MVSGenTL:
-                        {
-                            TaskVision.genTLCamera[CamNo].Exposure = Line.DPara[5] * 1000;
-                            TaskVision.genTLCamera[CamNo].Gain = Line.DPara[6];
-                            MaxH = (uint)TaskVision.genTLCamera[CamNo].ImageHeightMax;
-                            MaxW = (uint)TaskVision.genTLCamera[CamNo].ImageWidthMax;
-                            break;
-                        }
-                }
+                TaskVision.genTLCamera[CamNo].Exposure = Line.DPara[5] * 1000;
+                TaskVision.genTLCamera[CamNo].Gain = Line.DPara[6];
+                MaxH = (uint)TaskVision.genTLCamera[CamNo].ImageHeightMax;
+                MaxW = (uint)TaskVision.genTLCamera[CamNo].ImageWidthMax;
 
                 int Rotation = Line.IPara[8];//0, 90, -90
                 switch (Rotation)
@@ -22827,50 +22790,22 @@ namespace NDispWin
                             int Left = (int)(MaxW / 2 - LineW_Pix / 2);
                             if (Left % 2 == 1) Left--;
                             int Top = 0;
-                            switch (GDefine.CameraType[0])
-                            {
-                                case GDefine.ECameraType.PtGrey:
-                                    //TaskVision.PGCamera[CamNo].SetImageSettings((uint)Left, (uint)Top, (uint)LineW_Pix, (uint)MaxH);
-                                    break;
-                                case GDefine.ECameraType.Spinnaker2:
-                                    TaskVision.flirCamera2[CamNo].ImageWidth = (int)LineW_Pix;
-                                    TaskVision.flirCamera2[CamNo].ImageHeight = (int)MaxH;
-                                    TaskVision.flirCamera2[CamNo].OffsetX = (int)Left;
-                                    TaskVision.flirCamera2[CamNo].OffsetY = (int)Top;
-                                    break;
-                                case GDefine.ECameraType.MVSGenTL:
-                                    TaskVision.genTLCamera[CamNo].ImageWidth = (uint)LineW_Pix;
-                                    TaskVision.genTLCamera[CamNo].ImageHeight = (uint)MaxH;
-                                    TaskVision.genTLCamera[CamNo].OffsetX = (uint)Left;
-                                    TaskVision.genTLCamera[CamNo].OffsetY = (uint)Top;
-                                    break;
-                            }
+                            TaskVision.genTLCamera[CamNo].ImageWidth = (uint)LineW_Pix;
+                            TaskVision.genTLCamera[CamNo].ImageHeight = (uint)MaxH;
+                            TaskVision.genTLCamera[CamNo].OffsetX = (uint)Left;
+                            TaskVision.genTLCamera[CamNo].OffsetY = (uint)Top;
                             break;
                         }
-                    case 1:
-                    case 2:
+                    case 1://90
+                    case 2://-90
                         {
                             int Left = 0;
                             int Top = (int)(MaxH / 2 - LineW_Pix / 2);
                             if (Top % 2 == 1) Top--;
-                            switch (GDefine.CameraType[0])
-                            {
-                                case GDefine.ECameraType.PtGrey:
-                                    //TaskVision.PGCamera[CamNo].SetImageSettings((uint)Left, (uint)Top, (uint)MaxW, (uint)LineW_Pix);
-                                    break;
-                                case GDefine.ECameraType.Spinnaker2:
-                                    TaskVision.flirCamera2[CamNo].ImageWidth = (int)MaxW;
-                                    TaskVision.flirCamera2[CamNo].ImageHeight = (int)LineW_Pix;
-                                    TaskVision.flirCamera2[CamNo].OffsetX = (int)Left;
-                                    TaskVision.flirCamera2[CamNo].OffsetY = (int)Top;
-                                    break;
-                                case GDefine.ECameraType.MVSGenTL:
-                                    TaskVision.genTLCamera[CamNo].ImageWidth = (uint)MaxW;
-                                    TaskVision.genTLCamera[CamNo].ImageHeight = (uint)LineW_Pix;
-                                    TaskVision.genTLCamera[CamNo].OffsetX = (uint)Left;
-                                    TaskVision.genTLCamera[CamNo].OffsetY = (uint)Top;
-                                    break;
-                            }
+                            TaskVision.genTLCamera[CamNo].ImageWidth = (uint)MaxW;
+                            TaskVision.genTLCamera[CamNo].ImageHeight = (uint)LineW_Pix;
+                            TaskVision.genTLCamera[CamNo].OffsetX = (uint)Left;
+                            TaskVision.genTLCamera[CamNo].OffsetY = (uint)Top;
                             break;
                         }
                 }
@@ -22878,15 +22813,13 @@ namespace NDispWin
 
                 #region Set Compare Config
                 CommonControl.P1245.CfgCmpEnable(TaskGantry.GXAxis, true);
-                CommonControl.P1245.CfgCmpLogic(TaskGantry.GXAxis, false);
+                CommonControl.P1245.CfgCmpLogic(TaskGantry.GXAxis, true);// false);
                 CommonControl.P1245.CfgCmpSource(TaskGantry.GXAxis, CControl2.ECmpSource.Actual);
                 CommonControl.P1245.CfgCmpPulseMode(TaskGantry.GXAxis, CControl2.ECmpPulseMode.Pulse);
-                CommonControl.P1245.CfgCmpSetPulseWidth(TaskGantry.GXAxis, 5000);
+                CommonControl.P1245.CfgCmpSetPulseWidth(TaskGantry.GXAxis, 100);//100us, camera Debounce set at 50us
                 CommonControl.P1245.CfgCmpMethod(TaskGantry.GXAxis, CControl2.ECmpMethod.EqualOrLess);
                 #endregion
 
-                int Retried = 0;
-                _Retry:
                 imgMerged = null;
 
 
@@ -22948,126 +22881,39 @@ namespace NDispWin
                     else
                         CommonControl.P1245.CmpSetData(TaskGantry.GXAxis, XPos + ((double)i * -d_LineW));
 
-                    switch (GDefine.CameraType[0])
+                    int t_TimeOut = GDefine.GetTickCount() + 800;
+                    TaskVision.genTLCamera[CamNo].ReceiveProcess();
+
+                    if (GDefine.GetTickCount() >= t_TimeOut)
                     {
-                        case GDefine.ECameraType.PtGrey:
+                        if (Retried < 2)
+                        {
+                            Retried++;
+                            Log.AddToLog("DoBdCapture Retried " + Retried.ToString() + " Section " + i.ToString() + " of " + lines.ToString());
+                            if (!TaskGantry.DecelStop(TaskGantry.GXAxis)) goto _Error;
+                            if (!TaskGantry.WaitGXY()) goto _Error;
+                            goto _Retry;
+                        }
+                        else
+                        {
+                            Msg MsgBox = new Msg();
+                            EMsgRes Resp = MsgBox.Show(Messages.CAMERA_GRAB_TIMEOUT, "", EMsgBtn.smbRetry_Stop);
+
+                            switch (Resp)
                             {
-                                //int t_RetreiveTimeOut = GDefine.GetTickCount();
-                                //TaskVision.PGCamera[CamNo].RetreiveBuffer();
-                                //int t3 = GDefine.GetTickCount() - t_RetreiveTimeOut;
-                                //if (t3 >= 3000)
-                                //{
-                                //    if (Retried < 1)
-                                //    {
-                                //        Retried++;
-                                //        Log.AddToLog("DoBdCapture retried " + Retried.ToString());
-                                //        goto _Retry;
-                                //    }
-                                //    else
-                                //    {
-                                //        Msg MsgBox = new Msg();
-                                //        EMsgRes Resp = MsgBox.Show(Messages.CAMERA_GRAB_TIMEOUT, "", EMsgBtn.smbRetry_Stop);
-
-                                //        switch (Resp)
-                                //        {
-                                //            case EMsgRes.smrRetry:
-                                //                {
-                                //                    TaskVision.PtGrey_CamStop();
-                                //                    Retried = 0;
-                                //                    goto _Retry;
-                                //                }
-                                //            case EMsgRes.smrStop:
-                                //                goto _Stop;
-                                //        }
-                                //    }
-                                //}
-
-                                ////Img_Strip = new Emgu.CV.Image<Emgu.CV.Structure.Gray, byte>(TaskVision.PGCamera[CamNo].Image());
-                                ////Img_Strips.Add(Img_Strip);
-                                //imgVertSlices.Add(new Emgu.CV.Image<Emgu.CV.Structure.Gray, byte>(TaskVision.PGCamera[CamNo].Image()));
-                                break;
-                            }
-                        case GDefine.ECameraType.Spinnaker2:
-                            {
-                                int t_TimeOut = GDefine.GetTickCount() + 500;
-                                TaskVision.flirCamera2[CamNo].GrabOne(1000);
-
-                                if (GDefine.GetTickCount() >= t_TimeOut)
-                                {
-                                    if (Retried < 2)
+                                case EMsgRes.smrRetry:
                                     {
-                                        Retried++;
-                                        Log.AddToLog("DoBdCapture Retried " + Retried.ToString() + " Section " + i.ToString() + " of " + lines.ToString());
-                                        if (!TaskGantry.DecelStop(TaskGantry.GXAxis)) goto _Error;
-                                        if (!TaskGantry.WaitGXY()) goto _Error;
+                                        Retried = 0;
                                         goto _Retry;
                                     }
-                                    else
-                                    {
-                                        Msg MsgBox = new Msg();
-                                        EMsgRes Resp = MsgBox.Show(Messages.CAMERA_GRAB_TIMEOUT, "", EMsgBtn.smbRetry_Stop);
-
-                                        switch (Resp)
-                                        {
-                                            case EMsgRes.smrRetry:
-                                                {
-                                                    Retried = 0;
-                                                    goto _Retry;
-                                                }
-                                            case EMsgRes.smrStop:
-                                                if (!TaskGantry.DecelStop(TaskGantry.GXAxis)) goto _Error;
-                                                if (!TaskGantry.WaitGXY()) goto _Error;
-                                                goto _Stop;
-                                        }
-                                    }
-                                }
-                                //Img_Strip = TaskVision.flirCamera2[CamNo].m_ImageEmgu.m_Image.Clone();
-                                //Img_Strips.Add(Img_Strip);
-                                imgVertSlices.Add(TaskVision.flirCamera2[CamNo].m_ImageEmgu.m_Image.Clone());
-                                break;
+                                case EMsgRes.smrStop:
+                                    if (!TaskGantry.DecelStop(TaskGantry.GXAxis)) goto _Error;
+                                    if (!TaskGantry.WaitGXY()) goto _Error;
+                                    goto _Stop;
                             }
-                        case GDefine.ECameraType.MVSGenTL:
-                            {
-                                int t_TimeOut = GDefine.GetTickCount() + 500;
-                                //TaskVision.genTLCamera[CamNo].GrabOneImage();
-                                TaskVision.genTLCamera[CamNo].ReceiveProcess();
-
-                                if (GDefine.GetTickCount() >= t_TimeOut)
-                                {
-                                    if (Retried < 2)
-                                    {
-                                        Retried++;
-                                        Log.AddToLog("DoBdCapture Retried " + Retried.ToString() + " Section " + i.ToString() + " of " + lines.ToString());
-                                        if (!TaskGantry.DecelStop(TaskGantry.GXAxis)) goto _Error;
-                                        if (!TaskGantry.WaitGXY()) goto _Error;
-                                        goto _Retry;
-                                    }
-                                    else
-                                    {
-                                        Msg MsgBox = new Msg();
-                                        EMsgRes Resp = MsgBox.Show(Messages.CAMERA_GRAB_TIMEOUT, "", EMsgBtn.smbRetry_Stop);
-
-                                        switch (Resp)
-                                        {
-                                            case EMsgRes.smrRetry:
-                                                {
-                                                    Retried = 0;
-                                                    goto _Retry;
-                                                }
-                                            case EMsgRes.smrStop:
-                                                if (!TaskGantry.DecelStop(TaskGantry.GXAxis)) goto _Error;
-                                                if (!TaskGantry.WaitGXY()) goto _Error;
-                                                goto _Stop;
-                                        }
-                                    }
-                                }
-                                //Img_Strip = TaskVision.flirCamera2[CamNo].m_ImageEmgu.m_Image.Clone();
-                                //Img_Strips.Add(Img_Strip);
-                                imgVertSlices.Add(TaskVision.genTLCamera[CamNo].mImage.Clone());
-                                Thread.Sleep(0);
-                                break;
-                            }
+                        }
                     }
+                    imgVertSlices.Add(TaskVision.genTLCamera[CamNo].mImage.Clone());
                 }
                 #endregion
 
@@ -23078,7 +22924,7 @@ namespace NDispWin
                     {
                         case 1://90
                             imgVertSlices[i] = imgVertSlices[i].Rotate(90, new Emgu.CV.Structure.Gray(0), false); break;
-                        case 2://90
+                        case 2://-90
                             imgVertSlices[i] = imgVertSlices[i].Rotate(-90, new Emgu.CV.Structure.Gray(0), false); break;
                     }
 
@@ -23097,7 +22943,7 @@ namespace NDispWin
                 else
                 {
                     if (indexDistY < 0)
-                    imgMerged = imgMerged.ConcateVertical(imgVertMerged);
+                        imgMerged = imgMerged.ConcateVertical(imgVertMerged);
                     else
                         imgMerged = imgVertMerged.ConcateVertical(imgMerged);
                 }
@@ -23118,16 +22964,14 @@ namespace NDispWin
                 TaskVision.BoardImage[ImageID] = imgMerged.Clone();
                 TaskVision.BoardImage_ID[ImageID]++;
 
-               //Img_Merge.Save(GDefine.AppPath + @"\Test\LineScan.bmp");
-
                 GDefine.Status = EStatus.Ready;
                 return true;
 
-                _Stop:
+            _Stop:
                 GDefine.Status = EStatus.Stop;
                 return false;
 
-                _Error:
+            _Error:
                 GDefine.Status = EStatus.ErrorInit;
                 return false;
             }
@@ -23139,7 +22983,6 @@ namespace NDispWin
             }
             finally
             {
-                //if (Img_Strip != null) Img_Strip.Dispose();
                 foreach (Emgu.CV.Image<Emgu.CV.Structure.Gray, byte> img in imgVertSlices)
                 {
                     if (img != null) img.Dispose();
@@ -23147,42 +22990,15 @@ namespace NDispWin
                 if (imgVertMerged != null) imgVertMerged.Dispose();
 
                 #region Set Camera to default settings
-                uint MaxW = 0; uint MaxH = 0;
-                uint L = 0; uint T = 0; uint W = 0; uint H = 0;
-                switch (GDefine.CameraType[0])
-                {
-                    case GDefine.ECameraType.PtGrey:
-                        {
-                            //TaskVision.PtGrey_CamStop();
-                            //TaskVision.PGCamera[CamNo].GetImageSettings(ref MaxH, ref MaxW, ref L, ref T, ref W, ref H);
-                            //TaskVision.PGCamera[CamNo].SetImageSettings(0, 0, (uint)MaxW, (uint)MaxH);
-                            //TaskVision.CameraRun = true;
-                            //TaskVision.PtGrey_CamLive(CamNo);
-                            break;
-                        }
-                    case GDefine.ECameraType.Spinnaker2:
-                        {
-                            TaskVision.flirCamera2[CamNo].GrabStop();
-                            TaskVision.flirCamera2[CamNo].OffsetX = 0;
-                            TaskVision.flirCamera2[CamNo].OffsetY = 0;
-                            TaskVision.flirCamera2[CamNo].ImageWidth = TaskVision.flirCamera2[CamNo].m_iCamWidthMax;
-                            TaskVision.flirCamera2[CamNo].ImageHeight = TaskVision.flirCamera2[CamNo].m_iCamHeightMax;
-                            TaskVision.flirCamera2[CamNo].Snap();
-                            break;
-                        }
-                    case GDefine.ECameraType.MVSGenTL:
-                        {
-                            TaskVision.genTLCamera[CamNo].StopGrab();
-                            TaskVision.genTLCamera[CamNo].TriggerMode = false;
-                            TaskVision.genTLCamera[CamNo].OffsetX = 0;
-                            TaskVision.genTLCamera[CamNo].OffsetY = 0;
-                            TaskVision.genTLCamera[CamNo].ImageWidth = TaskVision.genTLCamera[CamNo].ImageWidthMax;
-                            TaskVision.genTLCamera[CamNo].ImageHeight = TaskVision.genTLCamera[CamNo].ImageHeightMax;
-                            TaskVision.genTLCamera[CamNo].Exposure = TaskVision.ExposureTime[CamNo] * 1000;
-                            TaskVision.genTLCamera[CamNo].Gain = TaskVision.Gain[CamNo];
-                            break;
-                        }
-                }
+
+                TaskVision.genTLCamera[CamNo].StopGrab();
+                TaskVision.genTLCamera[CamNo].TriggerMode = false;
+                TaskVision.genTLCamera[CamNo].OffsetX = 0;
+                TaskVision.genTLCamera[CamNo].OffsetY = 0;
+                TaskVision.genTLCamera[CamNo].ImageWidth = TaskVision.genTLCamera[CamNo].ImageWidthMax;
+                TaskVision.genTLCamera[CamNo].ImageHeight = TaskVision.genTLCamera[CamNo].ImageHeightMax;
+                TaskVision.genTLCamera[CamNo].Exposure = TaskVision.ExposureTime[CamNo] * 1000;
+                TaskVision.genTLCamera[CamNo].Gain = TaskVision.Gain[CamNo];
                 #endregion
             }
         }

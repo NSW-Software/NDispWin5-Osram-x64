@@ -1034,26 +1034,26 @@ namespace NDispWin
                 int Closest = list.OrderBy(item => Math.Abs(Value - item)).First();
 
                 uint Data = 100;
-                //switch (Closest)
-                //{
-                //    case 5:
-                //    default:
-                //        Data = 0; break;
-                //    case 10:
-                //        Data = 1; break;
-                //    case 20:
-                //        Data = 2; break;
-                //    case 50:
-                //        Data = 3; break;
-                //    case 100:
-                //        Data = 4; break;
-                //    case 200:
-                //        Data = 5; break;
-                //    case 500:
-                //        Data = 6; break;
-                //    case 1000:
-                //        Data = 7; break;
-                //}
+                switch (Closest)
+                {
+                    case 5:
+                    default:
+                        Data = 0; break;
+                    case 10:
+                        Data = 1; break;
+                    case 20:
+                        Data = 2; break;
+                    case 50:
+                        Data = 3; break;
+                    case 100:
+                        Data = 4; break;
+                    case 200:
+                        Data = 5; break;
+                    case 500:
+                        Data = 6; break;
+                    case 1000:
+                        Data = 7; break;
+                }
                 Motion.mAcm_SetProperty(p_AxisHandle[Axis.Device.ID, Axis.Mask], (uint)PropertyID.CFG_AxCmpPulseWidth, ref Data, 4);
             }
             catch { throw; }

@@ -34,7 +34,6 @@ namespace NDispWin
 
             pnl_Image.Dock = DockStyle.Fill;
             imgBoxEmgu.Dock = DockStyle.Fill;
-            imgBoxEmgu2.Dock = DockStyle.Fill;
 
             Reticles = new TReticles(reticles);
             ShowReticles = true;
@@ -43,6 +42,9 @@ namespace NDispWin
         {
         }
 
+        public void SetReticles(TReticles reticles)
+        {
+        }
         private void UpdateControls()
         {
             if (TaskVision.genTLCamera[m_iSelectedCam] == null) return;
@@ -78,47 +80,62 @@ namespace NDispWin
         {
             if (TaskVision.genTLCamera[index] == null) return;
 
-            for (int i = 0; i < 3; i++)
-            {
-                if (TaskVision.genTLCamera[i] != null) TaskVision.genTLCamera[i].StopGrab();
-            }
-
-            TaskVision.genTLCamera[0].RegisterPictureBox(imgBoxEmgu);
-            TaskVision.genTLCamera[1].RegisterPictureBox(imgBoxEmgu2);
-
+            //bool IsGrabbing = TaskVision.genTLCamera[m_iSelectedCam].IsGrabbing;
+            if (TaskVision.genTLCamera[m_iSelectedCam] != null)// return;
+            TaskVision.genTLCamera[m_iSelectedCam].StopGrab();
+            
             m_iSelectedCam = index;
-            switch (m_iSelectedCam)
+            TaskVision.genTLCamera[m_iSelectedCam].RegisterPictureBox(imgBoxEmgu);
+            //ZoomFit();
+            //if (IsGrabbing) 
+                TaskVision.genTLCamera[m_iSelectedCam].StartGrab();
+
+            //Invalidate();
+            //Refresh();
+            //System.Threading.Thread.Sleep(50);
+            //ZoomFit();
+
+            System.Threading.Thread.Sleep(50);
+            while (Monitor.TryEnter(imgBoxEmgu))
             {
-                default:
-                case 0: imgBoxEmgu.BringToFront(); break;
-                case 1: imgBoxEmgu2.BringToFront(); break;
-            }
-
-            TaskVision.genTLCamera[m_iSelectedCam].StartGrab();
-
-            Task.Run(() =>
-            {//suspect due to onject lock execution is aborted by object
-                Thread.Sleep(250);
                 ZoomFit();
-            });
-
+                Monitor.Exit(imgBoxEmgu);
+                break;
+            }
             UpdateControls();
         }
 
         private void frmCamera_Load(object sender, EventArgs e)
         {
             UpdateControls();
+            //ZoomFit();
         }
         private void frmCamera_FormClosing(object sender, FormClosingEventArgs e)
         {
-            for (int i = 0; i < 3; i++)
-            {
-                if (TaskVision.genTLCamera[i] != null) TaskVision.genTLCamera[i].StopGrab();
-            }
+            TaskVision.genTLCamera[0].StopGrab();
+            TaskVision.genTLCamera[1].StopGrab();
         }
         private void frmMVCGenTLCamera_FormClosed(object sender, FormClosedEventArgs e)
         {
 
+        }
+
+        private void imgBoxEmgu_Paint(object sender, PaintEventArgs e)
+        {
+            //tssl_FPS.Text = flirCamera[m_iSelectedCam].m_dFPS.ToString("f1") + " Hz";
+            if (ShowCamReticles)
+                for (int i = 0; i < TReticles.MAX_RETICLES; i++)
+                    DrawReticles(CamReticles[m_iSelectedCam].Reticle[i], e);
+
+            if (ShowReticles)
+                for (int i = 0; i < TReticles.MAX_RETICLES; i++)
+                    DrawReticles(Reticles.Reticle[i], e);
+        }
+        private void imgBoxEmgu_Validated(object sender, EventArgs e)
+        {
+        }
+        private void imgBoxEmgu_Validating(object sender, CancelEventArgs e)
+        {
         }
 
         private void tsbtn_Cam1_Click(object sender, EventArgs e)
@@ -136,8 +153,10 @@ namespace NDispWin
 
         private void tsbtn_Capture_Click(object sender, EventArgs e)
         {
+            //int t = Environment.TickCount;
             TaskVision.genTLCamera[m_iSelectedCam].GrabOneImage();
             UpdateControls();
+            //MessageBox.Show($"{Environment.TickCount - t}");
         }
         private void tsbtn_Grab_Click(object sender, EventArgs e)
         {
@@ -150,52 +169,33 @@ namespace NDispWin
             UpdateControls();
         }
 
-        public Emgu.CV.UI.ImageBox imgBox
-        {
-            get
-            {
-                switch (m_iSelectedCam)
-                {
-                    default:
-                    case 0: return imgBoxEmgu;
-                    case 1: return imgBoxEmgu2;
-                }
-            }
-        }
-
+        bool m_bZoomFit = false;
         public void ZoomFit()
         {
             if (!TaskVision.genTLCamera[m_iSelectedCam].IsConnected) return;
 
             double XScale = (double)pnl_Image.Width / TaskVision.genTLCamera[m_iSelectedCam].ImageWidth;
             double YScale = (double)pnl_Image.Height / TaskVision.genTLCamera[m_iSelectedCam].ImageHeight;
-_Retry:
-            try
-            {
-                imgBox.SetZoomScale(Math.Min(XScale, YScale), new Point(0, 0));
-            }
-            catch
-            {
-                goto _Retry;
-            }
-            finally
-            {
-            }
+            imgBoxEmgu.SetZoomScale(Math.Min(XScale, YScale), new Point(0, 0));
+            m_bZoomFit = true;
             UpdateControls();
         }
         public void ZoomActual()
         {
-            imgBox.SetZoomScale(1, new Point(0, 0));
+            imgBoxEmgu.SetZoomScale(1, new Point(0, 0));
+            m_bZoomFit = false;
             UpdateControls();
         }
         public void ZoomIn()
         {
-            imgBox.SetZoomScale(imgBox.ZoomScale + 0.2, new Point(imgBox.Width / 2, imgBox.Height / 2));
+            imgBoxEmgu.SetZoomScale(imgBoxEmgu.ZoomScale + 0.2, new Point(imgBoxEmgu.Width / 2, imgBoxEmgu.Height / 2));
+            m_bZoomFit = false;
             UpdateControls();
         }
         public void ZoomOut()
         {
-            imgBox.SetZoomScale(imgBox.ZoomScale - 0.2, new Point(imgBox.Width / 2, imgBox.Height / 2));
+            imgBoxEmgu.SetZoomScale(imgBoxEmgu.ZoomScale - 0.2, new Point(imgBoxEmgu.Width / 2, imgBoxEmgu.Height / 2));
+            m_bZoomFit = false;
             UpdateControls();
         }
 
@@ -230,8 +230,39 @@ _Retry:
 
                 Image<Gray, Byte> imageopen = new Image<Gray, byte>(ofd.FileName);
 
-                imgBox.Image = imageopen.Clone();
-                imgBox.Refresh();
+                //Rectangle ocvRectLoad = new Rectangle();
+                //Rectangle ocvRectImage = new Rectangle();
+
+                //ocvRectLoad.X = 0;
+                //ocvRectLoad.Y = 0;
+                //ocvRectLoad.Width = imageopen.Width;
+                //ocvRectLoad.Height = imageopen.Height;
+
+                //ocvRectImage.X = 0;
+                //ocvRectImage.Y = 0;
+                //ocvRectImage.Width = imgBoxEmgu.Image.Size.Width;
+                //ocvRectImage.Height = imgBoxEmgu.Image.Size.Height;
+
+                //if (imageopen.Width > imgBoxEmgu.Image.Size.Width)
+                //    ocvRectLoad.Width = imgBoxEmgu.Image.Size.Width;
+                //else
+                //if (imageopen.Width < imgBoxEmgu.Image.Size.Width)
+                //    ocvRectImage.Width = imageopen.Width;
+
+                //if (imageopen.Height > imgBoxEmgu.Image.Size.Height)
+                //    ocvRectLoad.Height = imgBoxEmgu.Image.Size.Height;
+                //else
+                //if (imageopen.Height < imgBoxEmgu.Image.Size.Height)
+                //    ocvRectImage.Height = imageopen.Height;
+
+                //imageopen.ROI = ocvRectLoad;
+
+                //Image<Gray, Byte> imgRoi = (imgBoxEmgu.Image as Image<Gray, Byte>).GetSubRect(ocvRectImage);
+
+                //imageopen.CopyTo(imgRoi);
+
+                imgBoxEmgu.Image = imageopen.Clone();
+                imgBoxEmgu.Refresh();
             }
 
         }
@@ -250,33 +281,53 @@ _Retry:
             }
         }
 
-
-        private void imgBoxEmgu_Paint(object sender, PaintEventArgs e)
-        {
-            if (ShowCamReticles)
-                for (int i = 0; i < TReticles.MAX_RETICLES; i++)
-                    DrawReticles(CamReticles[m_iSelectedCam].Reticle[i], e);
-
-            if (ShowReticles)
-                for (int i = 0; i < TReticles.MAX_RETICLES; i++)
-                    DrawReticles(Reticles.Reticle[i], e);
-        }
+        //enum EMouseDn { None, Left, Right };
+        //EMouseDn mouseDn = EMouseDn.None;
         Point mouseDnPos = new Point(0, 0);
         PointF XYPos = new PointF(0, 0);
+        private void imgBoxEmgu_Move(object sender, EventArgs e)
+        {
+
+        }
         private void imgBoxEmgu_MouseMove(object sender, MouseEventArgs e)
         {
+            //if (imgBoxEmgu.Image.Bitmap == null) return;
+
             if (!TaskVision.genTLCamera[m_iSelectedCam].IsGrabbing) return;
 
-            int offsetX = (int)(e.Location.X / (sender as Emgu.CV.UI.ImageBox).ZoomScale);
-            int offsetY = (int)(e.Location.Y / (sender as Emgu.CV.UI.ImageBox).ZoomScale);
-            int horizontalScrollBarValue = (sender as Emgu.CV.UI.ImageBox).HorizontalScrollBar.Visible ? (int)(sender as Emgu.CV.UI.ImageBox).HorizontalScrollBar.Value : 0;
-            int verticalScrollBarValue = (sender as Emgu.CV.UI.ImageBox).VerticalScrollBar.Visible ? (int)(sender as Emgu.CV.UI.ImageBox).VerticalScrollBar.Value : 0;
+            int offsetX = (int)(e.Location.X / imgBoxEmgu.ZoomScale);
+            int offsetY = (int)(e.Location.Y / imgBoxEmgu.ZoomScale);
+            int horizontalScrollBarValue = imgBoxEmgu.HorizontalScrollBar.Visible ? (int)imgBoxEmgu.HorizontalScrollBar.Value : 0;
+            int verticalScrollBarValue = imgBoxEmgu.VerticalScrollBar.Visible ? (int)imgBoxEmgu.VerticalScrollBar.Value : 0;
             int iX = offsetX + horizontalScrollBarValue;
             int iY = offsetY + verticalScrollBarValue;
             tssl_Pos.Text = "(" + Convert.ToString(iX) + ", " + Convert.ToString(iY) + ")";
+
+            //if (this.imgBoxEmgu.Image.NumberOfChannels == 1)
+            //{
+            //    Image<Gray, Byte> img = (imgBoxEmgu.Image as Image<Gray, Byte>);
+            //    if (iX < img.Width - 1 && iY < img.Height - 1)
+            //    {
+            //        // ** Gray
+            //        Gray byCurrent = img[iY, iX];
+            //        tssl_Pos.Text += " G:" + byCurrent.Intensity.ToString();
+            //    }
+            //}
+            //else
+            //if (this.imgBoxEmgu.Image.NumberOfChannels == 3)
+            //{
+            //    Image<Bgr, Byte> img = (imgBoxEmgu.Image as Image<Bgr, Byte>);
+            //    if (iX < img.Width - 1 && iY < img.Height - 1)
+            //    {
+            //        // ** Color
+            //        Bgr bgr = img[iY, iX];
+            //        tssl_Pos.Text += " R:" + bgr.Red.ToString() + " G:" + bgr.Green.ToString() + " B:" + bgr.Blue.ToString();
+            //    }
+            //}
         }
         private void imgBoxEmgu_MouseDown(object sender, MouseEventArgs e)
         {
+            //if (this.imgBoxEmgu.Image == null) return;
             if (!TaskVision.genTLCamera[m_iSelectedCam].IsGrabbing) return;
 
             if (e.Button == MouseButtons.Left)
@@ -289,14 +340,18 @@ _Retry:
                     CommonControl.SetMotionParam(TaskGantry.GXAxis, 10, TaskGantry.GXAxis.Para.Jog.MedV, 500);
                 }
                 catch { };
+                //mouseDn = EMouseDn.Left;
                 return;
             }
 
             if (e.Button == MouseButtons.Right)
             {
-                float locX = (sender as Emgu.CV.UI.ImageBox).HorizontalScrollBar.Value + (float)(e.Location.X / (sender as Emgu.CV.UI.ImageBox).ZoomScale);
-                float locY = (sender as Emgu.CV.UI.ImageBox).VerticalScrollBar.Value + (float)(e.Location.Y / (sender as Emgu.CV.UI.ImageBox).ZoomScale);
+                //mouseDn = EMouseDn.Right;
+                float locX = imgBoxEmgu.HorizontalScrollBar.Value + (float)(e.Location.X / imgBoxEmgu.ZoomScale);
+                float locY = imgBoxEmgu.VerticalScrollBar.Value + (float)(e.Location.Y / imgBoxEmgu.ZoomScale);
 
+                //int centerX = this.imgBoxEmgu.Image.Size.Width / 2;
+                //int centerY = this.imgBoxEmgu.Image.Size.Height / 2;
                 int centerX = (int)TaskVision.genTLCamera[m_iSelectedCam].ImageWidthMax /2;
                 int centerY = (int)TaskVision.genTLCamera[m_iSelectedCam].ImageHeightMax / 2;
 
@@ -322,8 +377,8 @@ _Retry:
         }
         private void imgBoxEmgu_MouseUp(object sender, MouseEventArgs e)
         {
+            //mouseDn = EMouseDn.None;
         }
-
         private void statusBarToolStripMenuItem_Click(object sender, EventArgs e)
         {
             tsmi_ShowStatusBar.Checked = !tsmi_ShowStatusBar.Checked;
@@ -340,6 +395,8 @@ _Retry:
 
             frm.Show();
             frm.BringToFront();
+
+            imgBoxEmgu.Refresh();
         }
 
         private void DrawReticles(TReticle2 Reticle, PaintEventArgs e)
@@ -484,7 +541,7 @@ _Retry:
         private void showCamReticlesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ShowCamReticles = !ShowCamReticles;
-            //imgBoxEmgu.Refresh();
+            imgBoxEmgu.Refresh();
 
             UpdateControls();
         }
@@ -516,12 +573,6 @@ _Retry:
         private void tsmiTrigger_Click(object sender, EventArgs e)
         {
             TaskVision.genTLCamera[m_iSelectedCam].SoftwareTrigger();
-        }
-
-        private void frmMVCGenTLCamera_Shown(object sender, EventArgs e)
-        {
-            //Thread.Sleep(250);
-            //ZoomFit();
         }
     }
 }

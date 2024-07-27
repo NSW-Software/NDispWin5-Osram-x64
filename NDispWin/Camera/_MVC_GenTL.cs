@@ -144,7 +144,7 @@ namespace MVC
 
             if (m_Brand.Contains("Hikrobot"))
             {
-                nRet = m_MyCamera.MV_CC_SetIntValue_NET("LineDebouncerTime", 50);
+                nRet = m_MyCamera.MV_CC_SetIntValue_NET("LineDebouncerTime", 4);
                 if (nRet != MyCamera.MV_OK)
                 {
                     throw new Exception(GetErrorMsg("Set LineDebouncerTime failed!", nRet));
@@ -228,7 +228,7 @@ namespace MVC
 
             if (m_Brand.Contains("Hikrobot"))
             {
-                nRet = m_MyCamera.MV_CC_SetIntValue_NET("LineDebouncerTime", 50);
+                nRet = m_MyCamera.MV_CC_SetIntValue_NET("LineDebouncerTime", 4);
                 if (nRet != MyCamera.MV_OK)
                 {
                     throw new Exception(GetErrorMsg("Set LineDebouncerTime failed!", nRet));
@@ -327,9 +327,18 @@ namespace MVC
                             {
                                 int stride = stDisplayInfo.nWidth + (stDisplayInfo.nWidth % 4);
 
-                                mImage = new Image<Gray, byte>(stDisplayInfo.nWidth, stDisplayInfo.nHeight, stride, stDisplayInfo.pData);
-                                m_emguBox.Image = mImage;
-                                m_emguBox.Invalidate();
+                                if (!usePictureBox)
+                                {
+                                    mImage = new Image<Gray, byte>(stDisplayInfo.nWidth, stDisplayInfo.nHeight, stride, stDisplayInfo.pData);
+                                    m_emguBox.Image = mImage;
+                                    m_emguBox.Invalidate();
+                                }
+                                else
+                                {
+                                    mImage = new Image<Gray, byte>(stDisplayInfo.nWidth, stDisplayInfo.nHeight, stride, stDisplayInfo.pData);
+                                    m_picBox.Image = (System.Drawing.Image)mImage.ToBitmap().Clone();
+                                    m_picBox.Invalidate();
+                                }
                             }
                             catch (Exception ex)
                             {
@@ -373,9 +382,18 @@ namespace MVC
                         {
                             int stride = stDisplayInfo.nWidth + (stDisplayInfo.nWidth % 4);
 
+                            if (!usePictureBox)
+                            {
                                 mImage = new Image<Gray, byte>(stDisplayInfo.nWidth, stDisplayInfo.nHeight, stride, stDisplayInfo.pData);
                                 m_emguBox.Image = mImage;
                                 m_emguBox.Invalidate();
+                            }
+                            else
+                            {
+                                mImage = new Image<Gray, byte>(stDisplayInfo.nWidth, stDisplayInfo.nHeight, stride, stDisplayInfo.pData);
+                                m_picBox.Image = (System.Drawing.Image)mImage.ToBitmap().Clone();
+                                m_picBox.Invalidate();
+                            }
                         }
                         catch (Exception ex)
                         {
@@ -399,6 +417,7 @@ namespace MVC
             if (!m_bConnected) return false;
             if (m_bGrabbing) return true;
 
+            //return false;
             //Set position bit true
             m_bGrabbing = true;
 
@@ -410,7 +429,7 @@ namespace MVC
             if (MyCamera.MV_OK != nRet)
             {
                 m_bGrabbing = false;
-                m_hReceiveThread.Abort();
+                m_hReceiveThread.Abort();//Join();
                 throw new Exception(GetErrorMsg("Start Grabbing Fail!", nRet));
             }
             m_hReceiveThread = new Thread(ReceiveThreadProcess);
@@ -424,7 +443,7 @@ namespace MVC
 
             //Set flag bit false
             m_bGrabbing = false;
-            if (m_hReceiveThread != null) m_hReceiveThread.Abort();
+            if (m_hReceiveThread != null) m_hReceiveThread.Abort();//Join();
 
             //Stop Grabbing
             int nRet = m_MyCamera.MV_CC_StopGrabbing_NET();
@@ -432,7 +451,6 @@ namespace MVC
             {
                 throw new Exception(GetErrorMsg("Stop Grabbing Fail!", nRet));
             }
-
             return true;
         }
         public bool IsGrabbing => m_bGrabbing;
@@ -475,9 +493,10 @@ namespace MVC
             if (MyCamera.MV_OK != nRet)
             {
                 m_bGrabbing = false;
-                m_hReceiveThread.Abort();
+                m_hReceiveThread.Abort();//Join();
                 throw new Exception(GetErrorMsg("Start Grabbing Fail!", nRet));
             }
+            Thread.Sleep(100);
         }
         public void SaveBuffer(string fileName)
         {
@@ -593,7 +612,16 @@ namespace MVC
         }
         public bool IsRecording => m_bRecording;
 
+        bool usePictureBox = false;
         //Register picturebox for display - mehtod 1: manual rendering
+        PictureBox m_picBox = new PictureBox();
+        public void RegisterPictureBox(PictureBox pictureBox)
+        {
+            lock (lockObject)
+            {
+                m_picBox = pictureBox;
+            }
+        }
         ImageBox m_emguBox = new ImageBox();
         public void RegisterPictureBox(ImageBox imageBox)
         {
@@ -836,19 +864,9 @@ namespace MVC
 
         public uint ImageWidthMax
         {
-            //get
-            //{
-            //    return imageBasicInfo.nWidthMax;
-            //}
             get
             {
-                MyCamera.MVCC_INTVALUE_EX stParam = new MyCamera.MVCC_INTVALUE_EX();
-                int nRet = m_MyCamera.MV_CC_GetIntValueEx_NET("WidthMax", ref stParam);
-                if (nRet != MyCamera.MV_OK)
-                {
-                    throw new Exception(GetErrorMsg("Get " + MethodBase.GetCurrentMethod().Name.ToString(), nRet));
-                }
-                return (uint)stParam.nCurValue;
+                return imageBasicInfo.nWidthMax;
             }
         }
         public uint ImageWidth
@@ -883,19 +901,9 @@ namespace MVC
         }
         public uint ImageHeightMax
         {
-            //get
-            //{
-            //    return imageBasicInfo.nHeightMax;
-            //}
             get
             {
-                MyCamera.MVCC_INTVALUE_EX stParam = new MyCamera.MVCC_INTVALUE_EX();
-                int nRet = m_MyCamera.MV_CC_GetIntValueEx_NET("HeightMax", ref stParam);
-                if (nRet != MyCamera.MV_OK)
-                {
-                    throw new Exception(GetErrorMsg("Get " + MethodBase.GetCurrentMethod().Name.ToString(), nRet));
-                }
-                return (uint)stParam.nCurValue;
+                return imageBasicInfo.nHeightMax;
             }
         }
         public uint ImageWidthMin

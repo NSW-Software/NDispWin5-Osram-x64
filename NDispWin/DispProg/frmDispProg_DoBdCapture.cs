@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Emgu.CV;
+using System.Threading.Tasks;
 
 namespace NDispWin
 {
@@ -51,32 +52,29 @@ namespace NDispWin
 
             lbl_StartXY.Text = CmdLine.X[0].ToString("F3") + "," + CmdLine.Y[0].ToString("F3");
             lbl_EndXY.Text = CmdLine.X[1].ToString("F3") + "," + CmdLine.Y[1].ToString("F3");
-            //lbl_SizeX.Text = (CmdLine.X[1] - CmdLine.X[0]).ToString();
-            //lbl_SizeY.Text = (CmdLine.Y[1] - CmdLine.Y[0]).ToString();
 
             lblMaxSize.Text = CmdLine.IPara[5].ToString();
 
             lbl_Exposure.Text = CmdLine.DPara[5].ToString();
             lbl_Gain.Text = CmdLine.DPara[6].ToString();
-            //CmdLine.IPara[8] = Math.Max(CmdLine.IPara[8], cbxRotate.Items.Count - 1);
             cbxRotate.SelectedIndex = CmdLine.IPara[8];
 
             lblScanResolution.Text = $"{CmdLine.IPara[10]}";
             double ScanSpeed = CmdLine.DPara[13];
             if (ScanSpeed == 0)
             {
-                ScanSpeed = (CmdLine.IPara[10] + 1) *2 * 4;
-                lbl_ScanSpeed.Text = "(" + ScanSpeed.ToString() + ")";
+                double d_LineW = (double)(CmdLine.IPara[10] * TaskVision.DistPerPixelX[CmdLine.IPara[1]]);
+                ScanSpeed = d_LineW / 0.02;
+                lbl_ScanSpeed.Text = $"({ScanSpeed:f1})";
             }
             else
                 lbl_ScanSpeed.Text = ScanSpeed.ToString();
 
             if (CmdLine.IPara[3] == 0)
-                lbl_Setting.Text = "Scan Mode Area. ";// +
-                    //"FOV CR (" + CmdLine.Index[0].ToString() + "," + CmdLine.Index[1].ToString() + ")";
+                lbl_Setting.Text = "Scan Mode Area. ";
             else
                 lbl_Setting.Text = "Scan Mode Line. " +
-                    "Resolution " + ((CmdLine.IPara[10] + 1) * 2).ToString() + ", Speed " + ScanSpeed.ToString() + " mm/s";
+                    "Resolution " + ((CmdLine.IPara[10] + 1) * 2).ToString() + ", Speed " + $"{ScanSpeed:f1} mm/s";
 
             #region Motion Setting
             double StartV = CmdLine.DPara[10];
@@ -108,7 +106,6 @@ namespace NDispWin
 
             lbl_SettleTime.Text = CmdLine.IPara[4].ToString();
             #endregion
-
         }
 
         private string CmdName
@@ -136,9 +133,9 @@ namespace NDispWin
             if (CmdLine.DPara[5] == 0) CmdLine.DPara[5] = 8;
 
             combox_ScanMode.SelectedIndex = CmdLine.IPara[3];
-            //CmdLine.IPara[8] = 1;//0, 1=90, 2=-90
 
             combox_Path.SelectedIndex = CmdLine.IPara[2];
+            if (CmdLine.IPara[10] < 32) CmdLine.IPara[10] = 32;
             lblScanResolution.Text = $"{CmdLine.IPara[10]}";
 
             Emgu.CV.Image<Emgu.CV.Structure.Gray, byte> BdImg = null;
@@ -345,44 +342,36 @@ namespace NDispWin
         }
         #endregion
 
-        private void btn_Capture_Click(object sender, EventArgs e)
+        private async void btn_Capture_Click(object sender, EventArgs e)
         {
             Enabled = false;
-
             int ImageID = CmdLine.ID;
+            int t = 0;
 
-            TaskVision.BdCaptureLightRGB = TaskVision.CurrentLightRGBA;
+            TaskVision.frmMVCGenTLCamera.SelectCamera(CmdLine.IPara[1]);
 
             try
             {
-                double X0 = DispProg.Origin(DispProg.rt_StationNo).X + CmdLine.X[0];
-                double Y0 = DispProg.Origin(DispProg.rt_StationNo).Y + CmdLine.Y[0];
-                double X1 = DispProg.Origin(DispProg.rt_StationNo).X + CmdLine.X[1];
-                double Y1 = DispProg.Origin(DispProg.rt_StationNo).Y + CmdLine.Y[1];
-                //CmdLine.IPara[1] = (int)TaskVision.SelectedCam;
-
-                if (CmdLine.IPara[3] == 0)
+                await Task.Run(() =>
                 {
-                    //int LoopDir = CmdLine.IPara[2];
+                    TaskVision.BdCaptureLightRGB = TaskVision.CurrentLightRGBA;
 
-                    int t = GDefine.GetTickCount();
-                    if (!DispProg.DoBdCapture(CmdLine, ImageID, X0, Y0, X1, Y1)) return;
-                    lbl_Status.Text = "Execution Time = " + (GDefine.GetTickCount() - t).ToString() + " ms.";
-                }
-                if (CmdLine.IPara[3] == 1)
-                {
-                    int t = GDefine.GetTickCount();
-                    
-                    DispProg.DoLineCapture(CmdLine, X0, Y0, X1, Y1);
-                    lbl_Status.Text = "Execution Time = " + (GDefine.GetTickCount() - t).ToString() + " ms.";
-                }
-                try
-                {
-                    pbox_Image.Image = TaskVision.BoardImage[ImageID].ToBitmap();
-                }
-                catch { };
+                    double X0 = DispProg.Origin(DispProg.rt_StationNo).X + CmdLine.X[0];
+                    double Y0 = DispProg.Origin(DispProg.rt_StationNo).Y + CmdLine.Y[0];
+                    double X1 = DispProg.Origin(DispProg.rt_StationNo).X + CmdLine.X[1];
+                    double Y1 = DispProg.Origin(DispProg.rt_StationNo).Y + CmdLine.Y[1];
 
-                UpdateDisplay();
+                    if (CmdLine.IPara[3] == 0)
+                    {
+                        t = GDefine.GetTickCount();
+                        if (!DispProg.DoBdCapture(CmdLine, ImageID, X0, Y0, X1, Y1)) return;
+                    }
+                    if (CmdLine.IPara[3] == 1)
+                    {
+                        t = GDefine.GetTickCount();
+                        DispProg.DoLineCapture(CmdLine, X0, Y0, X1, Y1);
+                    }
+                });
             }
             catch (Exception Ex)
             {
@@ -392,24 +381,17 @@ namespace NDispWin
             }
             finally
             {
-
-                switch (GDefine.CameraType[0])
-                {
-                    //case GDefine.ECameraType.PtGrey:
-                    //    TaskVision.PtGrey_CamStop();
-                    //    break;
-                    case GDefine.ECameraType.Spinnaker2:
-                        TaskVision.flirCamera2[(int)TaskVision.SelectedCam].GrabCont();
-                        break;
-                    case GDefine.ECameraType.MVSGenTL:
-                        TaskVision.genTLCamera[(int)TaskVision.SelectedCam].StartGrab();
-                        break;
-                    default:
-                        throw new Exception("Camera not supported.");
-                }
-
                 Enabled = true;
             }
+
+            if (TaskVision.frmMVCGenTLCamera.Visible) TaskVision.genTLCamera[CmdLine.IPara[1]].StartGrab();
+            try
+            {
+                pbox_Image.Image = TaskVision.BoardImage[ImageID].ToBitmap();
+            }
+            catch { };
+            lbl_Status.Text = "Execution Time = " + (GDefine.GetTickCount() - t).ToString() + " ms.";
+            UpdateDisplay();
         }
 
         private void btn_OK_Click(object sender, EventArgs e)

@@ -66,8 +66,8 @@ namespace NDispWin
         }
         private void frm_DispProg_View_Shown(object sender, EventArgs e)
         {
-            TaskVisionfrmMVCGenTLCamera.SelectCamera(0);
         }
+
         enum EJogWindPos { TR, BR, BL, TL };
         EJogWindPos JogWindPos = EJogWindPos.TR;
         private void UpdateDisplay()

@@ -193,6 +193,7 @@ namespace NDispWin
             mtx.WaitOne();
             try
             {
+                Port.DiscardInBuffer();
                 Port.WriteTimeout = 1000;
                 Port.Write(data + (char)13 + (char)10);
             }

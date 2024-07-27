@@ -46,7 +46,6 @@ namespace NDispWin
             TaskVisionfrmMVCGenTLCamera.ShowCamReticles = true;
 
             TaskVisionfrmMVCGenTLCamera.SelectCamera(CamNo);
-            //TaskVision.genTLCamera[CamNo].StartGrab();
 
             UpdateDisplay();
         }
@@ -56,7 +55,6 @@ namespace NDispWin
         }
         private void frmCameraSetting_Shown(object sender, EventArgs e)
         {
-            TaskVisionfrmMVCGenTLCamera.ZoomFit();// SelectCamera(CamNo);
         }
 
         private void UpdateDisplay()
