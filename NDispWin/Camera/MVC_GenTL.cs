@@ -342,8 +342,7 @@ namespace MVC
                     }
                     else
                     {
-                        if (m_bGrabbing)
-                            NDispWin.Event.CAMERA_INFO.Set(MethodBase.GetCurrentMethod().Name.ToString(), GetErrorMsg("Get Image Buffer Fail.!", nRet));
+                        //if (m_bGrabbing) NDispWin.Event.CAMERA_INFO.Set(MethodBase.GetCurrentMethod().Name.ToString(), GetErrorMsg("Get Image Buffer Fail.!", nRet));
                     }
                 }
             }
@@ -388,8 +387,7 @@ namespace MVC
                 }
                 else
                 {
-                    if (m_bGrabbing)
-                        NDispWin.Event.CAMERA_INFO.Set(MethodBase.GetCurrentMethod().Name.ToString(), GetErrorMsg("Get Image Buffer Fail.!", nRet));
+                    //if (m_bGrabbing) NDispWin.Event.CAMERA_INFO.Set(MethodBase.GetCurrentMethod().Name.ToString(), GetErrorMsg("Get Image Buffer Fail.!", nRet));
                 }
             }
         }

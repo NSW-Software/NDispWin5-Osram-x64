@@ -20,7 +20,7 @@ namespace NDispWin
         public string Inst = "";
 
         public TReticles Reticles = new TReticles();
-        public bool ShowReticles = false;
+        public bool ShowReticles = true;
 
         public frm_DispCore_JogGantryVision()
         {
@@ -59,6 +59,8 @@ namespace NDispWin
             TaskVisionfrmMVCGenTLCamera.ShowReticles = ShowReticles;
 
             lbl_Inst.Text = Inst;
+
+            SelectCamera(0);
         }
         private void frm_JogGantryVision_Shown(object sender, EventArgs e)
         {

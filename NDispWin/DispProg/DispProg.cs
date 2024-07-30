@@ -22813,10 +22813,10 @@ namespace NDispWin
 
                 #region Set Compare Config
                 CommonControl.P1245.CfgCmpEnable(TaskGantry.GXAxis, true);
-                CommonControl.P1245.CfgCmpLogic(TaskGantry.GXAxis, true);// false);
+                CommonControl.P1245.CfgCmpLogic(TaskGantry.GXAxis, false);
                 CommonControl.P1245.CfgCmpSource(TaskGantry.GXAxis, CControl2.ECmpSource.Actual);
                 CommonControl.P1245.CfgCmpPulseMode(TaskGantry.GXAxis, CControl2.ECmpPulseMode.Pulse);
-                CommonControl.P1245.CfgCmpSetPulseWidth(TaskGantry.GXAxis, 100);//100us, camera Debounce set at 50us
+                CommonControl.P1245.CfgCmpSetPulseWidth(TaskGantry.GXAxis, 500);//500us, camera Debounce set at 50us
                 CommonControl.P1245.CfgCmpMethod(TaskGantry.GXAxis, CControl2.ECmpMethod.EqualOrLess);
                 #endregion
 

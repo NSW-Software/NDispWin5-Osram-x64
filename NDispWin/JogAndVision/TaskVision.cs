@@ -1214,277 +1214,277 @@ namespace NDispWin
         }
         internal static TReticle Reticles = new TReticle();
 
-        public enum ECalStepCHair { None, TL, TR, BR, BL, C, L, R, T, B }
-        public static ECalStepCHair DrawCalStep = ECalStepCHair.None;
+        //public enum ECalStepCHair { None, TL, TR, BR, BL, C, L, R, T, B }
+        //public static ECalStepCHair DrawCalStep = ECalStepCHair.None;
         public static int FindCircle = 0;
         public static string TextString = "";
         public static Color TextColor = Color.Lime;
-        public static void ImageDrawReticle(Emgu.CV.Image<Emgu.CV.Structure.Gray, byte> Image, Emgu.CV.Image<Emgu.CV.Structure.Bgr, byte> ImageC)
-        {
-            #region Vision Cal
-            if (DrawCalStep == ECalStepCHair.TL)
-            {
-                VisUtils.DrawPlus(ImageC, new Point(50, 50), 100, Color.Green);
-                VisUtils.DrawText(ImageC, new Point(50 + 5, 50 + 5), DrawCalStep.ToString(), 12, Color.Green);
-            }
-            if (DrawCalStep == ECalStepCHair.TR)
-            {
-                VisUtils.DrawPlus(ImageC, new Point(Image.Width - 50, 50), 100, Color.Lime);
-                VisUtils.DrawText(ImageC, new Point(Image.Width - 50 + 5, 50 + 5), DrawCalStep.ToString(), 12, Color.Green);
-            }
-            if (DrawCalStep == ECalStepCHair.BR)
-            {
-                VisUtils.DrawPlus(ImageC, new Point(Image.Width - 50, Image.Height - 50), 100, Color.Lime);
-                VisUtils.DrawText(ImageC, new Point(Image.Width - 50 + 5, Image.Height - 50 + 5), DrawCalStep.ToString(), 12, Color.Green);
-            }
-            if (DrawCalStep == ECalStepCHair.BL)
-            {
-                VisUtils.DrawPlus(ImageC, new Point(50, Image.Height - 50), 100, Color.Lime);
-                VisUtils.DrawText(ImageC, new Point(50 + 5, Image.Height - 50 + 5), DrawCalStep.ToString(), 12, Color.Green);
-            }
-            if (DrawCalStep == ECalStepCHair.C)
-            {
-                VisUtils.DrawPlus(ImageC, new Point(Image.Width / 2, Image.Height / 2), 100, Color.Lime);
-                VisUtils.DrawText(ImageC, new Point(Image.Width / 2 + 5, Image.Height / 2 + 5),DrawCalStep.ToString(), 12, Color.Green);
-            }
-            if (DrawCalStep == ECalStepCHair.T)
-            {
-                VisUtils.DrawPlus(ImageC, new Point(Image.Width / 2, 50), 100, Color.Green);
-                VisUtils.DrawText(ImageC, new Point(Image.Width / 2 + 5, 50 + 5), DrawCalStep.ToString(), 12, Color.Green);
-            }
-            if (DrawCalStep == ECalStepCHair.B)
-            {
-                VisUtils.DrawPlus(ImageC, new Point(Image.Width / 2, Image.Height - 50), 100, Color.Green);
-                VisUtils.DrawText(ImageC, new Point(Image.Width / 2 + 5, Image.Height - 50 + 5), DrawCalStep.ToString(), 12, Color.Green);
-            }
-            if (DrawCalStep == ECalStepCHair.L)
-            {
-                VisUtils.DrawPlus(ImageC, new Point(50, Image.Height / 2), 100, Color.Lime);
-                VisUtils.DrawText(ImageC, new Point(50 + 5, Image.Height / 2 + 5), DrawCalStep.ToString(), 12, Color.Green);
-            }
-            if (DrawCalStep == ECalStepCHair.R)
-            {
-                VisUtils.DrawPlus(ImageC, new Point(Image.Width - 50, Image.Height / 2), 100, Color.Lime);
-                VisUtils.DrawText(ImageC, new Point(Image.Width - 50 + 5, Image.Height / 2 + 5), DrawCalStep.ToString(), 12, Color.Green);
-            }
-            #endregion
-            for (int i = 0; i < TaskVision.Reticles.Count; i++)
-            {
-                #region Reticles
-                if (TaskVision.SelectedCam == ECamNo.Cam00)
-                {
-                    TaskVision.EReticleType Type = TaskVision.Reticles.Type[i];
-                    Color C = TaskVision.Reticles.Color[i];
-                    int X = TaskVision.Reticles.Rect[i].X;
-                    int Y = TaskVision.Reticles.Rect[i].Y;
-                    int W = TaskVision.Reticles.Rect[i].Width;
-                    int H = TaskVision.Reticles.Rect[i].Height;
-                    string T = TaskVision.Reticles.Text[i];
-                    double Scale = TaskVision.Reticles.Scale[i];
+        //public static void ImageDrawReticle(Emgu.CV.Image<Emgu.CV.Structure.Gray, byte> Image, Emgu.CV.Image<Emgu.CV.Structure.Bgr, byte> ImageC)
+        //{
+        //    #region Vision Cal
+        //    if (DrawCalStep == ECalStepCHair.TL)
+        //    {
+        //        VisUtils.DrawPlus(ImageC, new Point(50, 50), 100, Color.Green);
+        //        VisUtils.DrawText(ImageC, new Point(50 + 5, 50 + 5), DrawCalStep.ToString(), 12, Color.Green);
+        //    }
+        //    if (DrawCalStep == ECalStepCHair.TR)
+        //    {
+        //        VisUtils.DrawPlus(ImageC, new Point(Image.Width - 50, 50), 100, Color.Lime);
+        //        VisUtils.DrawText(ImageC, new Point(Image.Width - 50 + 5, 50 + 5), DrawCalStep.ToString(), 12, Color.Green);
+        //    }
+        //    if (DrawCalStep == ECalStepCHair.BR)
+        //    {
+        //        VisUtils.DrawPlus(ImageC, new Point(Image.Width - 50, Image.Height - 50), 100, Color.Lime);
+        //        VisUtils.DrawText(ImageC, new Point(Image.Width - 50 + 5, Image.Height - 50 + 5), DrawCalStep.ToString(), 12, Color.Green);
+        //    }
+        //    if (DrawCalStep == ECalStepCHair.BL)
+        //    {
+        //        VisUtils.DrawPlus(ImageC, new Point(50, Image.Height - 50), 100, Color.Lime);
+        //        VisUtils.DrawText(ImageC, new Point(50 + 5, Image.Height - 50 + 5), DrawCalStep.ToString(), 12, Color.Green);
+        //    }
+        //    if (DrawCalStep == ECalStepCHair.C)
+        //    {
+        //        VisUtils.DrawPlus(ImageC, new Point(Image.Width / 2, Image.Height / 2), 100, Color.Lime);
+        //        VisUtils.DrawText(ImageC, new Point(Image.Width / 2 + 5, Image.Height / 2 + 5),DrawCalStep.ToString(), 12, Color.Green);
+        //    }
+        //    if (DrawCalStep == ECalStepCHair.T)
+        //    {
+        //        VisUtils.DrawPlus(ImageC, new Point(Image.Width / 2, 50), 100, Color.Green);
+        //        VisUtils.DrawText(ImageC, new Point(Image.Width / 2 + 5, 50 + 5), DrawCalStep.ToString(), 12, Color.Green);
+        //    }
+        //    if (DrawCalStep == ECalStepCHair.B)
+        //    {
+        //        VisUtils.DrawPlus(ImageC, new Point(Image.Width / 2, Image.Height - 50), 100, Color.Green);
+        //        VisUtils.DrawText(ImageC, new Point(Image.Width / 2 + 5, Image.Height - 50 + 5), DrawCalStep.ToString(), 12, Color.Green);
+        //    }
+        //    if (DrawCalStep == ECalStepCHair.L)
+        //    {
+        //        VisUtils.DrawPlus(ImageC, new Point(50, Image.Height / 2), 100, Color.Lime);
+        //        VisUtils.DrawText(ImageC, new Point(50 + 5, Image.Height / 2 + 5), DrawCalStep.ToString(), 12, Color.Green);
+        //    }
+        //    if (DrawCalStep == ECalStepCHair.R)
+        //    {
+        //        VisUtils.DrawPlus(ImageC, new Point(Image.Width - 50, Image.Height / 2), 100, Color.Lime);
+        //        VisUtils.DrawText(ImageC, new Point(Image.Width - 50 + 5, Image.Height / 2 + 5), DrawCalStep.ToString(), 12, Color.Green);
+        //    }
+        //    #endregion
+        //    for (int i = 0; i < TaskVision.Reticles.Count; i++)
+        //    {
+        //        #region Reticles
+        //        if (TaskVision.SelectedCam == ECamNo.Cam00)
+        //        {
+        //            TaskVision.EReticleType Type = TaskVision.Reticles.Type[i];
+        //            Color C = TaskVision.Reticles.Color[i];
+        //            int X = TaskVision.Reticles.Rect[i].X;
+        //            int Y = TaskVision.Reticles.Rect[i].Y;
+        //            int W = TaskVision.Reticles.Rect[i].Width;
+        //            int H = TaskVision.Reticles.Rect[i].Height;
+        //            string T = TaskVision.Reticles.Text[i];
+        //            double Scale = TaskVision.Reticles.Scale[i];
 
-                    if (Type == TaskVision.EReticleType.CenterCrossHair)
-                    {
-                        VisUtils.DrawLine(ImageC, new Point(0, Image.Height / 2), new Point(Image.Width, Image.Height / 2), C);
-                        VisUtils.DrawLine(ImageC, new Point(Image.Width / 2, 0), new Point(Image.Width / 2, Image.Height), C);
-                    }
-                    if (Type == TaskVision.EReticleType.CenterCrossHair2)
-                    {
-                        int OX1 = Image.Width * 1 / 8;
-                        int OX3 = Image.Width * 3 / 8;
-                        int OX5 = Image.Width * 5 / 8;
-                        int OX7 = Image.Width * 7 / 8;
+        //            if (Type == TaskVision.EReticleType.CenterCrossHair)
+        //            {
+        //                VisUtils.DrawLine(ImageC, new Point(0, Image.Height / 2), new Point(Image.Width, Image.Height / 2), C);
+        //                VisUtils.DrawLine(ImageC, new Point(Image.Width / 2, 0), new Point(Image.Width / 2, Image.Height), C);
+        //            }
+        //            if (Type == TaskVision.EReticleType.CenterCrossHair2)
+        //            {
+        //                int OX1 = Image.Width * 1 / 8;
+        //                int OX3 = Image.Width * 3 / 8;
+        //                int OX5 = Image.Width * 5 / 8;
+        //                int OX7 = Image.Width * 7 / 8;
 
-                        int OY1 = Image.Height * 1 / 8;
-                        int OY3 = Image.Height * 3 / 8;
-                        int OY5 = Image.Height * 5 / 8;
-                        int OY7 = Image.Height * 7 / 8;
+        //                int OY1 = Image.Height * 1 / 8;
+        //                int OY3 = Image.Height * 3 / 8;
+        //                int OY5 = Image.Height * 5 / 8;
+        //                int OY7 = Image.Height * 7 / 8;
 
-                        VisUtils.DrawLine(ImageC, new Point(0, Image.Height / 2), new Point(OX1, Image.Height / 2), C);
-                        VisUtils.DrawLine(ImageC, new Point(OX3, Image.Height / 2), new Point(OX5, Image.Height / 2), C);
-                        VisUtils.DrawLine(ImageC, new Point(OX7, Image.Height / 2), new Point(Image.Width, Image.Height / 2), C);
+        //                VisUtils.DrawLine(ImageC, new Point(0, Image.Height / 2), new Point(OX1, Image.Height / 2), C);
+        //                VisUtils.DrawLine(ImageC, new Point(OX3, Image.Height / 2), new Point(OX5, Image.Height / 2), C);
+        //                VisUtils.DrawLine(ImageC, new Point(OX7, Image.Height / 2), new Point(Image.Width, Image.Height / 2), C);
 
-                        VisUtils.DrawLine(ImageC, new Point(Image.Width / 2, 0), new Point(Image.Width / 2, OY1), C);
-                        VisUtils.DrawLine(ImageC, new Point(Image.Width / 2, OY3), new Point(Image.Width / 2, OY5), C);
-                        VisUtils.DrawLine(ImageC, new Point(Image.Width / 2, OY7), new Point(Image.Width / 2, Image.Height), C);
-                    }
-                    if (Type == TaskVision.EReticleType.CenterReticle)
-                    {
-                        int cX = Image.Width / 2;
-                        int cY = Image.Height / 2;
+        //                VisUtils.DrawLine(ImageC, new Point(Image.Width / 2, 0), new Point(Image.Width / 2, OY1), C);
+        //                VisUtils.DrawLine(ImageC, new Point(Image.Width / 2, OY3), new Point(Image.Width / 2, OY5), C);
+        //                VisUtils.DrawLine(ImageC, new Point(Image.Width / 2, OY7), new Point(Image.Width / 2, Image.Height), C);
+        //            }
+        //            if (Type == TaskVision.EReticleType.CenterReticle)
+        //            {
+        //                int cX = Image.Width / 2;
+        //                int cY = Image.Height / 2;
 
-                        for (int x = 0; x < 30; x++)
-                        {
-                            if (Scale <= 0) Scale = 1;
-                            int ncXP = (int)(cX + ((x + 1) / TaskVision.DistPerPixelX[(int)TaskVision.SelectedCam] * Scale));
-                            int ncXN = (int)(cX - ((x + 1) / TaskVision.DistPerPixelX[(int)TaskVision.SelectedCam] * Scale));
-                            int ncYP = (int)(cY + ((x + 1) / TaskVision.DistPerPixelY[(int)TaskVision.SelectedCam] * Scale));
-                            int ncYN = (int)(cY - ((x + 1) / TaskVision.DistPerPixelY[(int)TaskVision.SelectedCam] * Scale));
-                            int nc = 3;
-                            if ((x + 1) == 5) nc = 6;
-                            if ((x + 1) == 10) nc = 10;
-                            if ((x + 1) == 15) nc = 6;
-                            if ((x + 1) == 20) nc = 10;
-                            if ((x + 1) == 25) nc = 6;
-                            if ((x + 1) == 30) nc = 10;
-                            VisUtils.DrawLine(ImageC, new Point(ncXP, cY - nc), new Point(ncXP, cY + nc), C);
-                            VisUtils.DrawLine(ImageC, new Point(ncXN, cY - nc), new Point(ncXN, cY + nc), C);
+        //                for (int x = 0; x < 30; x++)
+        //                {
+        //                    if (Scale <= 0) Scale = 1;
+        //                    int ncXP = (int)(cX + ((x + 1) / TaskVision.DistPerPixelX[(int)TaskVision.SelectedCam] * Scale));
+        //                    int ncXN = (int)(cX - ((x + 1) / TaskVision.DistPerPixelX[(int)TaskVision.SelectedCam] * Scale));
+        //                    int ncYP = (int)(cY + ((x + 1) / TaskVision.DistPerPixelY[(int)TaskVision.SelectedCam] * Scale));
+        //                    int ncYN = (int)(cY - ((x + 1) / TaskVision.DistPerPixelY[(int)TaskVision.SelectedCam] * Scale));
+        //                    int nc = 3;
+        //                    if ((x + 1) == 5) nc = 6;
+        //                    if ((x + 1) == 10) nc = 10;
+        //                    if ((x + 1) == 15) nc = 6;
+        //                    if ((x + 1) == 20) nc = 10;
+        //                    if ((x + 1) == 25) nc = 6;
+        //                    if ((x + 1) == 30) nc = 10;
+        //                    VisUtils.DrawLine(ImageC, new Point(ncXP, cY - nc), new Point(ncXP, cY + nc), C);
+        //                    VisUtils.DrawLine(ImageC, new Point(ncXN, cY - nc), new Point(ncXN, cY + nc), C);
 
-                            VisUtils.DrawLine(ImageC, new Point(cX - nc, ncYP), new Point(cX + nc, ncYP), C);
-                            VisUtils.DrawLine(ImageC, new Point(cX - nc, ncYN), new Point(cX + nc, ncYN), C);
+        //                    VisUtils.DrawLine(ImageC, new Point(cX - nc, ncYP), new Point(cX + nc, ncYP), C);
+        //                    VisUtils.DrawLine(ImageC, new Point(cX - nc, ncYN), new Point(cX + nc, ncYN), C);
 
-                        }
-                        VisUtils.DrawText(ImageC, new Point(10, Image.Height - 20), "1 : " + Scale.ToString("F2") + "mm", 10, C);
-                    }
-                    if (Type == TaskVision.EReticleType.Circle)
-                    {
-                        VisUtils.DrawCircle(ImageC, new Point(X, Y), W / 2, C);
-                    }
-                    if (Type == TaskVision.EReticleType.Cross)
-                    {
-                        VisUtils.DrawLine(ImageC, new Point(X, Y - H / 2), new Point(X, Y + H / 2), C);
-                        VisUtils.DrawLine(ImageC, new Point(X - W / 2, Y), new Point(X + W / 2, Y), C);
-                    }
-                    if (Type == TaskVision.EReticleType.Line)
-                    {
-                        VisUtils.DrawLine(ImageC, new Point(X, Y), new Point(W, H), C);
-                    }
-                    if (Type == TaskVision.EReticleType.Rectangle)
-                    {
-                        VisUtils.DrawRect(ImageC, new Rectangle(X - W / 2, Y - H / 2, W, H), C);
-                    }
-                    if (Type == TaskVision.EReticleType.Text)
-                    {
-                        VisUtils.DrawText(ImageC, new Point(X, Y), T, H, C);
-                    }
-                }
-                #endregion
-                Thread.Sleep(5);
-            }
-            if (GDefine.BottomCamType == GDefine.EBottomCamType.ATNC && FindCircle == 1)
-            {
-                #region
-                PointF Center = new PointF(0, 0);
-                float Radius = 0f;
-                int i_Circles = TaskVision.FindAperture(Image, ref Center, ref Radius);
+        //                }
+        //                VisUtils.DrawText(ImageC, new Point(10, Image.Height - 20), "1 : " + Scale.ToString("F2") + "mm", 10, C);
+        //            }
+        //            if (Type == TaskVision.EReticleType.Circle)
+        //            {
+        //                VisUtils.DrawCircle(ImageC, new Point(X, Y), W / 2, C);
+        //            }
+        //            if (Type == TaskVision.EReticleType.Cross)
+        //            {
+        //                VisUtils.DrawLine(ImageC, new Point(X, Y - H / 2), new Point(X, Y + H / 2), C);
+        //                VisUtils.DrawLine(ImageC, new Point(X - W / 2, Y), new Point(X + W / 2, Y), C);
+        //            }
+        //            if (Type == TaskVision.EReticleType.Line)
+        //            {
+        //                VisUtils.DrawLine(ImageC, new Point(X, Y), new Point(W, H), C);
+        //            }
+        //            if (Type == TaskVision.EReticleType.Rectangle)
+        //            {
+        //                VisUtils.DrawRect(ImageC, new Rectangle(X - W / 2, Y - H / 2, W, H), C);
+        //            }
+        //            if (Type == TaskVision.EReticleType.Text)
+        //            {
+        //                VisUtils.DrawText(ImageC, new Point(X, Y), T, H, C);
+        //            }
+        //        }
+        //        #endregion
+        //        Thread.Sleep(5);
+        //    }
+        //    if (GDefine.BottomCamType == GDefine.EBottomCamType.ATNC && FindCircle == 1)
+        //    {
+        //        #region
+        //        PointF Center = new PointF(0, 0);
+        //        float Radius = 0f;
+        //        int i_Circles = TaskVision.FindAperture(Image, ref Center, ref Radius);
 
-                if (i_Circles > 0)
-                {
-                    Color Color = Color.Lime;
+        //        if (i_Circles > 0)
+        //        {
+        //            Color Color = Color.Lime;
 
-                    double OfstX = (Center.X - (double)Image.Width / 2) * TaskVision.DistPerPixelX[0];
-                    double OfstY = (Center.Y - (double)Image.Height / 2) * TaskVision.DistPerPixelY[0];
-                    //OfstX = OfstX;
-                    OfstY = -OfstY;
+        //            double OfstX = (Center.X - (double)Image.Width / 2) * TaskVision.DistPerPixelX[0];
+        //            double OfstY = (Center.Y - (double)Image.Height / 2) * TaskVision.DistPerPixelY[0];
+        //            //OfstX = OfstX;
+        //            OfstY = -OfstY;
 
-                    if (Math.Abs(OfstX) > 0.05 || Math.Abs(OfstY) > 0.05) Color = Color.Red;
+        //            if (Math.Abs(OfstX) > 0.05 || Math.Abs(OfstY) > 0.05) Color = Color.Red;
 
-                    Emgu.CV.Structure.CircleF Circ = new Emgu.CV.Structure.CircleF(Center, Radius);
-                    ImageC.Draw(Circ, new Emgu.CV.Structure.Bgr(Color), 1);
+        //            Emgu.CV.Structure.CircleF Circ = new Emgu.CV.Structure.CircleF(Center, Radius);
+        //            ImageC.Draw(Circ, new Emgu.CV.Structure.Bgr(Color), 1);
 
-                    Emgu.CV.Structure.LineSegment2DF Line;
-                    Line = new Emgu.CV.Structure.LineSegment2DF(new PointF(Center.X, Center.Y - 10), new PointF(Center.X, Center.Y + 10));
-                    ImageC.Draw(Line, new Emgu.CV.Structure.Bgr(Color), 1);
-                    Line = new Emgu.CV.Structure.LineSegment2DF(new PointF(Center.X - 10, Center.Y), new PointF(Center.X + 10, Center.Y));
-                    ImageC.Draw(Line, new Emgu.CV.Structure.Bgr(Color), 1);
+        //            Emgu.CV.Structure.LineSegment2DF Line;
+        //            Line = new Emgu.CV.Structure.LineSegment2DF(new PointF(Center.X, Center.Y - 10), new PointF(Center.X, Center.Y + 10));
+        //            ImageC.Draw(Line, new Emgu.CV.Structure.Bgr(Color), 1);
+        //            Line = new Emgu.CV.Structure.LineSegment2DF(new PointF(Center.X - 10, Center.Y), new PointF(Center.X + 10, Center.Y));
+        //            ImageC.Draw(Line, new Emgu.CV.Structure.Bgr(Color), 1);
 
-                    String s = (Radius * (TaskVision.DistPerPixelX[(int)SelectedCam] + TaskVision.DistPerPixelY[(int)SelectedCam])).ToString("f3");
-                    //Emgu.CV.Structure.MCvFont Font = new Emgu.CV.Structure.MCvFont(Emgu.CV.CvEnum.FONT.CV_FONT_HERSHEY_COMPLEX, 0.5, 0.5);
-                    Point P = new Point((int)Center.X + 5, (int)Center.Y - 5);
-                    //ImageC.Draw(s, ref Font, P, new Emgu.CV.Structure.Bgr(Color));
-                    CvInvoke.PutText(ImageC, s, P, FontFace.HersheyComplex, 0.5, new MCvScalar(Color.B, Color.G, Color.R));
+        //            String s = (Radius * (TaskVision.DistPerPixelX[(int)SelectedCam] + TaskVision.DistPerPixelY[(int)SelectedCam])).ToString("f3");
+        //            //Emgu.CV.Structure.MCvFont Font = new Emgu.CV.Structure.MCvFont(Emgu.CV.CvEnum.FONT.CV_FONT_HERSHEY_COMPLEX, 0.5, 0.5);
+        //            Point P = new Point((int)Center.X + 5, (int)Center.Y - 5);
+        //            //ImageC.Draw(s, ref Font, P, new Emgu.CV.Structure.Bgr(Color));
+        //            CvInvoke.PutText(ImageC, s, P, FontFace.HersheyComplex, 0.5, new MCvScalar(Color.B, Color.G, Color.R));
 
-                    String s3 = (OfstX.ToString("F3") + "," + OfstY.ToString("F3"));
-                    Point P3 = new Point(5, Image.Height - 5);
-                    //ImageC.Draw(s3, ref Font, P3, new Emgu.CV.Structure.Bgr(Color));
-                    CvInvoke.PutText(ImageC, s3, P3, FontFace.HersheyComplex, 0.5, new MCvScalar(Color.B, Color.G, Color.R));
-                }
-                #endregion
-            }
-            if (GDefine.BottomCamType == GDefine.EBottomCamType.ATNC && FindCircle == 2)
-            {
-                #region
-                PointF[] Center = new PointF[1024];
-                float[] Radius = new float[1024];
-                int i_Circles = TaskVision.FindApertureNeedle(Image, ref Center, ref Radius);
+        //            String s3 = (OfstX.ToString("F3") + "," + OfstY.ToString("F3"));
+        //            Point P3 = new Point(5, Image.Height - 5);
+        //            //ImageC.Draw(s3, ref Font, P3, new Emgu.CV.Structure.Bgr(Color));
+        //            CvInvoke.PutText(ImageC, s3, P3, FontFace.HersheyComplex, 0.5, new MCvScalar(Color.B, Color.G, Color.R));
+        //        }
+        //        #endregion
+        //    }
+        //    if (GDefine.BottomCamType == GDefine.EBottomCamType.ATNC && FindCircle == 2)
+        //    {
+        //        #region
+        //        PointF[] Center = new PointF[1024];
+        //        float[] Radius = new float[1024];
+        //        int i_Circles = TaskVision.FindApertureNeedle(Image, ref Center, ref Radius);
 
-                Color Color1 = Color.Orange;
-                Color Color2 = Color.Lime;
+        //        Color Color1 = Color.Orange;
+        //        Color Color2 = Color.Lime;
 
-                if (i_Circles > 0)
-                {
-                    Emgu.CV.Structure.CircleF Circ = new Emgu.CV.Structure.CircleF(Center[0], Radius[0]);
-                    ImageC.Draw(Circ, new Emgu.CV.Structure.Bgr(Color1), 1);
+        //        if (i_Circles > 0)
+        //        {
+        //            Emgu.CV.Structure.CircleF Circ = new Emgu.CV.Structure.CircleF(Center[0], Radius[0]);
+        //            ImageC.Draw(Circ, new Emgu.CV.Structure.Bgr(Color1), 1);
 
-                    Emgu.CV.Structure.LineSegment2DF Line;
-                    Line = new Emgu.CV.Structure.LineSegment2DF(new PointF(Center[0].X, Center[0].Y - 10), new PointF(Center[0].X, Center[0].Y + 10));
-                    ImageC.Draw(Line, new Emgu.CV.Structure.Bgr(Color1), 1);
-                    Line = new Emgu.CV.Structure.LineSegment2DF(new PointF(Center[0].X - 10, Center[0].Y), new PointF(Center[0].X + 10, Center[0].Y));
-                    ImageC.Draw(Line, new Emgu.CV.Structure.Bgr(Color1), 1);
+        //            Emgu.CV.Structure.LineSegment2DF Line;
+        //            Line = new Emgu.CV.Structure.LineSegment2DF(new PointF(Center[0].X, Center[0].Y - 10), new PointF(Center[0].X, Center[0].Y + 10));
+        //            ImageC.Draw(Line, new Emgu.CV.Structure.Bgr(Color1), 1);
+        //            Line = new Emgu.CV.Structure.LineSegment2DF(new PointF(Center[0].X - 10, Center[0].Y), new PointF(Center[0].X + 10, Center[0].Y));
+        //            ImageC.Draw(Line, new Emgu.CV.Structure.Bgr(Color1), 1);
 
-                    String s = (Radius[0] * (TaskVision.DistPerPixelX[(int)SelectedCam] + TaskVision.DistPerPixelY[(int)SelectedCam])).ToString("f3");
-                    //Emgu.CV.Structure.MCvFont Font = new Emgu.CV.Structure.MCvFont(Emgu.CV.CvEnum.FONT.CV_FONT_HERSHEY_COMPLEX, 0.5, 0.5);
-                    Point P = new Point((int)Center[0].X + 5, (int)Center[0].Y - 5);
-                    //ImageC.Draw(s, ref Font, P, new Emgu.CV.Structure.Bgr(Color1));
-                    CvInvoke.PutText(ImageC, s, P, FontFace.HersheyComplex, 0.5, new MCvScalar(Color1.B, Color1.G, Color1.R));
-                }
+        //            String s = (Radius[0] * (TaskVision.DistPerPixelX[(int)SelectedCam] + TaskVision.DistPerPixelY[(int)SelectedCam])).ToString("f3");
+        //            //Emgu.CV.Structure.MCvFont Font = new Emgu.CV.Structure.MCvFont(Emgu.CV.CvEnum.FONT.CV_FONT_HERSHEY_COMPLEX, 0.5, 0.5);
+        //            Point P = new Point((int)Center[0].X + 5, (int)Center[0].Y - 5);
+        //            //ImageC.Draw(s, ref Font, P, new Emgu.CV.Structure.Bgr(Color1));
+        //            CvInvoke.PutText(ImageC, s, P, FontFace.HersheyComplex, 0.5, new MCvScalar(Color1.B, Color1.G, Color1.R));
+        //        }
 
-                if (i_Circles > 1)
-                {
-                    double OfstX = (Center[0].X - Center[1].X) * TaskVision.DistPerPixelX[2];
-                    double OfstY = (Center[0].Y - Center[1].Y) * TaskVision.DistPerPixelY[2];
-                    //OfstX = OfstX;
-                    OfstY = -OfstY;
+        //        if (i_Circles > 1)
+        //        {
+        //            double OfstX = (Center[0].X - Center[1].X) * TaskVision.DistPerPixelX[2];
+        //            double OfstY = (Center[0].Y - Center[1].Y) * TaskVision.DistPerPixelY[2];
+        //            //OfstX = OfstX;
+        //            OfstY = -OfstY;
 
-                    if (Math.Abs(OfstX) > 0.05 || Math.Abs(OfstY) > 0.05) Color2 = Color.Red;
+        //            if (Math.Abs(OfstX) > 0.05 || Math.Abs(OfstY) > 0.05) Color2 = Color.Red;
 
-                    Emgu.CV.Structure.CircleF Circ2 = new Emgu.CV.Structure.CircleF(Center[1], Radius[1]);
-                    ImageC.Draw(Circ2, new Emgu.CV.Structure.Bgr(Color2), 1);
+        //            Emgu.CV.Structure.CircleF Circ2 = new Emgu.CV.Structure.CircleF(Center[1], Radius[1]);
+        //            ImageC.Draw(Circ2, new Emgu.CV.Structure.Bgr(Color2), 1);
 
-                    Emgu.CV.Structure.LineSegment2DF Line2;
-                    Line2 = new Emgu.CV.Structure.LineSegment2DF(new PointF(Center[1].X, Center[1].Y - 10), new PointF(Center[1].X, Center[1].Y + 10));
-                    ImageC.Draw(Line2, new Emgu.CV.Structure.Bgr(Color2), 1);
-                    Line2 = new Emgu.CV.Structure.LineSegment2DF(new PointF(Center[1].X - 10, Center[1].Y), new PointF(Center[1].X + 10, Center[1].Y));
-                    ImageC.Draw(Line2, new Emgu.CV.Structure.Bgr(Color2), 1);
+        //            Emgu.CV.Structure.LineSegment2DF Line2;
+        //            Line2 = new Emgu.CV.Structure.LineSegment2DF(new PointF(Center[1].X, Center[1].Y - 10), new PointF(Center[1].X, Center[1].Y + 10));
+        //            ImageC.Draw(Line2, new Emgu.CV.Structure.Bgr(Color2), 1);
+        //            Line2 = new Emgu.CV.Structure.LineSegment2DF(new PointF(Center[1].X - 10, Center[1].Y), new PointF(Center[1].X + 10, Center[1].Y));
+        //            ImageC.Draw(Line2, new Emgu.CV.Structure.Bgr(Color2), 1);
 
-                    String s2 = (Radius[1] * (TaskVision.DistPerPixelX[(int)SelectedCam] + TaskVision.DistPerPixelY[(int)SelectedCam])).ToString("f3");
-                    //Emgu.CV.Structure.MCvFont Font = new Emgu.CV.Structure.MCvFont(Emgu.CV.CvEnum.FONT.CV_FONT_HERSHEY_COMPLEX, 0.5, 0.5);
-                    Point P2 = new Point((int)Center[1].X + 5, (int)Center[1].Y + 15);
-                    //ImageC.Draw(s2, ref Font, P2, new Emgu.CV.Structure.Bgr(Color2));
-                    CvInvoke.PutText(ImageC, s2, P2, FontFace.HersheyComplex, 0.5, new MCvScalar(Color2.B, Color2.G, Color2.R));
+        //            String s2 = (Radius[1] * (TaskVision.DistPerPixelX[(int)SelectedCam] + TaskVision.DistPerPixelY[(int)SelectedCam])).ToString("f3");
+        //            //Emgu.CV.Structure.MCvFont Font = new Emgu.CV.Structure.MCvFont(Emgu.CV.CvEnum.FONT.CV_FONT_HERSHEY_COMPLEX, 0.5, 0.5);
+        //            Point P2 = new Point((int)Center[1].X + 5, (int)Center[1].Y + 15);
+        //            //ImageC.Draw(s2, ref Font, P2, new Emgu.CV.Structure.Bgr(Color2));
+        //            CvInvoke.PutText(ImageC, s2, P2, FontFace.HersheyComplex, 0.5, new MCvScalar(Color2.B, Color2.G, Color2.R));
 
-                    String s3 = (OfstX.ToString("F3") + "," + OfstY.ToString("F3"));
-                    Point P3 = new Point(5, Image.Height - 5);
-                    //ImageC.Draw(s3, ref Font, P3, new Emgu.CV.Structure.Bgr(Color2));
-                    CvInvoke.PutText(ImageC, s3, P3, FontFace.HersheyComplex, 0.5, new MCvScalar(Color2.B, Color2.G, Color2.R));
-                }
-                #endregion
-            }
-            if (TextString.Length > 0)
-            {
-                //Emgu.CV.Structure.MCvMCvFont Font = new Emgu.CV.Structure.MCvFont(Emgu.CV.CvEnum.FONT.CV_FONT_HERSHEY_COMPLEX, 0.5, 0.5);
-                //Point P = new Point((int)5, (int)15);
-                //ImageC.Draw(TextString, ref Font, P, new Emgu.CV.Structure.Bgr(TaskVision.TextColor));
-                CvInvoke.PutText(ImageC, TextString, new Point((int)5, (int)15), FontFace.HersheyComplex, 1, new MCvScalar(TextColor.B, TextColor.G, TextColor.R));
-            }
+        //            String s3 = (OfstX.ToString("F3") + "," + OfstY.ToString("F3"));
+        //            Point P3 = new Point(5, Image.Height - 5);
+        //            //ImageC.Draw(s3, ref Font, P3, new Emgu.CV.Structure.Bgr(Color2));
+        //            CvInvoke.PutText(ImageC, s3, P3, FontFace.HersheyComplex, 0.5, new MCvScalar(Color2.B, Color2.G, Color2.R));
+        //        }
+        //        #endregion
+        //    }
+        //    if (TextString.Length > 0)
+        //    {
+        //        //Emgu.CV.Structure.MCvMCvFont Font = new Emgu.CV.Structure.MCvFont(Emgu.CV.CvEnum.FONT.CV_FONT_HERSHEY_COMPLEX, 0.5, 0.5);
+        //        //Point P = new Point((int)5, (int)15);
+        //        //ImageC.Draw(TextString, ref Font, P, new Emgu.CV.Structure.Bgr(TaskVision.TextColor));
+        //        CvInvoke.PutText(ImageC, TextString, new Point((int)5, (int)15), FontFace.HersheyComplex, 1, new MCvScalar(TextColor.B, TextColor.G, TextColor.R));
+        //    }
 
-            if (TaskVision.FoundPattern.Drawing)
-            {
-                if (GDefine.GetTickCount() >= TaskVision.FoundPattern.t_DrawEnd) TaskVision.FoundPattern.Drawing = false;
+        //    if (TaskVision.FoundPattern.Drawing)
+        //    {
+        //        if (GDefine.GetTickCount() >= TaskVision.FoundPattern.t_DrawEnd) TaskVision.FoundPattern.Drawing = false;
 
-                PointF Point = new PointF((float)TaskVision.FoundPattern.Rect.X + (float)TaskVision.FoundPattern.Rect.Width / 2, (float)TaskVision.FoundPattern.Rect.Y + (float)TaskVision.FoundPattern.Rect.Height / 2);
-                SizeF Size = new SizeF((float)TaskVision.FoundPattern.Rect.Width, (float)TaskVision.FoundPattern.Rect.Height);
-                //Emgu.CV.Structure.MCvBox2D Box = new Emgu.CV.Structure.MCvBox2D(Point, Size, (float)-TaskVision.FoundPattern.Angle);
-                RotatedRect Box = new RotatedRect(Point, Size, (float)-TaskVision.FoundPattern.Angle);
+        //        PointF Point = new PointF((float)TaskVision.FoundPattern.Rect.X + (float)TaskVision.FoundPattern.Rect.Width / 2, (float)TaskVision.FoundPattern.Rect.Y + (float)TaskVision.FoundPattern.Rect.Height / 2);
+        //        SizeF Size = new SizeF((float)TaskVision.FoundPattern.Rect.Width, (float)TaskVision.FoundPattern.Rect.Height);
+        //        //Emgu.CV.Structure.MCvBox2D Box = new Emgu.CV.Structure.MCvBox2D(Point, Size, (float)-TaskVision.FoundPattern.Angle);
+        //        RotatedRect Box = new RotatedRect(Point, Size, (float)-TaskVision.FoundPattern.Angle);
 
 
-                if (TaskVision.FoundPattern.OK)
-                    ImageC.Draw(Box, new Emgu.CV.Structure.Bgr(Color.Lime), 2);
-                else
-                    ImageC.Draw(Box, new Emgu.CV.Structure.Bgr(Color.Red), 2);
-            }
+        //        if (TaskVision.FoundPattern.OK)
+        //            ImageC.Draw(Box, new Emgu.CV.Structure.Bgr(Color.Lime), 2);
+        //        else
+        //            ImageC.Draw(Box, new Emgu.CV.Structure.Bgr(Color.Red), 2);
+        //    }
 
-            Thread.Sleep(5);
-        }
+        //    Thread.Sleep(5);
+        //}
 
         private static LEDStudio.Net.LCSerial LCSerial = new LEDStudio.Net.LCSerial();
         private static LEDStudio.Net.LCSerialLegacy LCSerLegacy = new LEDStudio.Net.LCSerialLegacy();
@@ -2767,7 +2767,7 @@ namespace NDispWin
                                 #region Step 1 - TL
                                 {
                                     frm_DispCore_JogGantryVision frm = new frm_DispCore_JogGantryVision();
-                                    frm.Inst = "Step 1/4: Jog Crosshair " + DrawCalStep.ToString() + " to a Ref Point";
+                                    frm.Inst = "Step 1/4: Jog Crosshair TL to a Ref Point";
 
                                     reticles.Reticle[0] = new TReticle2(TReticle2.EType.Cross, new PointF(50, 50), new SizeF(100, 100), Color.Green);
                                     reticles.Reticle[1] = new TReticle2(TReticle2.EType.Text, new PointF(50, 50), new SizeF(25, 25), Color.Green, "TL");
@@ -2783,7 +2783,7 @@ namespace NDispWin
                                 #region Step 2 - TR
                                 {
                                     frm_DispCore_JogGantryVision frm = new frm_DispCore_JogGantryVision();
-                                    frm.Inst = "Step 2/4: Jog Crosshair " + DrawCalStep.ToString() + " to same Ref Point";
+                                    frm.Inst = "Step 2/4: Jog Crosshair TR to same Ref Point";
 
                                     reticles.Reticle[0] = new TReticle2(TReticle2.EType.Cross, new PointF(ImgWN[(int)CamID] - 50, 50), new SizeF(100, 100), Color.Green);
                                     reticles.Reticle[1] = new TReticle2(TReticle2.EType.Text, new PointF(ImgWN[(int)CamID] - 50, 50), new SizeF(25, 25), Color.Green, "TR");
@@ -2799,7 +2799,7 @@ namespace NDispWin
                                 #region Step 3 - BR
                                 {
                                     frm_DispCore_JogGantryVision frm = new frm_DispCore_JogGantryVision();
-                                    frm.Inst = "Step 3/4: Jog Crosshair " + DrawCalStep.ToString() + " to same Ref Point";
+                                    frm.Inst = "Step 3/4: Jog Crosshair BR to same Ref Point";
 
                                     reticles.Reticle[0] = new TReticle2(TReticle2.EType.Cross, new PointF(ImgWN[(int)CamID] - 50, ImgHN[(int)CamID] - 50), new SizeF(100, 100), Color.Green);
                                     reticles.Reticle[1] = new TReticle2(TReticle2.EType.Text, new PointF(ImgWN[(int)CamID] - 50, ImgHN[(int)CamID] - 50), new SizeF(25, 25), Color.Green, "BR");
@@ -2815,7 +2815,7 @@ namespace NDispWin
                                 #region Step 4- BL
                                 {
                                     frm_DispCore_JogGantryVision frm = new frm_DispCore_JogGantryVision();
-                                    frm.Inst = "Step 4/4: Jog Crosshair " + DrawCalStep.ToString() + " to same Ref Point";
+                                    frm.Inst = "Step 4/4: Jog Crosshair BL to same Ref Point";
 
                                     reticles.Reticle[0] = new TReticle2(TReticle2.EType.Cross, new PointF(50, ImgHN[(int)CamID] - 50), new SizeF(100, 100), Color.Green);
                                     reticles.Reticle[1] = new TReticle2(TReticle2.EType.Text, new PointF(50, ImgHN[(int)CamID] - 50), new SizeF(25, 25), Color.Green, "BL");
@@ -2847,7 +2847,7 @@ namespace NDispWin
                                 #region Step 1 - L
                                 {
                                     frm_DispCore_JogGantryVision frm = new frm_DispCore_JogGantryVision();
-                                    frm.Inst = "Step 1/2: Jog Crosshair " + DrawCalStep.ToString() + " to a Ref Point";
+                                    frm.Inst = "Step 1/2: Jog Crosshair L to a Ref Point";
 
                                     reticles.Reticle[0] = new TReticle2(TReticle2.EType.Cross, new PointF(50, ImgHN[(int)CamID] / 2), new SizeF(100, 100), Color.Green);
                                     reticles.Reticle[1] = new TReticle2(TReticle2.EType.Text, new PointF(50, ImgHN[(int)CamID] / 2), new SizeF(25, 25), Color.Green, "CL");
@@ -2863,7 +2863,7 @@ namespace NDispWin
                                 #region Step 2 - R
                                 {
                                     frm_DispCore_JogGantryVision frm = new frm_DispCore_JogGantryVision();
-                                    frm.Inst = "Step 2/2: Jog Crosshair " + DrawCalStep.ToString() + " to same Ref Point";
+                                    frm.Inst = "Step 2/2: Jog Crosshair R to same Ref Point";
                                     reticles.Reticle[0] = new TReticle2(TReticle2.EType.Cross, new PointF(ImgWN[(int)CamID] - 50, ImgHN[(int)CamID] / 2), new SizeF(100, 100), Color.Green);
                                     reticles.Reticle[1] = new TReticle2(TReticle2.EType.Text, new PointF(ImgWN[(int)CamID] - 50, ImgHN[(int)CamID] / 2), new SizeF(25, 25), Color.Green, "CR");
                                     frm.Reticles = new TReticles(reticles);
@@ -2901,7 +2901,7 @@ namespace NDispWin
                                 #region Step 1 - T
                                 {
                                     frm_DispCore_JogGantryVision frm = new frm_DispCore_JogGantryVision();
-                                    frm.Inst = "Step 1/2: Jog Crosshair " + DrawCalStep.ToString() + " to a Ref Point";
+                                    frm.Inst = "Step 1/2: Jog Crosshair T to a Ref Point";
                                     reticles.Reticle[0] = new TReticle2(TReticle2.EType.Cross, new PointF(ImgWN[(int)CamID] / 2, 50), new SizeF(100, 100), Color.Green);
                                     reticles.Reticle[1] = new TReticle2(TReticle2.EType.Text, new PointF(ImgWN[(int)CamID] / 2, 50), new SizeF(25, 25), Color.Green, "CT");
                                     frm.Reticles = new TReticles(reticles);
@@ -2916,7 +2916,7 @@ namespace NDispWin
                                 #region Step 2 - B
                                 {
                                     frm_DispCore_JogGantryVision frm = new frm_DispCore_JogGantryVision();
-                                    frm.Inst = "Step 2/2: Jog Crosshair " + DrawCalStep.ToString() + " to same Ref Point";
+                                    frm.Inst = "Step 2/2: Jog Crosshair Bottom to same Ref Point";
                                     reticles.Reticle[0] = new TReticle2(TReticle2.EType.Cross, new PointF(ImgWN[(int)CamID] / 2, ImgHN[(int)CamID] - 50), new SizeF(100, 100), Color.Green);
                                     reticles.Reticle[1] = new TReticle2(TReticle2.EType.Text, new PointF(ImgWN[(int)CamID] / 2, ImgHN[(int)CamID] - 50), new SizeF(25, 25), Color.Green, "CB");
                                     frm.Reticles = new TReticles(reticles);
@@ -2950,7 +2950,6 @@ namespace NDispWin
                                 #endregion
                             }
 
-                            DrawCalStep = ECalStepCHair.None;
 
                             Msg MsgBox = new Msg();
                             EMsgRes MsgRes = MsgBox.Show("Cal Vision " + CalMode[(int)CamID].ToString() + " Completed. Cal Mode.@" +

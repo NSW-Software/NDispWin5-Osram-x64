@@ -549,7 +549,7 @@ namespace NDispWin
         {
             int t = 0;
 
-            isFilling = false;
+            //isFilling = false;
 
             bool b_Head1Run = (HeadNo == 1);
             bool b_Head2Run = (HeadNo == 2);
@@ -606,13 +606,14 @@ namespace NDispWin
                             {
                                 if (!TaskDisp.CtrlWaitReady(b_Head1Run, b_Head2Run)) goto _Error;
                                 if (!isFilling) isFilling = TaskDisp.IsFilling();
-                                if (isFilling) break;//5.6.11 abort the sample
+                                //if (isFilling) break;//5.6.11 abort the sample
                                 if (!TaskDisp.TrigOn(b_Head1Run, b_Head2Run)) goto _Error;
                                 if (!TaskDisp.CtrlWaitResponse(b_Head1Run, b_Head2Run)) goto _Error;
+                                if (!isFilling) isFilling = TaskDisp.IsFilling();
                                 if (!TaskDisp.TrigOff(b_Head1Run, b_Head2Run)) goto _Error;
-                                Application.DoEvents();
                                 if (!TaskDisp.CtrlWaitComplete(b_Head1Run, b_Head2Run)) goto _Error;
                                 if (!isFilling) isFilling = TaskDisp.IsFilling();
+                                //isFilling = TaskDisp.IsFilling();
                                 //TaskDisp.Thread_CheckIsFilling_Run(b_Head1Run, b_Head2Run);
                                 //Thread.Sleep(500);
                                 //TaskDisp.Thread_CheckIsFilling_Run(b_Head1Run, b_Head2Run);
@@ -652,7 +653,7 @@ namespace NDispWin
             }
             #endregion
 
-            if (!isFilling) isFilling = TaskDisp.IsFilling();
+            //if (!isFilling) isFilling = TaskDisp.IsFilling();
 
             if (MeasPosMethod == EMeasPosMethod.PCD)
             {
@@ -1650,6 +1651,7 @@ namespace NDispWin
             i_IgnoreCount = 0;
 
             double d_mg = 0;
+            b_IsFilling = false;
 
             #region Fluid Pressure On
             TaskDisp.FPressOn(new bool[2] { HeadNo == 1, HeadNo == 2 });

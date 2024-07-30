@@ -3245,6 +3245,7 @@ namespace NDispWin
             frm.Inst = "Jog Camera to Calibrated Needle1 Position";
             frm.ShowVision = true;
             frm.ForceGantryMode = EForceGantryMode.XYZ;
+
             DialogResult dr = frm.ShowDialog();
             frm.ForceGantryMode = EForceGantryMode.None;
 
@@ -8204,9 +8205,8 @@ namespace NDispWin
             mtx.WaitOne();
             try
             {
-
                 string EMsg = "CheckIsFilling";
-                if (b_HeadAIsFilling || b_HeadBIsFilling) return true;
+                //if (b_HeadAIsFilling || b_HeadBIsFilling) return true;
 
                 if (DispA && HeadIsValid(1))
                 {
