@@ -48,7 +48,7 @@
             this.lbl_Inst.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbl_Inst.Location = new System.Drawing.Point(0, 0);
             this.lbl_Inst.Name = "lbl_Inst";
-            this.lbl_Inst.Size = new System.Drawing.Size(299, 40);
+            this.lbl_Inst.Size = new System.Drawing.Size(411, 40);
             this.lbl_Inst.TabIndex = 1;
             this.lbl_Inst.Text = "label1";
             // 
@@ -59,7 +59,7 @@
             this.pnl_Inst.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnl_Inst.Location = new System.Drawing.Point(0, 0);
             this.pnl_Inst.Name = "pnl_Inst";
-            this.pnl_Inst.Size = new System.Drawing.Size(570, 40);
+            this.pnl_Inst.Size = new System.Drawing.Size(682, 40);
             this.pnl_Inst.TabIndex = 2;
             // 
             // panel2
@@ -68,7 +68,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(299, 40);
+            this.panel2.Size = new System.Drawing.Size(411, 40);
             this.panel2.TabIndex = 4;
             // 
             // panel1
@@ -77,7 +77,7 @@
             this.panel1.Controls.Add(this.btn_OK);
             this.panel1.Controls.Add(this.btn_Cancel);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel1.Location = new System.Drawing.Point(299, 0);
+            this.panel1.Location = new System.Drawing.Point(411, 0);
             this.panel1.Name = "panel1";
             this.panel1.Padding = new System.Windows.Forms.Padding(5);
             this.panel1.Size = new System.Drawing.Size(271, 40);
@@ -121,14 +121,14 @@
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.Location = new System.Drawing.Point(0, 40);
             this.splitContainer1.Name = "splitContainer1";
-            this.splitContainer1.Size = new System.Drawing.Size(570, 425);
-            this.splitContainer1.SplitterDistance = 349;
+            this.splitContainer1.Size = new System.Drawing.Size(682, 420);
+            this.splitContainer1.SplitterDistance = 417;
             this.splitContainer1.TabIndex = 3;
             // 
             // frm_DispCore_JogGantryVision
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(570, 465);
+            this.ClientSize = new System.Drawing.Size(682, 460);
             this.ControlBox = false;
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.pnl_Inst);

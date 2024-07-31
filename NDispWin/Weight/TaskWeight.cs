@@ -1652,6 +1652,8 @@ namespace NDispWin
 
             double d_mg = 0;
             b_IsFilling = false;
+            TaskDisp.b_HeadAIsFilling = false;
+            TaskDisp.b_HeadBIsFilling = false;
 
             #region Fluid Pressure On
             TaskDisp.FPressOn(new bool[2] { HeadNo == 1, HeadNo == 2 });

@@ -267,14 +267,14 @@
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(128, 26);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.openToolStripMenuItem.Text = "Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(128, 26);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
@@ -298,28 +298,28 @@
             // tsmi_SetupReticle
             // 
             this.tsmi_SetupReticle.Name = "tsmi_SetupReticle";
-            this.tsmi_SetupReticle.Size = new System.Drawing.Size(213, 26);
+            this.tsmi_SetupReticle.Size = new System.Drawing.Size(224, 26);
             this.tsmi_SetupReticle.Text = "Setup Reticle";
             this.tsmi_SetupReticle.Click += new System.EventHandler(this.setupReticleToolStripMenuItem_Click);
             // 
             // tsmi_ShowStatusBar
             // 
             this.tsmi_ShowStatusBar.Name = "tsmi_ShowStatusBar";
-            this.tsmi_ShowStatusBar.Size = new System.Drawing.Size(213, 26);
+            this.tsmi_ShowStatusBar.Size = new System.Drawing.Size(224, 26);
             this.tsmi_ShowStatusBar.Text = "Status Bar";
             this.tsmi_ShowStatusBar.Click += new System.EventHandler(this.statusBarToolStripMenuItem_Click);
             // 
             // showCamReticlesToolStripMenuItem
             // 
             this.showCamReticlesToolStripMenuItem.Name = "showCamReticlesToolStripMenuItem";
-            this.showCamReticlesToolStripMenuItem.Size = new System.Drawing.Size(213, 26);
+            this.showCamReticlesToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.showCamReticlesToolStripMenuItem.Text = "Show CamReticles";
             this.showCamReticlesToolStripMenuItem.Click += new System.EventHandler(this.showCamReticlesToolStripMenuItem_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(210, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(221, 6);
             // 
             // triggerModeToolStripMenuItem
             // 
@@ -327,7 +327,7 @@
             this.tsmiTriggerModeOff,
             this.tsmiTriggerModeOn});
             this.triggerModeToolStripMenuItem.Name = "triggerModeToolStripMenuItem";
-            this.triggerModeToolStripMenuItem.Size = new System.Drawing.Size(213, 26);
+            this.triggerModeToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.triggerModeToolStripMenuItem.Text = "Trigger Mode";
             // 
             // tsmiTriggerModeOff
@@ -350,7 +350,7 @@
             this.tsmiTriggerSourceSoftware,
             this.tsmiTriggerSourceHardware});
             this.tsmiTriggerSource.Name = "tsmiTriggerSource";
-            this.tsmiTriggerSource.Size = new System.Drawing.Size(213, 26);
+            this.tsmiTriggerSource.Size = new System.Drawing.Size(224, 26);
             this.tsmiTriggerSource.Text = "Trigger Source";
             // 
             // tsmiTriggerSourceSoftware
@@ -370,7 +370,7 @@
             // tsmiTrigger
             // 
             this.tsmiTrigger.Name = "tsmiTrigger";
-            this.tsmiTrigger.Size = new System.Drawing.Size(213, 26);
+            this.tsmiTrigger.Size = new System.Drawing.Size(224, 26);
             this.tsmiTrigger.Text = "Trigger";
             this.tsmiTrigger.Click += new System.EventHandler(this.tsmiTrigger_Click);
             // 

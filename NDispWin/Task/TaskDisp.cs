@@ -8206,7 +8206,7 @@ namespace NDispWin
             try
             {
                 string EMsg = "CheckIsFilling";
-                //if (b_HeadAIsFilling || b_HeadBIsFilling) return true;
+                if (b_HeadAIsFilling || b_HeadBIsFilling) return true;
 
                 if (DispA && HeadIsValid(1))
                 {

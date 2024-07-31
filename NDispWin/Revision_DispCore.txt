@@ -6,9 +6,14 @@ In Prog, after DO_REF not found, camera cannot live
 Todo
 - Integrate LEDStudio
 
-Ver 6.0.7.12 - KN - 20240728 - Released to OsWuxi - Gitted
+
+Ver 6.0.7.15 - KN - 20240731 - Released to OsWuxi/OsPen - Gitted
+[BugFix] frm_DispCore_JogGantryVision, update show reticle.
+[Improve] AutoIdle execution added door check and lock.
+[Improve] TaskWeight.WeightMeas.Execute clear TaskDisp.b_HeadAIsFilling flag, prevent Meas in Fill state that ignore result
+Ver 6.0.7.12 - KN - 20240730 - Released to OsPen
 [BugFix] Corrected CheckIsFilling(bool DispA, bool DispB) always returning true;
-TaskWeight. Weight_DownWeightUp and WeightMeas_Execute refactor isFilling flag
+  TaskWeight. Weight_DownWeightUp and WeightMeas_Execute refactor isFilling flag
 [BugFix] frm_DispCore_JogGantyVision on load add default SelectCamera(0).
 [HseKeep] TaskVision removed DrawStep, no longer used.
 Ver 6.0.7.3 - KN - 20240728 - Released to OsWuxi - Gitted

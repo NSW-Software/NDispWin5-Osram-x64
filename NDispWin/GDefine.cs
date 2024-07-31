@@ -664,9 +664,6 @@ namespace NDispWin
 
         public static bool DoorCheck_Disp(bool Prompt)
         {
-        	
-        	
-       
             if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)
                 return TaskConv.DoorCheck(Prompt);
             else

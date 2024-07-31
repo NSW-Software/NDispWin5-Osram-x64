@@ -89,6 +89,7 @@ namespace NDispWin
         {
             tmr_Idle.Enabled = false;
             tmr_Sec.Enabled = false;
+            DefineSafety.DoorLock = false;
             this.Enable(true);
         }
 
@@ -121,13 +122,20 @@ namespace NDispWin
         {
             if (TaskDisp.Idle_PurgeInterval == 0) return;
 
-            if (!GDefine.SwDoor)
+            //if (!GDefine.SwDoor)
+            //{
+            //    btn_Stop_Click(sender, e);
+            //    TaskGantry.CheckDoorSw();
+            //    return;
+            //}
+            if (!TaskGantry.CheckDoorSw())
             {
                 btn_Stop_Click(sender, e);
-                TaskGantry.CheckDoorSw();
                 return;
             }
 
+            DefineSafety.DoorLock = true;
+ 
             this.Enable(false);
             btn_Stop.Enable(true);
 

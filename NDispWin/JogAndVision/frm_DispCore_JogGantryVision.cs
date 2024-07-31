@@ -42,6 +42,10 @@ namespace NDispWin
             TaskVisionfrmMVCGenTLCamera.Parent = splitContainer1.Panel1;
             TaskVisionfrmMVCGenTLCamera.Dock = DockStyle.Fill;
             TaskVisionfrmMVCGenTLCamera.Show();
+
+            TaskVisionfrmMVCGenTLCamera.CamReticles = Reticle.Reticles;
+            TaskVisionfrmMVCGenTLCamera.ShowCamReticles = true;
+
         }
 
         private void frmJogGantryVision_Load(object sender, EventArgs e)
@@ -55,8 +59,8 @@ namespace NDispWin
             splitContainer1.BringToFront();
             splitContainer1.SplitterDistance = this.ClientSize.Width - frmJogControl.Width;
 
-            TaskVisionfrmMVCGenTLCamera.Reticles = new TReticles(Reticles);
-            TaskVisionfrmMVCGenTLCamera.ShowReticles = ShowReticles;
+            //TaskVisionfrmMVCGenTLCamera.Reticles = new TReticles(Reticles);
+            //TaskVisionfrmMVCGenTLCamera.ShowReticles = ShowReticles;
 
             lbl_Inst.Text = Inst;
 
