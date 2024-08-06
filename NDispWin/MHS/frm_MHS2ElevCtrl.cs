@@ -41,6 +41,9 @@ namespace NDispWin
             lbl_LeftElevSt.BackColor = TaskElev.ElevStatusColor[(int)TaskElev.Left.Status];
             lbl_RightElevSt.Text = TaskElev.Right.Status.ToString() + (TaskElev.Right.TransferBusy ? " (B)" : "");
             lbl_RightElevSt.BackColor = TaskElev.ElevStatusColor[(int)TaskElev.Right.Status];
+
+            lblLeftState.Text = (TaskElev.Left.ReadyToSend ? "RTS " : "") + "/" + (TaskElev.Left.TransferBusy ? "TB " : "");
+            lblRightState.Text = (TaskElev.Right.ReadyToReceive ? "RTR " : "") + "/" + (TaskElev.Right.TransferBusy ? "TB " : "");
         }
 
         private void EnableParent(bool Enable)
@@ -367,6 +370,11 @@ namespace NDispWin
             });
             EnableParent(true);
             UpdateDisplay();
+        }
+
+        private void pnl_LeftElev_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

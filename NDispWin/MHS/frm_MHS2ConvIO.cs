@@ -101,13 +101,9 @@ namespace NDispWin
 
                 GDefineMHS.RefreshInput(lblLeftSmema_BdReady, TaskConv.In.Smema_DI_BdReady);
                 GDefineMHS.RefreshOutput(btnLeftSmema_McReady, TaskConv.In.Smema_DO_McReady);
-                GDefineMHS.RefreshInput(lblSmema2_McReady, TaskConv.In.Smema2_DI_McReady_True);
-                GDefineMHS.RefreshOutput(btnSmema2_BdReady, TaskConv.In.Smema2_DO_BdReady_True);
 
                 GDefineMHS.RefreshInput(lblRightSmema_McReady, TaskConv.Out.Smema_DI_McReady);
                 GDefineMHS.RefreshOutput(btnRightSmema_BdReady, TaskConv.Out.Smema_DO_BdReady);
-                GDefineMHS.RefreshInput(lblSmema2_BdReady, TaskConv.Out.Smema2_DI_BdReady_True);
-                GDefineMHS.RefreshOutput(btnSmema2_McReady, TaskConv.Out.Smema2_DO_McReady_True);
 
                 GDefineMHS.RefreshOutput(btn_TL_Red, TaskConv.TowerLight.TL_Red);
                 GDefineMHS.RefreshOutput(btn_TL_Yellow, TaskConv.TowerLight.TL_Yellow);
@@ -354,17 +350,9 @@ namespace NDispWin
         {
             TaskConv.In.Smema_DO_McReady = !TaskConv.In.Smema_DO_McReady;
         }
-        private void btnSmema2_BdReady_Click(object sender, EventArgs e)
-        {
-            TaskConv.In.Smema2_DO_BdReady = !TaskConv.In.Smema2_DO_BdReady;
-        }
         private void btnRightSmemaOutBdReady_Click(object sender, EventArgs e)
         {
             TaskConv.Out.Smema_DO_BdReady = !TaskConv.Out.Smema_DO_BdReady;
-        }
-        private void btnSmema2_McReady_Click(object sender, EventArgs e)
-        {
-            TaskConv.Out.Smema2_DO_McReady = !TaskConv.Out.Smema2_DO_McReady;
         }
 
         private void btn_TL_Red_Click(object sender, EventArgs e)

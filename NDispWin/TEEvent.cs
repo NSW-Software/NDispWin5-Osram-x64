@@ -235,6 +235,7 @@ namespace NDispWin
         public static TEEvent MANUAL_LOADPRE = new TEEvent(MHS_EVENT + 203, "Manual Load Pre");
         public static TEEvent MANUAL_LOADPRO = new TEEvent(MHS_EVENT + 204, "Manual Load Pro");
         public static TEEvent MANUAL_UNLOAD = new TEEvent(MHS_EVENT + 205, "Manual Unload");
+        public static TEEvent MANUAL_LOADPOS = new TEEvent(MHS_EVENT + 206, "Manual Load Pos");
 
         public static TEEvent PREHEAT_START = new TEEvent(MHS_EVENT + 500, "Preheat Start.");
         public static TEEvent PREHEAT_END = new TEEvent(MHS_EVENT + 501, "Preheat End.");

@@ -62,6 +62,8 @@
             this.lbl_RMagNo = new System.Windows.Forms.Label();
             this.btn_RMagzResetConfirm = new System.Windows.Forms.Button();
             this.tmr_Display = new System.Windows.Forms.Timer(this.components);
+            this.lblLeftState = new System.Windows.Forms.Label();
+            this.lblRightState = new System.Windows.Forms.Label();
             this.gbox_Left.SuspendLayout();
             this.pnl_LeftElev.SuspendLayout();
             this.gbox_Right.SuspendLayout();
@@ -77,7 +79,7 @@
             this.gbox_Left.MaximumSize = new System.Drawing.Size(250, 0);
             this.gbox_Left.MinimumSize = new System.Drawing.Size(250, 0);
             this.gbox_Left.Name = "gbox_Left";
-            this.gbox_Left.Size = new System.Drawing.Size(250, 199);
+            this.gbox_Left.Size = new System.Drawing.Size(250, 203);
             this.gbox_Left.TabIndex = 0;
             this.gbox_Left.TabStop = false;
             this.gbox_Left.Text = "Left";
@@ -86,6 +88,7 @@
             // 
             this.pnl_LeftElev.AutoSize = true;
             this.pnl_LeftElev.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.pnl_LeftElev.Controls.Add(this.lblLeftState);
             this.pnl_LeftElev.Controls.Add(this.lbl_LeftElevSt);
             this.pnl_LeftElev.Controls.Add(this.btn_LLevelDn);
             this.pnl_LeftElev.Controls.Add(this.label7);
@@ -101,10 +104,11 @@
             this.pnl_LeftElev.Controls.Add(this.btn_LMagzReset);
             this.pnl_LeftElev.Controls.Add(this.lbl_LMagLowest_Psnt);
             this.pnl_LeftElev.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnl_LeftElev.Location = new System.Drawing.Point(3, 18);
+            this.pnl_LeftElev.Location = new System.Drawing.Point(3, 22);
             this.pnl_LeftElev.Name = "pnl_LeftElev";
             this.pnl_LeftElev.Size = new System.Drawing.Size(244, 178);
             this.pnl_LeftElev.TabIndex = 415;
+            this.pnl_LeftElev.Paint += new System.Windows.Forms.PaintEventHandler(this.pnl_LeftElev_Paint);
             // 
             // lbl_LeftElevSt
             // 
@@ -282,13 +286,14 @@
             this.gbox_Right.MaximumSize = new System.Drawing.Size(250, 0);
             this.gbox_Right.MinimumSize = new System.Drawing.Size(250, 0);
             this.gbox_Right.Name = "gbox_Right";
-            this.gbox_Right.Size = new System.Drawing.Size(250, 199);
+            this.gbox_Right.Size = new System.Drawing.Size(250, 203);
             this.gbox_Right.TabIndex = 1;
             this.gbox_Right.TabStop = false;
             this.gbox_Right.Text = "Right";
             // 
             // pnl_RightElev
             // 
+            this.pnl_RightElev.Controls.Add(this.lblRightState);
             this.pnl_RightElev.Controls.Add(this.lbl_RightElevSt);
             this.pnl_RightElev.Controls.Add(this.label12);
             this.pnl_RightElev.Controls.Add(this.lbl_RMagLowest_Psnt);
@@ -304,7 +309,7 @@
             this.pnl_RightElev.Controls.Add(this.lbl_RMagNo);
             this.pnl_RightElev.Controls.Add(this.btn_RMagzResetConfirm);
             this.pnl_RightElev.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnl_RightElev.Location = new System.Drawing.Point(3, 18);
+            this.pnl_RightElev.Location = new System.Drawing.Point(3, 22);
             this.pnl_RightElev.Name = "pnl_RightElev";
             this.pnl_RightElev.Size = new System.Drawing.Size(244, 178);
             this.pnl_RightElev.TabIndex = 403;
@@ -481,6 +486,24 @@
             this.tmr_Display.Interval = 500;
             this.tmr_Display.Tick += new System.EventHandler(this.tmr_Display_Tick);
             // 
+            // lblLeftState
+            // 
+            this.lblLeftState.AutoSize = true;
+            this.lblLeftState.Location = new System.Drawing.Point(162, 154);
+            this.lblLeftState.Name = "lblLeftState";
+            this.lblLeftState.Size = new System.Drawing.Size(79, 18);
+            this.lblLeftState.TabIndex = 2;
+            this.lblLeftState.Text = "lblLeftState";
+            // 
+            // lblRightState
+            // 
+            this.lblRightState.AutoSize = true;
+            this.lblRightState.Location = new System.Drawing.Point(162, 154);
+            this.lblRightState.Name = "lblRightState";
+            this.lblRightState.Size = new System.Drawing.Size(86, 18);
+            this.lblRightState.TabIndex = 403;
+            this.lblRightState.Text = "lblRightState";
+            // 
             // frm_MHS2ElevCtrl
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -495,8 +518,10 @@
             this.gbox_Left.ResumeLayout(false);
             this.gbox_Left.PerformLayout();
             this.pnl_LeftElev.ResumeLayout(false);
+            this.pnl_LeftElev.PerformLayout();
             this.gbox_Right.ResumeLayout(false);
             this.pnl_RightElev.ResumeLayout(false);
+            this.pnl_RightElev.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -537,5 +562,7 @@
         private System.Windows.Forms.Timer tmr_Display;
         private System.Windows.Forms.Panel pnl_LeftElev;
         private System.Windows.Forms.Panel pnl_RightElev;
+        private System.Windows.Forms.Label lblLeftState;
+        private System.Windows.Forms.Label lblRightState;
     }
 }

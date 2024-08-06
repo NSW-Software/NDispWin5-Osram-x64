@@ -49,11 +49,8 @@ namespace NDispWin
             frmConvCtrl.BringToFront();
             frmElevCtrl.BringToFront();
 
-            pnlLeftSmema.Visible = TaskConv.LeftMode == TaskConv.ELeftMode.Smema || TaskConv.LeftMode == TaskConv.ELeftMode.SmemaBiDirection;
-            pnlLeftSmema2.Visible = TaskConv.LeftMode == TaskConv.ELeftMode.Smema_SmemaRight || TaskConv.LeftMode == TaskConv.ELeftMode.SmemaBiDirection;
-
-            pnlRightSmema.Visible = TaskConv.RightMode == TaskConv.ERightMode.Smema || TaskConv.RightMode == TaskConv.ERightMode.SmemaBiDirection;
-            pnlRightSmema2.Visible = TaskConv.RightMode == TaskConv.ERightMode.Smema_SmemaLeft || TaskConv.RightMode == TaskConv.ERightMode.SmemaBiDirection;
+            pnlLeftSmema.Visible = TaskConv.LeftMode == TaskConv.ELeftMode.Smema;
+            pnlRightSmema.Visible = TaskConv.RightMode == TaskConv.ERightMode.Smema;
 
             UpdateDisplay();
             UpdateSelection(btn_Control);
@@ -63,6 +60,7 @@ namespace NDispWin
         {
             Text = GDefine.MHSRecipeName;
             lbl_ProcessTime.Text = i_ProcessTime.ToString();
+            cbNewSeq.Checked = TaskConv.NewSeq;
         }
 
         private void UpdateSelection(object sender)
@@ -727,19 +725,19 @@ namespace NDispWin
                 lblRightSmema_McReady.BackColor = TaskConv.Out.Smema_DI_McReady ? Color.Lime : Color.Gray;
                 btnRightSmema_BdReady.BackColor = TaskConv.Out.Smema_DO_BdReady ? Color.Red : Color.Gray;
 
-                lblLeftSmema2_McReady.BackColor = TaskConv.In.Smema2_DI_McReady ? Color.Lime : Color.Gray;
-                btnLeftSmema2_BdReady.BackColor = TaskConv.In.Smema2_DO_BdReady ? Color.Red : Color.Gray;
+                //lblLeftSmema2_McReady.BackColor = TaskConv.In.Smema2_DI_McReady ? Color.Lime : Color.Gray;
+                //btnLeftSmema2_BdReady.BackColor = TaskConv.In.Smema2_DO_BdReady ? Color.Red : Color.Gray;
 
-                if (TaskConv.RightMode == TaskConv.ERightMode.Smema_SmemaLeft)
-                {
-                    lblRightSmema2_BdReady.BackColor = TaskConv.In.Smema_DI_BdReady ? Color.Lime : Color.Gray;
-                    btnRightSmema2_McReady.BackColor = TaskConv.In.Smema_DO_McReady ? Color.Red : Color.Gray;
-                }
-                else
-                {
-                    lblRightSmema2_BdReady.BackColor = TaskConv.Out.Smema2_DI_BdReady ? Color.Lime : Color.Gray;
-                    btnRightSmema2_McReady.BackColor = TaskConv.Out.Smema2_DO_McReady ? Color.Red : Color.Gray;
-                }
+                //if (TaskConv.RightMode == TaskConv.ERightMode.Smema_SmemaLeft)
+                //{
+                //    lblRightSmema2_BdReady.BackColor = TaskConv.In.Smema_DI_BdReady ? Color.Lime : Color.Gray;
+                //    btnRightSmema2_McReady.BackColor = TaskConv.In.Smema_DO_McReady ? Color.Red : Color.Gray;
+                //}
+                //else
+                //{
+                //    lblRightSmema2_BdReady.BackColor = TaskConv.Out.Smema2_DI_BdReady ? Color.Lime : Color.Gray;
+                //    btnRightSmema2_McReady.BackColor = TaskConv.Out.Smema2_DO_McReady ? Color.Red : Color.Gray;
+                //}
             }
         }
 
@@ -826,14 +824,6 @@ namespace NDispWin
         {
             TaskConv.In.Smema_Emulate_DI_BdReady = false;
         }
-        private void lblLeftSmema2_McReady_MouseDown(object sender, MouseEventArgs e)
-        {
-            TaskConv.In.Smema2_Emulate_DI_McReady = true;
-        }
-        private void lblLeftSmema2_McReady_MouseUp(object sender, MouseEventArgs e)
-        {
-            TaskConv.In.Smema2_Emulate_DI_McReady = false;
-        }
 
         private void lbl_DL_McReady_MouseDown(object sender, MouseEventArgs e)
         {
@@ -843,28 +833,11 @@ namespace NDispWin
         {
             TaskConv.Out.Smema_Emulate_DI_McReady = false;
         }
-        private void lblRightSmema2_BdReady_MouseDown(object sender, MouseEventArgs e)
-        {
-            TaskConv.Out.Smema2_Emulate_DI_BdReady = true;
-        }
-        private void lblRightSmema2_BdReady_MouseUp(object sender, MouseEventArgs e)
-        {
-            TaskConv.Out.Smema2_Emulate_DI_BdReady = false;
-        }
 
-        private void cbWaitReturn_Click(object sender, EventArgs e)
+        private void cbNewSeq_Click(object sender, EventArgs e)
         {
-            TaskConv.bEnableAutoWaitReturn = (sender as CheckBox).Checked;
-        }
-
-        private void cbWaitReverseSendout_Click(object sender, EventArgs e)
-        {
-            TaskConv.bEnableAutoReverseSendout = (sender as CheckBox).Checked;
-        }
-
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-
+            TaskConv.NewSeq = !TaskConv.NewSeq;
+            UpdateDisplay();
         }
     }
 }

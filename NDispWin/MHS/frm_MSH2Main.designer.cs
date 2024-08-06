@@ -36,8 +36,6 @@
             this.btn_ConvParam = new System.Windows.Forms.Button();
             this.pnl_Control = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.cbWaitReverseSendout = new System.Windows.Forms.CheckBox();
-            this.cbWaitReturn = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btn_ProSt = new System.Windows.Forms.Button();
             this.btn_PreSt = new System.Windows.Forms.Button();
@@ -61,18 +59,11 @@
             this.btn_LULBypass = new System.Windows.Forms.Button();
             this.tmr_05s = new System.Windows.Forms.Timer(this.components);
             this.btn_SaveAs = new System.Windows.Forms.Button();
-            this.pnlLeftSmema2 = new System.Windows.Forms.Panel();
-            this.lblLeftSmema2_McReady = new System.Windows.Forms.Label();
-            this.btnLeftSmema2_BdReady = new System.Windows.Forms.Button();
-            this.pnlRightSmema2 = new System.Windows.Forms.Panel();
-            this.lblRightSmema2_BdReady = new System.Windows.Forms.Label();
-            this.btnRightSmema2_McReady = new System.Windows.Forms.Button();
             this.pnlLeftSmema = new System.Windows.Forms.Panel();
             this.pnlRightSmema = new System.Windows.Forms.Panel();
+            this.cbNewSeq = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.pnlLeftSmema2.SuspendLayout();
-            this.pnlRightSmema2.SuspendLayout();
             this.pnlLeftSmema.SuspendLayout();
             this.pnlRightSmema.SuspendLayout();
             this.SuspendLayout();
@@ -144,8 +135,7 @@
             // 
             this.panel1.AutoSize = true;
             this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.panel1.Controls.Add(this.cbWaitReverseSendout);
-            this.panel1.Controls.Add(this.cbWaitReturn);
+            this.panel1.Controls.Add(this.cbNewSeq);
             this.panel1.Controls.Add(this.groupBox1);
             this.panel1.Controls.Add(this.btn_InitElev);
             this.panel1.Controls.Add(this.btn_InitConv);
@@ -154,30 +144,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(174, 588);
             this.panel1.TabIndex = 9;
-            // 
-            // cbWaitReverseSendout
-            // 
-            this.cbWaitReverseSendout.AccessibleDescription = "Reverse Sendout";
-            this.cbWaitReverseSendout.AutoSize = true;
-            this.cbWaitReverseSendout.Location = new System.Drawing.Point(9, 372);
-            this.cbWaitReverseSendout.Name = "cbWaitReverseSendout";
-            this.cbWaitReverseSendout.Size = new System.Drawing.Size(120, 18);
-            this.cbWaitReverseSendout.TabIndex = 360;
-            this.cbWaitReverseSendout.Text = "Reverse Sendout";
-            this.cbWaitReverseSendout.UseVisualStyleBackColor = true;
-            this.cbWaitReverseSendout.Click += new System.EventHandler(this.cbWaitReverseSendout_Click);
-            // 
-            // cbWaitReturn
-            // 
-            this.cbWaitReturn.AccessibleDescription = "Wait Return";
-            this.cbWaitReturn.AutoSize = true;
-            this.cbWaitReturn.Location = new System.Drawing.Point(9, 344);
-            this.cbWaitReturn.Name = "cbWaitReturn";
-            this.cbWaitReturn.Size = new System.Drawing.Size(92, 18);
-            this.cbWaitReturn.TabIndex = 359;
-            this.cbWaitReturn.Text = "Wait Return";
-            this.cbWaitReturn.UseVisualStyleBackColor = true;
-            this.cbWaitReturn.Click += new System.EventHandler(this.cbWaitReturn_Click);
             // 
             // groupBox1
             // 
@@ -195,7 +161,6 @@
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Dry Run";
-            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
             // btn_ProSt
             // 
@@ -225,7 +190,7 @@
             this.cbox_ProcessTime.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbox_ProcessTime.Location = new System.Drawing.Point(6, 24);
             this.cbox_ProcessTime.Name = "cbox_ProcessTime";
-            this.cbox_ProcessTime.Size = new System.Drawing.Size(98, 18);
+            this.cbox_ProcessTime.Size = new System.Drawing.Size(118, 22);
             this.cbox_ProcessTime.TabIndex = 358;
             this.cbox_ProcessTime.Text = "Process Time";
             this.cbox_ProcessTime.UseVisualStyleBackColor = true;
@@ -433,74 +398,6 @@
             this.btn_SaveAs.UseVisualStyleBackColor = true;
             this.btn_SaveAs.Click += new System.EventHandler(this.btn_SaveAs_Click);
             // 
-            // pnlLeftSmema2
-            // 
-            this.pnlLeftSmema2.AutoSize = true;
-            this.pnlLeftSmema2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.pnlLeftSmema2.Controls.Add(this.lblLeftSmema2_McReady);
-            this.pnlLeftSmema2.Controls.Add(this.btnLeftSmema2_BdReady);
-            this.pnlLeftSmema2.Location = new System.Drawing.Point(140, 647);
-            this.pnlLeftSmema2.Name = "pnlLeftSmema2";
-            this.pnlLeftSmema2.Size = new System.Drawing.Size(129, 26);
-            this.pnlLeftSmema2.TabIndex = 135;
-            // 
-            // lblLeftSmema2_McReady
-            // 
-            this.lblLeftSmema2_McReady.AccessibleDescription = "";
-            this.lblLeftSmema2_McReady.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblLeftSmema2_McReady.Location = new System.Drawing.Point(0, 0);
-            this.lblLeftSmema2_McReady.Name = "lblLeftSmema2_McReady";
-            this.lblLeftSmema2_McReady.Size = new System.Drawing.Size(60, 23);
-            this.lblLeftSmema2_McReady.TabIndex = 130;
-            this.lblLeftSmema2_McReady.Text = "Mc Rdy2";
-            this.lblLeftSmema2_McReady.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblLeftSmema2_McReady.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lblLeftSmema2_McReady_MouseDown);
-            this.lblLeftSmema2_McReady.MouseUp += new System.Windows.Forms.MouseEventHandler(this.lblLeftSmema2_McReady_MouseUp);
-            // 
-            // btnLeftSmema2_BdReady
-            // 
-            this.btnLeftSmema2_BdReady.AccessibleDescription = "";
-            this.btnLeftSmema2_BdReady.Location = new System.Drawing.Point(66, 0);
-            this.btnLeftSmema2_BdReady.Name = "btnLeftSmema2_BdReady";
-            this.btnLeftSmema2_BdReady.Size = new System.Drawing.Size(60, 23);
-            this.btnLeftSmema2_BdReady.TabIndex = 129;
-            this.btnLeftSmema2_BdReady.Text = "Bd Rdy2";
-            this.btnLeftSmema2_BdReady.UseVisualStyleBackColor = true;
-            // 
-            // pnlRightSmema2
-            // 
-            this.pnlRightSmema2.AutoSize = true;
-            this.pnlRightSmema2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.pnlRightSmema2.Controls.Add(this.lblRightSmema2_BdReady);
-            this.pnlRightSmema2.Controls.Add(this.btnRightSmema2_McReady);
-            this.pnlRightSmema2.Location = new System.Drawing.Point(547, 647);
-            this.pnlRightSmema2.Name = "pnlRightSmema2";
-            this.pnlRightSmema2.Size = new System.Drawing.Size(129, 26);
-            this.pnlRightSmema2.TabIndex = 0;
-            // 
-            // lblRightSmema2_BdReady
-            // 
-            this.lblRightSmema2_BdReady.AccessibleDescription = "";
-            this.lblRightSmema2_BdReady.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblRightSmema2_BdReady.Location = new System.Drawing.Point(66, 0);
-            this.lblRightSmema2_BdReady.Name = "lblRightSmema2_BdReady";
-            this.lblRightSmema2_BdReady.Size = new System.Drawing.Size(60, 23);
-            this.lblRightSmema2_BdReady.TabIndex = 131;
-            this.lblRightSmema2_BdReady.Text = "Bd Rdy2";
-            this.lblRightSmema2_BdReady.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblRightSmema2_BdReady.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lblRightSmema2_BdReady_MouseDown);
-            this.lblRightSmema2_BdReady.MouseUp += new System.Windows.Forms.MouseEventHandler(this.lblRightSmema2_BdReady_MouseUp);
-            // 
-            // btnRightSmema2_McReady
-            // 
-            this.btnRightSmema2_McReady.AccessibleDescription = "";
-            this.btnRightSmema2_McReady.Location = new System.Drawing.Point(0, 0);
-            this.btnRightSmema2_McReady.Name = "btnRightSmema2_McReady";
-            this.btnRightSmema2_McReady.Size = new System.Drawing.Size(62, 23);
-            this.btnRightSmema2_McReady.TabIndex = 130;
-            this.btnRightSmema2_McReady.Text = "Mc Rdy2";
-            this.btnRightSmema2_McReady.UseVisualStyleBackColor = true;
-            // 
             // pnlLeftSmema
             // 
             this.pnlLeftSmema.AutoSize = true;
@@ -523,6 +420,18 @@
             this.pnlRightSmema.Size = new System.Drawing.Size(129, 26);
             this.pnlRightSmema.TabIndex = 0;
             // 
+            // cbNewSeq
+            // 
+            this.cbNewSeq.AccessibleDescription = "";
+            this.cbNewSeq.AutoSize = true;
+            this.cbNewSeq.Location = new System.Drawing.Point(9, 124);
+            this.cbNewSeq.Name = "cbNewSeq";
+            this.cbNewSeq.Size = new System.Drawing.Size(126, 22);
+            this.cbNewSeq.TabIndex = 359;
+            this.cbNewSeq.Text = "New Sequence";
+            this.cbNewSeq.UseVisualStyleBackColor = true;
+            this.cbNewSeq.Click += new System.EventHandler(this.cbNewSeq_Click);
+            // 
             // frmMHS2Main
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -531,8 +440,6 @@
             this.ClientSize = new System.Drawing.Size(999, 678);
             this.Controls.Add(this.pnlRightSmema);
             this.Controls.Add(this.pnlLeftSmema);
-            this.Controls.Add(this.pnlRightSmema2);
-            this.Controls.Add(this.pnlLeftSmema2);
             this.Controls.Add(this.btn_SaveAs);
             this.Controls.Add(this.btn_LULBypass);
             this.Controls.Add(this.btn_Config);
@@ -558,8 +465,6 @@
             this.panel1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.pnlLeftSmema2.ResumeLayout(false);
-            this.pnlRightSmema2.ResumeLayout(false);
             this.pnlLeftSmema.ResumeLayout(false);
             this.pnlRightSmema.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -599,15 +504,8 @@
         private System.Windows.Forms.Button btn_LULBypass;
         private System.Windows.Forms.Timer tmr_05s;
         private System.Windows.Forms.Button btn_SaveAs;
-        private System.Windows.Forms.Panel pnlLeftSmema2;
-        private System.Windows.Forms.Label lblLeftSmema2_McReady;
-        private System.Windows.Forms.Button btnLeftSmema2_BdReady;
-        private System.Windows.Forms.Panel pnlRightSmema2;
-        private System.Windows.Forms.Label lblRightSmema2_BdReady;
-        private System.Windows.Forms.Button btnRightSmema2_McReady;
         private System.Windows.Forms.Panel pnlLeftSmema;
         private System.Windows.Forms.Panel pnlRightSmema;
-        private System.Windows.Forms.CheckBox cbWaitReturn;
-        private System.Windows.Forms.CheckBox cbWaitReverseSendout;
+        private System.Windows.Forms.CheckBox cbNewSeq;
     }
 }

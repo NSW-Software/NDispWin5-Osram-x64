@@ -29,14 +29,14 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.btn_Close = new System.Windows.Forms.Button();
             this.btn_Save = new System.Windows.Forms.Button();
             this.lbl_BoardID = new System.Windows.Forms.Label();
@@ -46,6 +46,8 @@
             this.RANGE = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DESC = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnPosStation = new System.Windows.Forms.Button();
+            this.cbxPosStType = new System.Windows.Forms.ComboBox();
             this.btn_Out2Station = new System.Windows.Forms.Button();
             this.btn_Pos2Station = new System.Windows.Forms.Button();
             this.btn_OutStation = new System.Windows.Forms.Button();
@@ -105,17 +107,17 @@
             this.dg_Param.AllowUserToDeleteRows = false;
             this.dg_Param.AllowUserToResizeColumns = false;
             this.dg_Param.AllowUserToResizeRows = false;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dg_Param.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dg_Param.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dg_Param.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.Color.Blue;
-            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dg_Param.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Blue;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dg_Param.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dg_Param.ColumnHeadersHeight = 29;
             this.dg_Param.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dg_Param.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -128,20 +130,20 @@
             this.dg_Param.Location = new System.Drawing.Point(5, 101);
             this.dg_Param.MultiSelect = false;
             this.dg_Param.Name = "dg_Param";
-            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle15.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle15.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle15.SelectionBackColor = System.Drawing.Color.LightGray;
-            dataGridViewCellStyle15.SelectionForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dg_Param.RowHeadersDefaultCellStyle = dataGridViewCellStyle15;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.LightGray;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dg_Param.RowHeadersDefaultCellStyle = dataGridViewCellStyle7;
             this.dg_Param.RowHeadersVisible = false;
             this.dg_Param.RowHeadersWidth = 51;
             this.dg_Param.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dataGridViewCellStyle16.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle16.SelectionBackColor = System.Drawing.Color.Lavender;
-            dataGridViewCellStyle16.SelectionForeColor = System.Drawing.Color.Blue;
-            this.dg_Param.RowsDefaultCellStyle = dataGridViewCellStyle16;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.Lavender;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.Color.Blue;
+            this.dg_Param.RowsDefaultCellStyle = dataGridViewCellStyle8;
             this.dg_Param.RowTemplate.Height = 24;
             this.dg_Param.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dg_Param.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
@@ -156,10 +158,10 @@
             // 
             // Index
             // 
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle11.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle11.ForeColor = System.Drawing.Color.Black;
-            this.Index.DefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black;
+            this.Index.DefaultCellStyle = dataGridViewCellStyle3;
             this.Index.HeaderText = "Param";
             this.Index.MinimumWidth = 6;
             this.Index.Name = "Index";
@@ -170,9 +172,9 @@
             // 
             // Distance
             // 
-            dataGridViewCellStyle12.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle12.ForeColor = System.Drawing.Color.Green;
-            this.Distance.DefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Green;
+            this.Distance.DefaultCellStyle = dataGridViewCellStyle4;
             this.Distance.HeaderText = "Value";
             this.Distance.MinimumWidth = 6;
             this.Distance.Name = "Distance";
@@ -182,9 +184,9 @@
             // 
             // RANGE
             // 
-            dataGridViewCellStyle13.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle13.ForeColor = System.Drawing.Color.Gray;
-            this.RANGE.DefaultCellStyle = dataGridViewCellStyle13;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.Gray;
+            this.RANGE.DefaultCellStyle = dataGridViewCellStyle5;
             this.RANGE.HeaderText = "(Min ~ Max, Default )";
             this.RANGE.MinimumWidth = 6;
             this.RANGE.Name = "RANGE";
@@ -195,9 +197,9 @@
             // 
             // DESC
             // 
-            dataGridViewCellStyle14.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle14.ForeColor = System.Drawing.Color.Gray;
-            this.DESC.DefaultCellStyle = dataGridViewCellStyle14;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Gray;
+            this.DESC.DefaultCellStyle = dataGridViewCellStyle6;
             this.DESC.HeaderText = "Desc";
             this.DESC.MinimumWidth = 6;
             this.DESC.Name = "DESC";
@@ -208,6 +210,8 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btnPosStation);
+            this.panel1.Controls.Add(this.cbxPosStType);
             this.panel1.Controls.Add(this.btn_Out2Station);
             this.panel1.Controls.Add(this.btn_Pos2Station);
             this.panel1.Controls.Add(this.btn_OutStation);
@@ -228,6 +232,26 @@
             this.panel1.Size = new System.Drawing.Size(772, 96);
             this.panel1.TabIndex = 140;
             // 
+            // btnPosStation
+            // 
+            this.btnPosStation.AccessibleDescription = "Pos Station";
+            this.btnPosStation.Location = new System.Drawing.Point(443, 35);
+            this.btnPosStation.Name = "btnPosStation";
+            this.btnPosStation.Size = new System.Drawing.Size(100, 23);
+            this.btnPosStation.TabIndex = 163;
+            this.btnPosStation.Text = "Pos Station";
+            this.btnPosStation.UseVisualStyleBackColor = true;
+            this.btnPosStation.Click += new System.EventHandler(this.btnPosStation_Click);
+            // 
+            // cbxPosStType
+            // 
+            this.cbxPosStType.FormattingEnabled = true;
+            this.cbxPosStType.Location = new System.Drawing.Point(443, 62);
+            this.cbxPosStType.Name = "cbxPosStType";
+            this.cbxPosStType.Size = new System.Drawing.Size(100, 26);
+            this.cbxPosStType.TabIndex = 162;
+            this.cbxPosStType.SelectionChangeCommitted += new System.EventHandler(this.cbxPosStType_SelectionChangeCommitted);
+            // 
             // btn_Out2Station
             // 
             this.btn_Out2Station.AccessibleDescription = "Out2 Station";
@@ -242,7 +266,7 @@
             // btn_Pos2Station
             // 
             this.btn_Pos2Station.AccessibleDescription = "Pos2 Station";
-            this.btn_Pos2Station.Location = new System.Drawing.Point(549, 35);
+            this.btn_Pos2Station.Location = new System.Drawing.Point(655, 62);
             this.btn_Pos2Station.Name = "btn_Pos2Station";
             this.btn_Pos2Station.Size = new System.Drawing.Size(100, 23);
             this.btn_Pos2Station.TabIndex = 160;
@@ -253,7 +277,7 @@
             // btn_OutStation
             // 
             this.btn_OutStation.AccessibleDescription = "Out Station";
-            this.btn_OutStation.Location = new System.Drawing.Point(443, 35);
+            this.btn_OutStation.Location = new System.Drawing.Point(549, 35);
             this.btn_OutStation.Name = "btn_OutStation";
             this.btn_OutStation.Size = new System.Drawing.Size(100, 23);
             this.btn_OutStation.TabIndex = 159;
@@ -310,7 +334,7 @@
             this.combox_ProStType.FormattingEnabled = true;
             this.combox_ProStType.Location = new System.Drawing.Point(337, 63);
             this.combox_ProStType.Name = "combox_ProStType";
-            this.combox_ProStType.Size = new System.Drawing.Size(80, 26);
+            this.combox_ProStType.Size = new System.Drawing.Size(100, 26);
             this.combox_ProStType.TabIndex = 145;
             this.combox_ProStType.SelectionChangeCommitted += new System.EventHandler(this.combox_ProStType_SelectionChangeCommitted);
             // 
@@ -324,6 +348,7 @@
             this.cbox_Buffer2.TabIndex = 144;
             this.cbox_Buffer2.Text = "Buffer2";
             this.cbox_Buffer2.UseVisualStyleBackColor = true;
+            this.cbox_Buffer2.Visible = false;
             this.cbox_Buffer2.Click += new System.EventHandler(this.cbox_Buffer2_Click);
             // 
             // cbox_Buffer1
@@ -336,6 +361,7 @@
             this.cbox_Buffer1.TabIndex = 143;
             this.cbox_Buffer1.Text = "Buffer1";
             this.cbox_Buffer1.UseVisualStyleBackColor = true;
+            this.cbox_Buffer1.Visible = false;
             this.cbox_Buffer1.Click += new System.EventHandler(this.cbox_Buf1_Click);
             // 
             // combox_PreStType
@@ -343,9 +369,8 @@
             this.combox_PreStType.FormattingEnabled = true;
             this.combox_PreStType.Location = new System.Drawing.Point(231, 63);
             this.combox_PreStType.Name = "combox_PreStType";
-            this.combox_PreStType.Size = new System.Drawing.Size(80, 26);
+            this.combox_PreStType.Size = new System.Drawing.Size(100, 26);
             this.combox_PreStType.TabIndex = 140;
-            this.combox_PreStType.SelectedIndexChanged += new System.EventHandler(this.combox_PreStType_SelectedIndexChanged);
             this.combox_PreStType.SelectionChangeCommitted += new System.EventHandler(this.combox_PreStType_SelectionChangeCommitted);
             // 
             // tmr_Display
@@ -397,5 +422,7 @@
         private System.Windows.Forms.Button btn_PreStation;
         private System.Windows.Forms.Button btn_Conv2;
         private System.Windows.Forms.Button btn_Conv;
+        private System.Windows.Forms.ComboBox cbxPosStType;
+        private System.Windows.Forms.Button btnPosStation;
     }
 }

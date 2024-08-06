@@ -1077,21 +1077,21 @@ namespace NDispWin
                     #region Set Conditions before run
                     if (GDefine.Status == EStatus.ErrorInit) TR_StopRun();
 
-                    if (TaskConv.Pre.StType == TaskConv.EPreStType.Disp1 && TaskConv.Pro.StType == TaskConv.EProStType.Disp2)
-                    {
-                        if (NDispWin.TaskConv.Pre.Status == NDispWin.TaskConv.EProcessStatus.Heating) return;
-                        if (NDispWin.TaskConv.Pro.Status == NDispWin.TaskConv.EProcessStatus.Heating) return;
+                    //if (TaskConv.Pre.StType == TaskConv.EPreStType.Disp1 && TaskConv.Pro.StType == TaskConv.EProStType.Disp2)
+                    //{
+                    //    if (NDispWin.TaskConv.Pre.Status == NDispWin.TaskConv.EProcessStatus.Heating) return;
+                    //    if (NDispWin.TaskConv.Pro.Status == NDispWin.TaskConv.EProcessStatus.Heating) return;
 
-                        if (NDispWin.TaskConv.Pre.Status == NDispWin.TaskConv.EProcessStatus.WaitDisp)
-                        {
-                            NDispWin.TaskConv.Pre.Status = NDispWin.TaskConv.EProcessStatus.InProcess;
-                        }
+                    //    if (NDispWin.TaskConv.Pre.Status == NDispWin.TaskConv.EProcessStatus.WaitDisp)
+                    //    {
+                    //        NDispWin.TaskConv.Pre.Status = NDispWin.TaskConv.EProcessStatus.InProcess;
+                    //    }
 
-                        if (NDispWin.TaskConv.Pre.Status == NDispWin.TaskConv.EProcessStatus.WaitDisp)
-                        {
-                            NDispWin.TaskConv.Pre.Status = NDispWin.TaskConv.EProcessStatus.InProcess;
-                        }
-                    }
+                    //    if (NDispWin.TaskConv.Pre.Status == NDispWin.TaskConv.EProcessStatus.WaitDisp)
+                    //    {
+                    //        NDispWin.TaskConv.Pre.Status = NDispWin.TaskConv.EProcessStatus.InProcess;
+                    //    }
+                    //}
 
                     if (NDispWin.TaskConv.Pre.Status == NDispWin.TaskConv.EProcessStatus.WaitNone ||
                         NDispWin.TaskConv.Pro.Status == NDispWin.TaskConv.EProcessStatus.WaitNone)

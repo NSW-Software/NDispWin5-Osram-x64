@@ -23,13 +23,10 @@ namespace NDispWin
             gbox_Buf1.Visible = TaskConv.Buf1.StType == TaskConv.EBufStType.Buffer;
             gbox_Buf2.Visible = TaskConv.Buf2.StType == TaskConv.EBufStType.Buffer;
             gbox_Pre.Visible = TaskConv.Pre.StType > TaskConv.EPreStType.None;
+            gbxPos.Visible = TaskConv.Pos.StType > TaskConv.EPosStType.None;
 
-            gboxSmemaLeftIn.Visible = TaskConv.LeftMode == TaskConv.ELeftMode.Smema || TaskConv.LeftMode == TaskConv.ELeftMode.Smema_SmemaRight || TaskConv.LeftMode == TaskConv.ELeftMode.SmemaBiDirection;
-            gboxSmemaLeftOut.Visible = TaskConv.LeftMode == TaskConv.ELeftMode.Smema_SmemaRight || TaskConv.LeftMode == TaskConv.ELeftMode.SmemaBiDirection;
-            gboxSmemaLeftOut.Text = "Smema Left (Out*)";
-            gboxSmemaRightOut.Visible = TaskConv.RightMode == TaskConv.ERightMode.Smema || TaskConv.RightMode == TaskConv.ERightMode.Smema_SmemaLeft || TaskConv.RightMode == TaskConv.ERightMode.SmemaBiDirection;
-            gboxSmemaRightIn.Visible = TaskConv.RightMode == TaskConv.ERightMode.Smema_SmemaLeft || TaskConv.RightMode == TaskConv.ERightMode.SmemaBiDirection;
-            gboxSmemaRightIn.Text = "Smema Right (In*)";
+            gboxSmemaLeftIn.Visible = TaskConv.LeftMode == TaskConv.ELeftMode.Smema;
+            gboxSmemaRightOut.Visible = TaskConv.RightMode == TaskConv.ERightMode.Smema;
         }
 
         private void frm_ConvCtrl_Load(object sender, EventArgs e)
@@ -58,6 +55,10 @@ namespace NDispWin
             S = (TaskConv.Pro.rt_StType == TaskConv.Pro.StType) ? "" : "*";
             S = "Pro (" + S + TaskConv.Pro.rt_StType.ToString() + ")";
             gbox_Pro.Text = S;
+
+            S = (TaskConv.Pos.rt_StType == TaskConv.Pos.StType) ? "" : "*";
+            S = "Pos (" + S + TaskConv.Pos.rt_StType.ToString() + ")";
+            gbxPos.Text = S;
 
             lbl_ConvSt.Text = TaskConv.Status.ToString();
             lbl_ConvSt.BackColor = TaskConv.StatusColor;
@@ -89,6 +90,11 @@ namespace NDispWin
             if (TaskConv.Pro.Status == TaskConv.EProcessStatus.Heating)
                 lbl_ProSt.Text = TaskConv.Pro.Status.ToString() + " (" + Math.Max(0, TaskConv.Pro.HeatRemain_s) + ")";
             lbl_ProSt.BackColor = TaskConv.Pro.StatusColor;
+
+            lbl_PosSt.Text = TaskConv.Pos.Status.ToString();
+            if (TaskConv.Pos.Status == TaskConv.EProcessStatus.Heating)
+                lbl_PosSt.Text = TaskConv.Pos.Status.ToString() + " (" + Math.Max(0, TaskConv.Pos.HeatRemain_s) + ")";
+            lbl_PosSt.BackColor = TaskConv.Pos.StatusColor;
 
             lbl_OutSt.Text = TaskConv.Out.Status.ToString();
             lbl_OutSt.BackColor = TaskConv.Out.StatusColor;
@@ -136,24 +142,13 @@ namespace NDispWin
             {
                 lblLeftSmemaBdReady.BackColor = TaskConv.In.Smema_DI_BdReady ? Color.Lime : this.BackColor;
                 lblLeftSmemaMcReady.BackColor = TaskConv.In.Smema_DO_McReady ? Color.Red : this.BackColor;
-                lblLeftSmema2McReady.BackColor = TaskConv.In.Smema2_DI_McReady ? Color.Lime : this.BackColor;
-                lblLeftSmema2BdReady.BackColor = TaskConv.In.Smema2_DO_BdReady ? Color.Red : this.BackColor;
             }
-
 
             if (TaskConv.BoardIsOpen)
             {
                 lbl_RightSmemaMcReady.BackColor = TaskConv.Out.Smema_DI_McReady ? Color.Lime : this.BackColor;
                 lbl_RightSmemaBdReady.BackColor = TaskConv.Out.Smema_DO_BdReady ? Color.Red : this.BackColor;
-                lblRightSmema2BdReady.BackColor = TaskConv.Out.Smema2_DI_BdReady ? Color.Lime : this.BackColor;
-                lblRightSmema2McReady.BackColor = TaskConv.Out.Smema2_DO_McReady ? Color.Red : this.BackColor;
             }
-
-            btn_WaitReturn.Visible = TaskConv.RightMode == TaskConv.ERightMode.Smema_SmemaLeft || TaskConv.RightMode == TaskConv.ERightMode.SmemaBiDirection;
-            btn_WaitReturn.BackColor = TaskConv.bWaitingBoardReverse ? Color.Lime : this.BackColor;
-
-            btnWaitReverseSend.Visible = TaskConv.LeftMode == TaskConv.ELeftMode.Smema_SmemaRight || TaskConv.LeftMode == TaskConv.ELeftMode.SmemaBiDirection;
-            btnWaitReverseSend.BackColor = TaskConv.bWaitingBoardReverseSendout ? Color.Lime : this.BackColor;
         }
 
         public bool Enable
@@ -172,12 +167,9 @@ namespace NDispWin
                     btn_DispEndStop.Enable(true);
                     btn_UnloadStop.Enable(true);
 
-                    btn_WaitReturn.Enable(true);
-                    btnWaitReverseSend.Enable(true);
                     lblLeftSmemaBdReady.Enable(true);
                     lbl_RightSmemaMcReady.Enable(true);
-                    lblLeftSmema2McReady.Enable(true);
-                    lblRightSmema2BdReady.Enable(true);
+
                 }
             }
         }
@@ -187,6 +179,24 @@ namespace NDispWin
             if (!Visible) return;
 
             UpdateDisplay();
+        }
+
+        private void EnableParent(bool Enable)
+        {
+            Enabled = Enable;
+            try
+            {
+                if (Parent != null) { Parent.Enabled = Enable; } else return;
+                if (Parent.Parent != null) { Parent.Parent.Enabled = Enable; } else return;
+                if (Parent.Parent.Parent != null) { Parent.Parent.Parent.Enabled = Enable; } else return;
+                if (Parent.Parent.Parent.Parent != null) { Parent.Parent.Parent.Parent.Enabled = Enable; } else return;
+                if (Parent.Parent.Parent.Parent.Parent != null) { Parent.Parent.Parent.Parent.Parent.Enabled = Enable; } else return;
+                if (Parent.Parent.Parent.Parent.Parent.Parent != null) { Parent.Parent.Parent.Parent.Parent.Parent.Enabled = Enable; }
+            }
+            catch (Exception ex)
+            {
+                Event.DEBUG_INFO.Set(MethodBase.GetCurrentMethod().Name.ToString(), ex.Message.ToString());
+            }
         }
 
         private void btn_Return_Click(object sender, EventArgs e)
@@ -247,24 +257,6 @@ namespace NDispWin
                 EnableParent(true);
             }
         }
-
-        private void EnableParent(bool Enable)
-        {
-            Enabled = Enable;
-            try
-            {
-                if (Parent != null) { Parent.Enabled = Enable; } else return;
-                if (Parent.Parent != null) { Parent.Parent.Enabled = Enable; } else return;
-                if (Parent.Parent.Parent != null) { Parent.Parent.Parent.Enabled = Enable; } else return;
-                if (Parent.Parent.Parent.Parent != null) { Parent.Parent.Parent.Parent.Enabled = Enable; } else return;
-                if (Parent.Parent.Parent.Parent.Parent != null) { Parent.Parent.Parent.Parent.Parent.Enabled = Enable; } else  return;
-                if (Parent.Parent.Parent.Parent.Parent.Parent != null) { Parent.Parent.Parent.Parent.Parent.Parent.Enabled = Enable; }
-            }
-            catch (Exception ex)
-            {
-                Event.DEBUG_INFO.Set(MethodBase.GetCurrentMethod().Name.ToString(), ex.Message.ToString());
-            }
-        }
         private void btn_LoadPre_Click(object sender, EventArgs e)
         {
             EnableParent(false);
@@ -321,6 +313,34 @@ namespace NDispWin
                 EnableParent(true);
             }
         }
+        private void btnLoadPos_Click(object sender, EventArgs e)
+        {
+            EnableParent(false);
+            try
+            {
+                if (TaskConv.Out.Status == TaskConv.EProcessStatus.Psnt)
+                {
+                    if (TaskConv.Out.SensPsnt)
+                    {
+                        Msg MsgBox = new Msg();
+                        MsgBox.Show(Messages.CONV_OUT_SENSOR_PSNT);
+                    }
+                    else
+                        TaskConv.Out.Status = TaskConv.EProcessStatus.Empty;
+                }
+
+                TaskConv.Manual_LoadPos();
+            }
+            catch (Exception ex)
+            {
+                Msg MsgBox = new Msg();
+                MsgBox.Show(Messages.CONV_EX_ERR, MethodBase.GetCurrentMethod().Name.ToString() + " " + ex.Message.ToString());
+            }
+            finally
+            {
+                EnableParent(true);
+            }
+        }
         private void btn_Unload_Click(object sender, EventArgs e)
         {
             EnableParent(false);
@@ -347,20 +367,18 @@ namespace NDispWin
             switch (TaskConv.LeftMode)
             {
                 case TaskConv.ELeftMode.Smema:
-                case TaskConv.ELeftMode.Smema_SmemaRight:
-                case TaskConv.ELeftMode.SmemaBiDirection:
                     TaskConv.In.Smema_DO_McReady = false;
                     break;
             }
 
-            if (TaskConv.Pro.rt_StType == TaskConv.EProStType.Disp12)
-            {
-                if (TaskConv.Pro.Status == TaskConv.EProcessStatus.WaitDisp2)
-                {
-                    TaskConv.Pre.Status = TaskConv.EProcessStatus.WaitNone;
-                    TaskConv.Pro.Status = TaskConv.EProcessStatus.WaitDisp;
-                }
-            }
+            //if (TaskConv.Pro.rt_StType == TaskConv.EProStType.Disp12)
+            //{
+            //    if (TaskConv.Pro.Status == TaskConv.EProcessStatus.WaitDisp2)
+            //    {
+            //        TaskConv.Pre.Status = TaskConv.EProcessStatus.WaitNone;
+            //        TaskConv.Pro.Status = TaskConv.EProcessStatus.WaitDisp;
+            //    }
+            //}
         }
         private void btn_SkipDisp_Click(object sender, EventArgs e)
         {
@@ -384,7 +402,6 @@ namespace NDispWin
                 TaskConv.Status = TaskConv.EConvStatus.Ready;
             UpdateDisplay();
         }
-
         private void lbl_PreSt_DoubleClick(object sender, EventArgs e)
         {
             if (NUtils.UserAcc.Active.GroupID == (int)ELevel.NSW)
@@ -394,7 +411,6 @@ namespace NDispWin
                     TaskConv.Pre.Status++;
             UpdateDisplay();
         }
-
         private void lbl_ProSt_DoubleClick(object sender, EventArgs e)
         {
             if (NUtils.UserAcc.Active.GroupID == (int)ELevel.NSW)
@@ -405,14 +421,6 @@ namespace NDispWin
             UpdateDisplay();
         }
 
-        private void btn_WaitReturn_Click(object sender, EventArgs e)
-        {
-            TaskConv.WaitBoardReverse = !TaskConv.WaitBoardReverse;
-        }
-        private void btnWaitReverseSend_Click(object sender, EventArgs e)
-        {
-            TaskConv.WaitBoardReverseSend = !TaskConv.WaitBoardReverseSend;
-        }
 
         #region Smema
         private void btn_UL_RecvBoard_Click(object sender, EventArgs e)
@@ -420,8 +428,6 @@ namespace NDispWin
             switch (TaskConv.LeftMode)
             {
                 case TaskConv.ELeftMode.Smema:
-                case TaskConv.ELeftMode.Smema_SmemaRight:
-                case TaskConv.ELeftMode.SmemaBiDirection:
                     {
                         if (TaskConv.Out.Status != TaskConv.EProcessStatus.Empty) return;
 
@@ -498,84 +504,12 @@ namespace NDispWin
                     }
             }
         }
-        private void btnULSendBoard_Click(object sender, EventArgs e)
-        {
-            switch (TaskConv.LeftMode)
-            {
-                case TaskConv.ELeftMode.Smema_SmemaRight:
-                case TaskConv.ELeftMode.SmemaBiDirection:
-                    {
-                        try
-                        {
-                            Task.Run(() =>
-                            {
-                                TaskConv.In.Smema2_DO_BdReady = true;
-                                Stopwatch sw = Stopwatch.StartNew();
-                                while (!TaskConv.In.Smema2_DI_McReady)
-                                {
-                                    if (sw.Elapsed.TotalSeconds >= 10)
-                                    {
-                                        TaskConv.In.Smema2_DO_BdReady = false;
-                                        return;
-                                    }
-                                    Thread.Sleep(5);
-                                }
-
-                                if (TaskConv.In.Smema2_DI_McReady)
-                                {
-                                    //TaskConv.In.Smema2_DO_BdReady = true;
-                                    if (!TaskConv.Run_ReverseSendOut())
-                                    {
-                                        //TaskConv.In.Smema2_DO_BdReady = false;
-                                        return;
-                                    }
-                                    if (!TaskConv.In.SensPsnt) TaskConv.bWaitingBoardReverseSendout = false;
-                                    //TaskConv.In.Smema2_DO_BdReady = false;
-
-                                _Retry:
-                                    int TOut = Environment.TickCount + TaskConv.Setup.Pre[(int)TaskConv.EPara.TimeOut];
-                                    while (true)
-                                    {
-                                        if (!TaskConv.In.SensPsnt) break;
-                                        Thread.Sleep(5);
-                                        if (Environment.TickCount >= TOut)
-                                        {
-                                            Msg MsgBox = new Msg();
-                                            EMsgRes MsgRes = MsgBox.Show(Messages.CONV_SMEMA_LEFT_BOARD_OUT_TIMEOUT, "", EMsgBtn.smbRetry_Stop);
-                                            switch (MsgRes)
-                                            {
-                                                case EMsgRes.smrRetry: goto _Retry;
-                                                case EMsgRes.smrStop:
-                                                    {
-                                                        TaskConv.Status = TaskConv.EConvStatus.Stop;
-                                                        return;
-                                                    }
-                                            }
-                                        }
-                                    }
-                                }
-                            });
-                        }
-                        catch (Exception ex)
-                        {
-                            Msg MsgBox = new Msg();
-                            MsgBox.Show(Messages.CONV_EX_ERR, MethodBase.GetCurrentMethod().Name.ToString() + " " + ex.Message.ToString());
-                        }
-                        finally
-                        {
-                        }
-                        break;
-                    }
-            }
-        }
 
         private void btn_DL_SendBoard_Click(object sender, EventArgs e)
         {
             switch (TaskConv.RightMode)
             {
                 case TaskConv.ERightMode.Smema:
-                case TaskConv.ERightMode.Smema_SmemaLeft:
-                case TaskConv.ERightMode.SmemaBiDirection:
                     {
                         try
                         {
@@ -604,45 +538,6 @@ namespace NDispWin
                                     TaskConv.Out.Smema_DO_BdReady = false;
                                     if (!TaskConv.Out.DL_WaitMcNotReady()) return;
                                 }
-                            });
-                        }
-                        catch (Exception ex)
-                        {
-                            Msg MsgBox = new Msg();
-                            MsgBox.Show(Messages.CONV_EX_ERR, MethodBase.GetCurrentMethod().Name.ToString() + " " + ex.Message.ToString());
-                        }
-                        finally
-                        {
-                        }
-                        break;
-                    }
-            }
-        }
-        private void btn_DL_RecvBoard_Click(object sender, EventArgs e)
-        {
-            switch (TaskConv.RightMode)
-            {
-                case TaskConv.ERightMode.Smema_SmemaLeft:
-                case TaskConv.ERightMode.SmemaBiDirection:
-                    {
-                        try
-                        {
-                            Task.Run(() =>
-                            {
-                                TaskConv.Out.Smema2_DO_McReady = true;
-
-                                Stopwatch sw = Stopwatch.StartNew();
-                                while (!TaskConv.Out.Smema2_DI_BdReady)
-                                {
-                                    if (sw.Elapsed.TotalSeconds >= 10)
-                                    {
-                                        TaskConv.Out.Smema2_DO_McReady = false;
-                                        return;
-                                    }
-                                    Thread.Sleep(5);
-                                }
-
-                                TaskConv.Run_ReverseMoveIn();
                             });
                         }
                         catch (Exception ex)
@@ -694,14 +589,6 @@ namespace NDispWin
         {
             TaskConv.In.Smema_Emulate_DI_BdReady = false;
         }
-        private void lblLeftSmema2McReady_MouseDown(object sender, MouseEventArgs e)
-        {
-            TaskConv.In.Smema2_Emulate_DI_McReady = true;
-        }
-        private void lblLeftSmema2McReady_MouseUp(object sender, MouseEventArgs e)
-        {
-            TaskConv.In.Smema2_Emulate_DI_McReady = false;
-        }
 
         private void lbl_RightSmemaMcReady_MouseDown(object sender, MouseEventArgs e)
         {
@@ -711,15 +598,5 @@ namespace NDispWin
         {
             TaskConv.Out.Smema_Emulate_DI_McReady = false;
         }
-        private void lblRightSmema2BdReady_MouseDown(object sender, MouseEventArgs e)
-        {
-            TaskConv.Out.Smema2_Emulate_DI_BdReady = true;
-        }
-        private void lblRightSmema2BdReady_MouseUp(object sender, MouseEventArgs e)
-        {
-            TaskConv.Out.Smema2_Emulate_DI_BdReady = false;
-        }
-
-
     }
 }

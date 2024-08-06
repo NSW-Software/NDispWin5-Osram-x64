@@ -615,7 +615,7 @@ namespace NDispWin
                                 if (!isFilling) isFilling = TaskDisp.IsFilling();
                                 //isFilling = TaskDisp.IsFilling();
                                 //TaskDisp.Thread_CheckIsFilling_Run(b_Head1Run, b_Head2Run);
-                                //Thread.Sleep(500);
+                                Thread.Sleep(100);
                                 //TaskDisp.Thread_CheckIsFilling_Run(b_Head1Run, b_Head2Run);
                                 //if (!isFilling) isFilling = TaskDisp.IsFilling();
                             }

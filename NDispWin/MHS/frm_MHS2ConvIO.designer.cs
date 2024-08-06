@@ -44,8 +44,6 @@
             this.btn_Pos_SvLifterUp = new System.Windows.Forms.Button();
             this.lbl_Pos_SensPsnt = new System.Windows.Forms.Label();
             this.btn_Pos_SvStopperUp = new System.Windows.Forms.Button();
-            this.btnSmema2_McReady = new System.Windows.Forms.Button();
-            this.lblSmema2_BdReady = new System.Windows.Forms.Label();
             this.lbl_Pre_HeaterAlm = new System.Windows.Forms.Label();
             this.lbl_Pro_HeaterAlm = new System.Windows.Forms.Label();
             this.lbl_Out_SensLFPsnt = new System.Windows.Forms.Label();
@@ -68,7 +66,6 @@
             this.btn_Fwd = new System.Windows.Forms.Button();
             this.lblRightSmema_McReady = new System.Windows.Forms.Label();
             this.btn_TL_Green = new System.Windows.Forms.Button();
-            this.lblSmema2_McReady = new System.Windows.Forms.Label();
             this.lblLeftSmema_BdReady = new System.Windows.Forms.Label();
             this.btn_TL_Buzzer = new System.Windows.Forms.Button();
             this.btn_Pro_SvStopperUp = new System.Windows.Forms.Button();
@@ -106,7 +103,6 @@
             this.btn_Pro_SvPrecisorExt = new System.Windows.Forms.Button();
             this.btn_Pre_SvVac = new System.Windows.Forms.Button();
             this.lbl_Pro_SensLifterUp = new System.Windows.Forms.Label();
-            this.btnSmema2_BdReady = new System.Windows.Forms.Button();
             this.btnLeftSmema_McReady = new System.Windows.Forms.Button();
             this.lbl_Pro_SensLifterDn = new System.Windows.Forms.Label();
             this.btnRightSmema_BdReady = new System.Windows.Forms.Button();
@@ -216,8 +212,6 @@
             this.tPage_Conv1.Controls.Add(this.btn_Pos_SvLifterUp);
             this.tPage_Conv1.Controls.Add(this.lbl_Pos_SensPsnt);
             this.tPage_Conv1.Controls.Add(this.btn_Pos_SvStopperUp);
-            this.tPage_Conv1.Controls.Add(this.btnSmema2_McReady);
-            this.tPage_Conv1.Controls.Add(this.lblSmema2_BdReady);
             this.tPage_Conv1.Controls.Add(this.lbl_Pre_HeaterAlm);
             this.tPage_Conv1.Controls.Add(this.lbl_Pro_HeaterAlm);
             this.tPage_Conv1.Controls.Add(this.lbl_Out_SensLFPsnt);
@@ -229,7 +223,6 @@
             this.tPage_Conv1.Controls.Add(this.groupBox1);
             this.tPage_Conv1.Controls.Add(this.lblRightSmema_McReady);
             this.tPage_Conv1.Controls.Add(this.btn_TL_Green);
-            this.tPage_Conv1.Controls.Add(this.lblSmema2_McReady);
             this.tPage_Conv1.Controls.Add(this.lblLeftSmema_BdReady);
             this.tPage_Conv1.Controls.Add(this.btn_TL_Buzzer);
             this.tPage_Conv1.Controls.Add(this.btn_Pro_SvStopperUp);
@@ -267,17 +260,16 @@
             this.tPage_Conv1.Controls.Add(this.btn_Pro_SvPrecisorExt);
             this.tPage_Conv1.Controls.Add(this.btn_Pre_SvVac);
             this.tPage_Conv1.Controls.Add(this.lbl_Pro_SensLifterUp);
-            this.tPage_Conv1.Controls.Add(this.btnSmema2_BdReady);
             this.tPage_Conv1.Controls.Add(this.btnLeftSmema_McReady);
             this.tPage_Conv1.Controls.Add(this.lbl_Pro_SensLifterDn);
             this.tPage_Conv1.Controls.Add(this.btnRightSmema_BdReady);
             this.tPage_Conv1.Controls.Add(this.lbl_Pro_SensStopperUp);
             this.tPage_Conv1.Controls.Add(this.lbl_Pro_VacSw);
             this.tPage_Conv1.Controls.Add(this.btn_Pro_SvVac);
-            this.tPage_Conv1.Location = new System.Drawing.Point(4, 23);
+            this.tPage_Conv1.Location = new System.Drawing.Point(4, 27);
             this.tPage_Conv1.Name = "tPage_Conv1";
             this.tPage_Conv1.Padding = new System.Windows.Forms.Padding(3);
-            this.tPage_Conv1.Size = new System.Drawing.Size(760, 482);
+            this.tPage_Conv1.Size = new System.Drawing.Size(760, 478);
             this.tPage_Conv1.TabIndex = 0;
             this.tPage_Conv1.Text = "Conv1";
             this.tPage_Conv1.UseVisualStyleBackColor = true;
@@ -386,33 +378,6 @@
             this.btn_Pos_SvStopperUp.Click += new System.EventHandler(this.btn_Pos_SvStopperUp_Click);
             this.btn_Pos_SvStopperUp.MouseHover += new System.EventHandler(this.controlIO_MouseHover);
             // 
-            // btnSmema2_McReady
-            // 
-            this.btnSmema2_McReady.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSmema2_McReady.Location = new System.Drawing.Point(538, 344);
-            this.btnSmema2_McReady.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.btnSmema2_McReady.Name = "btnSmema2_McReady";
-            this.btnSmema2_McReady.Size = new System.Drawing.Size(100, 23);
-            this.btnSmema2_McReady.TabIndex = 424;
-            this.btnSmema2_McReady.Text = "Smema2_McReady";
-            this.btnSmema2_McReady.UseVisualStyleBackColor = true;
-            this.btnSmema2_McReady.Click += new System.EventHandler(this.btnSmema2_McReady_Click);
-            this.btnSmema2_McReady.MouseHover += new System.EventHandler(this.controlIO_MouseHover);
-            // 
-            // lblSmema2_BdReady
-            // 
-            this.lblSmema2_BdReady.AutoEllipsis = true;
-            this.lblSmema2_BdReady.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblSmema2_BdReady.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSmema2_BdReady.Location = new System.Drawing.Point(538, 318);
-            this.lblSmema2_BdReady.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.lblSmema2_BdReady.Name = "lblSmema2_BdReady";
-            this.lblSmema2_BdReady.Size = new System.Drawing.Size(100, 23);
-            this.lblSmema2_BdReady.TabIndex = 423;
-            this.lblSmema2_BdReady.Text = "Smema2_BdReady";
-            this.lblSmema2_BdReady.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblSmema2_BdReady.MouseHover += new System.EventHandler(this.controlIO_MouseHover);
-            // 
             // lbl_Pre_HeaterAlm
             // 
             this.lbl_Pre_HeaterAlm.AutoEllipsis = true;
@@ -480,7 +445,7 @@
             this.groupBox3.Location = new System.Drawing.Point(277, 389);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.groupBox3.Size = new System.Drawing.Size(479, 69);
+            this.groupBox3.Size = new System.Drawing.Size(479, 73);
             this.groupBox3.TabIndex = 418;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Conveyor";
@@ -629,7 +594,7 @@
             this.groupBox1.Location = new System.Drawing.Point(10, 389);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.groupBox1.Size = new System.Drawing.Size(257, 69);
+            this.groupBox1.Size = new System.Drawing.Size(257, 73);
             this.groupBox1.TabIndex = 131;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Conveyor";
@@ -712,20 +677,6 @@
             this.btn_TL_Green.UseVisualStyleBackColor = true;
             this.btn_TL_Green.Click += new System.EventHandler(this.btn_TL_Green_Click);
             this.btn_TL_Green.MouseHover += new System.EventHandler(this.controlIO_MouseHover);
-            // 
-            // lblSmema2_McReady
-            // 
-            this.lblSmema2_McReady.AutoEllipsis = true;
-            this.lblSmema2_McReady.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblSmema2_McReady.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSmema2_McReady.Location = new System.Drawing.Point(114, 318);
-            this.lblSmema2_McReady.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.lblSmema2_McReady.Name = "lblSmema2_McReady";
-            this.lblSmema2_McReady.Size = new System.Drawing.Size(100, 23);
-            this.lblSmema2_McReady.TabIndex = 376;
-            this.lblSmema2_McReady.Text = "Smema2_McReady";
-            this.lblSmema2_McReady.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblSmema2_McReady.MouseHover += new System.EventHandler(this.controlIO_MouseHover);
             // 
             // lblLeftSmema_BdReady
             // 
@@ -1209,19 +1160,6 @@
             this.lbl_Pro_SensLifterUp.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lbl_Pro_SensLifterUp.MouseHover += new System.EventHandler(this.controlIO_MouseHover);
             // 
-            // btnSmema2_BdReady
-            // 
-            this.btnSmema2_BdReady.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSmema2_BdReady.Location = new System.Drawing.Point(114, 344);
-            this.btnSmema2_BdReady.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.btnSmema2_BdReady.Name = "btnSmema2_BdReady";
-            this.btnSmema2_BdReady.Size = new System.Drawing.Size(100, 23);
-            this.btnSmema2_BdReady.TabIndex = 396;
-            this.btnSmema2_BdReady.Text = "Smema2_BdReady";
-            this.btnSmema2_BdReady.UseVisualStyleBackColor = true;
-            this.btnSmema2_BdReady.Click += new System.EventHandler(this.btnSmema2_BdReady_Click);
-            this.btnSmema2_BdReady.MouseHover += new System.EventHandler(this.controlIO_MouseHover);
-            // 
             // btnLeftSmema_McReady
             // 
             this.btnLeftSmema_McReady.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -1318,10 +1256,10 @@
             this.tPage_Conv2.Controls.Add(this.lbl_Pos2_SensPsnt);
             this.tPage_Conv2.Controls.Add(this.lbl_Out2_SensPsnt);
             this.tPage_Conv2.Controls.Add(this.btn_Pos2_SvStopperUp);
-            this.tPage_Conv2.Location = new System.Drawing.Point(4, 22);
+            this.tPage_Conv2.Location = new System.Drawing.Point(4, 25);
             this.tPage_Conv2.Name = "tPage_Conv2";
             this.tPage_Conv2.Padding = new System.Windows.Forms.Padding(3);
-            this.tPage_Conv2.Size = new System.Drawing.Size(760, 483);
+            this.tPage_Conv2.Size = new System.Drawing.Size(760, 480);
             this.tPage_Conv2.TabIndex = 1;
             this.tPage_Conv2.Text = "Conv2";
             this.tPage_Conv2.UseVisualStyleBackColor = true;
@@ -1373,7 +1311,7 @@
             this.groupBox2.Controls.Add(this.btn_ConvFwdFast);
             this.groupBox2.Location = new System.Drawing.Point(6, 318);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(257, 72);
+            this.groupBox2.Size = new System.Drawing.Size(257, 76);
             this.groupBox2.TabIndex = 437;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Conveyor";
@@ -1727,10 +1665,6 @@
         private System.Windows.Forms.Label lbl_In_SensLFPsnt;
         private System.Windows.Forms.Label lbl_Pre_HeaterAlm;
         private System.Windows.Forms.Label lbl_Pro_HeaterAlm;
-        private System.Windows.Forms.Button btnSmema2_McReady;
-        private System.Windows.Forms.Label lblSmema2_BdReady;
-        private System.Windows.Forms.Label lblSmema2_McReady;
-        private System.Windows.Forms.Button btnSmema2_BdReady;
         private System.Windows.Forms.Label lbl_Pos_VacSw;
         private System.Windows.Forms.Button btn_Pos_SvVac;
         private System.Windows.Forms.Label lbl_Pos_SensStopperUp;

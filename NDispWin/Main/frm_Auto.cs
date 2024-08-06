@@ -921,9 +921,7 @@ namespace NDispWin
             await Task.Run(() => Task.WaitAll(taskConv, taskDisp));
 
             TaskConv.In.Smema_DO_McReady = false;
-            TaskConv.In.Smema2_DO_BdReady = false;
             TaskConv.Out.Smema_DO_BdReady = false;
-            TaskConv.Out.Smema2_DO_McReady = false;
 
             if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)
             {
@@ -1040,9 +1038,7 @@ namespace NDispWin
             await Task.Run(() => Task.WaitAll(taskConv, taskDisp));
 
             TaskConv.In.Smema_DO_McReady = false;
-            TaskConv.In.Smema2_DO_BdReady = false;
             TaskConv.Out.Smema_DO_BdReady = false;
-            TaskConv.Out.Smema2_DO_McReady = false;
 
             if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)
             {

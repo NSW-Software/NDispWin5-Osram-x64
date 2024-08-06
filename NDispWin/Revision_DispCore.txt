@@ -7,6 +7,11 @@ Todo
 - Integrate LEDStudio
 
 
+Ver 6.0.8.9 - KN - 20240806 - Released to OsWuxi - Gitted
+[Changes] Removed Smema2 feature, TaskMHS.bEnableAutoWaitReturn, bWaitingBoardReverse, WaitBoardReverse, Run_ReverseMoveIn(), Run_ReverseSendOut(), bEnableAutoReverseSendout, bWaitingBoardReverseSendout, WaitBoardReverseSend and dependencies, not used.
+[Changes] Removed TaskConv.Buf1 and Buf2 support. Not used, simplify the flow.
+[Changes] Removed enum Disp1, Disp2, Disp12 from EPreStType, EProStType. Not used, simplify the flow.
+[Changes] REfactor TaskMHS.Run to support Pos Station
 Ver 6.0.7.15 - KN - 20240731 - Released to OsWuxi/OsPen - Gitted
 [BugFix] frm_DispCore_JogGantryVision, update show reticle.
 [Improve] AutoIdle execution added door check and lock.

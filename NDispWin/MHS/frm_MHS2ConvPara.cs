@@ -16,6 +16,7 @@ namespace NDispWin
             Conv,
             Pre,
             Pro,
+            Pos,
             Out,
             Conv2,
             Pos2,
@@ -36,6 +37,11 @@ namespace NDispWin
             for (int i = 0; i < Enum.GetNames(typeof(TaskConv.EProStType)).Length; i++)
             {
                 combox_ProStType.Items.Add(((TaskConv.EProStType)i).ToString());
+            }
+            cbxPosStType.Items.Clear();
+            for (int i = 0; i < Enum.GetNames(typeof(TaskConv.EPosStType)).Length; i++)
+            {
+                cbxPosStType.Items.Add(((TaskConv.EPosStType)i).ToString());
             }
 
             //cbox_Conv2.Visible = TaskConv.PostEnable;
@@ -59,9 +65,14 @@ namespace NDispWin
 
             combox_PreStType.SelectedIndex = (int)TaskConv.Pre.StType;
             combox_ProStType.SelectedIndex = (int)TaskConv.Pro.StType;
+            cbxPosStType.SelectedIndex = (int)TaskConv.Pos.StType;
 
             UpdateDisplay();
             UpdateDG();
+        }
+        private void frm_ConvPara_Activated(object sender, EventArgs e)
+        {
+            UpdateDisplay();
         }
 
         private void tmr_Display_Tick(object sender, EventArgs e)
@@ -139,6 +150,7 @@ namespace NDispWin
                     break;
                 case TSelectedStation.Pre:
                 case TSelectedStation.Pro:
+                case TSelectedStation.Pos:
                 case TSelectedStation.Pos2:
                     dg_Param.RowCount = TaskConv.ST_PARA_COUNT;
                     for (int i = 0; i < dg_Param.RowCount; i++)
@@ -150,6 +162,8 @@ namespace NDispWin
                                 dg_Param.Rows[i].Cells[1].Value = TaskConv.Setup.Pre[i];
                             if (SelectedStation == TSelectedStation.Pro)
                                 dg_Param.Rows[i].Cells[1].Value = TaskConv.Setup.Pro[i];
+                            if (SelectedStation == TSelectedStation.Pos)
+                                dg_Param.Rows[i].Cells[1].Value = TaskConv.Setup.Pos[i];
                             if (SelectedStation == TSelectedStation.Pos2)
                                 dg_Param.Rows[i].Cells[1].Value = TaskConv.Setup.Pos2[i];
                         }
@@ -207,7 +221,6 @@ namespace NDispWin
             UpdateDG();
             dg_Param.Focus();
         }
-
         private void rbtn_PreStation_Click(object sender, EventArgs e)
         {
             SelectedStation = TSelectedStation.Pre;
@@ -215,7 +228,6 @@ namespace NDispWin
             UpdateDG();
             dg_Param.Focus();
         }
-
         private void rbtn_ProStation_Click(object sender, EventArgs e)
         {
             SelectedStation = TSelectedStation.Pro;
@@ -223,12 +235,6 @@ namespace NDispWin
             UpdateDG();
             dg_Param.Focus();
         }
-
-        private void rbtn_PosStation_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void rbtn_PosStation_Click(object sender, EventArgs e)
         {
             SelectedStation = TSelectedStation.Pos2;
@@ -361,6 +367,10 @@ namespace NDispWin
                     UC.AdjustExec("Conv, " + TaskConv.TParaStr[rIdx], ref TaskConv.Setup.Pro[rIdx],
                                                   TaskConv.TParaMin[rIdx],
                                                   TaskConv.TParaMax[rIdx]); break;
+                case TSelectedStation.Pos:
+                    UC.AdjustExec("Conv, " + TaskConv.TParaStr[rIdx], ref TaskConv.Setup.Pos[rIdx],
+                                                  TaskConv.TParaMin[rIdx],
+                                                  TaskConv.TParaMax[rIdx]); break;
                 case TSelectedStation.Out:
                     UC.AdjustExec("Conv, " + TaskConv.TOutParaStr[rIdx], ref TaskConv.Setup.Out[rIdx],
                                                   TaskConv.TOutParaMin[rIdx],
@@ -415,6 +425,11 @@ namespace NDispWin
 
             TaskConv.Pro.StType = (TaskConv.EProStType)combox_ProStType.SelectedIndex;
         }
+        private void cbxPosStType_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            TaskConv.Pos.StType = (TaskConv.EPosStType)cbxPosStType.SelectedIndex;
+            UpdateDisplay();
+        }
 
         private void cbox_Buf1_Click(object sender, EventArgs e)
         {
@@ -427,7 +442,6 @@ namespace NDispWin
 
             UpdateDisplay();
         }
-
         private void cbox_Buffer2_Click(object sender, EventArgs e)
         {
             if (TaskConv.Buf2.StType == TaskConv.EBufStType.None)
@@ -440,109 +454,6 @@ namespace NDispWin
              UpdateDisplay();
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void frm_ConvPara_Activated(object sender, EventArgs e)
-        {
-            UpdateDisplay();
-        }
-
-        private void combox_PreStType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void rbtn_ProStation_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void rbtn_Out2Station_Click(object sender, EventArgs e)
-        {
-            SelectedStation = TSelectedStation.Out2;
-            UpdateDisplay();
-            UpdateDG();
-            dg_Param.Focus();
-
-        }
-
-        private void rbtn_Conv2_Click(object sender, EventArgs e)
-        {
-            SelectedStation = TSelectedStation.Conv2;
-            UpdateDisplay();
-            UpdateDG();
-            dg_Param.Focus();
-        }
-
-        private void cbox_Conv_CheckStateChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void cbox_Conv_Click(object sender, EventArgs e)
-        {
-            SelectedStation = TSelectedStation.Conv;
-            UpdateDisplay();
-            UpdateDG();
-            dg_Param.Focus();
-        }
-
-        private void cbox_Conv2_Click(object sender, EventArgs e)
-        {
-            SelectedStation = TSelectedStation.Conv2;
-            UpdateDisplay();
-            UpdateDG();
-            dg_Param.Focus();
-        }
-
-        private void cbox_PreStation_Click(object sender, EventArgs e)
-        {
-            SelectedStation = TSelectedStation.Pre;
-            UpdateDisplay();
-            UpdateDG();
-            dg_Param.Focus();
-        }
-
-        private void cbox_ProStation_Click(object sender, EventArgs e)
-        {
-            SelectedStation = TSelectedStation.Pro;
-            UpdateDisplay();
-            UpdateDG();
-            dg_Param.Focus();
-        }
-
-        private void cbox_OutStation_Click(object sender, EventArgs e)
-        {
-            SelectedStation = TSelectedStation.Out;
-            UpdateDisplay();
-            UpdateDG();
-            dg_Param.Focus();
-        }
-
-        private void cbox_Pos2Station_Click(object sender, EventArgs e)
-        {
-            SelectedStation = TSelectedStation.Pos2;
-            UpdateDisplay();
-            UpdateDG();
-            dg_Param.Focus();
-        }
-
-        private void cbox_Out2Station_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void cbox_Out2Station_Click_1(object sender, EventArgs e)
-        {
-            SelectedStation = TSelectedStation.Out2;
-            UpdateDisplay();
-            UpdateDG();
-            dg_Param.Focus();
-        }
-
         private void btn_Conv_Click(object sender, EventArgs e)
         {
             SelectedStation = TSelectedStation.Conv;
@@ -550,7 +461,6 @@ namespace NDispWin
             UpdateDG();
             dg_Param.Focus();
         }
-
         private void btn_Conv2_Click(object sender, EventArgs e)
         {
             SelectedStation = TSelectedStation.Conv2;
@@ -558,7 +468,6 @@ namespace NDispWin
             UpdateDG();
             dg_Param.Focus();
         }
-
         private void btn_PreStation_Click(object sender, EventArgs e)
         {
             SelectedStation = TSelectedStation.Pre;
@@ -566,7 +475,6 @@ namespace NDispWin
             UpdateDG();
             dg_Param.Focus();
         }
-
         private void btn_ProStation_Click(object sender, EventArgs e)
         {
             SelectedStation = TSelectedStation.Pro;
@@ -574,7 +482,13 @@ namespace NDispWin
             UpdateDG();
             dg_Param.Focus();
         }
-
+        private void btnPosStation_Click(object sender, EventArgs e)
+        {
+            SelectedStation = TSelectedStation.Pos;
+            UpdateDisplay();
+            UpdateDG();
+            dg_Param.Focus();
+        }
         private void btn_OutStation_Click(object sender, EventArgs e)
         {
             SelectedStation = TSelectedStation.Out;
@@ -590,7 +504,6 @@ namespace NDispWin
             UpdateDG();
             dg_Param.Focus();
         }
-
         private void btn_Out2Station_Click(object sender, EventArgs e)
         {
             SelectedStation = TSelectedStation.Out2;
@@ -598,7 +511,5 @@ namespace NDispWin
             UpdateDG();
             dg_Param.Focus();
         }
-
-
     }
 }

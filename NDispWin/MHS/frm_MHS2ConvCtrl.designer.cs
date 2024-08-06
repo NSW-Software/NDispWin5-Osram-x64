@@ -54,7 +54,8 @@
             this.lbl_Buf1St = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.lbl_InStatus = new System.Windows.Forms.Label();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.gbxPos = new System.Windows.Forms.GroupBox();
+            this.btnLoadPos = new System.Windows.Forms.Button();
             this.lbl_PosSt = new System.Windows.Forms.Label();
             this.lbl_Note = new System.Windows.Forms.Label();
             this.lbl_RightSmemaMcReady = new System.Windows.Forms.Label();
@@ -65,8 +66,6 @@
             this.gboxSmemaRightOut = new System.Windows.Forms.GroupBox();
             this.btn_DL_SendBoard = new System.Windows.Forms.Button();
             this.lbl_RightSmemaBdReady = new System.Windows.Forms.Label();
-            this.btn_DL_RecvBoard = new System.Windows.Forms.Button();
-            this.btn_WaitReturn = new System.Windows.Forms.Button();
             this.pnl_PostStation = new System.Windows.Forms.Panel();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.lbl_In2St = new System.Windows.Forms.Label();
@@ -76,14 +75,6 @@
             this.btn_Unload2 = new System.Windows.Forms.Button();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.lbl_Out2St = new System.Windows.Forms.Label();
-            this.lblLeftSmema2BdReady = new System.Windows.Forms.Label();
-            this.btnULSendBoard = new System.Windows.Forms.Button();
-            this.lblLeftSmema2McReady = new System.Windows.Forms.Label();
-            this.gboxSmemaLeftOut = new System.Windows.Forms.GroupBox();
-            this.gboxSmemaRightIn = new System.Windows.Forms.GroupBox();
-            this.lblRightSmema2McReady = new System.Windows.Forms.Label();
-            this.lblRightSmema2BdReady = new System.Windows.Forms.Label();
-            this.btnWaitReverseSend = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.gbox_Pro.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -91,15 +82,13 @@
             this.gbox_Buf2.SuspendLayout();
             this.gbox_Buf1.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            this.groupBox3.SuspendLayout();
+            this.gbxPos.SuspendLayout();
             this.gboxSmemaLeftIn.SuspendLayout();
             this.gboxSmemaRightOut.SuspendLayout();
             this.pnl_PostStation.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
-            this.gboxSmemaLeftOut.SuspendLayout();
-            this.gboxSmemaRightIn.SuspendLayout();
             this.SuspendLayout();
             // 
             // lbl_OutSt
@@ -158,7 +147,7 @@
             this.gbox_Pro.Controls.Add(this.btn_LoadPro);
             this.gbox_Pro.Location = new System.Drawing.Point(454, 76);
             this.gbox_Pro.Name = "gbox_Pro";
-            this.gbox_Pro.Size = new System.Drawing.Size(100, 106);
+            this.gbox_Pro.Size = new System.Drawing.Size(100, 110);
             this.gbox_Pro.TabIndex = 323;
             this.gbox_Pro.TabStop = false;
             this.gbox_Pro.Text = "Pro";
@@ -184,7 +173,7 @@
             this.groupBox4.Controls.Add(this.lbl_ConvSt);
             this.groupBox4.Location = new System.Drawing.Point(348, 8);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(100, 61);
+            this.groupBox4.Size = new System.Drawing.Size(100, 65);
             this.groupBox4.TabIndex = 324;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Conveyor";
@@ -289,7 +278,7 @@
             this.gbox_Pre.Controls.Add(this.btn_LoadPre);
             this.gbox_Pre.Location = new System.Drawing.Point(348, 75);
             this.gbox_Pre.Name = "gbox_Pre";
-            this.gbox_Pre.Size = new System.Drawing.Size(100, 107);
+            this.gbox_Pre.Size = new System.Drawing.Size(100, 111);
             this.gbox_Pre.TabIndex = 334;
             this.gbox_Pre.TabStop = false;
             this.gbox_Pre.Text = "Pre";
@@ -339,7 +328,7 @@
             this.gbox_Buf2.Controls.Add(this.btn_LoadBuf2);
             this.gbox_Buf2.Location = new System.Drawing.Point(242, 76);
             this.gbox_Buf2.Name = "gbox_Buf2";
-            this.gbox_Buf2.Size = new System.Drawing.Size(100, 106);
+            this.gbox_Buf2.Size = new System.Drawing.Size(100, 110);
             this.gbox_Buf2.TabIndex = 337;
             this.gbox_Buf2.TabStop = false;
             this.gbox_Buf2.Text = "Buf2";
@@ -364,7 +353,7 @@
             this.gbox_Buf1.Controls.Add(this.btn_LoadBuf1);
             this.gbox_Buf1.Location = new System.Drawing.Point(136, 75);
             this.gbox_Buf1.Name = "gbox_Buf1";
-            this.gbox_Buf1.Size = new System.Drawing.Size(100, 107);
+            this.gbox_Buf1.Size = new System.Drawing.Size(100, 111);
             this.gbox_Buf1.TabIndex = 335;
             this.gbox_Buf1.TabStop = false;
             this.gbox_Buf1.Text = "Buf1";
@@ -402,19 +391,31 @@
             this.lbl_InStatus.Text = "Status";
             this.lbl_InStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // groupBox3
+            // gbxPos
             // 
-            this.groupBox3.AccessibleDescription = "";
-            this.groupBox3.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.groupBox3.AutoSize = true;
-            this.groupBox3.Controls.Add(this.lbl_PosSt);
-            this.groupBox3.Location = new System.Drawing.Point(560, 75);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(100, 107);
-            this.groupBox3.TabIndex = 338;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Pos";
-            this.groupBox3.Visible = false;
+            this.gbxPos.AccessibleDescription = "";
+            this.gbxPos.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.gbxPos.AutoSize = true;
+            this.gbxPos.Controls.Add(this.btnLoadPos);
+            this.gbxPos.Controls.Add(this.lbl_PosSt);
+            this.gbxPos.Location = new System.Drawing.Point(560, 75);
+            this.gbxPos.Name = "gbxPos";
+            this.gbxPos.Size = new System.Drawing.Size(100, 111);
+            this.gbxPos.TabIndex = 338;
+            this.gbxPos.TabStop = false;
+            this.gbxPos.Text = "Pos";
+            // 
+            // btnLoadPos
+            // 
+            this.btnLoadPos.AccessibleDescription = "Load Pos";
+            this.btnLoadPos.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.btnLoadPos.Location = new System.Drawing.Point(6, 46);
+            this.btnLoadPos.Name = "btnLoadPos";
+            this.btnLoadPos.Size = new System.Drawing.Size(88, 40);
+            this.btnLoadPos.TabIndex = 330;
+            this.btnLoadPos.Text = "Load Pos";
+            this.btnLoadPos.UseVisualStyleBackColor = true;
+            this.btnLoadPos.Click += new System.EventHandler(this.btnLoadPos_Click);
             // 
             // lbl_PosSt
             // 
@@ -509,7 +510,7 @@
             this.gboxSmemaRightOut.Location = new System.Drawing.Point(666, 188);
             this.gboxSmemaRightOut.Name = "gboxSmemaRightOut";
             this.gboxSmemaRightOut.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.gboxSmemaRightOut.Size = new System.Drawing.Size(100, 134);
+            this.gboxSmemaRightOut.Size = new System.Drawing.Size(100, 138);
             this.gboxSmemaRightOut.TabIndex = 347;
             this.gboxSmemaRightOut.TabStop = false;
             this.gboxSmemaRightOut.Text = "Smema Right (Bd Out)";
@@ -534,29 +535,6 @@
             this.lbl_RightSmemaBdReady.TabIndex = 349;
             this.lbl_RightSmemaBdReady.Text = "Bd Rdy";
             this.lbl_RightSmemaBdReady.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // btn_DL_RecvBoard
-            // 
-            this.btn_DL_RecvBoard.AccessibleDescription = "";
-            this.btn_DL_RecvBoard.Location = new System.Drawing.Point(6, 88);
-            this.btn_DL_RecvBoard.Name = "btn_DL_RecvBoard";
-            this.btn_DL_RecvBoard.Size = new System.Drawing.Size(88, 28);
-            this.btn_DL_RecvBoard.TabIndex = 348;
-            this.btn_DL_RecvBoard.Text = "Recv Bd";
-            this.btn_DL_RecvBoard.UseVisualStyleBackColor = true;
-            this.btn_DL_RecvBoard.Click += new System.EventHandler(this.btn_DL_RecvBoard_Click);
-            // 
-            // btn_WaitReturn
-            // 
-            this.btn_WaitReturn.AccessibleDescription = "Wait Return";
-            this.btn_WaitReturn.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.btn_WaitReturn.Location = new System.Drawing.Point(454, 188);
-            this.btn_WaitReturn.Name = "btn_WaitReturn";
-            this.btn_WaitReturn.Size = new System.Drawing.Size(100, 40);
-            this.btn_WaitReturn.TabIndex = 349;
-            this.btn_WaitReturn.Text = "Wait Return";
-            this.btn_WaitReturn.UseVisualStyleBackColor = true;
-            this.btn_WaitReturn.Click += new System.EventHandler(this.btn_WaitReturn_Click);
             // 
             // pnl_PostStation
             // 
@@ -660,117 +638,15 @@
             this.lbl_Out2St.Text = "Status";
             this.lbl_Out2St.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // lblLeftSmema2BdReady
-            // 
-            this.lblLeftSmema2BdReady.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblLeftSmema2BdReady.Location = new System.Drawing.Point(6, 35);
-            this.lblLeftSmema2BdReady.Name = "lblLeftSmema2BdReady";
-            this.lblLeftSmema2BdReady.Size = new System.Drawing.Size(88, 25);
-            this.lblLeftSmema2BdReady.TabIndex = 352;
-            this.lblLeftSmema2BdReady.Text = "Bd Rdy";
-            this.lblLeftSmema2BdReady.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // btnULSendBoard
-            // 
-            this.btnULSendBoard.Location = new System.Drawing.Point(6, 88);
-            this.btnULSendBoard.Name = "btnULSendBoard";
-            this.btnULSendBoard.Size = new System.Drawing.Size(88, 28);
-            this.btnULSendBoard.TabIndex = 353;
-            this.btnULSendBoard.Text = "Send Bd";
-            this.btnULSendBoard.UseVisualStyleBackColor = true;
-            this.btnULSendBoard.Click += new System.EventHandler(this.btnULSendBoard_Click);
-            // 
-            // lblLeftSmema2McReady
-            // 
-            this.lblLeftSmema2McReady.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblLeftSmema2McReady.Location = new System.Drawing.Point(6, 60);
-            this.lblLeftSmema2McReady.Name = "lblLeftSmema2McReady";
-            this.lblLeftSmema2McReady.Size = new System.Drawing.Size(88, 25);
-            this.lblLeftSmema2McReady.TabIndex = 351;
-            this.lblLeftSmema2McReady.Text = "Mc Rdy";
-            this.lblLeftSmema2McReady.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblLeftSmema2McReady.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lblLeftSmema2McReady_MouseDown);
-            this.lblLeftSmema2McReady.MouseUp += new System.Windows.Forms.MouseEventHandler(this.lblLeftSmema2McReady_MouseUp);
-            // 
-            // gboxSmemaLeftOut
-            // 
-            this.gboxSmemaLeftOut.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.gboxSmemaLeftOut.Controls.Add(this.lblLeftSmema2McReady);
-            this.gboxSmemaLeftOut.Controls.Add(this.btnULSendBoard);
-            this.gboxSmemaLeftOut.Controls.Add(this.lblLeftSmema2BdReady);
-            this.gboxSmemaLeftOut.Location = new System.Drawing.Point(136, 188);
-            this.gboxSmemaLeftOut.Name = "gboxSmemaLeftOut";
-            this.gboxSmemaLeftOut.Size = new System.Drawing.Size(100, 134);
-            this.gboxSmemaLeftOut.TabIndex = 355;
-            this.gboxSmemaLeftOut.TabStop = false;
-            this.gboxSmemaLeftOut.Text = "Smema Left (Bd Out)";
-            // 
-            // gboxSmemaRightIn
-            // 
-            this.gboxSmemaRightIn.AccessibleDescription = "";
-            this.gboxSmemaRightIn.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.gboxSmemaRightIn.AutoSize = true;
-            this.gboxSmemaRightIn.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.gboxSmemaRightIn.Controls.Add(this.lblRightSmema2McReady);
-            this.gboxSmemaRightIn.Controls.Add(this.lblRightSmema2BdReady);
-            this.gboxSmemaRightIn.Controls.Add(this.btn_DL_RecvBoard);
-            this.gboxSmemaRightIn.Location = new System.Drawing.Point(560, 188);
-            this.gboxSmemaRightIn.Name = "gboxSmemaRightIn";
-            this.gboxSmemaRightIn.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.gboxSmemaRightIn.Size = new System.Drawing.Size(100, 134);
-            this.gboxSmemaRightIn.TabIndex = 356;
-            this.gboxSmemaRightIn.TabStop = false;
-            this.gboxSmemaRightIn.Text = "Smema Right (Bd In)";
-            // 
-            // lblRightSmema2McReady
-            // 
-            this.lblRightSmema2McReady.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblRightSmema2McReady.Location = new System.Drawing.Point(6, 59);
-            this.lblRightSmema2McReady.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.lblRightSmema2McReady.Name = "lblRightSmema2McReady";
-            this.lblRightSmema2McReady.Size = new System.Drawing.Size(88, 25);
-            this.lblRightSmema2McReady.TabIndex = 349;
-            this.lblRightSmema2McReady.Text = "Mc Rdy";
-            this.lblRightSmema2McReady.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblRightSmema2BdReady
-            // 
-            this.lblRightSmema2BdReady.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblRightSmema2BdReady.Location = new System.Drawing.Point(6, 35);
-            this.lblRightSmema2BdReady.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.lblRightSmema2BdReady.Name = "lblRightSmema2BdReady";
-            this.lblRightSmema2BdReady.Size = new System.Drawing.Size(88, 25);
-            this.lblRightSmema2BdReady.TabIndex = 345;
-            this.lblRightSmema2BdReady.Text = "Bd Rdy";
-            this.lblRightSmema2BdReady.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblRightSmema2BdReady.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lblRightSmema2BdReady_MouseDown);
-            this.lblRightSmema2BdReady.MouseUp += new System.Windows.Forms.MouseEventHandler(this.lblRightSmema2BdReady_MouseUp);
-            // 
-            // btnWaitReverseSend
-            // 
-            this.btnWaitReverseSend.AccessibleDescription = "Wait Reverse Send";
-            this.btnWaitReverseSend.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.btnWaitReverseSend.Location = new System.Drawing.Point(242, 188);
-            this.btnWaitReverseSend.Name = "btnWaitReverseSend";
-            this.btnWaitReverseSend.Size = new System.Drawing.Size(100, 40);
-            this.btnWaitReverseSend.TabIndex = 357;
-            this.btnWaitReverseSend.Text = "Wait Reverse Send";
-            this.btnWaitReverseSend.UseVisualStyleBackColor = true;
-            this.btnWaitReverseSend.Click += new System.EventHandler(this.btnWaitReverseSend_Click);
-            // 
             // frm_MHS2ConvCtrl
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(796, 351);
-            this.Controls.Add(this.btnWaitReverseSend);
-            this.Controls.Add(this.gboxSmemaRightIn);
-            this.Controls.Add(this.gboxSmemaLeftOut);
             this.Controls.Add(this.pnl_PostStation);
-            this.Controls.Add(this.btn_WaitReturn);
             this.Controls.Add(this.gboxSmemaRightOut);
             this.Controls.Add(this.gboxSmemaLeftIn);
             this.Controls.Add(this.lbl_Note);
-            this.Controls.Add(this.groupBox3);
+            this.Controls.Add(this.gbxPos);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.gbox_Buf1);
             this.Controls.Add(this.gbox_Buf2);
@@ -797,7 +673,7 @@
             this.gbox_Buf2.ResumeLayout(false);
             this.gbox_Buf1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
-            this.groupBox3.ResumeLayout(false);
+            this.gbxPos.ResumeLayout(false);
             this.gboxSmemaLeftIn.ResumeLayout(false);
             this.gboxSmemaRightOut.ResumeLayout(false);
             this.pnl_PostStation.ResumeLayout(false);
@@ -805,8 +681,6 @@
             this.groupBox7.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
-            this.gboxSmemaLeftOut.ResumeLayout(false);
-            this.gboxSmemaRightIn.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -839,15 +713,13 @@
         private System.Windows.Forms.Label lbl_Buf1St;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label lbl_InStatus;
-        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox gbxPos;
         private System.Windows.Forms.Label lbl_PosSt;
         private System.Windows.Forms.Label lbl_Note;
         private System.Windows.Forms.Label lbl_RightSmemaMcReady;
         private System.Windows.Forms.Label lblLeftSmemaBdReady;
         private System.Windows.Forms.GroupBox gboxSmemaLeftIn;
         private System.Windows.Forms.GroupBox gboxSmemaRightOut;
-        private System.Windows.Forms.Button btn_DL_RecvBoard;
-        private System.Windows.Forms.Button btn_WaitReturn;
         private System.Windows.Forms.Label lblLeftSmemaMcReady;
         private System.Windows.Forms.Label lbl_RightSmemaBdReady;
         private System.Windows.Forms.Button btn_UL_RecvBoard;
@@ -861,13 +733,6 @@
         private System.Windows.Forms.Button btn_LoadPos2;
         private System.Windows.Forms.Label lbl_In2St;
         private System.Windows.Forms.GroupBox groupBox7;
-        private System.Windows.Forms.Label lblLeftSmema2BdReady;
-        private System.Windows.Forms.Button btnULSendBoard;
-        private System.Windows.Forms.Label lblLeftSmema2McReady;
-        private System.Windows.Forms.GroupBox gboxSmemaLeftOut;
-        private System.Windows.Forms.GroupBox gboxSmemaRightIn;
-        private System.Windows.Forms.Label lblRightSmema2McReady;
-        private System.Windows.Forms.Label lblRightSmema2BdReady;
-        private System.Windows.Forms.Button btnWaitReverseSend;
+        private System.Windows.Forms.Button btnLoadPos;
     }
 }
