@@ -19,6 +19,17 @@ namespace NDispWin
         {
             InitializeComponent();
 
+            UpdateUI();
+        }
+
+        private void frm_ConvCtrl_Load(object sender, EventArgs e)
+        {
+            GControl.UpdateFormControl(this);
+            AppLanguage.Func2.UpdateText(this);
+        }
+
+        public void UpdateUI()
+        {
             pnl_PostStation.Visible = TaskConv.PostEnable;
             gbox_Buf1.Visible = TaskConv.Buf1.StType == TaskConv.EBufStType.Buffer;
             gbox_Buf2.Visible = TaskConv.Buf2.StType == TaskConv.EBufStType.Buffer;
@@ -27,12 +38,6 @@ namespace NDispWin
 
             gboxSmemaLeftIn.Visible = TaskConv.LeftMode == TaskConv.ELeftMode.Smema;
             gboxSmemaRightOut.Visible = TaskConv.RightMode == TaskConv.ERightMode.Smema;
-        }
-
-        private void frm_ConvCtrl_Load(object sender, EventArgs e)
-        {
-            GControl.UpdateFormControl(this);
-            AppLanguage.Func2.UpdateText(this);
         }
 
         private void UpdateDisplay()

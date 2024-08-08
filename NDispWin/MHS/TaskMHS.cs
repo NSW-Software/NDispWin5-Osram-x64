@@ -643,6 +643,7 @@ namespace NDispWin
             IniFile.WriteInteger(S, "Buf2_StType", (int)Buf2.StType);
             IniFile.WriteInteger(S, "Pre_StType", (int)Pre.StType);
             IniFile.WriteInteger(S, "Pro_StType", (int)Pro.StType);
+            IniFile.WriteInteger(S, "Pos_StType", (int)Pos.StType);
 
             S = "Option";
             IniFile.WriteBool(S, "EnableUnloadMsg", EnableUnloadMsg);
@@ -713,6 +714,7 @@ namespace NDispWin
             Buf2.StType = (EBufStType)IniFile.ReadInteger(S, "Buf2_StType", 0);
             Pre.StType = (EPreStType)IniFile.ReadInteger(S, "Pre_StType", (int)EPreStType.Buffer);
             Pro.StType = (EProStType)IniFile.ReadInteger(S, "Pro_StType", (int)EProStType.Disp);
+            Pos.StType = (EPosStType)IniFile.ReadInteger(S, "Pos_StType", (int)EProStType.None);
 
             S = "Option";
             EnableUnloadMsg = IniFile.ReadBool(S, "EnableUnloadMsg", false);
@@ -911,6 +913,7 @@ namespace NDispWin
                 SkipDisp = false;// CompleteProcess = false;
                 DispEndStop = false;// .EndBoard = false;
                                     //GDefine.AbortBoard = false;
+                ConvRun = false;
                 #endregion
 
                 #region Reset Outputs
@@ -4224,7 +4227,7 @@ namespace NDispWin
             try
             {
                 #region
-                if (Status != EConvStatus.Ready) return true;
+                if (!TaskConv.Ready) return true;
 
                 if (!TaskElev.Left.ReadyToSend)
                 {
@@ -4233,13 +4236,14 @@ namespace NDispWin
                     Event.DEBUG_INFO.Set("TaskElev.Left.RunLevel", "");
                 }
 
+                bool hold = false;
                 if (TaskElev.Left.ReadyToSend)
                 {
                     if (TaskConv.OutLevelQtyFollowIn && TaskElev.Left.b_MagChanged) return true;
 
                     if (TaskElev.Left.TaskRunKick == null || TaskElev.Left.TaskRunKick.Status != TaskStatus.Running)
                     {
-                        TaskElev.Left.TaskRunKick = Task.Run(() => { TaskElev.Left.RunKick(); });
+                        TaskElev.Left.TaskRunKick = Task.Run(() => { TaskElev.Left.RunKick(ref hold); });
 
                         while (true)
                         {
@@ -4249,7 +4253,7 @@ namespace NDispWin
 
                         while (true)
                         {
-                            if (TaskConv.In.SensPsnt) break;
+                            if (!hold && TaskConv.In.SensPsnt) break;
                             if (TaskElev.Left.TaskRunKick.Status != TaskStatus.Running) break;
                             Thread.Sleep(10);
                         }
@@ -6438,6 +6442,7 @@ namespace NDispWin
                     if (TaskElev.Left.Status == TaskElev.EElevStatus.Ready)
                     {
                         if (!TaskConv.PushIn()) return false;
+                        TaskElev.Left.TransferBusy = false;
                     }
                     TaskElev.Left.TransferBusy = false;
                 }
@@ -6495,6 +6500,7 @@ namespace NDispWin
                     if (TaskElev.Left.Status == TaskElev.EElevStatus.Ready)
                     {
                         if (!TaskConv.PushIn()) return false;
+                        TaskElev.Left.TransferBusy = false;
                     }
                     TaskElev.Left.TransferBusy = false;
                 }
@@ -6701,6 +6707,7 @@ namespace NDispWin
             return true;
         }
 
+        public static bool ConvRun = false;
         public static void Run()
         {
             string EMsg = "Run ";
@@ -7001,8 +7008,6 @@ namespace NDispWin
                         {
                             if (TaskConv.RightMode == TaskConv.ERightMode.ElevatorZ && !TaskElev.Right.ReadyToReceive) goto _End;
                             if (!MovePosToOut()) goto _End;
-
-                            if (!Run_MoveInTo(EStation.Pre)) goto _Stop;
                         }
                     }
                 }
@@ -9145,9 +9150,8 @@ namespace NDispWin
             }
 
             public enum EMethodResult { OK, Stop, Error }
-            public static EMethodResult PusherExt()
+            public static EMethodResult PusherExt(ref bool hold)
             {
-                //if (!PusherValid) { return true; }
                 if (!PusherValid) { return EMethodResult.OK; }
 
                 try
@@ -9304,13 +9308,26 @@ namespace NDispWin
                                                 PusherStop();
                                             }
                                             #endregion
+
+                                            hold = true;
+                                            //EMsgBtn msgBtn = EMsgBtn.smbRetry_Stop;
+                                            //if (TaskConv.In.SensPsnt) msgBtn = EMsgBtn.smbStop;
                                             Msg MsgBox = new Msg();
                                             EMsgRes MsgRes = MsgBox.Show(Messages.ELEV_PUSHER_JAM, "", EMsgBtn.smbRetry_Stop);
+                                            hold = false;
                                             switch (MsgRes)
                                             {
                                                 case EMsgRes.smrRetry:
-                                                    TaskConv.Conv.Fwd_Fast();
-                                                    goto _Retry;
+                                                    if (TaskConv.In.SensPsnt)
+                                                    {
+                                                        return EMethodResult.OK;
+                                                    }
+                                                    else
+                                                    {
+                                                        //TaskConv.Conv.Fwd_Fast();
+                                                        if (Setup.PusherRunConv) TaskConv.Conv.Fwd_Fast();
+                                                        goto _Retry;
+                                                    }
                                                 default: goto _Stop;
                                             }
                                         }
@@ -9333,12 +9350,14 @@ namespace NDispWin
                                             PusherStop();
                                         }
                                         #endregion
+                                        hold = true;
                                         Msg MsgBox = new Msg();
                                         EMsgRes MsgRes = MsgBox.Show(Messages.ELEV_PUSHER_EXT_TIME_OUT, "", EMsgBtn.smbRetry_Stop);
                                         switch (MsgRes)
                                         {
                                             case EMsgRes.smrRetry:
-                                                TaskConv.Conv.Fwd_Fast();
+                                                //TaskConv.Conv.Fwd_Fast();
+                                                if (Setup.PusherRunConv) TaskConv.Conv.Fwd_Fast();
                                                 goto _Retry;
                                             default: goto _Stop;
                                         }
@@ -10095,7 +10114,8 @@ namespace NDispWin
                 Status = EElevStatus.ErrorInit;
                 return;
             }
-            public static void RunKick()//if ready to kick product
+            public static Task TaskRunKick = null;
+            public static void RunKick(ref bool hold)//if ready to kick product, hold to pause subsequent parallel load process.
             {
                 //***Check Mode
                 if (TaskConv.LeftMode != TaskConv.ELeftMode.ElevatorZ) goto _End;
@@ -10140,13 +10160,12 @@ namespace NDispWin
 
                         if (Setup.PusherRunConv) TaskConv.Conv.Fwd_Fast();
 
-                        switch (PusherExt())
+                        switch (PusherExt(ref hold))
                         {
                             case EMethodResult.OK: break;
                             case EMethodResult.Stop:
                                 ReadyToSend = true;
                                 TransferBusy = false;
-                                //TaskConv.StopInput = true;
                                 TaskConv.Status = TaskConv.EConvStatus.Stop;
                                 if (!PusherRet()) goto _Error;
                                 goto _End;
@@ -10216,25 +10235,25 @@ namespace NDispWin
                 return;
             }
 
-            public static Task TaskRunKick = null;
-            public static void RunKickAsync()
-            {
-                try
-                {
-                    TaskRunKick = Task.Run(() =>
-                    {
-                        RunKick();
-                    });
-                }
-                catch (Exception Ex)
-                {
-                    Msg MsgBox = new Msg();
-                    MsgBox.Show("Left.RunKickAsync " + Ex.Message.ToString());
-                }
-                finally
-                {
-                }
-            }
+            //public static void RunKickAsync()
+            //{
+            //    try
+            //    {
+            //        bool abort = false;
+            //        TaskRunKick = Task.Run(() =>
+            //        {
+            //            RunKick(ref abort);
+            //        });
+            //    }
+            //    catch (Exception Ex)
+            //    {
+            //        Msg MsgBox = new Msg();
+            //        MsgBox.Show("Left.RunKickAsync " + Ex.Message.ToString());
+            //    }
+            //    finally
+            //    {
+            //    }
+            //}
         }
         public static class Right
         {

@@ -113,6 +113,7 @@ namespace NDispWin
             btn_Conv.BackColor = SelectedStation == TSelectedStation.Conv ? Color.Gray : this.BackColor;
             btn_PreStation.BackColor = SelectedStation == TSelectedStation.Pre ? Color.Gray : this.BackColor;
             btn_ProStation.BackColor = SelectedStation == TSelectedStation.Pro ? Color.Gray : this.BackColor;
+            btnPosStation.BackColor = SelectedStation == TSelectedStation.Pos ? Color.Gray : this.BackColor;
             btn_OutStation.BackColor = SelectedStation == TSelectedStation.Out ? Color.Gray : this.BackColor;
 
             btn_Conv2.BackColor = SelectedStation == TSelectedStation.Conv2 ? Color.Gray : this.BackColor;

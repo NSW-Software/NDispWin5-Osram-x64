@@ -7,6 +7,11 @@ Todo
 - Integrate LEDStudio
 
 
+Ver 6.0.8.11 - KN - 20240808 - Released at OsKul - Gitted
+[BugFix] Corrected TaskMHS.Run Pos process
+[BugFix] Fix Pos Station Type
+Ver 6.0.8.10 - KN - 20240807
+[Improve] Added TaskMHS.PushIn to abort on error.
 Ver 6.0.8.9 - KN - 20240806 - Released to OsWuxi - Gitted
 [Changes] Removed Smema2 feature, TaskMHS.bEnableAutoWaitReturn, bWaitingBoardReverse, WaitBoardReverse, Run_ReverseMoveIn(), Run_ReverseSendOut(), bEnableAutoReverseSendout, bWaitingBoardReverseSendout, WaitBoardReverseSend and dependencies, not used.
 [Changes] Removed TaskConv.Buf1 and Buf2 support. Not used, simplify the flow.

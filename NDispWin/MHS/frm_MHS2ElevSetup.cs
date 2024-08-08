@@ -830,7 +830,8 @@ namespace NDispWin
                 if (SelectedElev == TaskElev.TElevator.Left)
                 {
                     //if (!TaskElev.Left.PusherExt()) { goto _Error; }
-                    switch (TaskElev.Left.PusherExt())
+                    bool hold = false;
+                    switch (TaskElev.Left.PusherExt(ref hold))
                     {
                         default: break;
                         case TaskElev.Left.EMethodResult.Error: goto _Error;

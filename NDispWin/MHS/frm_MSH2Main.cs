@@ -80,6 +80,7 @@ namespace NDispWin
         private void btn_Control_Click(object sender, EventArgs e)
         {
             frmConvCtrl.BringToFront();
+            frmConvCtrl.UpdateUI();
             frmElevCtrl.BringToFront();
 
             UpdateSelection(sender);
@@ -461,7 +462,7 @@ namespace NDispWin
                 }
             }
 
-            //frmConvCtrl.BringToFront();
+            frmConvCtrl.UpdateUI();
             //frmElevCtrl.BringToFront();
 
             UpdateDisplay();
@@ -520,7 +521,7 @@ namespace NDispWin
 
         private void StopRun()
         {
-            b_Run = false;
+            TaskConv.ConvRun = false;
             TaskConv.Status = TaskConv.EConvStatus.Stop;
             WaitIdle();
             TaskConv.Stop();
@@ -554,7 +555,7 @@ namespace NDispWin
 
             TCTwrLight.SetStatus(TwrLight.Run);
 
-            b_Run = true;
+            TaskConv.ConvRun = true;
         }
         private void btn_Stop_Click(object sender, EventArgs e)
         {
@@ -616,7 +617,6 @@ namespace NDispWin
             return true;
         }
 
-        bool b_Run = false;
         static int i_ProcessTime = 3000;
         static bool b_DispProAsyncIsBusy = false;
         private static void DispProAsync()
@@ -706,10 +706,8 @@ namespace NDispWin
 
         private void tmr_Run_Tick(object sender, EventArgs e)
         {
-            if (b_Run)
+            if (TaskConv.ConvRun)
             {
-                //if (!bgw_RunConv.IsBusy) bgw_RunConv.RunWorkerAsync();
-
                 if (!b_RunAsyncIsBusy) RunConvAsync();
 
                 if (TaskConv.Status == TaskConv.EConvStatus.Stop)
@@ -743,7 +741,7 @@ namespace NDispWin
 
         private void btn_Close_Click(object sender, EventArgs e)
         {
-            if (b_Run)
+            if (TaskConv.ConvRun)
             {
                 Msg MsgBox = new Msg();
                 MsgBox.Show("Conveyor is in Dry-Run Mode. Stop Dry-Run.");
