@@ -62,49 +62,7 @@ namespace NDispWin
 
             #endregion
 
-
-            try
-            {
-                GDefine.RefreshInput(lbl_SensNeedleZ, TaskGantry.SensNeedleZ());
-                GDefine.RefreshOutput(btn_CleanVac, TaskGantry.SvCleanVac);
-            }
-            catch { };
-
-            try
-            {
-                GDefine.RefreshInput(lbl_BtnStart, TaskGantry.BtnStart());
-                GDefine.RefreshInput(lbl_BtnStop, TaskGantry.BtnStop());
-            }
-            catch { };
-
-            try
-            {
-                GDefine.RefreshOutput(btn_ChuckVacuum, TaskGantry.ChuckVac);
-                GDefine.RefreshInput(lbl_SensChuckVac, TaskGantry.SensChuckVac);
-            }
-            catch { };
-
-            try
-            {
-                GDefine.RefreshInput(lbl_SensMat1Low, TaskGantry.SensMat1Low());
-                GDefine.RefreshInput(lbl_SensMat2Low, TaskGantry.SensMat2Low());
-            }
-            catch { };
-
-
-            GDefine.UpdateInfo(lbl_SensNeedleZInfo, TaskGantry._SensNeedleZ);
-            GDefine.UpdateInfo(lbl_CleanVacInfo, TaskGantry._SvCleanVac);
-
-            GDefine.UpdateInfo(lbl_BtnStartInfo, TaskGantry._BtnStart);
-            GDefine.UpdateInfo(lbl_BtnStopInfo, TaskGantry._BtnStop);
-
-            GDefine.UpdateInfo(lbl_ChuckVacInfo, TaskGantry._SvChuckVac);
-            GDefine.UpdateInfo(lbl_SensChuckVacInfo, TaskGantry._SensChuckVac);
-
-            GDefine.UpdateInfo(lbl_SensMat1Low1Info, TaskGantry._SensMat1Low);
-            GDefine.UpdateInfo(lbl_SensMat2Low2Info, TaskGantry._SensMat2Low);
-
-
+            #region Disp Control Tab 
             try
             {
                 GDefine.RefreshOutput(btn_SvFPress1, TaskGantry.FPress1(TaskGantry.TOutputState.St));
@@ -143,6 +101,54 @@ namespace NDispWin
                 GDefine.UpdateInfo(lbl_SvPortC1Info, TaskGantry._SvPortC1);
             }
             catch { };
+            #endregion
+
+            #region General IO Tab
+            try
+            {
+                GDefine.RefreshInput(lbl_SensNeedleZ, TaskGantry.SensNeedleZ());
+                GDefine.RefreshOutput(btn_CleanVac, TaskGantry.SvCleanVac);
+            }
+            catch { };
+            GDefine.UpdateInfo(lbl_SensNeedleZInfo, TaskGantry._SensNeedleZ);
+            GDefine.UpdateInfo(lbl_CleanVacInfo, TaskGantry._SvCleanVac);
+
+            try
+            {
+                GDefine.RefreshInput(lbl_BtnStart, TaskGantry.BtnStart());
+                GDefine.RefreshInput(lbl_BtnStop, TaskGantry.BtnStop());
+            }
+            catch { };
+            GDefine.UpdateInfo(lbl_BtnStartInfo, TaskGantry._BtnStart);
+            GDefine.UpdateInfo(lbl_BtnStopInfo, TaskGantry._BtnStop);
+
+            try
+            {
+                GDefine.RefreshOutput(btn_ChuckVacuum, TaskGantry.ChuckVac);
+                GDefine.RefreshInput(lbl_SensChuckVac, TaskGantry.SensChuckVac);
+            }
+            catch { };
+            GDefine.UpdateInfo(lbl_ChuckVacInfo, TaskGantry._SvChuckVac);
+            GDefine.UpdateInfo(lbl_SensChuckVacInfo, TaskGantry._SensChuckVac);
+
+            try
+            {
+                GDefine.RefreshInput(lbl_SensMat1Low, TaskGantry.SensMat1Low());
+                GDefine.RefreshInput(lbl_SensMat2Low, TaskGantry.SensMat2Low());
+            }
+            catch { };
+            GDefine.UpdateInfo(lbl_SensMat1Low1Info, TaskGantry._SensMat1Low);
+            GDefine.UpdateInfo(lbl_SensMat2Low2Info, TaskGantry._SensMat2Low);
+
+            try
+            {
+                GDefine.RefreshInput(lblSensNdleShort1, TaskGantry.SensNdle1Short);
+                GDefine.RefreshInput(lblSensNdleShort2, TaskGantry.SensNdle2Short);
+            }
+            catch { };
+            GDefine.UpdateInfo(lblSensNdleShort1Info, TaskGantry._SensNdle1Short);
+            GDefine.UpdateInfo(lblSensNdleShort2Info, TaskGantry._SensNdle2Short);
+            #endregion
 
             try
             {
@@ -246,6 +252,10 @@ namespace NDispWin
 
             UpdateDisplay();
         }
+        private void frmIODiag_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape) Close();
+        }
 
         #region Controller IO
         private void lbl_DispATrig_Click(object sender, EventArgs e)
@@ -317,79 +327,28 @@ namespace NDispWin
             UC.AdjustExec("IO Diag, Trig Time (ms)", ref TrigTime_ms, 0, 5000);
             lbl_TrigTime.Text = TrigTime_ms.ToString();
         }
+
+        private void btn_Help_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(
+                "Motor No: M1~M8" + (char)10 +
+                "" + (char)10 +
+                "MCT Lbl" + (char)9 + "IO No" + (char)10 +
+                "-------" + (char)9 + "-------" + (char)10 +
+                "DI1" + (char)9 + "DI1" + (char)10 +
+                "DI2" + (char)9 + "DI2" + (char)10 +
+                "DI3" + (char)9 + "DI3" + (char)10 +
+                "DI4" + (char)9 + "DI4" + (char)10 +
+                "Lmt+" + (char)9 + "DI10" + (char)10 +
+                "Lmt-" + (char)9 + "DI11" + (char)10 +
+                "DO4" + (char)9 + "DO4" + (char)10 +
+                "DO5" + (char)9 + "DO5" + (char)10 +
+                "DO6" + (char)9 + "DO6" + (char)10 +
+                "DO7" + (char)9 + "DO7");
+        }
         #endregion
 
-        private void btn_CleanVac_Click(object sender, EventArgs e)
-        {
-            TaskGantry.SvCleanVac = !TaskGantry.SvCleanVac;
-        }
-
-        private void lbl_SensNeedleZInfo_Click(object sender, EventArgs e)
-        {
-            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._SensNeedleZ);
-            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._SensNeedleZ = frm.Input;
-        }
-        private void lbl_PurgeVacInfo_Click(object sender, EventArgs e)
-        {
-            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._SvCleanVac);
-            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._SvCleanVac = frm.Output;
-        }
-        private void lbl_BtnStartInfo_Click(object sender, EventArgs e)
-        {
-            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._BtnStart);
-            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._BtnStart = frm.Input;
-        }
-        private void lbl_BtnStopInfo_Click(object sender, EventArgs e)
-        {
-            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._BtnStop);
-            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._BtnStop = frm.Input;
-        }
-
-        private void frmIODiag_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Escape) Close();
-        }
-
-        private void btn_ChuckVacuum_Click(object sender, EventArgs e)
-        {
-            TaskGantry.ChuckVac = !TaskGantry.ChuckVac;
-        }
-        private void lbl_ChuckVacuumInfo_Click(object sender, EventArgs e)
-        {
-            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._SvChuckVac);
-            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._SvChuckVac = frm.Output;
-        }
-
-        private void btn_ZSensorReset_Click(object sender, EventArgs e)
-        {
-            TaskGantry.ZSensorPos = 0;
-            UpdateDisplay();
-        }
-
-        private void lbl_SensMat1LowInfo_Click(object sender, EventArgs e)
-        {
-            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._SensMat1Low);
-            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._SensMat1Low = frm.Input;
-        }
-        private void lbl_SensMat2LowInfo_Click(object sender, EventArgs e)
-        {
-            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._SensMat2Low);
-            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._SensMat2Low = frm.Input;
-        }
-
-        private void btn_Buzzer_Click(object sender, EventArgs e)
-        {
-            if (TaskGantry.Buzzer(TaskGantry.TOutputState.St))
-                TaskGantry.Buzzer(TaskGantry.TOutputState.Off);
-            else
-                TaskGantry.Buzzer(TaskGantry.TOutputState.On);
-        }
-        private void lbl_AlarmInfo_Click(object sender, EventArgs e)
-        {
-            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._Buzzer);
-            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._Buzzer = frm.Output;
-        }
-
+        #region Disp Control Tab
         private void btn_FPress1_Click(object sender, EventArgs e)
         {
             if (TaskGantry.FPress1(TaskGantry.TOutputState.St))
@@ -414,61 +373,94 @@ namespace NDispWin
             frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._SvFPress2);
             if (frm.ShowDialog() == DialogResult.OK) TaskGantry._SvFPress2 = frm.Output;
         }
-
         private void btn_SvVac1_Click(object sender, EventArgs e)
         {
             TaskGantry.BVac1 = !TaskGantry.BVac1;
         }
-
         private void btn_SvPortA1_Click(object sender, EventArgs e)
         {
             TaskGantry.DispPortA1 = !TaskGantry.DispPortA1;
         }
-
         private void btn_SvPortB1_Click(object sender, EventArgs e)
         {
             TaskGantry.DispPortB1 = !TaskGantry.DispPortB1;
         }
-
         private void btn_SvPortC1_Click(object sender, EventArgs e)
         {
             TaskGantry.DispPortC1 = !TaskGantry.DispPortC1;
         }
-
         private void lbl_SvVac1Info_Click(object sender, EventArgs e)
         {
             frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._SvFVac1);
             if (frm.ShowDialog() == DialogResult.OK) TaskGantry._SvFVac1 = frm.Output;
         }
-
         private void lbl_SvPortA1Info_Click(object sender, EventArgs e)
         {
             frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._SvPortA1);
             if (frm.ShowDialog() == DialogResult.OK) TaskGantry._SvPortA1 = frm.Output;
         }
-
         private void lbl_SvPortB1Info_Click(object sender, EventArgs e)
         {
             frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._SvPortB1);
             if (frm.ShowDialog() == DialogResult.OK) TaskGantry._SvPortB1 = frm.Output;
         }
-
         private void lbl_SvPortC1Info_Click(object sender, EventArgs e)
         {
             frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._SvPortC1);
             if (frm.ShowDialog() == DialogResult.OK) TaskGantry._SvPortC1 = frm.Output;
         }
+        #endregion
 
-        private void cbox_MCCAddress_Click(object sender, EventArgs e)
+        #region General IO
+        private void lbl_BtnStartInfo_Click(object sender, EventArgs e)
         {
-
+            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._BtnStart);
+            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._BtnStart = frm.Input;
+        }
+        private void lbl_BtnStopInfo_Click(object sender, EventArgs e)
+        {
+            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._BtnStop);
+            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._BtnStop = frm.Input;
+        }
+        private void btn_ChuckVacuum_Click(object sender, EventArgs e)
+        {
+            TaskGantry.ChuckVac = !TaskGantry.ChuckVac;
+        }
+        private void lbl_ChuckVacuumInfo_Click(object sender, EventArgs e)
+        {
+            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._SvChuckVac);
+            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._SvChuckVac = frm.Output;
+        }
+        private void lbl_SensChuckVacInfo_Click(object sender, EventArgs e)
+        {
+            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._SensChuckVac);
+            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._SensChuckVac = frm.Input;
         }
 
-        private void cbox_MCCAddress_CheckedChanged(object sender, EventArgs e)
+        private void btn_GenOut1_Click(object sender, EventArgs e)
         {
-
+            TaskGantry.GPOut1 ^= true;
         }
-
+        private void btn_GenOut2_Click(object sender, EventArgs e)
+        {
+            TaskGantry.GPOut2 ^= true;
+        }
+        private void btn_GenOut3_Click(object sender, EventArgs e)
+        {
+            TaskGantry.GPOut3 ^= true;
+        }
+        private void btn_GenOut4_Click(object sender, EventArgs e)
+        {
+            TaskGantry.GPOut4 ^= true;
+        }
+        private void btn_GPOut5_Click(object sender, EventArgs e)
+        {
+            TaskGantry.GPOut5 ^= true;
+        }
+        private void btn_GPOut6_Click(object sender, EventArgs e)
+        {
+            TaskGantry.GPOut6 ^= true;
+        }
         private void lbl_GenOut1Info_Click(object sender, EventArgs e)
         {
             frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._GPOut1);
@@ -500,31 +492,75 @@ namespace NDispWin
             if (frm.ShowDialog() == DialogResult.OK) TaskGantry._GPOut6 = frm.Output;
         }
 
-        private void btn_GenOut1_Click(object sender, EventArgs e)
+        private void lbl_SensMat1LowInfo_Click(object sender, EventArgs e)
         {
-            TaskGantry.GPOut1 ^= true;
+            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._SensMat1Low);
+            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._SensMat1Low = frm.Input;
         }
-        private void btn_GenOut2_Click(object sender, EventArgs e)
+        private void lbl_SensMat2LowInfo_Click(object sender, EventArgs e)
         {
-            TaskGantry.GPOut2 ^= true;
+            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._SensMat2Low);
+            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._SensMat2Low = frm.Input;
         }
-        private void btn_GenOut3_Click(object sender, EventArgs e)
+        private void btn_CleanVac_Click(object sender, EventArgs e)
         {
-            TaskGantry.GPOut3 ^= true;
+            TaskGantry.SvCleanVac = !TaskGantry.SvCleanVac;
         }
-        private void btn_GenOut4_Click(object sender, EventArgs e)
+        private void lbl_CleanVacInfo_Click(object sender, EventArgs e)
         {
-            TaskGantry.GPOut4 ^= true;
-        }
-        private void btn_GPOut5_Click(object sender, EventArgs e)
-        {
-            TaskGantry.GPOut5 ^= true;
-        }
-        private void btn_GPOut6_Click(object sender, EventArgs e)
-        {
-            TaskGantry.GPOut6 ^= true;
+            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._SvCleanVac);
+            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._SvCleanVac = frm.Output;
         }
 
+        private void btn_Buzzer_Click(object sender, EventArgs e)
+        {
+            if (TaskGantry.Buzzer(TaskGantry.TOutputState.St))
+                TaskGantry.Buzzer(TaskGantry.TOutputState.Off);
+            else
+                TaskGantry.Buzzer(TaskGantry.TOutputState.On);
+        }
+        private void lbl_BuzzerInfo_Click(object sender, EventArgs e)
+        {
+            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._Buzzer);
+            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._Buzzer = frm.Output;
+        }
+
+        private void lbl_SensDoor_Click(object sender, EventArgs e)
+        {
+            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._SensDoor);
+            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._SensDoor = frm.Input;
+        }
+        private void btn_DoorLock_Click(object sender, EventArgs e)
+        {
+            TaskGantry.LockDoor ^= true;
+        }
+        private void lbl_LockDoor_Click(object sender, EventArgs e)
+        {
+            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._LockDoor);
+            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._LockDoor = frm.Output;
+        }
+
+        private void lblSensNdleShort1Info_Click(object sender, EventArgs e)
+        {
+            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._SensNdle1Short);
+            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._SensNdle1Short = frm.Input;
+        }
+        private void lblSensNdleShort2Info_Click(object sender, EventArgs e)
+        {
+            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._SensNdle2Short);
+            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._SensNdle2Short = frm.Input;
+        }
+
+        private void btn_ZSensorReset_Click(object sender, EventArgs e)
+        {
+            TaskGantry.ZSensorPos = 0;
+            UpdateDisplay();
+        }
+        private void lbl_SensNeedleZInfo_Click(object sender, EventArgs e)
+        {
+            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._SensNeedleZ);
+            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._SensNeedleZ = frm.Input;
+        }
         private void lbl_ZSensorDistPerPulse_Click(object sender, EventArgs e)
         {
             UC.AdjustExec("ZSensor, Dist Per Pulse (mm)", ref TaskGantry.SZAxis.Para.Unit.Resolution, 0.0001, 0.1);
@@ -543,138 +579,38 @@ namespace NDispWin
             }
             UpdateDisplay();
         }
+        #endregion
 
-        private void btn_DoorLock_Click(object sender, EventArgs e)
-        {
-            TaskGantry.LockDoor ^= true;
-        }
-
-        private void lbl_SensDoor_Click(object sender, EventArgs e)
-        {
-            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._SensDoor);
-            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._SensDoor = frm.Input;
-        }
-
-        private void lbl_LockDoor_Click(object sender, EventArgs e)
-        {
-            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._LockDoor);
-            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._LockDoor = frm.Output;
-        }
-
-        private void lbl_SensChuckVacInfo_Click(object sender, EventArgs e)
-        {
-            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._SensChuckVac);
-            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._SensChuckVac = frm.Input;
-        }
-
-        private void btn_Help_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show(
-                "Motor No: M1~M8" + (char)10 +
-                "" + (char)10 +
-                "MCT Lbl" + (char)9 + "IO No" + (char)10 +
-                "-------" + (char)9 + "-------" + (char)10 +
-                "DI1" + (char)9 + "DI1" + (char)10 +
-                "DI2" + (char)9 + "DI2" + (char)10 +
-                "DI3" + (char)9 + "DI3" + (char)10 +
-                "DI4" + (char)9 + "DI4" + (char)10 +
-                "Lmt+" + (char)9 + "DI10" + (char)10 +
-                "Lmt-" + (char)9 + "DI11" + (char)10 +
-                "DO4" + (char)9 + "DO4" + (char)10 +
-                "DO5" + (char)9 + "DO5" + (char)10 +
-                "DO6" + (char)9 + "DO6" + (char)10 +
-                "DO7" + (char)9 + "DO7");
-        }
-
+        #region Tape Indexer Tab
         private void btn_TapeCleanTrig_Click(object sender, EventArgs e)
         {
             TaskGantry.TapeTrig = !TaskGantry.TapeTrig;
         }
-
         private void btn_TapeCleanReset_Click(object sender, EventArgs e)
         {
             TaskGantry.TapeReset = !TaskGantry.TapeReset;
         }
-
         private void lbl_TapeReadyInfo_Click(object sender, EventArgs e)
         {
             frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._TapeReady);
             if (frm.ShowDialog() == DialogResult.OK) TaskGantry._TapeReady = frm.Input;
         }
-
         private void lbl_TapeTrigInfo_Click(object sender, EventArgs e)
         {
             frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._TapeTrig);
             if (frm.ShowDialog() == DialogResult.OK) TaskGantry._TapeTrig = frm.Output;
         }
-
         private void lbl_TapeAlarmInfo_Click(object sender, EventArgs e)
         {
             frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._TapeAlarm);
             if (frm.ShowDialog() == DialogResult.OK) TaskGantry._TapeAlarm = frm.Input;
         }
-
         private void lbl_TapeResetInfo_Click(object sender, EventArgs e)
         {
             frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._TapeReset);
             if (frm.ShowDialog() == DialogResult.OK) TaskGantry._TapeReset = frm.Output;
         }
-
-        private void btn_SvPnpPrecise_Click(object sender, EventArgs e)
-        {
-            TaskGantry.SvPnpPrecise = !TaskGantry.SvPnpPrecise;
-        }
-
-        private void btn_SvPnpVacuum_Click(object sender, EventArgs e)
-        {
-            TaskGantry.SvPnpVac = !TaskGantry.SvPnpVac;
-        }
-
-        private void btn_SvPnpPurge_Click(object sender, EventArgs e)
-        {
-            TaskGantry.SvPnpPurge = !TaskGantry.SvPnpPurge;
-        }
-
-        private void lbl_SvPnpPreciseInfo_Click(object sender, EventArgs e)
-        {
-            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._SvPnpPrecise);
-            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._SvPnpPrecise = frm.Output;
-        }
-
-        private void lbl_SensPnpPreciseInfo_Click(object sender, EventArgs e)
-        {
-            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._SensPnpPrecise);
-            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._SensPnpPrecise = frm.Input;
-        }
-
-        private void lbl_SensPnpContactInfo_Click(object sender, EventArgs e)
-        {
-            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._SensPnpContact);
-            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._SensPnpContact = frm.Input;
-        }
-
-        private void lbl_SvPnpVacInfo_Click(object sender, EventArgs e)
-        {
-            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._SvPnpVac);
-            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._SvPnpVac = frm.Output;
-        }
-
-        private void lbl_SvPnpPurgeInfo_Click(object sender, EventArgs e)
-        {
-            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._SvPnpPurge);
-            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._SvPnpPurge = frm.Output;
-        }
-
-        private void lbl_SensPnpVacInfo_Click(object sender, EventArgs e)
-        {
-            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._SensPnpVac);
-            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._SensPnpVac = frm.Input;
-        }
-
-        private void lbl_ZSensorPos_Click(object sender, EventArgs e)
-        {
-
-        }
+        #endregion
 
         #region Needle Inspection Cam
         private void lblNICamSigOKInfo_Click(object sender, EventArgs e)

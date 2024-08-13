@@ -63,6 +63,8 @@
             this.cbxLanguage = new System.Windows.Forms.ComboBox();
             this.tpProcess = new System.Windows.Forms.TabPage();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.lblDensityRange = new System.Windows.Forms.Label();
             this.cbEnableValveExpiry = new System.Windows.Forms.CheckBox();
             this.label15 = new System.Windows.Forms.Label();
             this.lblMaterialExpiryPreAlertTime = new System.Windows.Forms.Label();
@@ -119,8 +121,7 @@
             this.btnAccessConfig = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnJog = new System.Windows.Forms.Button();
-            this.lblDensityRange = new System.Windows.Forms.Label();
-            this.label18 = new System.Windows.Forms.Label();
+            this.cbEnableNeedleShort = new System.Windows.Forms.CheckBox();
             this.tcOptions.SuspendLayout();
             this.tpPreference.SuspendLayout();
             this.groupBox11.SuspendLayout();
@@ -512,6 +513,7 @@
             // tpProcess
             // 
             this.tpProcess.BackColor = System.Drawing.SystemColors.Control;
+            this.tpProcess.Controls.Add(this.cbEnableNeedleShort);
             this.tpProcess.Controls.Add(this.groupBox7);
             this.tpProcess.Controls.Add(this.groupBox2);
             this.tpProcess.Location = new System.Drawing.Point(4, 34);
@@ -547,10 +549,34 @@
             this.groupBox7.Controls.Add(this.cbEnableMaterialCounter);
             this.groupBox7.Location = new System.Drawing.Point(6, 109);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(741, 339);
+            this.groupBox7.Size = new System.Drawing.Size(741, 294);
             this.groupBox7.TabIndex = 1;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Material";
+            // 
+            // label18
+            // 
+            this.label18.AccessibleDescription = "Density/Flowrate Range  (2 Pumps)";
+            this.label18.Location = new System.Drawing.Point(6, 247);
+            this.label18.Margin = new System.Windows.Forms.Padding(2);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(272, 23);
+            this.label18.TabIndex = 203;
+            this.label18.Text = "Density/Flowrate Range  (2 Pumps)";
+            this.label18.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblDensityRange
+            // 
+            this.lblDensityRange.BackColor = System.Drawing.SystemColors.Window;
+            this.lblDensityRange.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblDensityRange.Location = new System.Drawing.Point(285, 247);
+            this.lblDensityRange.Margin = new System.Windows.Forms.Padding(2);
+            this.lblDensityRange.Name = "lblDensityRange";
+            this.lblDensityRange.Size = new System.Drawing.Size(75, 23);
+            this.lblDensityRange.TabIndex = 202;
+            this.lblDensityRange.Text = "label3";
+            this.lblDensityRange.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblDensityRange.Click += new System.EventHandler(this.lblDensityRange_Click);
             // 
             // cbEnableValveExpiry
             // 
@@ -1203,29 +1229,17 @@
             this.btnJog.UseVisualStyleBackColor = true;
             this.btnJog.Click += new System.EventHandler(this.btnJog_Click);
             // 
-            // lblDensityRange
+            // cbEnableNeedleShort
             // 
-            this.lblDensityRange.BackColor = System.Drawing.SystemColors.Window;
-            this.lblDensityRange.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblDensityRange.Location = new System.Drawing.Point(285, 247);
-            this.lblDensityRange.Margin = new System.Windows.Forms.Padding(2);
-            this.lblDensityRange.Name = "lblDensityRange";
-            this.lblDensityRange.Size = new System.Drawing.Size(75, 23);
-            this.lblDensityRange.TabIndex = 202;
-            this.lblDensityRange.Text = "label3";
-            this.lblDensityRange.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblDensityRange.Click += new System.EventHandler(this.lblDensityRange_Click);
-            // 
-            // label18
-            // 
-            this.label18.AccessibleDescription = "Density/Flowrate Range  (2 Pumps)";
-            this.label18.Location = new System.Drawing.Point(6, 247);
-            this.label18.Margin = new System.Windows.Forms.Padding(2);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(272, 23);
-            this.label18.TabIndex = 203;
-            this.label18.Text = "Density/Flowrate Range  (2 Pumps)";
-            this.label18.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.cbEnableNeedleShort.AccessibleDescription = "Enable Needle Short";
+            this.cbEnableNeedleShort.AutoSize = true;
+            this.cbEnableNeedleShort.Location = new System.Drawing.Point(15, 409);
+            this.cbEnableNeedleShort.Name = "cbEnableNeedleShort";
+            this.cbEnableNeedleShort.Size = new System.Drawing.Size(160, 22);
+            this.cbEnableNeedleShort.TabIndex = 196;
+            this.cbEnableNeedleShort.Text = "Enable Needle Short";
+            this.cbEnableNeedleShort.UseVisualStyleBackColor = true;
+            this.cbEnableNeedleShort.Click += new System.EventHandler(this.cbEnableNeedleShort_Click);
             // 
             // frmOptions
             // 
@@ -1376,5 +1390,6 @@
         private System.Windows.Forms.CheckBox cbEnableValveExpiry;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Label lblDensityRange;
+        private System.Windows.Forms.CheckBox cbEnableNeedleShort;
     }
 }

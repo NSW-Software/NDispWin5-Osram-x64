@@ -81,11 +81,7 @@ namespace NDispWin
 
     public class TaskConv
     {
-        public static bool NewSeq = false;
-        public static bool PostEnable
-        {
-            get { return Conv2IO.Enabled; }
-        }
+        public static bool NewConvSequence = false;
 
         #region Status
         public enum EConvStatus
@@ -546,12 +542,6 @@ namespace NDispWin
         {
             return OpenBoard(ConvIO.BoardID, ConvIO.DIOModel);
         }
-        public static bool OpenBoard2()
-        {
-            if (!PostEnable) return true;
-
-            return OpenBoard(Conv2IO.BoardID, Conv2IO.DIOModel);
-        }
         public static bool OpenBoard(byte BoardID, ZEC3002.Ctrl.TDIOModel IOModel)
         {
             string CMsg = "TaskConv.OpenBoard " + IOModel.ToString() + " " + BoardID.ToString() + (char)13;
@@ -569,13 +559,6 @@ namespace NDispWin
             get
             {
                 return ZEC3002.Ctrl.BoardOpened(ConvIO.BoardID);
-            }
-        }
-        public static bool Board2IsOpen
-        {
-            get
-            {
-                return ZEC3002.Ctrl.BoardOpened(Conv2IO.BoardID);
             }
         }
         public static void CloseBoard(int BoardID)
@@ -653,6 +636,8 @@ namespace NDispWin
 
             IniFile.WriteBool(S, "InMcReadyFollowSensInPsnt", TaskConv.InMcReadyFollowSensInPsnt);
             IniFile.WriteBool(S, "OutBdReadyWaitMcReady", TaskConv.OutBdReadyWaitMcReady);
+
+            IniFile.WriteBool(S, "NewConvSequence", TaskConv.NewConvSequence);
         }
         public static void SaveRecipe()
         {
@@ -724,6 +709,8 @@ namespace NDispWin
 
             TaskConv.InMcReadyFollowSensInPsnt = IniFile.ReadBool(S, "InMcReadyFollowSensInPsnt", false);
             TaskConv.OutBdReadyWaitMcReady = IniFile.ReadBool(S, "OutBdReadyWaitMcReady", false);
+
+            TaskConv.NewConvSequence = IniFile.ReadBool(S, "NewConvSequence", true);
         }
 
         public static void MigrateMHSRecipe()//migrate from MHS and save to MHS2
@@ -884,12 +871,6 @@ namespace NDispWin
                 TaskConv.Pos.Status = EProcessStatus.NotReady;
                 TaskConv.Out.Status = EProcessStatus.NotReady;
 
-                if (PostEnable)
-                {
-                    TaskConv.Pos2.Status = EProcessStatus.NotReady;
-                    TaskConv.Out2.Status = EProcessStatus.NotReady;
-                }
-
                 TaskConv.Pre._StType = TaskConv.Pre.StType;
                 TaskConv.Pro._StType = TaskConv.Pro.StType;
 
@@ -899,8 +880,7 @@ namespace NDispWin
                 {
                     if (!ZEC3002.Ctrl.BoardOpened(ConvIO.BoardID))
                         if (!TaskConv.OpenBoard()) goto _Error;
-                    if (PostEnable && !ZEC3002.Ctrl.BoardOpened(Conv2IO.BoardID))
-                        if (!TaskConv.OpenBoard2()) goto _Error;
+
                     if (!Delay(10)) { goto _Error; }
 
                     if (ZEC3002.Ctrl.BoardOpened(ElevIO.BoardID))
@@ -949,26 +929,11 @@ namespace NDispWin
                     || !Out.KickerRet()
                     ) goto _Error;
 
-                if (PostEnable)
-                {
-                    Pos2.SvVac = false;
-                    Pos2.SvStopperUp = false;
-                    Pos2.SvLifterUp = false;
-
-                    Out2.SvKickerExt = false;
-
-                    if (!Pos2.VacOff() || !Pos2.StopperDn() || !Pos2.LifterDn() || !Out2.KickerRet()) goto _Error;
-                }
             #endregion
             _Retry:
                 #region Check Product
                 if (!Out.CheckEmpty()) goto _Error;
                 if (!In.CheckEmpty()) goto _Error;
-
-                if (PostEnable)
-                {
-                    if (!Out2.CheckEmpty()) goto _Error;
-                }
                 #endregion
 
                 #region Conv On
@@ -988,30 +953,6 @@ namespace NDispWin
                         Msg MsgBox = new Msg();
                         string msg = EMsg;
                         goto _Retry;
-                    }
-                }
-                #endregion
-
-                #region Conv On
-                if (PostEnable)
-                {
-                    if (!Conv2.Fwd_Init()) goto _Error;
-
-                    TOut = Environment.TickCount + 3000;
-                    while (true)
-                    {
-                        if (Environment.TickCount >= TOut)
-                        {
-                            if (!Conv2.Stop()) goto _Error;
-                            break;
-                        }
-                        if (In2.SensPsnt || Out2.SensPsnt)
-                        {
-                            if (!Conv2.Stop()) goto _Error;
-                            Msg MsgBox = new Msg();
-                            string msg = EMsg;
-                            goto _Retry;
-                        }
                     }
                 }
                 #endregion
@@ -5966,17 +5907,7 @@ namespace NDispWin
 
         internal static bool Run_SendOut()
         {
-            if (TaskConv.PostEnable)
-            {
-                if (Conv2.Ready)
-                {
-                    Unload_C2();
-                    C2_MoveToPos2();
-                }
-                return true;
-            }
-
-            #region Pos In Send Out
+             #region Pos In Send Out
             if (RightMode == ERightMode.ElevatorZ)
             {
                 if (!TaskConv.Out.CheckPsnt()) return false;
@@ -6170,108 +6101,6 @@ namespace NDispWin
 
             return true;
         }
-
-        //internal static bool Run_ReverseMoveIn()
-        //{
-        //    switch (RightMode)
-        //    {
-        //        case ERightMode.ElevatorZ:
-        //        case ERightMode.Smema:
-        //            //no support
-        //            break;
-        //        case ERightMode.ManualUnload:
-        //            if (!MoveRevToIn()) return false;
-        //            break;
-        //        case ERightMode.Smema_SmemaLeft:
-        //        case ERightMode.SmemaBiDirection:
-        //            {
-        //                bool InPsnt;
-        //                if (!Out.Smema2_DO_McReady)
-        //                {
-        //                    Out.Smema2_DO_McReady = true;
-        //                }
-
-        //                if (Out.Smema2_DI_BdReady)
-        //                {
-        //                    InPsnt = false;
-        //                    if (!Out.SmemaReverseWaitOutPsnt())
-        //                    {
-        //                        Out.Smema2_DO_McReady = false;
-        //                        return false;
-        //                    }
-        //                    InPsnt = true;
-        //                }
-        //                else
-        //                {
-        //                    InPsnt = false;
-        //                }
-
-        //                if (InPsnt)
-        //                {
-        //                    if (!MoveRevToIn()) return false;
-        //                }
-        //                break;
-        //            }
-        //    }
-        //    return true;
-        //}
-        //internal static bool Run_ReverseSendOut()
-        //{
-        //    switch (LeftMode)
-        //    {
-        //        case ELeftMode.ElevatorZ:
-        //        case ELeftMode.ManualLoad:
-        //        case ELeftMode.Smema:
-        //            //no support
-        //            break;
-        //        case ELeftMode.Smema_SmemaRight:
-        //        case ELeftMode.SmemaBiDirection:
-        //            {
-        //                if (!In.Smema2_DO_BdReady)
-        //                {
-        //                    In.Smema2_DO_BdReady = true;
-        //                }
-
-        //                if (In.Smema2_DI_McReady)
-        //                {
-        //                    if (!RevUnload())
-        //                    {
-        //                        In.Smema2_DO_BdReady = false;
-        //                        return false;
-        //                    }
-        //                    In.Smema2_DO_BdReady = false;
-        //                }
-        //                break;
-        //            }
-        //    }
-        //    return true;
-        //}
-
-        //internal static bool bEnableAutoWaitReturn = false;
-        //internal static bool bWaitingBoardReverse = false;
-        //internal static bool WaitBoardReverse
-        //{
-        //    get
-        //    { return bWaitingBoardReverse; }
-        //    set
-        //    {
-        //        TaskConv.In.Smema_DO_McReady = false;
-        //        TaskConv.Out.Smema2_DO_McReady = false;
-        //        bWaitingBoardReverse = value;
-        //    }
-        //}
-
-        //internal static bool bEnableAutoReverseSendout = false;
-        //internal static bool bWaitingBoardReverseSendout = false;
-        //internal static bool WaitBoardReverseSend
-        //{
-        //    get
-        //    { return bWaitingBoardReverseSendout; }
-        //    set
-        //    {
-        //        bWaitingBoardReverseSendout = value;
-        //    }
-        //}
 
         internal static bool Manual_Return()//Return frame at Leftmost station
         {
@@ -6651,8 +6480,6 @@ namespace NDispWin
         _Store:
             if (TaskConv.Out.SensPsnt)
             {
-                if (TaskConv.PostEnable) return true;
-
                 if (TaskConv.RightMode == TaskConv.ERightMode.ElevatorZ)
                 {
                     if (!TaskElev.Right.ReadyToReceive)
@@ -6778,7 +6605,7 @@ namespace NDispWin
 
                 if (Pos.Status == EProcessStatus.Heating) Pos.HeatEnd();
 
-                if (!NewSeq)
+                if (!NewConvSequence)
                 {
                     #region//old
                     if (Out.Status == EProcessStatus.Empty)
@@ -7012,21 +6839,7 @@ namespace NDispWin
                     }
                 }
             _End:
-                if (TaskConv.PostEnable) if (!b_C2_Run2Busy) { Task.Run(() => { C2_Run(); }); }
-
                 #region Update Process Status
-                //if (Pre.Status == EProcessStatus.Psnt)
-                //{
-                //    if (Pre._StType == EPreStType.Disp1 || Pre._StType == EPreStType.Disp12)
-                //    {
-                //        if (DispEndStop)
-                //        {
-                //            DispEndStop = false;
-                //            Status = EConvStatus.Stop;
-                //        }
-                //    }
-                //}
-
                 if (Pro.Status == EProcessStatus.Psnt)
                 {
                     if (DispEndStop)
@@ -7068,839 +6881,11 @@ namespace NDispWin
                 MsgBox.Show(Messages.CONV_EX_ERR, EMsg, EMsgBtn.smbOK);
             }
         }
-        //public async static void Run_BurnRun()
-        //{
-        //    string EMsg = "Run_BurnRun ";
-
-        //    try
-        //    {
-        //        if (Status != EConvStatus.Ready) return;
-
-        //        if (LeftMode == ELeftMode.ElevatorZ)
-        //        {
-        //            try
-        //            {
-        //                await Task.Run(() => { TaskElev.Left.RunLevel_BurnRun(); });
-        //                await Task.Run(() => { TaskElev.Left.RunKick(); });
-        //            }
-        //            catch (Exception Ex)
-        //            {
-        //                Msg MsgBox = new Msg();
-        //                MsgBox.Show("Righ.RunLevelAsync " + Ex.Message.ToString());
-        //            }
-        //            finally
-        //            {
-        //            }
-        //        }
-
-        //        Conv.Fwd_Fast();
-        //        int TOut = Environment.TickCount + 3000;
-        //        while (true)
-        //        {
-        //            if (Environment.TickCount >= TOut)
-        //            {
-        //                break;
-        //            }
-        //        }
-        //        Conv.Stop();
-
-        //        if (RightMode == ERightMode.ElevatorZ)
-        //        {
-        //            try
-        //            {
-        //                await Task.Run(() => { TaskElev.Right.RunLevel_BurnRun(); });
-        //            }
-        //            catch (Exception Ex)
-        //            {
-        //                Msg MsgBox = new Msg();
-        //                MsgBox.Show("Righ.RunLevelAsync " + Ex.Message.ToString());
-        //            }
-        //            finally
-        //            {
-        //            }
-        //        }
-        //        return;
-        //    }
-        //    catch (Exception Ex)
-        //    {
-        //        EMsg = EMsg + Ex.Message;
-        //        Msg MsgBox = new Msg();
-        //        MsgBox.Show(Messages.CONV_EX_ERR, EMsg, EMsgBtn.smbOK);
-        //    }
-        //}
-
-        //public static void Run_PassThru()
-        //{
-        //    string EMsg = "Run PassThru";
-
-        //    try
-        //    {
-        //        if (Status != EConvStatus.Ready) goto _End;
-
-        //        #region Run Right Elev
-        //        if (RightMode == ERightMode.ElevatorZ)
-        //        {
-        //            if (TaskElev.ElevStatus[(int)TaskElev.TElevator.Right] == TaskElev.EElevStatus.Ready)
-        //            {
-        //                if (!TaskElev.Right.ReadyToReceive)
-        //                {
-        //                    if (!TaskElev.Right.RunLevelAsyncIsBusy)
-        //                    {
-        //                        if (TaskConv.Out.SensPsnt && !TaskElev.Right.SafeCheck()) goto _Stop;
-        //                        TaskElev.Right.RunLevelAsync();
-        //                    }
-        //                }
-        //            }
-        //        }
-        //        #endregion
-
-        //        //SendOut
-        //        if (TaskConv.Out.SensPsnt)
-        //        {
-        //            if (!Run_SendOut()) goto _Stop;
-        //            return;
-        //        }
-
-        //        //ReverseSendOut
-        //        //if (TaskConv.In.SensPsnt)
-        //        //{
-        //        //    if (!Run_ReverseSendOut()) goto _Stop;
-        //        //    return;
-        //        //}
-
-        //        //Load from left
-        //        //switch (LeftMode)
-        //        //{
-        //        //    case ELeftMode.ElevatorZ:
-        //        //        {
-        //        //            #region
-        //        //            if (In.SensPsnt) goto _ContinueLoad;
-
-        //        //            if (TaskElev.Left.Status == TaskElev.EElevStatus.Ready)
-        //        //            {
-        //        //                if (Status == EConvStatus.Stop) goto _Stop;
-        //        //                if (!PushIn())
-        //        //                {
-        //        //                    TaskElev.Left.TransferBusy = false;
-        //        //                    goto _Error;
-        //        //                }
-        //        //            }
-        //        //        _ContinueLoad:
-        //        //            if (In.SensPsnt)
-        //        //            {
-        //        //                Event.BOARD_PUSH_ARRIVED_IN_STATION.Set();
-        //        //                //In.BlowSuckOn();
-        //        //                In.BlowSuckTimed();
-        //        //                #region Load
-        //        //                switch (Station)
-        //        //                {
-        //        //                    case EStation.Buf1:
-        //        //                        if (!MoveInToBuf1()) return false;// goto _Stop;
-        //        //                        break;
-        //        //                    case EStation.Buf2:
-        //        //                        if (!MoveInToBuf2()) return false;
-        //        //                        break;
-        //        //                    case EStation.Pre:
-        //        //                        if (!MoveInToPre()) return false;
-        //        //                        break;
-        //        //                    case EStation.Pro:
-        //        //                        if (!MoveInToPro()) return false;
-        //        //                        break;
-        //        //                }
-        //        //                //TaskElev.Left.TransferBusy = false;
-        //        //                #endregion
-        //        //            }
-        //        //            TaskElev.Left.TransferBusy = false;
-        //        //            #endregion
-        //        //            break;
-        //        //        }
-        //        //    case ELeftMode.ManualLoad:
-        //        //        break;
-        //        //    case ELeftMode.Smema:
-        //        //    case ELeftMode.Smema_SmemaRight:
-        //        //    case ELeftMode.SmemaBiDirection:
-        //        //        //#region Smema
-        //        //        //bool InPsnt = false;
-        //        //        ////In.Smema_DO_McReady = true;
-        //        //        //if (In.Smema_DI_BdReady)
-        //        //        //{
-        //        //        //    InPsnt = In.SensPsnt;
-        //        //        //            if (!MoveInToBuf1()) return false;
-        //        //        //            break;
-        //        //        //        case EStation.Buf2:
-        //        //        //            if (!MoveInToBuf2()) return false;
-        //        //        //            break;
-        //        //        //        case EStation.Pre:
-        //        //        //            if (!MoveInToPre()) return false;
-        //        //        //            break;
-        //        //        //        case EStation.Pro:
-        //        //        //            if (!MoveInToPro()) return false;
-        //        //        //            break;
-        //        //        //    }
-        //        //        //}
-        //        //        //#endregion
-        //        //        break;
-        //        //}
-
-        //        //Rev to In
-        //        switch (RightMode)
-        //        {
-        //            case ERightMode.ElevatorZ:
-        //            case ERightMode.Smema:
-        //            case ERightMode.ManualUnload:
-        //                //do nothing
-        //                break;
-        //            //case ERightMode.Smema_SmemaLeft:
-        //            //case ERightMode.SmemaBiDirection:
-        //            //    {
-        //            //        if (Out.Smema2_DI_BdReady)
-        //            //        {
-        //            //            Out.Smema2_DO_McReady = true;
-        //            //            if (!MoveRevToIn()) return;
-        //            //        }
-        //            //        break;
-        //            //    }
-        //        }
-
-        //        //if (TaskConv.bWaitingBoardReverse)
-        //        //{
-        //        //    if (Pre.Status == EProcessStatus.Empty
-        //        //        && Pro.Status == EProcessStatus.Empty
-        //        //        && Out.Status == EProcessStatus.Empty
-        //        //        && Buf1.Status == EProcessStatus.Empty
-        //        //        && Buf2.Status == EProcessStatus.Empty)
-        //        //    {
-        //        //        if (TaskConv.In.SensPsnt)
-        //        //        {
-        //        //            TaskConv.bWaitingBoardReverse = false;
-        //        //            return;
-        //        //        }
-        //        //        if (!Run_ReverseMoveIn()) goto _Stop;
-        //        //        return;
-        //        //    }
-        //        //}
-
-        //        if (Out.Status == EProcessStatus.Empty)
-        //        {
-        //            if (DispEndStop) goto _End;
-
-
-        //            if ((TaskConv.Pre.rt_StType == EPreStType.Disp || TaskConv.Pre.rt_StType == EPreStType.Disp12)
-        //                && Pre.Status == EProcessStatus.Psnt
-        //                && Pro.Status == EProcessStatus.Empty)
-        //            {
-        //                if (TaskConv.RightMode == TaskConv.ERightMode.ElevatorZ && !TaskElev.Right.ReadyToReceive) goto _End;
-        //                if (!MovePreToOut()) goto _End;
-        //                goto _End;
-        //            }
-
-        //            if (Pre.rt_StType == EPreStType.Disp1 && Pre.Status == EProcessStatus.Empty)
-        //            {
-        //                #region
-        //                if (Pre.rt_StType == EPreStType.None) goto _End;
-
-        //                if (TaskConv.Buf2.rt_StType == EBufStType.Buffer && Buf2.Status == EProcessStatus.Psnt)
-        //                {
-        //                    if (!MoveBuf2ToPre()) goto _End;
-        //                    goto _PreEnd;
-        //                }
-
-        //                if (TaskConv.Buf1.rt_StType == EBufStType.Buffer && Buf1.Status == EProcessStatus.Psnt)
-        //                {
-        //                    if (!MoveBuf1ToPre()) goto _End;
-        //                    goto _PreEnd;
-        //                }
-
-        //                if (Status == EConvStatus.Stop) goto _End;
-
-        //                if (!Run_MoveInTo(EStation.Pre)) goto _Stop;
-
-        //                if (TaskMHS.CustomMode == TaskMHS.ECustomMode.OSRAMSCCSeq) StopInput = true;
-
-        //                _PreEnd:
-        //                #endregion
-        //                goto _End;
-        //            }
-
-        //            if (Pro.Status == EProcessStatus.Empty)
-        //            {
-        //                #region
-        //                if ((TaskConv.Pre.rt_StType == EPreStType.Disp ||
-        //                     TaskConv.Pre.rt_StType == EPreStType.Disp1 ||
-        //                     TaskConv.Pre.rt_StType == EPreStType.Buffer
-        //                     ) &&
-        //                    Pre.Status == EProcessStatus.Psnt)
-        //                {
-        //                    if (!MovePreToPro()) goto _End;
-        //                    goto _ProEnd;
-        //                }
-
-        //                if (TaskConv.Buf2.rt_StType == EBufStType.Buffer && Buf2.Status == EProcessStatus.Psnt)
-        //                {
-        //                    if (!MoveBuf2ToPro()) goto _End;
-        //                    goto _ProEnd;
-        //                }
-
-        //                if (TaskConv.Buf1.rt_StType == EBufStType.Buffer && Buf1.Status == EProcessStatus.Psnt)
-        //                {
-        //                    if (!MoveBuf1ToPro()) goto _End;
-        //                    goto _ProEnd;
-        //                }
-
-        //                if (TaskConv.In.SensPsnt)
-        //                {
-        //                    if (!MoveInToPro()) goto _End;
-        //                    goto _ProEnd;
-        //                }
-
-        //                if (Status == EConvStatus.Stop) goto _End;
-
-        //                if (!Run_MoveInTo(EStation.Pro)) goto _Stop;
-        //                _ProEnd:
-
-        //                #endregion
-        //                goto _End;
-        //            }
-
-        //            if (Pre.rt_StType > EPreStType.None && (Pre.Status == EProcessStatus.Empty))
-        //            {
-        //                #region
-        //                if (Pre.rt_StType == EPreStType.None) goto _End;
-
-        //                if (TaskConv.Buf2.rt_StType == EBufStType.Buffer && Buf2.Status == EProcessStatus.Psnt)
-        //                {
-        //                    if (!MoveBuf2ToPre()) goto _End;
-        //                    goto _PreEnd;
-        //                }
-
-        //                if (TaskConv.Buf1.rt_StType == EBufStType.Buffer && Buf1.Status == EProcessStatus.Psnt)
-        //                {
-        //                    if (!MoveBuf1ToPre()) goto _End;
-        //                    goto _PreEnd;
-        //                }
-
-        //                if (TaskConv.In.SensPsnt)
-        //                {
-        //                    if (!MoveInToPre()) goto _End;
-        //                    goto _PreEnd;
-        //                }
-
-        //                if (Status == EConvStatus.Stop) goto _End;
-        //                if (!Run_MoveInTo(EStation.Pre)) goto _Stop;
-        //                _PreEnd:;
-
-        //                #endregion
-        //                goto _End;
-        //            }
-
-        //            if (Buf2.rt_StType == EBufStType.Buffer && Buf2.Status == EProcessStatus.Empty)
-        //            {
-        //                #region
-        //                if (Buf1.rt_StType == EBufStType.Buffer && Buf1.Status == EProcessStatus.Psnt)
-        //                {
-        //                    if (!MoveBuf1ToBuf2()) goto _End;
-        //                    goto _EndBuf2;
-        //                }
-
-        //                if (TaskConv.In.SensPsnt)
-        //                {
-        //                    if (!MoveInToBuf2()) goto _End;
-        //                    goto _EndBuf2;
-        //                }
-
-        //                if (Status == EConvStatus.Stop) goto _End;
-        //                if (!Run_MoveInTo(EStation.Buf2)) goto _Stop;
-        //                _EndBuf2:;
-        //                #endregion
-        //                goto _End;
-        //            }
-        //            if (Buf1.rt_StType == EBufStType.Buffer && Buf1.Status == EProcessStatus.Empty)
-        //            {
-        //                if (TaskConv.In.SensPsnt)
-        //                {
-        //                    if (!MoveInToBuf1()) goto _End;
-        //                    goto _EndBuf1;
-        //                }
-
-        //                if (Status == EConvStatus.Stop) goto _End;
-        //                if (!Run_MoveInTo(EStation.Buf1)) goto _Stop;
-        //                _EndBuf1:;
-        //                goto _End;
-        //            }
-        //        }
-
-        //    _End:
-        //        #region Update Process Status
-        //        if (Pre.Status == EProcessStatus.Psnt)
-        //        {
-        //            if (Pre._StType == EPreStType.Disp1 || Pre._StType == EPreStType.Disp12)
-        //            {
-        //                if (DispEndStop)
-        //                {
-        //                    DispEndStop = false;
-        //                    Status = EConvStatus.Stop;
-        //                }
-        //            }
-        //        }
-
-        //        if (Pro.Status == EProcessStatus.Psnt)
-        //        {
-        //            if (DispEndStop)
-        //            {
-        //                DispEndStop = false;
-        //                Status = EConvStatus.Stop;
-        //            }
-        //        }
-
-        //        if (Pre.Status == EProcessStatus.Empty
-        //            && Pro.Status == EProcessStatus.Empty
-        //            && Out.Status == EProcessStatus.Empty)
-        //        {
-        //            if (StopInput)
-        //            {
-        //                //GDefine.StopInput = false;
-        //                //Status = EConvStatus.Stop;
-        //            }
-        //            if (TaskConv.LeftMode == ELeftMode.ElevatorZ)
-        //            {
-        //                if (TaskElev.Left.WaitMagChange)
-        //                    Status = EConvStatus.Stop;
-        //            }
-        //        }
-        //        #endregion
-        //        return;
-
-        //    //_Error:
-        //    //    Conv.Stop();
-        //    //    Status = EConvStatus.Stop;
-        //    //    return;
-
-        //    _Stop:
-        //        In.Smema_DO_McReady = false;
-        //        Out.Smema_DO_BdReady = false;
-        //        Conv.Stop();
-        //        Status = EConvStatus.Stop;
-        //        return;
-        //    }
-        //    catch (Exception Ex)
-        //    {
-        //        EMsg = EMsg + Ex.Message;
-        //        Msg MsgBox = new Msg();
-        //        MsgBox.Show(Messages.CONV_EX_ERR, EMsg, EMsgBtn.smbOK);
-        //    }
-        //}
         public static void Stop()
         {
             In.Smema_DO_McReady = false;
             Out.Smema_DO_BdReady = false;
             StopInput = false;
-        }
-
-        internal static bool C2_MoveToPos2()//Conv2 move frame to Pos2, update Pos2 Status, return false if error
-        {
-            string EMsg = "C2_MoveToPos2";
-
-            try
-            {
-            #region
-            _RetryLoad:
-                Pos2.SvStopperUp = true;
-                Conv2.Fwd_Fast();
-                if (!Pos2.StopperUp()) goto _Error;
-
-                int TOut = Environment.TickCount + Pos2.TimeOut;
-                while (true)
-                {
-                    if (Pos2.SensPsnt)
-                    {
-                        Conv2.Fwd_Slow();
-                        Pos2.Delay_LoadD();
-                        break;
-                    }
-                    if (Environment.TickCount >= TOut)
-                    {
-                        #region
-                        Conv2.Stop();
-
-                        Msg MsgBox = new Msg();
-                        EMsgRes MsgRes = MsgBox.Show(Messages.CONV_MOVE_TIMEOUT, "POS2", EMsgBtn.smbRetry_Stop_Cancel);
-                        switch (MsgRes)
-                        {
-                            case EMsgRes.smrRetry: goto _RetryLoad;
-                            case EMsgRes.smrStop:
-                                {
-                                    Status = EConvStatus.Stop; ;
-                                    return true;
-                                }
-                            default: goto _Error;
-                        }
-                        #endregion
-                    }
-                }
-                Conv2.Stop();
-
-                if (!Pos2.LifterUp()) goto _Error;
-
-                if (!Pos2.VacOn()) goto _Error;
-
-                if (Pos2.HeatStart())
-                    Pos2.Status = TaskConv.EProcessStatus.Heating;
-                else
-                    Pos2.Status = TaskConv.EProcessStatus.Psnt;
-
-                return true;
-            #endregion
-            _Error:
-                Conv2.Stop(); ;
-                Status = TaskConv.EConvStatus.ErrorInit;
-                return false;
-            }
-            catch (Exception Ex)
-            {
-                Conv2.Stop();
-                throw new Exception(EMsg + (char)13 + Ex.Message.ToString());
-                //return false;
-            }
-        }
-        internal static bool C2_MoveToOut2()//move frame to Out, update Out Status, return false if error
-        {
-            string EMsg = "C2_MoveToOut2";
-
-            try
-            {
-            _Retry:
-                if (!Conv2.Fwd_Fast()) goto _Error;
-
-                #region Wait Out2.SensPsnt
-                int TOut = Environment.TickCount + Out2.TimeOut;
-                while (true)
-                {
-                    if (Out2.SensPsnt)
-                    {
-                        if (!Conv2.Stop()) goto _Error;
-                        break;
-                    }
-                    Thread.Sleep(5);
-                    if (Environment.TickCount >= TOut)
-                    {
-                        if (!Conv2.Stop()) goto _Error;
-
-                        Msg MsgBox = new Msg();
-                        EMsgRes MsgRes = MsgBox.Show(Messages.CONV_MOVE_TIMEOUT, "OUT2", EMsgBtn.smbRetry_Stop);
-                        switch (MsgRes)
-                        {
-                            case EMsgRes.smrRetry: goto _Retry;
-                            case EMsgRes.smrStop:
-                                {
-                                    Status = EConvStatus.Stop; ;
-                                    return true;
-                                }
-                            default: goto _Error;
-                        }
-                    }
-                }
-                #endregion
-
-                Out2.Status = TaskConv.EProcessStatus.Psnt;
-
-                return true;
-            _Error:
-                Conv2.Stop(); ;
-                Status = TaskConv.EConvStatus.ErrorInit;
-                return false;
-            }
-            catch (Exception Ex)
-            {
-                Conv2.Stop();
-                throw new Exception(EMsg + (char)13 + Ex.Message.ToString());
-            }
-        }
-        internal static bool C2_UnloadOut2()
-        {
-            string EMsg = "C2_UnloadOut2";
-            try
-            {
-                Status = EConvStatus.Busy;
-
-                if (Out2.SensKickerExt) if (!Out2.KickerRet()) goto _Error;
-                    _Retry:
-                #region Start SendOut
-                Conv2.Fwd_SendOut();
-                int TOut = Environment.TickCount + Out2.TimeOut;
-
-                while (true)
-                {
-                    if (!Out2.SensPsnt)
-                    {
-                        //int TOut2 = Environment.TickCount + 250;
-                        int TOutDelay = Environment.TickCount + Out2.Delay;
-                        while (true)
-                        {
-                            if (Out2.SensPsnt) break;
-                            if (Environment.TickCount >= TOutDelay) break;
-                        }
-                        if (Environment.TickCount >= TOutDelay) break;
-                    }
-                    if (Environment.TickCount >= TOut)
-                    {
-                        Conv2.Stop();
-
-                        Msg MsgBox = new Msg();
-                        EMsgRes MsgRes = MsgBox.Show(Messages.CONV_UNLOAD_TIMEOUT, "Out2", EMsgBtn.smbRetry_Stop_Cancel);
-                        switch (MsgRes)
-                        {
-                            case EMsgRes.smrRetry:
-                                goto _Retry;
-                            case EMsgRes.smrStop:
-                            default:
-                                goto _Stop;
-                            case EMsgRes.smrCancel:
-                                Out2.Status = EProcessStatus.Empty;
-                                goto _Stop;
-                        }
-                    }
-                }
-
-                Conv2.Stop();
-
-                if (!Out2.KickerExt()) { goto _Error; }
-                if (!Out2.KickerRet()) { goto _Error; }
-
-                #endregion
-                Out2.Status = EProcessStatus.Empty;
-                Status = EConvStatus.Ready;
-
-                return true;
-
-            _Stop:
-                Conv2.Stop();
-                Status = EConvStatus.Stop;
-                return true;
-            _Error:
-                Conv2.Stop();
-                return false;
-            }
-            catch (Exception Ex)
-            {
-                Conv2.Stop();
-                throw new Exception(EMsg + (char)13 + Ex.Message.ToString());
-            }
-        }
-        internal static bool C2_MovePos2ToOut2()
-        {
-            string EMsg = "C2_MovePos2ToOut2";
-            try
-            {
-                if (!Out2.CheckEmpty()) goto _Stop;
-
-                Status = EConvStatus.Busy;
-
-                Out2.SvKickerExt = false;
-
-                if (!Pos2.VacOff()) goto _Error;
-                if (!Pos2.LifterDn()) goto _Error;
-                if (!Pos2.StopperDn()) goto _Error;
-
-                if (!C2_MoveToOut2()) goto _Error;
-                Pos2.Status = TaskConv.EProcessStatus.Empty;
-
-                if (Status == TaskConv.EConvStatus.Stop) return false;
-                Status = EConvStatus.Ready;
-                return true;
-            _Error:
-                Conv2.Stop();
-                Status = TaskConv.EConvStatus.ErrorInit;
-                return false;
-            _Stop:
-                Conv2.Stop(); ;
-                return false;
-            }
-            catch (Exception Ex)
-            {
-                Conv2.Stop();
-                throw new Exception(EMsg + (char)13 + Ex.Message.ToString());
-            }
-        }
-        internal static bool C2_Run_SendOut2()
-        {
-            #region Pos In Send Out
-            if (RightMode == ERightMode.ElevatorZ)
-            {
-                if (!TaskConv.Out2.CheckPsnt()) return false;
-
-                #region
-                if (TaskElev.Right.Status != TaskElev.EElevStatus.Ready)
-                {
-                    Status = EConvStatus.Stop;
-                    return true;
-                }
-                if (!TaskElev.Right.CheckMagPsnt())
-                {
-                    Status = EConvStatus.Stop;
-                    return true;
-                }
-                if (TaskElev.Right.ReadyToReceive)
-                {
-                    TaskElev.Right.ReadyToReceive = false;
-                    #region Send Out
-                    TaskElev.Right.TransferBusy = true;
-
-                    if (!C2_UnloadOut2()) return false;
-                    TaskElev.Right.TransferBusy = false;
-
-                    if (TaskElev.ElevStatus[(int)TaskElev.TElevator.Right] == TaskElev.EElevStatus.Ready)
-                    {
-                        TaskElev.Right.RunLevelAsync();
-                    }
-                    #endregion
-                }
-                #endregion
-            }
-            if (RightMode == ERightMode.ManualUnload)
-            {
-                Unload_Manual();
-            }
-            #endregion
-            return true;
-        }
-        internal static bool Manual_LoadPos2()
-        {
-            if (!TaskConv.CheckReady()) return false;
-
-
-            if (TaskConv.Pos2.Status == TaskConv.EProcessStatus.Empty && TaskConv.Out2.Status == TaskConv.EProcessStatus.Empty)
-            {
-                if (TaskConv.In2.SensPsnt)
-                {
-                    if (!C2_MoveToOut2()) return false;
-                    return true;
-                }
-
-                if (TaskConv.Out.SensPsnt)
-                {
-                    //Task.Run(() => { C2_MoveToPos2(); });
-                    if (!Run_SendOut()) return false;
-                }
-            }
-            return true;
-        }
-        internal static bool Manual_Unload2()
-        {
-            if (!TaskConv.CheckReady()) return false;
-
-            if (TaskConv.Pos2.Status == EProcessStatus.Empty && TaskConv.Out2.Status == EProcessStatus.Empty)
-            {
-                if (TaskConv.In2.SensPsnt)
-                {
-                    if (!C2_MoveToOut2()) return false;
-                    return true;
-                }
-
-                if (TaskConv.Out.SensPsnt)
-                {
-                    if (!Run_SendOut()) return false;
-                }
-            }
-
-            if (TaskConv.Pos2.Status >= TaskConv.EProcessStatus.Heating)
-            {
-                if (!C2_MovePos2ToOut2()) return false;
-            }
-
-            if (TaskConv.Out2.SensPsnt)
-            {
-                if (TaskConv.RightMode == TaskConv.ERightMode.ElevatorZ)
-                {
-                    if (!TaskElev.Right.ReadyToReceive)
-                    {
-                        TaskElev.Right.RunLevel();
-                    }
-
-                    if (TaskElev.Right.ReadyToReceive)
-                    {
-                        #region Product to Store
-                        if (TaskConv.Out2.Status == TaskConv.EProcessStatus.Psnt)
-                        {
-                            TaskElev.Right.ReadyToReceive = false;
-                            TaskElev.Right.TransferBusy = true;
-                            TaskConv.Status = TaskConv.EConvStatus.Busy;
-                            TaskConv.C2_UnloadOut2();
-                            TaskElev.Right.TransferBusy = false;
-                            TaskConv.Out2.Status = TaskConv.EProcessStatus.Empty;
-                            TaskConv.Status = TaskConv.EConvStatus.Ready;
-                        }
-                        #endregion
-
-                        #region Right Elev Move Next Level
-                        if (TaskElev.Right.Status != TaskElev.EElevStatus.Ready) goto _End;
-
-                        TaskElev.Right.RunLevelAsync();
-                        #endregion
-                    }
-                }
-            }
-        _End: return true;
-        }
-        internal static bool b_C2_Run2Busy = false;
-        internal static void C2_Run()
-        {
-            b_C2_Run2Busy = true;
-
-            string EMsg = "Run ";
-            try
-            {
-                if (Status != EConvStatus.Ready) goto _End;
-
-                if (Out2.Status == EProcessStatus.Psnt)
-                {
-                    if (!C2_Run_SendOut2()) goto _Stop;
-                    if (UnloadStop)
-                    {
-                        UnloadStop = false;
-                        Status = EConvStatus.Stop;
-                        goto _End;
-                    }
-                }
-
-                if (Pos2.Status == EProcessStatus.Heating)
-                {
-                    Pos2.HeatEnd();
-                    goto _End;
-                }
-
-                if (Pos2.Status == EProcessStatus.Psnt)
-                {
-                    #region
-                    if (TaskConv.RightMode == TaskConv.ERightMode.ElevatorZ && !TaskElev.Right.ReadyToReceive) goto _End;
-                    if (!C2_MovePos2ToOut2()) goto _End;
-                    #endregion
-                    goto _End;
-                }
-
-                if (In2.SensPsnt)
-                {
-                    if (!C2_MoveToPos2()) goto _End;
-                    goto _End;
-                }
-
-            _End:
-                return;
-
-            _Stop:
-                Conv2.Stop();
-                Status = EConvStatus.Stop;
-                return;
-            }
-            catch (Exception Ex)
-            {
-                EMsg = EMsg + Ex.Message;
-                Msg MsgBox = new Msg();
-                MsgBox.Show(Messages.CONV_EX_ERR, EMsg, EMsgBtn.smbOK);
-            }
-            finally
-            {
-                b_C2_Run2Busy = false;
-            }
         }
     }
 
@@ -9041,24 +8026,6 @@ namespace NDispWin
                 }
             }
 
-            //internal static bool CheckPusherHome()
-            //{
-            //    if (!PusherValid) return true;
-            //    _Retry:
-            //    if (!Left.SensPusherHome)
-            //    {
-            //        Msg MsgBox = new Msg();
-            //        //EMsgRes MsgRes = 
-            //        MsgBox.Show(ErrCode.ELEV_PUSHER_SENS_HOME_ERROR, EMcState.Error, EMsgBtn.smbOK, false);
-            //        //switch (MsgRes)
-            //        //{
-            //        //    case EMsgRes.smrRetry: goto _Retry;
-            //        //    default: return false;
-            //        //}
-            //        return false;
-            //    }
-            //    return true;
-            //}
             internal static bool CheckPusherLimit()
             {
                 if (!PusherValid) return true;
@@ -9748,7 +8715,6 @@ namespace NDispWin
                 return DoorIsClosed(Prompt);
             }
 
-
             public static bool MoveLevel(int MagNo, int LevelNo)
             {
                 string EMsg = "LZMoveLevel";
@@ -10234,26 +9200,6 @@ namespace NDispWin
                 Status = EElevStatus.ErrorInit;
                 return;
             }
-
-            //public static void RunKickAsync()
-            //{
-            //    try
-            //    {
-            //        bool abort = false;
-            //        TaskRunKick = Task.Run(() =>
-            //        {
-            //            RunKick(ref abort);
-            //        });
-            //    }
-            //    catch (Exception Ex)
-            //    {
-            //        Msg MsgBox = new Msg();
-            //        MsgBox.Show("Left.RunKickAsync " + Ex.Message.ToString());
-            //    }
-            //    finally
-            //    {
-            //    }
-            //}
         }
         public static class Right
         {
@@ -10670,32 +9616,29 @@ namespace NDispWin
                     //EMsgBtn msgBtn = bRetry ? EMsgBtn.smbRetry_Cancel : EMsgBtn.smbCancel;
                     EMsgBtn msgBtn = EMsgBtn.smbCancel;
 
-                    if (!TaskConv.PostEnable)
+                _Retry:
+                    if (TaskConv.Out.SensPsnt)
                     {
-                    _Retry:
-                        if (TaskConv.Out.SensPsnt)
+                        string msg = "Product Present at Conveyor Out.";
+                        Msg MsgBox = new Msg();
+                        EMsgRes Res = MsgBox.Show(Messages.CONV_OUT_SENSOR_PSNT, msg, msgBtn);
+                        switch (Res)
                         {
-                            string msg = "Product Present at Conveyor Out.";
-                            Msg MsgBox = new Msg();
-                            EMsgRes Res = MsgBox.Show(Messages.CONV_OUT_SENSOR_PSNT, msg, msgBtn);
-                            switch (Res)
-                            {
-                                case EMsgRes.smrRetry: goto _Retry;
-                            }
-                            goto _Error;
+                            case EMsgRes.smrRetry: goto _Retry;
                         }
-                    _Retry1:
-                        if (TaskConv.Out.SensLFPsnt)
+                        goto _Error;
+                    }
+                _Retry1:
+                    if (TaskConv.Out.SensLFPsnt)
+                    {
+                        string msg = "Product Present at Conveyor Out and Magazine.";
+                        Msg MsgBox = new Msg();
+                        EMsgRes Res = MsgBox.Show(Messages.CONV_OUT_CLEAR_SENSOR_PSNT, msg, msgBtn);
+                        switch (Res)
                         {
-                            string msg = "Product Present at Conveyor Out and Magazine.";
-                            Msg MsgBox = new Msg();
-                            EMsgRes Res = MsgBox.Show(Messages.CONV_OUT_CLEAR_SENSOR_PSNT, msg, msgBtn);
-                            switch (Res)
-                            {
-                                case EMsgRes.smrRetry: goto _Retry1;
-                            }
-                            goto _Error;
+                            case EMsgRes.smrRetry: goto _Retry1;
                         }
+                        goto _Error;
                     }
                 }
                 catch (Exception Ex)

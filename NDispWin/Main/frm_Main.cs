@@ -140,7 +140,6 @@ namespace NDispWin
                 try
                 {
                     if (!ZEC3002.Ctrl.BoardOpened(ConvIO.BoardID)) TaskConv.OpenBoard();
-                    if (!ZEC3002.Ctrl.BoardOpened(Conv2IO.BoardID)) TaskConv.OpenBoard2();
                     if (!ZEC3002.Ctrl.BoardOpened(ElevIO.BoardID)) TaskElev.OpenBoard(ElevIO.BoardID);
                 }
                 catch { };

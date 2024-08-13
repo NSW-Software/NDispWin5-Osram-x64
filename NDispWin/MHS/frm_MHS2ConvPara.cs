@@ -44,14 +44,6 @@ namespace NDispWin
                 cbxPosStType.Items.Add(((TaskConv.EPosStType)i).ToString());
             }
 
-            //cbox_Conv2.Visible = TaskConv.PostEnable;
-            //cbox_Pos2Station.Visible = TaskConv.PostEnable;
-            //cbox_Out2Station.Visible = TaskConv.PostEnable;
-
-            btn_Conv2.Visible = TaskConv.PostEnable;
-            btn_Pos2Station.Visible = TaskConv.PostEnable;
-            btn_Out2Station.Visible = TaskConv.PostEnable;
-
             AppLanguage.Func2.WriteLangFile(this);
         }
 

@@ -36,6 +36,7 @@
             this.btn_ConvParam = new System.Windows.Forms.Button();
             this.pnl_Control = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.cbNewConvSequence = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btn_ProSt = new System.Windows.Forms.Button();
             this.btn_PreSt = new System.Windows.Forms.Button();
@@ -61,7 +62,6 @@
             this.btn_SaveAs = new System.Windows.Forms.Button();
             this.pnlLeftSmema = new System.Windows.Forms.Panel();
             this.pnlRightSmema = new System.Windows.Forms.Panel();
-            this.cbNewSeq = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.pnlLeftSmema.SuspendLayout();
@@ -135,15 +135,27 @@
             // 
             this.panel1.AutoSize = true;
             this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.panel1.Controls.Add(this.cbNewSeq);
+            this.panel1.Controls.Add(this.cbNewConvSequence);
             this.panel1.Controls.Add(this.groupBox1);
             this.panel1.Controls.Add(this.btn_InitElev);
             this.panel1.Controls.Add(this.btn_InitConv);
             this.panel1.Controls.Add(this.btn_InitAll);
             this.panel1.Location = new System.Drawing.Point(814, 44);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(174, 588);
+            this.panel1.Size = new System.Drawing.Size(176, 588);
             this.panel1.TabIndex = 9;
+            // 
+            // cbNewConvSequence
+            // 
+            this.cbNewConvSequence.AccessibleDescription = "";
+            this.cbNewConvSequence.AutoSize = true;
+            this.cbNewConvSequence.Location = new System.Drawing.Point(9, 124);
+            this.cbNewConvSequence.Name = "cbNewConvSequence";
+            this.cbNewConvSequence.Size = new System.Drawing.Size(164, 22);
+            this.cbNewConvSequence.TabIndex = 359;
+            this.cbNewConvSequence.Text = "New Conv Sequence";
+            this.cbNewConvSequence.UseVisualStyleBackColor = true;
+            this.cbNewConvSequence.Click += new System.EventHandler(this.cbNewSeq_Click);
             // 
             // groupBox1
             // 
@@ -420,18 +432,6 @@
             this.pnlRightSmema.Size = new System.Drawing.Size(129, 26);
             this.pnlRightSmema.TabIndex = 0;
             // 
-            // cbNewSeq
-            // 
-            this.cbNewSeq.AccessibleDescription = "";
-            this.cbNewSeq.AutoSize = true;
-            this.cbNewSeq.Location = new System.Drawing.Point(9, 124);
-            this.cbNewSeq.Name = "cbNewSeq";
-            this.cbNewSeq.Size = new System.Drawing.Size(126, 22);
-            this.cbNewSeq.TabIndex = 359;
-            this.cbNewSeq.Text = "New Sequence";
-            this.cbNewSeq.UseVisualStyleBackColor = true;
-            this.cbNewSeq.Click += new System.EventHandler(this.cbNewSeq_Click);
-            // 
             // frmMHS2Main
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -506,6 +506,6 @@
         private System.Windows.Forms.Button btn_SaveAs;
         private System.Windows.Forms.Panel pnlLeftSmema;
         private System.Windows.Forms.Panel pnlRightSmema;
-        private System.Windows.Forms.CheckBox cbNewSeq;
+        private System.Windows.Forms.CheckBox cbNewConvSequence;
     }
 }

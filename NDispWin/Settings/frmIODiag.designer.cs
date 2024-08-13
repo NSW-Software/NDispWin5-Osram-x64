@@ -78,6 +78,10 @@
             this.btn_Help = new System.Windows.Forms.Button();
             this.tpage_DispControl = new System.Windows.Forms.TabPage();
             this.tpage_GeneralIO = new System.Windows.Forms.TabPage();
+            this.lblSensNdleShort2 = new System.Windows.Forms.Label();
+            this.lblSensNdleShort2Info = new System.Windows.Forms.Label();
+            this.lblSensNdleShort1 = new System.Windows.Forms.Label();
+            this.lblSensNdleShort1Info = new System.Windows.Forms.Label();
             this.lbl_SensChuckVacInfo = new System.Windows.Forms.Label();
             this.lbl_SensChuckVac = new System.Windows.Forms.Label();
             this.lbl_SensDoorInfo = new System.Windows.Forms.Label();
@@ -141,7 +145,7 @@
             this.lbl_CleanVacInfo.TabIndex = 21;
             this.lbl_CleanVacInfo.Text = "lbl_PurgeVacInfo";
             this.lbl_CleanVacInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lbl_CleanVacInfo.Click += new System.EventHandler(this.lbl_PurgeVacInfo_Click);
+            this.lbl_CleanVacInfo.Click += new System.EventHandler(this.lbl_CleanVacInfo_Click);
             // 
             // btn_CleanVac
             // 
@@ -490,7 +494,7 @@
             this.lbl_BuzzerInfo.TabIndex = 32;
             this.lbl_BuzzerInfo.Text = "lbl_BuzzerInfo";
             this.lbl_BuzzerInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lbl_BuzzerInfo.Click += new System.EventHandler(this.lbl_AlarmInfo_Click);
+            this.lbl_BuzzerInfo.Click += new System.EventHandler(this.lbl_BuzzerInfo_Click);
             // 
             // btn_Buzzer
             // 
@@ -673,7 +677,6 @@
             this.lbl_ZSensorPos.TabIndex = 22;
             this.lbl_ZSensorPos.Text = "lbl_ZSensorPos";
             this.lbl_ZSensorPos.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lbl_ZSensorPos.Click += new System.EventHandler(this.lbl_ZSensorPos_Click);
             // 
             // lbl_DispError
             // 
@@ -714,7 +717,7 @@
             this.tabControl1.Location = new System.Drawing.Point(8, 8);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(590, 365);
+            this.tabControl1.Size = new System.Drawing.Size(590, 387);
             this.tabControl1.TabIndex = 149;
             // 
             // tpage_ControllerIO
@@ -737,7 +740,7 @@
             this.tpage_ControllerIO.Location = new System.Drawing.Point(4, 34);
             this.tpage_ControllerIO.Name = "tpage_ControllerIO";
             this.tpage_ControllerIO.Padding = new System.Windows.Forms.Padding(3);
-            this.tpage_ControllerIO.Size = new System.Drawing.Size(582, 327);
+            this.tpage_ControllerIO.Size = new System.Drawing.Size(582, 349);
             this.tpage_ControllerIO.TabIndex = 0;
             this.tpage_ControllerIO.Text = "Controller IO";
             // 
@@ -770,7 +773,7 @@
             this.tpage_DispControl.Location = new System.Drawing.Point(4, 34);
             this.tpage_DispControl.Name = "tpage_DispControl";
             this.tpage_DispControl.Padding = new System.Windows.Forms.Padding(3);
-            this.tpage_DispControl.Size = new System.Drawing.Size(582, 327);
+            this.tpage_DispControl.Size = new System.Drawing.Size(582, 349);
             this.tpage_DispControl.TabIndex = 1;
             this.tpage_DispControl.Text = "Disp Control";
             // 
@@ -778,6 +781,10 @@
             // 
             this.tpage_GeneralIO.AccessibleDescription = "General IO";
             this.tpage_GeneralIO.BackColor = System.Drawing.SystemColors.Control;
+            this.tpage_GeneralIO.Controls.Add(this.lblSensNdleShort2);
+            this.tpage_GeneralIO.Controls.Add(this.lblSensNdleShort2Info);
+            this.tpage_GeneralIO.Controls.Add(this.lblSensNdleShort1);
+            this.tpage_GeneralIO.Controls.Add(this.lblSensNdleShort1Info);
             this.tpage_GeneralIO.Controls.Add(this.lbl_SensChuckVacInfo);
             this.tpage_GeneralIO.Controls.Add(this.lbl_SensChuckVac);
             this.tpage_GeneralIO.Controls.Add(this.lbl_SensDoorInfo);
@@ -813,9 +820,63 @@
             this.tpage_GeneralIO.Location = new System.Drawing.Point(4, 34);
             this.tpage_GeneralIO.Name = "tpage_GeneralIO";
             this.tpage_GeneralIO.Padding = new System.Windows.Forms.Padding(3);
-            this.tpage_GeneralIO.Size = new System.Drawing.Size(582, 327);
+            this.tpage_GeneralIO.Size = new System.Drawing.Size(582, 349);
             this.tpage_GeneralIO.TabIndex = 2;
             this.tpage_GeneralIO.Text = "General IO";
+            // 
+            // lblSensNdleShort2
+            // 
+            this.lblSensNdleShort2.AccessibleDescription = "Needle Short 2";
+            this.lblSensNdleShort2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblSensNdleShort2.ForeColor = System.Drawing.Color.Navy;
+            this.lblSensNdleShort2.Location = new System.Drawing.Point(293, 243);
+            this.lblSensNdleShort2.Margin = new System.Windows.Forms.Padding(2);
+            this.lblSensNdleShort2.Name = "lblSensNdleShort2";
+            this.lblSensNdleShort2.Size = new System.Drawing.Size(80, 30);
+            this.lblSensNdleShort2.TabIndex = 54;
+            this.lblSensNdleShort2.Text = "Needle Short 2";
+            this.lblSensNdleShort2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblSensNdleShort2Info
+            // 
+            this.lblSensNdleShort2Info.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblSensNdleShort2Info.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSensNdleShort2Info.ForeColor = System.Drawing.Color.Navy;
+            this.lblSensNdleShort2Info.Location = new System.Drawing.Point(377, 243);
+            this.lblSensNdleShort2Info.Margin = new System.Windows.Forms.Padding(2);
+            this.lblSensNdleShort2Info.Name = "lblSensNdleShort2Info";
+            this.lblSensNdleShort2Info.Size = new System.Drawing.Size(200, 30);
+            this.lblSensNdleShort2Info.TabIndex = 55;
+            this.lblSensNdleShort2Info.Text = "lblSensNdleShort2Info";
+            this.lblSensNdleShort2Info.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblSensNdleShort2Info.Click += new System.EventHandler(this.lblSensNdleShort2Info_Click);
+            // 
+            // lblSensNdleShort1
+            // 
+            this.lblSensNdleShort1.AccessibleDescription = "Needle Short 1";
+            this.lblSensNdleShort1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblSensNdleShort1.ForeColor = System.Drawing.Color.Navy;
+            this.lblSensNdleShort1.Location = new System.Drawing.Point(293, 209);
+            this.lblSensNdleShort1.Margin = new System.Windows.Forms.Padding(2);
+            this.lblSensNdleShort1.Name = "lblSensNdleShort1";
+            this.lblSensNdleShort1.Size = new System.Drawing.Size(80, 30);
+            this.lblSensNdleShort1.TabIndex = 52;
+            this.lblSensNdleShort1.Text = "Needle Short 1";
+            this.lblSensNdleShort1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblSensNdleShort1Info
+            // 
+            this.lblSensNdleShort1Info.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblSensNdleShort1Info.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSensNdleShort1Info.ForeColor = System.Drawing.Color.Navy;
+            this.lblSensNdleShort1Info.Location = new System.Drawing.Point(377, 209);
+            this.lblSensNdleShort1Info.Margin = new System.Windows.Forms.Padding(2);
+            this.lblSensNdleShort1Info.Name = "lblSensNdleShort1Info";
+            this.lblSensNdleShort1Info.Size = new System.Drawing.Size(200, 30);
+            this.lblSensNdleShort1Info.TabIndex = 53;
+            this.lblSensNdleShort1Info.Text = "lblSensNdleShort1Info";
+            this.lblSensNdleShort1Info.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblSensNdleShort1Info.Click += new System.EventHandler(this.lblSensNdleShort1Info_Click);
             // 
             // lbl_SensChuckVacInfo
             // 
@@ -849,7 +910,7 @@
             this.lbl_SensDoorInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbl_SensDoorInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_SensDoorInfo.ForeColor = System.Drawing.Color.Navy;
-            this.lbl_SensDoorInfo.Location = new System.Drawing.Point(377, 209);
+            this.lbl_SensDoorInfo.Location = new System.Drawing.Point(377, 141);
             this.lbl_SensDoorInfo.Margin = new System.Windows.Forms.Padding(2);
             this.lbl_SensDoorInfo.Name = "lbl_SensDoorInfo";
             this.lbl_SensDoorInfo.Size = new System.Drawing.Size(200, 30);
@@ -863,7 +924,7 @@
             this.lbl_SensDoor.AccessibleDescription = "Sens Door";
             this.lbl_SensDoor.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lbl_SensDoor.ForeColor = System.Drawing.Color.Navy;
-            this.lbl_SensDoor.Location = new System.Drawing.Point(293, 209);
+            this.lbl_SensDoor.Location = new System.Drawing.Point(293, 141);
             this.lbl_SensDoor.Margin = new System.Windows.Forms.Padding(2);
             this.lbl_SensDoor.Name = "lbl_SensDoor";
             this.lbl_SensDoor.Size = new System.Drawing.Size(80, 30);
@@ -876,7 +937,7 @@
             this.lbl_LockDoorInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbl_LockDoorInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_LockDoorInfo.ForeColor = System.Drawing.Color.Navy;
-            this.lbl_LockDoorInfo.Location = new System.Drawing.Point(377, 243);
+            this.lbl_LockDoorInfo.Location = new System.Drawing.Point(377, 175);
             this.lbl_LockDoorInfo.Margin = new System.Windows.Forms.Padding(2);
             this.lbl_LockDoorInfo.Name = "lbl_LockDoorInfo";
             this.lbl_LockDoorInfo.Size = new System.Drawing.Size(200, 30);
@@ -888,7 +949,7 @@
             // btn_LockDoor
             // 
             this.btn_LockDoor.AccessibleDescription = "Lock Door";
-            this.btn_LockDoor.Location = new System.Drawing.Point(293, 243);
+            this.btn_LockDoor.Location = new System.Drawing.Point(293, 175);
             this.btn_LockDoor.Margin = new System.Windows.Forms.Padding(2);
             this.btn_LockDoor.Name = "btn_LockDoor";
             this.btn_LockDoor.Size = new System.Drawing.Size(80, 30);
@@ -902,7 +963,7 @@
             this.lbl_GPOut6Info.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbl_GPOut6Info.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_GPOut6Info.ForeColor = System.Drawing.Color.Navy;
-            this.lbl_GPOut6Info.Location = new System.Drawing.Point(377, 175);
+            this.lbl_GPOut6Info.Location = new System.Drawing.Point(89, 311);
             this.lbl_GPOut6Info.Margin = new System.Windows.Forms.Padding(2);
             this.lbl_GPOut6Info.Name = "lbl_GPOut6Info";
             this.lbl_GPOut6Info.Size = new System.Drawing.Size(200, 30);
@@ -914,7 +975,7 @@
             // btn_GPOut6
             // 
             this.btn_GPOut6.AccessibleDescription = "GP Out6";
-            this.btn_GPOut6.Location = new System.Drawing.Point(293, 175);
+            this.btn_GPOut6.Location = new System.Drawing.Point(5, 311);
             this.btn_GPOut6.Margin = new System.Windows.Forms.Padding(2);
             this.btn_GPOut6.Name = "btn_GPOut6";
             this.btn_GPOut6.Size = new System.Drawing.Size(80, 30);
@@ -928,7 +989,7 @@
             this.lbl_GPOut5Info.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbl_GPOut5Info.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_GPOut5Info.ForeColor = System.Drawing.Color.Navy;
-            this.lbl_GPOut5Info.Location = new System.Drawing.Point(377, 141);
+            this.lbl_GPOut5Info.Location = new System.Drawing.Point(89, 277);
             this.lbl_GPOut5Info.Margin = new System.Windows.Forms.Padding(2);
             this.lbl_GPOut5Info.Name = "lbl_GPOut5Info";
             this.lbl_GPOut5Info.Size = new System.Drawing.Size(200, 30);
@@ -940,7 +1001,7 @@
             // btn_GPOut5
             // 
             this.btn_GPOut5.AccessibleDescription = "GP Out5";
-            this.btn_GPOut5.Location = new System.Drawing.Point(293, 141);
+            this.btn_GPOut5.Location = new System.Drawing.Point(5, 277);
             this.btn_GPOut5.Margin = new System.Windows.Forms.Padding(2);
             this.btn_GPOut5.Name = "btn_GPOut5";
             this.btn_GPOut5.Size = new System.Drawing.Size(80, 30);
@@ -1062,7 +1123,7 @@
             this.tpage_ZSensor.Location = new System.Drawing.Point(4, 34);
             this.tpage_ZSensor.Name = "tpage_ZSensor";
             this.tpage_ZSensor.Padding = new System.Windows.Forms.Padding(3);
-            this.tpage_ZSensor.Size = new System.Drawing.Size(582, 327);
+            this.tpage_ZSensor.Size = new System.Drawing.Size(582, 349);
             this.tpage_ZSensor.TabIndex = 3;
             this.tpage_ZSensor.Text = "Z Sensor";
             // 
@@ -1134,7 +1195,7 @@
             this.tpTapeIndexer.Location = new System.Drawing.Point(4, 34);
             this.tpTapeIndexer.Name = "tpTapeIndexer";
             this.tpTapeIndexer.Padding = new System.Windows.Forms.Padding(3);
-            this.tpTapeIndexer.Size = new System.Drawing.Size(582, 327);
+            this.tpTapeIndexer.Size = new System.Drawing.Size(582, 349);
             this.tpTapeIndexer.TabIndex = 4;
             this.tpTapeIndexer.Text = "Tape Indexer";
             // 
@@ -1258,7 +1319,7 @@
             this.tpNeedleInsp.Location = new System.Drawing.Point(4, 34);
             this.tpNeedleInsp.Name = "tpNeedleInsp";
             this.tpNeedleInsp.Padding = new System.Windows.Forms.Padding(3);
-            this.tpNeedleInsp.Size = new System.Drawing.Size(582, 327);
+            this.tpNeedleInsp.Size = new System.Drawing.Size(582, 349);
             this.tpNeedleInsp.TabIndex = 5;
             this.tpNeedleInsp.Text = "Needle Insp";
             // 
@@ -1374,7 +1435,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(610, 651);
+            this.ClientSize = new System.Drawing.Size(610, 414);
             this.ControlBox = false;
             this.Controls.Add(this.tabControl1);
             this.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -1490,5 +1551,9 @@
         private System.Windows.Forms.Label lblNICamSigOKInfo;
         private System.Windows.Forms.Label lblNICamBusy;
         private System.Windows.Forms.Label lblNICamBusyInfo;
+        private System.Windows.Forms.Label lblSensNdleShort2;
+        private System.Windows.Forms.Label lblSensNdleShort2Info;
+        private System.Windows.Forms.Label lblSensNdleShort1;
+        private System.Windows.Forms.Label lblSensNdleShort1Info;
     }
 }

@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("NSW Automation")]
-[assembly: AssemblyProduct("NDispWin-Osram")]
+[assembly: AssemblyProduct("NDispWin-Osram x64")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("6.0.8.11")]
+[assembly: AssemblyVersion("6.0.9.0")]
 //[assembly: AssemblyFileVersion("1.0.46.7")]

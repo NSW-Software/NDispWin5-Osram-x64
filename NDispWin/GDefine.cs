@@ -166,7 +166,6 @@ namespace NDispWin
         {
             get
             {
-                //return TaskConv.EnableDoorSens;
                 return true;
             }
             set
@@ -677,7 +676,6 @@ namespace NDispWin
                             if (Prompt)
                             {
                                 Msg MsgBox = new Msg();
-                                //EMsgRes MsgRes = MsgBox.Show((int)EErrCode.DOOR_IS_OPEN, EMcState.Warning, EMsgBtn.smbOK, false);
                                 EMsgRes MsgRes = MsgBox.Show(Messages.DOOR_IS_OPEN, "");
                             }
                             return false;

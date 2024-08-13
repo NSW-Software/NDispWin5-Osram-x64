@@ -148,6 +148,7 @@ namespace NDispWin
         public static TEMessage DISP_IS_BUSY = new TEMessage(2890, "Disp is busy.", "", TEMessage.EType.Notification, false);
         public static TEMessage VALVE_TIMER_EXPIRED = new TEMessage(2891, "Valve Timer Expired.@OK - Continue.@Stop - Stop Operation.", "", TEMessage.EType.Notification, false);
         public static TEMessage VALVE_DENSITY_FLOWRATE_MISMATCH = new TEMessage(2892, "Valve Density and Flowrate Mismatch.@OK - Continue.@Stop - Stop Operation.", "", TEMessage.EType.Notification, false);
+        public static TEMessage NEEDLE_SHORT = new TEMessage(2893, "Needle Short Detected.", "Check Dispense Gap.", TEMessage.EType.Error, false);
         #endregion
         #region 2900 Program
         public static TEMessage PROGRAM_SCRIPT_ERR = new TEMessage(2900, "Progam Script Error.", "1. Check Script parameter.@2. Check ExMessage for details.", TEMessage.EType.Error, false);

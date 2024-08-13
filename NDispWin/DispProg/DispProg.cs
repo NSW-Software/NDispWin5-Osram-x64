@@ -3014,6 +3014,8 @@ namespace NDispWin
             }
         }
 
+        static bool[] b_NeedleShort = new bool[] { false, false };
+
         public class TScript
         {
             public TScript()
@@ -4262,6 +4264,7 @@ namespace NDispWin
                 videoStop = false;
 
                 b_TempCtrlChecked = false;
+                b_NeedleShort = new bool[] { false, false };
 
                 if (!SetupMode && TaskDisp.VolumeOfst_Protocol == TaskDisp.EVolumeOfstProtocol.OSRAM_SCC)
                 {
@@ -13007,7 +13010,10 @@ namespace NDispWin
                     if (Model.DnWait > 0)
                     {
                         t = GDefine.GetTickCount() + Model.DnWait;
-                        while (GDefine.GetTickCount() < t) { }// { Thread.Sleep(0); }
+                        while (GDefine.GetTickCount() < t)
+                        {
+                            NeedleShort.CheckIsShorted(ref b_NeedleShort); Thread.Sleep(0);
+                        }
                     }
                     #endregion
 
@@ -13216,6 +13222,8 @@ namespace NDispWin
 
                     b_Flag_ConsecutiveUnit = true;
                     if (TaskDisp.Thread_CheckIsFilling_Error()) goto _Stop;
+
+                    if (NeedleShort.PromptIsShorted(b_NeedleShort)) goto _Stop;
                 }
                 catch (Exception Ex)
                 {
@@ -13845,9 +13853,11 @@ namespace NDispWin
 
                     #region Down Wait
                     t = GDefine.GetTickCount() + Model.DnWait;
-                    while (GDefine.GetTickCount() < t) { }
-                    { Thread.Sleep(1); }
-                    #endregion
+                    while (GDefine.GetTickCount() < t)
+                    {
+                        NeedleShort.CheckIsShorted(ref b_NeedleShort); Thread.Sleep(1);
+                    }
+                        #endregion
 
                     #region Wait PumpSpeed
                     if (Disp)
@@ -14121,6 +14131,7 @@ namespace NDispWin
                                     #endregion
 
                                     TaskDisp.CtrlError.UpdateErrorFlag();
+                                    NeedleShort.CheckIsShorted(ref b_NeedleShort);
                                 }
                                 if ((GDefine.GantryConfig == GDefine.EGantryConfig.XY_ZX2Y2_Z2))
                                 {
@@ -14264,6 +14275,8 @@ namespace NDispWin
                             }
                     }
                     #endregion
+
+                    if (NeedleShort.PromptIsShorted(b_NeedleShort)) goto _Stop;
 
                     switch (RunMode)
                     {
@@ -14574,7 +14587,11 @@ namespace NDispWin
 
                     #region Down Wait
                     t = GDefine.GetTickCount() + Model.DnWait;
-                    while (GDefine.GetTickCount() < t) { Thread.Sleep(1); }
+                    while (GDefine.GetTickCount() < t)
+                    {
+                        NeedleShort.CheckIsShorted(ref b_NeedleShort);
+                        Thread.Sleep(1); 
+                    }
                     #endregion
 
                     #region Wait DispSpeed
@@ -14765,6 +14782,7 @@ namespace NDispWin
                                     #endregion
 
                                     TaskDisp.CtrlError.UpdateErrorFlag();
+                                    NeedleShort.CheckIsShorted(ref b_NeedleShort);
                                 }
                                 break;
                             }
@@ -14929,6 +14947,8 @@ namespace NDispWin
                             }
                     }
                     #endregion
+
+                    if (NeedleShort.PromptIsShorted(b_NeedleShort)) goto _Stop;
 
                     switch (RunMode)
                     {
@@ -18143,7 +18163,6 @@ namespace NDispWin
                     //while (GDefine.GetTickCount() < t) { } { Thread.Sleep(1); }
                     //#endregion
 
-
                     #region Wait PumpSpeed and DispVolume
                     switch (RunMode)
                     {
@@ -18167,6 +18186,7 @@ namespace NDispWin
                     }
 
                     #endregion
+                    NeedleShort.CheckIsShorted(ref b_NeedleShort);
 
                     CommonControl.P1245.PathMove(TaskGantry.GXAxis);
 
@@ -18192,10 +18212,10 @@ namespace NDispWin
                                     break;
                             }
                         }
-
                         if (!CommonControl.P1245.AxisBusy(TaskGantry.GXAxis, TaskGantry.GYAxis)) break;
 
                         TaskDisp.CtrlError.UpdateErrorFlag();
+                        NeedleShort.CheckIsShorted(ref b_NeedleShort);
                     }
 
                     #region Stop Trigger
@@ -18278,6 +18298,7 @@ namespace NDispWin
                             }
                     }
                     #endregion
+                    if (NeedleShort.PromptIsShorted(b_NeedleShort)) goto _Stop;
                 }
                 catch (Exception Ex)
                 {
@@ -25563,7 +25584,6 @@ namespace NDispWin
             return false;
         }
 
-
         internal class TProcessCamera
         {
             internal static bool StartVideoLog()
@@ -25667,6 +25687,43 @@ namespace NDispWin
                 catch { };
 
                 return true;
+            }
+        }
+
+        internal class NeedleShort
+        {
+            public static bool CheckIsShorted(ref bool[] Short)//return true if shorted
+            {
+                if (TaskDisp.Option_EnableNeedleShort)
+                {
+                    Short[0] = TaskGantry.SensNdle1Short || Short[0];
+                    Short[1] = TaskGantry.SensNdle2Short || Short[1];
+                }
+                return Short[0] || Short[1];
+            }
+            public static bool PromptIsShorted(bool[] Short)//return true if shorted
+            {
+                if (Short[0] == true || Short[1] == true || Short[2] == true || Short[3] == true)
+                {
+                    string S = "";
+                    if (Short[0]) S = S + "Needle 1 ";
+                    if (Short[1]) S = S + "Needle 2 ";
+
+                    Msg MsgBox = new Msg();
+                    EMsgRes Res = MsgBox.Show(Messages.NEEDLE_SHORT, S, EMsgBtn.smbStop);
+                    switch (Res)
+                    {
+                        case EMsgRes.smrStop:
+                            return false;
+                        case EMsgRes.smrOK:
+                            break;
+                    }
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
     }

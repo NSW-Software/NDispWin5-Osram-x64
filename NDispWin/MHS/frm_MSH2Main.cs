@@ -60,7 +60,7 @@ namespace NDispWin
         {
             Text = GDefine.MHSRecipeName;
             lbl_ProcessTime.Text = i_ProcessTime.ToString();
-            cbNewSeq.Checked = TaskConv.NewSeq;
+            cbNewConvSequence.Checked = TaskConv.NewConvSequence;
         }
 
         private void UpdateSelection(object sender)
@@ -453,7 +453,6 @@ namespace NDispWin
                     TaskMHS.LoadRecipe();
 
                     TaskConv.OpenBoard();// ConvIO.BoardID);
-                    if (TaskConv.PostEnable) TaskConv.OpenBoard2();
                     TaskElev.OpenBoard(ElevIO.BoardID);
                 }
                 catch (Exception ex)
@@ -834,7 +833,7 @@ namespace NDispWin
 
         private void cbNewSeq_Click(object sender, EventArgs e)
         {
-            TaskConv.NewSeq = !TaskConv.NewSeq;
+            TaskConv.NewConvSequence = !TaskConv.NewConvSequence;
             UpdateDisplay();
         }
     }

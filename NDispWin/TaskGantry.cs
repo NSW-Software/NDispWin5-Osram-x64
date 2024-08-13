@@ -194,13 +194,6 @@ namespace NDispWin
         internal static CControl2.TOutput _TapeTrig = new CControl2.TOutput(new CControl2.TDevice(CControl2.EDeviceType.NONE, 0, "", ""), 0x01, 0x02, "", "Tape Trig");
         internal static CControl2.TOutput _TapeReset = new CControl2.TOutput(new CControl2.TDevice(CControl2.EDeviceType.NONE, 0, "", ""), 0x03, 0x02, "", "Tape Reset");
 
-        internal static CControl2.TOutput _SvPnpPrecise = new CControl2.TOutput(new CControl2.TDevice(CControl2.EDeviceType.NONE, 0, "", ""), 0x00, 0x02, "", "Sv Pnp Precise");
-        internal static CControl2.TInput _SensPnpPrecise = new CControl2.TInput(new CControl2.TDevice(CControl2.EDeviceType.NONE, 0, "", ""), 0x00, 0x04, "", "Sens Pnp Precise");
-        internal static CControl2.TInput _SensPnpContact = new CControl2.TInput(new CControl2.TDevice(CControl2.EDeviceType.NONE, 0, "", ""), 0x03, 0x02, "", "Sens Pnp Contact");
-        internal static CControl2.TOutput _SvPnpVac = new CControl2.TOutput(new CControl2.TDevice(CControl2.EDeviceType.NONE, 0, "", ""), 0x01, 0x0002, "", "Sv Pnp Vac");
-        internal static CControl2.TOutput _SvPnpPurge = new CControl2.TOutput(new CControl2.TDevice(CControl2.EDeviceType.NONE, 0, "", ""), 0x01, 0x0001, "", "Sv Pnp Purge");
-        internal static CControl2.TInput _SensPnpVac = new CControl2.TInput(new CControl2.TDevice(CControl2.EDeviceType.NONE, 0, "", ""), 0x02, 0x0004, "", "Sens Pnp Vac");
-
         internal static CControl2.TOutput _TlRed = new CControl2.TOutput(new CControl2.TDevice(CControl2.EDeviceType.NONE, 0, "", ""), 0x04, 0x01, "", "Tower Light Red");
         internal static CControl2.TOutput _TlYlw = new CControl2.TOutput(new CControl2.TDevice(CControl2.EDeviceType.NONE, 0, "", ""), 0x04, 0x02, "", "Tower Light Yellow");
         internal static CControl2.TOutput _TlGrn = new CControl2.TOutput(new CControl2.TDevice(CControl2.EDeviceType.NONE, 0, "", ""), 0x04, 0x04, "", "Tower Light Green");
@@ -210,6 +203,9 @@ namespace NDispWin
         internal static CControl2.TInput _NICamSigOK = new CControl2.TInput(new CControl2.TDevice(CControl2.EDeviceType.NONE, 0, "", ""), 0x04, 0x01, "", "NICam SigOK");
         internal static CControl2.TInput _NICamBusy = new CControl2.TInput(new CControl2.TDevice(CControl2.EDeviceType.NONE, 0, "", ""), 0x04, 0x02, "", "NICam Busy");
         internal static CControl2.TInput _NICamRun = new CControl2.TInput(new CControl2.TDevice(CControl2.EDeviceType.NONE, 0, "", ""), 0x04, 0x04, "", "NICam Run");
+
+        internal static CControl2.TInput _SensNdle1Short = new CControl2.TInput(new CControl2.TDevice(CControl2.EDeviceType.NONE, 0, "", ""), 0x03, 0x03, "", "Sens Needle1 Short");
+        internal static CControl2.TInput _SensNdle2Short = new CControl2.TInput(new CControl2.TDevice(CControl2.EDeviceType.NONE, 0, "", ""), 0x03, 0x03, "", "Sens Needle2 Short");
         #endregion
 
         public enum TOutputState { On, Off, St };
@@ -460,17 +456,13 @@ namespace NDispWin
             SaveDeviceConfig(ref _SensDoor, FileName);
             SaveDeviceConfig(ref _LockDoor, FileName);
 
+            SaveDeviceConfig(ref _SensNdle1Short, FileName);
+            SaveDeviceConfig(ref _SensNdle2Short, FileName);
+
             SaveDeviceConfig(ref _TapeReady, FileName);
             SaveDeviceConfig(ref _TapeTrig, FileName);
             SaveDeviceConfig(ref _TapeAlarm, FileName);
             SaveDeviceConfig(ref _TapeReset, FileName);
-
-            SaveDeviceConfig(ref _SvPnpPrecise, FileName);
-            SaveDeviceConfig(ref _SensPnpPrecise, FileName);
-            SaveDeviceConfig(ref _SensPnpContact, FileName);
-            SaveDeviceConfig(ref _SensPnpVac, FileName);
-            SaveDeviceConfig(ref _SvPnpVac, FileName);
-            SaveDeviceConfig(ref _SvPnpPurge, FileName);
 
             SaveDeviceConfig(ref _TlRed, FileName);
             SaveDeviceConfig(ref _TlYlw, FileName);
@@ -650,17 +642,13 @@ namespace NDispWin
             LoadDeviceConfig(ref _SensDoor, FileName);
             LoadDeviceConfig(ref _LockDoor, FileName);
 
+            LoadDeviceConfig(ref _SensNdle1Short, FileName);
+            LoadDeviceConfig(ref _SensNdle2Short, FileName);
+
             LoadDeviceConfig(ref _TapeReady, FileName);
             LoadDeviceConfig(ref _TapeTrig, FileName);
             LoadDeviceConfig(ref _TapeAlarm, FileName);
             LoadDeviceConfig(ref _TapeReset, FileName);
-
-            LoadDeviceConfig(ref _SvPnpPrecise, FileName);
-            LoadDeviceConfig(ref _SensPnpPrecise, FileName);
-            LoadDeviceConfig(ref _SensPnpContact, FileName);
-            LoadDeviceConfig(ref _SensPnpVac, FileName);
-            LoadDeviceConfig(ref _SvPnpVac, FileName);
-            LoadDeviceConfig(ref _SvPnpPurge, FileName);
 
             LoadDeviceConfig(ref _TlRed, FileName);
             LoadDeviceConfig(ref _TlYlw, FileName);
@@ -1644,16 +1632,6 @@ namespace NDispWin
             try
             {
                 TaskVision.PtGrey_CamStop();
-            }
-            catch { }
-
-            try
-            {
-                //if (!TaskVision.frmGenImageView.Visible)
-                //{
-                //    //TaskVision.frmGenImageView.Show();
-                //    //TaskVision.frmGenImageView.Hide();
-                //}
             }
             catch { }
 
@@ -3997,76 +3975,6 @@ namespace NDispWin
             }
         }
 
-        public static bool SvPnpPrecise
-        {
-            set
-            {
-                try
-                {
-                    CControl2.EOutputStatus OutputStatus = value ? CControl2.EOutputStatus.Hi : CControl2.EOutputStatus.Lo;
-                    CommonControl.SetDO(ref _SvPnpPrecise, OutputStatus);
-                }
-                catch { }
-            }
-            get
-            {
-                return _SvPnpPrecise.Status;
-            }
-        }
-        public static bool SensPnpPrecise
-        {
-            get
-            {
-                return TaskGantry.GetInput(ref _SensPnpPrecise);
-            }
-        }
-        public static bool SensPnpContact
-        {
-            get
-            {
-                return TaskGantry.GetInput(ref _SensPnpContact);
-            }
-        }
-        public static bool SvPnpVac
-        {
-            set
-            {
-                try
-                {
-                    CControl2.EOutputStatus OutputStatus = value ? CControl2.EOutputStatus.Hi : CControl2.EOutputStatus.Lo;
-                    CommonControl.SetDO(ref _SvPnpVac, OutputStatus);
-                }
-                catch { }
-            }
-            get
-            {
-                return _SvPnpVac.Status;
-            }
-        }
-        public static bool SvPnpPurge
-        {
-            set
-            {
-                try
-                {
-                    CControl2.EOutputStatus OutputStatus = value ? CControl2.EOutputStatus.Hi : CControl2.EOutputStatus.Lo;
-                    CommonControl.SetDO(ref _SvPnpPurge, OutputStatus);
-                }
-                catch { }
-            }
-            get
-            {
-                return _SvPnpPurge.Status;
-            }
-        }
-        public static bool SensPnpVac
-        {
-            get
-            {
-                return TaskGantry.GetInput(ref _SensPnpVac);
-            }
-        }
-
         public static bool TLGreen
         {
             set
@@ -4178,6 +4086,21 @@ namespace NDispWin
             get
             {
                 return _NICamTrig.Status;
+            }
+        }
+
+        public static bool SensNdle1Short
+        {
+            get
+            {
+                return TaskGantry.GetInput(ref _SensNdle1Short);
+            }
+        }
+        public static bool SensNdle2Short
+        {
+            get
+            {
+                return TaskGantry.GetInput(ref _SensNdle2Short);
             }
         }
         #endregion

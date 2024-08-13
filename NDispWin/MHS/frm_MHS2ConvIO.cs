@@ -15,11 +15,6 @@ namespace NDispWin
         {
             InitializeComponent();
             AppLanguage.Func2.WriteLangFile(this);
-
-            lbl_BoardID2.Visible = TaskConv.PostEnable;
-            btn_Open2.Visible = TaskConv.PostEnable;
-
-            if (!TaskConv.PostEnable) tabControl1.TabPages.Remove(tPage_Conv2);
         }
 
         private void frm_ConvIO_Load(object sender, EventArgs e)
@@ -111,31 +106,6 @@ namespace NDispWin
                 GDefineMHS.RefreshOutput(btn_TL_Buzzer, TaskConv.TowerLight.TL_Buzzer);
             }
 
-            if (TaskConv.Board2IsOpen)
-            {
-                GDefineMHS.RefreshInput(lbl_In2_SensPsnt, TaskConv.In2.SensPsnt);
-
-                GDefineMHS.RefreshInput(lbl_Pos2_SensPsnt, TaskConv.Pos2.SensPsnt);
-                GDefineMHS.RefreshInput(lbl_Pos2_SensStopperUp, TaskConv.Pos2.SensStopperUp);
-                GDefineMHS.RefreshOutput(btn_Pos2_SvStopperUp, TaskConv.Pos2.SvStopperUp);
-                GDefineMHS.RefreshInput(lbl_Pos2_SensLifterUp, TaskConv.Pos2.SensLifterUp);
-                GDefineMHS.RefreshInput(lbl_Pos2_SensLifterDn, TaskConv.Pos2.SensLifterDn);
-                GDefineMHS.RefreshOutput(btn_Pos2_SvLifterUp, TaskConv.Pos2.SvLifterUp);
-                GDefineMHS.RefreshOutput(btn_Pos2_SvVac, TaskConv.Pos2.SvVac);
-
-                GDefineMHS.RefreshInput(lbl_Out2_SensPsnt, TaskConv.Out2.SensPsnt);
-                GDefineMHS.RefreshInput(lbl_Out2_SensKickerExt, TaskConv.Out2.SensKickerExt);
-                GDefineMHS.RefreshInput(lbl_Out2_SensKickerRet, TaskConv.Out2.SensKickerRet);
-                GDefineMHS.RefreshOutput(btn_Out2_SvKickerExt, TaskConv.Out2.SvKickerExt);
-
-                GDefineMHS.RefreshInput(lbl_Out2_SensKickerRet, TaskConv.Out2.SensKickerRet);
-                GDefineMHS.RefreshOutput(btn_Out2_SvKickerExt, TaskConv.Out2.SvKickerExt);
-
-                GDefineMHS.RefreshOutput(btn_Conv2_MotorOn, TaskConv.Conv2.MtrEnable);
-
-                GDefineMHS.RefreshInput(lbl_SensDoor2, TaskConv.SensDoor2);
-            }
-
             if (TaskElev.BoardIsOpen)
             {
                 lbl_CWPos.Text = TaskElev.Pos(ElevIO.CWAxis).ToString("f3");
@@ -150,9 +120,6 @@ namespace NDispWin
 
             lbl_BoardID.Text = "Board ID" + ConvIO.BoardID.ToString();
             lbl_BoardID.BackColor = ZEC3002.Ctrl.BoardOpened(ConvIO.BoardID) ? Color.Lime : Color.Red;
-
-            lbl_BoardID2.Text = "Board ID" + Conv2IO.BoardID.ToString();
-            lbl_BoardID2.BackColor = ZEC3002.Ctrl.BoardOpened(Conv2IO.BoardID) ? Color.Lime : Color.Red;
 
             UpdateStatus();
         }
@@ -385,122 +352,6 @@ namespace NDispWin
             }
         }
 
-        private void btn_Open2_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                TaskConv.OpenBoard2();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message.ToString());
-            }
-        }
-        private void btn_Pos2_SvStopperUp_Click(object sender, EventArgs e)
-        {
-            TaskConv.Pos2.SvStopperUp = !TaskConv.Pos2.SvStopperUp;
-        }
-        private void btn_Pos2_SvLifterUp_Click(object sender, EventArgs e)
-        {
-            TaskConv.Pos2.SvLifterUp = !TaskConv.Pos2.SvLifterUp;
-        }
-        private void btn_Pos2_SvVac_Click(object sender, EventArgs e)
-        {
-            TaskConv.Pos2.SvVac = !TaskConv.Pos2.SvVac;
-        }
-        private void btn_Out2_SvKickerExt_Click(object sender, EventArgs e)
-        {
-            TaskConv.Out2.SvKickerExt = !TaskConv.Out2.SvKickerExt;
-        }
-
-        private void btn_ConvRevFast_MouseDown(object sender, MouseEventArgs e)
-        {
-            try
-            {
-                TaskConv.Conv2.Rev_Fast();
-            }
-            catch
-            {
-                TaskConv.Conv2.Stop();
-            }
-        }
-        private void btn_ConvRevFast_MouseUp(object sender, MouseEventArgs e)
-        {
-            try
-            {
-                TaskConv.Conv2.Stop();
-            }
-            catch
-            {
-            }
-        }
-        private void btn_ConvRevSlow_MouseDown(object sender, MouseEventArgs e)
-        {
-            try
-            {
-                TaskConv.Conv2.Rev_Slow();
-            }
-            catch
-            {
-                TaskConv.Conv2.Stop();
-            }
-        }
-        private void btn_ConvRevSlow_MouseUp(object sender, MouseEventArgs e)
-        {
-            try
-            {
-                TaskConv.Conv2.Stop();
-            }
-            catch
-            {
-            }
-        }
-        private void btn_ConvFwdSlow_MouseDown(object sender, MouseEventArgs e)
-        {
-            try
-            {
-                TaskConv.Conv2.Fwd_Slow();
-            }
-            catch
-            {
-                TaskConv.Conv2.Stop();
-            }
-        }
-        private void btn_ConvFwdSlow_MouseUp(object sender, MouseEventArgs e)
-        {
-            try
-            {
-                TaskConv.Conv2.Stop();
-            }
-            catch
-            {
-            }
-        }
-        private void btn_ConvFwdFast_MouseDown(object sender, MouseEventArgs e)
-        {
-            try
-            {
-                TaskConv.Conv2.Fwd_Fast();
-            }
-            catch
-            {
-                TaskConv.Conv2.Stop();
-            }
-        }
-        private void btn_ConvFwdFast_MouseUp(object sender, MouseEventArgs e)
-        {
-            try
-            {
-                TaskConv.Conv2.Stop();
-            }
-            catch
-            {
-            }
-        }
-        private void btn_Conv2_MotorOn_Click(object sender, EventArgs e)
-        {
-            TaskConv.Conv2.MtrEnable = !TaskConv.Conv2.MtrEnable;
-        }
         private void JogConvStart(bool PosDir, bool Slow)
         {
             double Speed = Slow ? ElevIO.CWAxis.MotorPara.Jog.SlowV: ElevIO.CWAxis.MotorPara.Jog.MedV;

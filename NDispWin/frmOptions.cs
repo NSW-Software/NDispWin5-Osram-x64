@@ -30,7 +30,6 @@ namespace NDispWin
             }
             cbxLanguage.SelectedIndex = GDefineN.Language1;
             cbxLanguage2.SelectedIndex = GDefineN.Language2;
-            //lblAltErrMsgFile.Text = Path.GetFileNameWithoutExtension(GDefineN.AltErrMsgFile);
 
             cbxCustomerList.DataSource = Enum.GetNames(typeof(LotInfo2.ECustomer));
                 try { cbxCustomerList.SelectedIndex = (int)LotInfo2.Customer; } catch { };
@@ -86,6 +85,8 @@ namespace NDispWin
             cbEnableDoorSensor.Checked = GDefineN.EnableDoorSens;
             cbEnableDoorLock.Checked = GDefineN.EnableDoorLock;
             lblDTEnable.Text = DateTime.Now < DefineSafety.dtEnable ? "Disabled Until: " + DefineSafety.dtEnable.ToString("yyyy-MM-dd HH:mm:ss"): "-";
+
+            cbEnableNeedleShort.Checked = TaskDisp.Option_EnableNeedleShort;
 
             if (TaskDisp.Preference == TaskDisp.EPreference.Lumileds)
             {
@@ -548,5 +549,11 @@ namespace NDispWin
             if (TCTwrLight.LoadStatus()) MessageBox.Show($"{GDefine.TLStatusFile} was loaded.");
         }
 
+        private void cbEnableNeedleShort_Click(object sender, EventArgs e)
+        {
+            TaskDisp.Option_EnableNeedleShort = !TaskDisp.Option_EnableNeedleShort;
+            Log.OnSet("Option_EnableNeedleShort", !TaskDisp.Option_EnableNeedleShort, TaskDisp.Option_EnableNeedleShort);
+            UpdateDisplay();
+        }
     }
 }

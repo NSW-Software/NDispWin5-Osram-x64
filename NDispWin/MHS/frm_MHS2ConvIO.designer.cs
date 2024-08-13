@@ -109,35 +109,10 @@
             this.lbl_Pro_SensStopperUp = new System.Windows.Forms.Label();
             this.lbl_Pro_VacSw = new System.Windows.Forms.Label();
             this.btn_Pro_SvVac = new System.Windows.Forms.Button();
-            this.tPage_Conv2 = new System.Windows.Forms.TabPage();
-            this.btn_Conv2_MotorOn = new System.Windows.Forms.Button();
-            this.lbl_SensDoor2 = new System.Windows.Forms.Label();
-            this.lbl_In2_SensPsnt = new System.Windows.Forms.Label();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.btn_ConvFwdSlow = new System.Windows.Forms.Button();
-            this.btn_ConvRevSlow = new System.Windows.Forms.Button();
-            this.btn_ConvRevFast = new System.Windows.Forms.Button();
-            this.btn_ConvFwdFast = new System.Windows.Forms.Button();
-            this.lbl_Out2_SensKickerRet = new System.Windows.Forms.Label();
-            this.lbl_Out2_SensKickerExt = new System.Windows.Forms.Label();
-            this.btn_Out2_SvKickerExt = new System.Windows.Forms.Button();
-            this.lbl_Pos2_VacSw = new System.Windows.Forms.Label();
-            this.btn_Pos2_SvVac = new System.Windows.Forms.Button();
-            this.lbl_Pos2_SensStopperUp = new System.Windows.Forms.Label();
-            this.lbl_Pos2_SensLifterDn = new System.Windows.Forms.Label();
-            this.lbl_Pos2_SensLifterUp = new System.Windows.Forms.Label();
-            this.btn_Pos2_SvLifterUp = new System.Windows.Forms.Button();
-            this.lbl_Pos2_SensPsnt = new System.Windows.Forms.Label();
-            this.lbl_Out2_SensPsnt = new System.Windows.Forms.Label();
-            this.btn_Pos2_SvStopperUp = new System.Windows.Forms.Button();
-            this.btn_Open2 = new System.Windows.Forms.Button();
-            this.lbl_BoardID2 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tPage_Conv1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.tPage_Conv2.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tmr_Display
@@ -195,7 +170,6 @@
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tPage_Conv1);
-            this.tabControl1.Controls.Add(this.tPage_Conv2);
             this.tabControl1.Location = new System.Drawing.Point(8, 44);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -1238,313 +1212,12 @@
             this.btn_Pro_SvVac.Click += new System.EventHandler(this.btn_Pro_SvVac1_Click);
             this.btn_Pro_SvVac.MouseHover += new System.EventHandler(this.controlIO_MouseHover);
             // 
-            // tPage_Conv2
-            // 
-            this.tPage_Conv2.Controls.Add(this.btn_Conv2_MotorOn);
-            this.tPage_Conv2.Controls.Add(this.lbl_SensDoor2);
-            this.tPage_Conv2.Controls.Add(this.lbl_In2_SensPsnt);
-            this.tPage_Conv2.Controls.Add(this.groupBox2);
-            this.tPage_Conv2.Controls.Add(this.lbl_Out2_SensKickerRet);
-            this.tPage_Conv2.Controls.Add(this.lbl_Out2_SensKickerExt);
-            this.tPage_Conv2.Controls.Add(this.btn_Out2_SvKickerExt);
-            this.tPage_Conv2.Controls.Add(this.lbl_Pos2_VacSw);
-            this.tPage_Conv2.Controls.Add(this.btn_Pos2_SvVac);
-            this.tPage_Conv2.Controls.Add(this.lbl_Pos2_SensStopperUp);
-            this.tPage_Conv2.Controls.Add(this.lbl_Pos2_SensLifterDn);
-            this.tPage_Conv2.Controls.Add(this.lbl_Pos2_SensLifterUp);
-            this.tPage_Conv2.Controls.Add(this.btn_Pos2_SvLifterUp);
-            this.tPage_Conv2.Controls.Add(this.lbl_Pos2_SensPsnt);
-            this.tPage_Conv2.Controls.Add(this.lbl_Out2_SensPsnt);
-            this.tPage_Conv2.Controls.Add(this.btn_Pos2_SvStopperUp);
-            this.tPage_Conv2.Location = new System.Drawing.Point(4, 25);
-            this.tPage_Conv2.Name = "tPage_Conv2";
-            this.tPage_Conv2.Padding = new System.Windows.Forms.Padding(3);
-            this.tPage_Conv2.Size = new System.Drawing.Size(760, 480);
-            this.tPage_Conv2.TabIndex = 1;
-            this.tPage_Conv2.Text = "Conv2";
-            this.tPage_Conv2.UseVisualStyleBackColor = true;
-            // 
-            // btn_Conv2_MotorOn
-            // 
-            this.btn_Conv2_MotorOn.Location = new System.Drawing.Point(112, 240);
-            this.btn_Conv2_MotorOn.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.btn_Conv2_MotorOn.Name = "btn_Conv2_MotorOn";
-            this.btn_Conv2_MotorOn.Size = new System.Drawing.Size(100, 23);
-            this.btn_Conv2_MotorOn.TabIndex = 440;
-            this.btn_Conv2_MotorOn.Text = "Conv_MotorOn";
-            this.btn_Conv2_MotorOn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btn_Conv2_MotorOn.UseVisualStyleBackColor = true;
-            this.btn_Conv2_MotorOn.Click += new System.EventHandler(this.btn_Conv2_MotorOn_Click);
-            // 
-            // lbl_SensDoor2
-            // 
-            this.lbl_SensDoor2.AutoEllipsis = true;
-            this.lbl_SensDoor2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_SensDoor2.Location = new System.Drawing.Point(6, 188);
-            this.lbl_SensDoor2.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.lbl_SensDoor2.Name = "lbl_SensDoor2";
-            this.lbl_SensDoor2.Size = new System.Drawing.Size(100, 23);
-            this.lbl_SensDoor2.TabIndex = 439;
-            this.lbl_SensDoor2.Text = "SensDoor2";
-            this.lbl_SensDoor2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lbl_In2_SensPsnt
-            // 
-            this.lbl_In2_SensPsnt.AutoEllipsis = true;
-            this.lbl_In2_SensPsnt.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_In2_SensPsnt.Location = new System.Drawing.Point(6, 6);
-            this.lbl_In2_SensPsnt.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.lbl_In2_SensPsnt.Name = "lbl_In2_SensPsnt";
-            this.lbl_In2_SensPsnt.Size = new System.Drawing.Size(100, 23);
-            this.lbl_In2_SensPsnt.TabIndex = 438;
-            this.lbl_In2_SensPsnt.Text = "In2_SensPsnt";
-            this.lbl_In2_SensPsnt.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.AccessibleDescription = "Conveyor";
-            this.groupBox2.AutoSize = true;
-            this.groupBox2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.groupBox2.Controls.Add(this.btn_ConvFwdSlow);
-            this.groupBox2.Controls.Add(this.btn_ConvRevSlow);
-            this.groupBox2.Controls.Add(this.btn_ConvRevFast);
-            this.groupBox2.Controls.Add(this.btn_ConvFwdFast);
-            this.groupBox2.Location = new System.Drawing.Point(6, 318);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(257, 76);
-            this.groupBox2.TabIndex = 437;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Conveyor";
-            // 
-            // btn_ConvFwdSlow
-            // 
-            this.btn_ConvFwdSlow.AccessibleDescription = "";
-            this.btn_ConvFwdSlow.Location = new System.Drawing.Point(135, 20);
-            this.btn_ConvFwdSlow.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.btn_ConvFwdSlow.Name = "btn_ConvFwdSlow";
-            this.btn_ConvFwdSlow.Size = new System.Drawing.Size(55, 32);
-            this.btn_ConvFwdSlow.TabIndex = 373;
-            this.btn_ConvFwdSlow.Text = ">";
-            this.btn_ConvFwdSlow.UseVisualStyleBackColor = true;
-            this.btn_ConvFwdSlow.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_ConvFwdSlow_MouseDown);
-            this.btn_ConvFwdSlow.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_ConvFwdSlow_MouseUp);
-            // 
-            // btn_ConvRevSlow
-            // 
-            this.btn_ConvRevSlow.AccessibleDescription = "";
-            this.btn_ConvRevSlow.Location = new System.Drawing.Point(67, 20);
-            this.btn_ConvRevSlow.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.btn_ConvRevSlow.Name = "btn_ConvRevSlow";
-            this.btn_ConvRevSlow.Size = new System.Drawing.Size(55, 32);
-            this.btn_ConvRevSlow.TabIndex = 372;
-            this.btn_ConvRevSlow.Text = "<";
-            this.btn_ConvRevSlow.UseVisualStyleBackColor = true;
-            this.btn_ConvRevSlow.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_ConvRevSlow_MouseDown);
-            this.btn_ConvRevSlow.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_ConvRevSlow_MouseUp);
-            // 
-            // btn_ConvRevFast
-            // 
-            this.btn_ConvRevFast.AccessibleDescription = "";
-            this.btn_ConvRevFast.Location = new System.Drawing.Point(6, 20);
-            this.btn_ConvRevFast.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.btn_ConvRevFast.Name = "btn_ConvRevFast";
-            this.btn_ConvRevFast.Size = new System.Drawing.Size(55, 32);
-            this.btn_ConvRevFast.TabIndex = 371;
-            this.btn_ConvRevFast.Text = "<<<";
-            this.btn_ConvRevFast.UseVisualStyleBackColor = true;
-            this.btn_ConvRevFast.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_ConvRevFast_MouseDown);
-            this.btn_ConvRevFast.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_ConvRevFast_MouseUp);
-            // 
-            // btn_ConvFwdFast
-            // 
-            this.btn_ConvFwdFast.AccessibleDescription = "";
-            this.btn_ConvFwdFast.Location = new System.Drawing.Point(196, 20);
-            this.btn_ConvFwdFast.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.btn_ConvFwdFast.Name = "btn_ConvFwdFast";
-            this.btn_ConvFwdFast.Size = new System.Drawing.Size(55, 32);
-            this.btn_ConvFwdFast.TabIndex = 370;
-            this.btn_ConvFwdFast.Text = ">>>";
-            this.btn_ConvFwdFast.UseVisualStyleBackColor = true;
-            this.btn_ConvFwdFast.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_ConvFwdFast_MouseDown);
-            this.btn_ConvFwdFast.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_ConvFwdFast_MouseUp);
-            // 
-            // lbl_Out2_SensKickerRet
-            // 
-            this.lbl_Out2_SensKickerRet.AutoEllipsis = true;
-            this.lbl_Out2_SensKickerRet.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_Out2_SensKickerRet.Location = new System.Drawing.Point(324, 110);
-            this.lbl_Out2_SensKickerRet.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.lbl_Out2_SensKickerRet.Name = "lbl_Out2_SensKickerRet";
-            this.lbl_Out2_SensKickerRet.Size = new System.Drawing.Size(100, 23);
-            this.lbl_Out2_SensKickerRet.TabIndex = 436;
-            this.lbl_Out2_SensKickerRet.Text = "Out2_SensKickerRet";
-            this.lbl_Out2_SensKickerRet.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lbl_Out2_SensKickerExt
-            // 
-            this.lbl_Out2_SensKickerExt.AutoEllipsis = true;
-            this.lbl_Out2_SensKickerExt.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_Out2_SensKickerExt.Location = new System.Drawing.Point(324, 84);
-            this.lbl_Out2_SensKickerExt.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.lbl_Out2_SensKickerExt.Name = "lbl_Out2_SensKickerExt";
-            this.lbl_Out2_SensKickerExt.Size = new System.Drawing.Size(100, 23);
-            this.lbl_Out2_SensKickerExt.TabIndex = 435;
-            this.lbl_Out2_SensKickerExt.Text = "Out2_SensKickerExt";
-            this.lbl_Out2_SensKickerExt.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // btn_Out2_SvKickerExt
-            // 
-            this.btn_Out2_SvKickerExt.Location = new System.Drawing.Point(324, 136);
-            this.btn_Out2_SvKickerExt.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.btn_Out2_SvKickerExt.Name = "btn_Out2_SvKickerExt";
-            this.btn_Out2_SvKickerExt.Size = new System.Drawing.Size(100, 23);
-            this.btn_Out2_SvKickerExt.TabIndex = 434;
-            this.btn_Out2_SvKickerExt.Text = "Out2_SvKickerExt";
-            this.btn_Out2_SvKickerExt.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btn_Out2_SvKickerExt.UseVisualStyleBackColor = true;
-            this.btn_Out2_SvKickerExt.Click += new System.EventHandler(this.btn_Out2_SvKickerExt_Click);
-            // 
-            // lbl_Pos2_VacSw
-            // 
-            this.lbl_Pos2_VacSw.AutoEllipsis = true;
-            this.lbl_Pos2_VacSw.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_Pos2_VacSw.Location = new System.Drawing.Point(112, 188);
-            this.lbl_Pos2_VacSw.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.lbl_Pos2_VacSw.Name = "lbl_Pos2_VacSw";
-            this.lbl_Pos2_VacSw.Size = new System.Drawing.Size(100, 23);
-            this.lbl_Pos2_VacSw.TabIndex = 428;
-            this.lbl_Pos2_VacSw.Text = "Pos2_VacSw";
-            this.lbl_Pos2_VacSw.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // btn_Pos2_SvVac
-            // 
-            this.btn_Pos2_SvVac.Location = new System.Drawing.Point(112, 214);
-            this.btn_Pos2_SvVac.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.btn_Pos2_SvVac.Name = "btn_Pos2_SvVac";
-            this.btn_Pos2_SvVac.Size = new System.Drawing.Size(100, 23);
-            this.btn_Pos2_SvVac.TabIndex = 427;
-            this.btn_Pos2_SvVac.Text = "Pos2_SvVac";
-            this.btn_Pos2_SvVac.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btn_Pos2_SvVac.UseVisualStyleBackColor = true;
-            this.btn_Pos2_SvVac.Click += new System.EventHandler(this.btn_Pos2_SvVac_Click);
-            // 
-            // lbl_Pos2_SensStopperUp
-            // 
-            this.lbl_Pos2_SensStopperUp.AutoEllipsis = true;
-            this.lbl_Pos2_SensStopperUp.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_Pos2_SensStopperUp.Location = new System.Drawing.Point(112, 32);
-            this.lbl_Pos2_SensStopperUp.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.lbl_Pos2_SensStopperUp.Name = "lbl_Pos2_SensStopperUp";
-            this.lbl_Pos2_SensStopperUp.Size = new System.Drawing.Size(100, 23);
-            this.lbl_Pos2_SensStopperUp.TabIndex = 426;
-            this.lbl_Pos2_SensStopperUp.Text = "Pos2_SensStopperUp";
-            this.lbl_Pos2_SensStopperUp.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lbl_Pos2_SensLifterDn
-            // 
-            this.lbl_Pos2_SensLifterDn.AutoEllipsis = true;
-            this.lbl_Pos2_SensLifterDn.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_Pos2_SensLifterDn.Location = new System.Drawing.Point(112, 110);
-            this.lbl_Pos2_SensLifterDn.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.lbl_Pos2_SensLifterDn.Name = "lbl_Pos2_SensLifterDn";
-            this.lbl_Pos2_SensLifterDn.Size = new System.Drawing.Size(100, 23);
-            this.lbl_Pos2_SensLifterDn.TabIndex = 425;
-            this.lbl_Pos2_SensLifterDn.Text = "Pos2_SensLifterDn";
-            this.lbl_Pos2_SensLifterDn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lbl_Pos2_SensLifterUp
-            // 
-            this.lbl_Pos2_SensLifterUp.AutoEllipsis = true;
-            this.lbl_Pos2_SensLifterUp.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_Pos2_SensLifterUp.Location = new System.Drawing.Point(112, 84);
-            this.lbl_Pos2_SensLifterUp.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.lbl_Pos2_SensLifterUp.Name = "lbl_Pos2_SensLifterUp";
-            this.lbl_Pos2_SensLifterUp.Size = new System.Drawing.Size(100, 23);
-            this.lbl_Pos2_SensLifterUp.TabIndex = 424;
-            this.lbl_Pos2_SensLifterUp.Text = "Pos2_SensLifterUp";
-            this.lbl_Pos2_SensLifterUp.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // btn_Pos2_SvLifterUp
-            // 
-            this.btn_Pos2_SvLifterUp.Location = new System.Drawing.Point(112, 136);
-            this.btn_Pos2_SvLifterUp.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.btn_Pos2_SvLifterUp.Name = "btn_Pos2_SvLifterUp";
-            this.btn_Pos2_SvLifterUp.Size = new System.Drawing.Size(100, 23);
-            this.btn_Pos2_SvLifterUp.TabIndex = 409;
-            this.btn_Pos2_SvLifterUp.Text = "Pos2_SvLifterUp";
-            this.btn_Pos2_SvLifterUp.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btn_Pos2_SvLifterUp.UseVisualStyleBackColor = true;
-            this.btn_Pos2_SvLifterUp.Click += new System.EventHandler(this.btn_Pos2_SvLifterUp_Click);
-            // 
-            // lbl_Pos2_SensPsnt
-            // 
-            this.lbl_Pos2_SensPsnt.AutoEllipsis = true;
-            this.lbl_Pos2_SensPsnt.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_Pos2_SensPsnt.Location = new System.Drawing.Point(112, 6);
-            this.lbl_Pos2_SensPsnt.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.lbl_Pos2_SensPsnt.Name = "lbl_Pos2_SensPsnt";
-            this.lbl_Pos2_SensPsnt.Size = new System.Drawing.Size(100, 23);
-            this.lbl_Pos2_SensPsnt.TabIndex = 411;
-            this.lbl_Pos2_SensPsnt.Text = "Pos2_SensPsnt";
-            this.lbl_Pos2_SensPsnt.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lbl_Out2_SensPsnt
-            // 
-            this.lbl_Out2_SensPsnt.AutoEllipsis = true;
-            this.lbl_Out2_SensPsnt.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_Out2_SensPsnt.Location = new System.Drawing.Point(324, 6);
-            this.lbl_Out2_SensPsnt.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.lbl_Out2_SensPsnt.Name = "lbl_Out2_SensPsnt";
-            this.lbl_Out2_SensPsnt.Size = new System.Drawing.Size(100, 23);
-            this.lbl_Out2_SensPsnt.TabIndex = 412;
-            this.lbl_Out2_SensPsnt.Text = "Out2_SensPsnt";
-            this.lbl_Out2_SensPsnt.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // btn_Pos2_SvStopperUp
-            // 
-            this.btn_Pos2_SvStopperUp.Location = new System.Drawing.Point(112, 58);
-            this.btn_Pos2_SvStopperUp.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.btn_Pos2_SvStopperUp.Name = "btn_Pos2_SvStopperUp";
-            this.btn_Pos2_SvStopperUp.Size = new System.Drawing.Size(100, 23);
-            this.btn_Pos2_SvStopperUp.TabIndex = 414;
-            this.btn_Pos2_SvStopperUp.Text = "Pos2_SvStopperUp";
-            this.btn_Pos2_SvStopperUp.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btn_Pos2_SvStopperUp.UseVisualStyleBackColor = true;
-            this.btn_Pos2_SvStopperUp.Click += new System.EventHandler(this.btn_Pos2_SvStopperUp_Click);
-            // 
-            // btn_Open2
-            // 
-            this.btn_Open2.AccessibleDescription = "Open";
-            this.btn_Open2.Location = new System.Drawing.Point(336, 6);
-            this.btn_Open2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.btn_Open2.Name = "btn_Open2";
-            this.btn_Open2.Size = new System.Drawing.Size(70, 30);
-            this.btn_Open2.TabIndex = 388;
-            this.btn_Open2.Text = "Open";
-            this.btn_Open2.UseVisualStyleBackColor = true;
-            this.btn_Open2.Click += new System.EventHandler(this.btn_Open2_Click);
-            // 
-            // lbl_BoardID2
-            // 
-            this.lbl_BoardID2.AccessibleDescription = "";
-            this.lbl_BoardID2.BackColor = System.Drawing.Color.Red;
-            this.lbl_BoardID2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_BoardID2.Location = new System.Drawing.Point(210, 8);
-            this.lbl_BoardID2.Margin = new System.Windows.Forms.Padding(3);
-            this.lbl_BoardID2.Name = "lbl_BoardID2";
-            this.lbl_BoardID2.Size = new System.Drawing.Size(120, 26);
-            this.lbl_BoardID2.TabIndex = 387;
-            this.lbl_BoardID2.Text = "Board ID0";
-            this.lbl_BoardID2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // frm_MHS2ConvIO
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(784, 561);
-            this.Controls.Add(this.btn_Open2);
-            this.Controls.Add(this.lbl_BoardID2);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.btn_Open);
             this.Controls.Add(this.btn_Close);
@@ -1562,9 +1235,6 @@
             this.tPage_Conv1.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
-            this.tPage_Conv2.ResumeLayout(false);
-            this.tPage_Conv2.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1577,19 +1247,6 @@
         private System.Windows.Forms.Button btn_Open;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tPage_Conv1;
-        private System.Windows.Forms.TabPage tPage_Conv2;
-        private System.Windows.Forms.Label lbl_Out2_SensKickerRet;
-        private System.Windows.Forms.Label lbl_Out2_SensKickerExt;
-        private System.Windows.Forms.Button btn_Out2_SvKickerExt;
-        private System.Windows.Forms.Label lbl_Pos2_VacSw;
-        private System.Windows.Forms.Button btn_Pos2_SvVac;
-        private System.Windows.Forms.Label lbl_Pos2_SensStopperUp;
-        private System.Windows.Forms.Label lbl_Pos2_SensLifterDn;
-        private System.Windows.Forms.Label lbl_Pos2_SensLifterUp;
-        private System.Windows.Forms.Button btn_Pos2_SvLifterUp;
-        private System.Windows.Forms.Label lbl_Pos2_SensPsnt;
-        private System.Windows.Forms.Label lbl_Out2_SensPsnt;
-        private System.Windows.Forms.Button btn_Pos2_SvStopperUp;
         private System.Windows.Forms.Button btn_TL_Red;
         private System.Windows.Forms.Button btn_TL_Yellow;
         private System.Windows.Forms.GroupBox groupBox1;
@@ -1643,16 +1300,6 @@
         private System.Windows.Forms.Button btn_Pro_SvStopperUp;
         private System.Windows.Forms.Label lblLeftSmema_BdReady;
         private System.Windows.Forms.Label lblRightSmema_McReady;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Button btn_ConvFwdSlow;
-        private System.Windows.Forms.Button btn_ConvRevSlow;
-        private System.Windows.Forms.Button btn_ConvRevFast;
-        private System.Windows.Forms.Button btn_ConvFwdFast;
-        private System.Windows.Forms.Button btn_Open2;
-        private System.Windows.Forms.Label lbl_BoardID2;
-        private System.Windows.Forms.Label lbl_In2_SensPsnt;
-        private System.Windows.Forms.Label lbl_SensDoor2;
-        private System.Windows.Forms.Button btn_Conv2_MotorOn;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Label lbl_CWPos;
         private System.Windows.Forms.Button btn_CW_JogMSlow;

@@ -30,7 +30,6 @@ namespace NDispWin
 
         public void UpdateUI()
         {
-            pnl_PostStation.Visible = TaskConv.PostEnable;
             gbox_Buf1.Visible = TaskConv.Buf1.StType == TaskConv.EBufStType.Buffer;
             gbox_Buf2.Visible = TaskConv.Buf2.StType == TaskConv.EBufStType.Buffer;
             gbox_Pre.Visible = TaskConv.Pre.StType > TaskConv.EPreStType.None;
@@ -103,28 +102,6 @@ namespace NDispWin
 
             lbl_OutSt.Text = TaskConv.Out.Status.ToString();
             lbl_OutSt.BackColor = TaskConv.Out.StatusColor;
-
-            if (TaskConv.PostEnable)
-            {
-                if (TaskConv.In2.SensPsnt)
-                {
-                    lbl_In2St.Text = TaskConv.EProcessStatus.Psnt.ToString();
-                    lbl_In2St.BackColor = Color.Lime;
-                }
-                else
-                {
-                    lbl_In2St.Text = TaskConv.EProcessStatus.Empty.ToString();
-                    lbl_In2St.BackColor = Color.LightGray;
-                }
-
-                lbl_Pos2St.Text = TaskConv.Pos2.Status.ToString();
-                if (TaskConv.Pos2.Status == TaskConv.EProcessStatus.Heating)
-                    lbl_Pos2St.Text = TaskConv.Pos2.Status.ToString() + " (" + Math.Max(0, TaskConv.Pos2.HeatRemain_s) + ")";
-                lbl_Pos2St.BackColor = TaskConv.Pos2.StatusColor;
-
-                lbl_Out2St.Text = TaskConv.Out2.Status.ToString();
-                lbl_Out2St.BackColor = TaskConv.Out2.StatusColor;
-            }
             #endregion
 
             Color color = this.BackColor;
@@ -555,33 +532,6 @@ namespace NDispWin
                         }
                         break;
                     }
-            }
-        }
-        #endregion
-
-        #region PostStation
-        private void btn_Unload2_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                TaskConv.Manual_Unload2();
-            }
-            catch (Exception ex)
-            {
-                Msg MsgBox = new Msg();
-                MsgBox.Show(Messages.CONV_EX_ERR, MethodBase.GetCurrentMethod().Name.ToString() + " " + ex.Message.ToString());
-            }
-        }
-        private void btn_LoadPos2_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                TaskConv.Manual_LoadPos2();
-            }
-            catch (Exception ex)
-            {
-                Msg MsgBox = new Msg();
-                MsgBox.Show(Messages.CONV_EX_ERR, MethodBase.GetCurrentMethod().Name.ToString() + " " + ex.Message.ToString());
             }
         }
         #endregion

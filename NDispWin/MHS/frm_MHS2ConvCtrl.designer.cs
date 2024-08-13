@@ -70,9 +70,7 @@
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.lbl_In2St = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.btn_LoadPos2 = new System.Windows.Forms.Button();
             this.lbl_Pos2St = new System.Windows.Forms.Label();
-            this.btn_Unload2 = new System.Windows.Forms.Button();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.lbl_Out2St = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
@@ -541,7 +539,6 @@
             this.pnl_PostStation.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.pnl_PostStation.Controls.Add(this.groupBox7);
             this.pnl_PostStation.Controls.Add(this.groupBox5);
-            this.pnl_PostStation.Controls.Add(this.btn_Unload2);
             this.pnl_PostStation.Controls.Add(this.groupBox6);
             this.pnl_PostStation.Location = new System.Drawing.Point(242, 234);
             this.pnl_PostStation.Name = "pnl_PostStation";
@@ -573,7 +570,6 @@
             // 
             this.groupBox5.AccessibleDescription = "";
             this.groupBox5.AutoSize = true;
-            this.groupBox5.Controls.Add(this.btn_LoadPos2);
             this.groupBox5.Controls.Add(this.lbl_Pos2St);
             this.groupBox5.Location = new System.Drawing.Point(106, 3);
             this.groupBox5.Name = "groupBox5";
@@ -581,18 +577,6 @@
             this.groupBox5.TabIndex = 341;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Pos2";
-            // 
-            // btn_LoadPos2
-            // 
-            this.btn_LoadPos2.AccessibleDescription = "Load Pos2";
-            this.btn_LoadPos2.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.btn_LoadPos2.Location = new System.Drawing.Point(6, 45);
-            this.btn_LoadPos2.Name = "btn_LoadPos2";
-            this.btn_LoadPos2.Size = new System.Drawing.Size(88, 40);
-            this.btn_LoadPos2.TabIndex = 330;
-            this.btn_LoadPos2.Text = "Load Pos2";
-            this.btn_LoadPos2.UseVisualStyleBackColor = true;
-            this.btn_LoadPos2.Click += new System.EventHandler(this.btn_LoadPos2_Click);
             // 
             // lbl_Pos2St
             // 
@@ -604,17 +588,6 @@
             this.lbl_Pos2St.TabIndex = 316;
             this.lbl_Pos2St.Text = "Status";
             this.lbl_Pos2St.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // btn_Unload2
-            // 
-            this.btn_Unload2.AccessibleDescription = "Unload2";
-            this.btn_Unload2.Location = new System.Drawing.Point(212, 69);
-            this.btn_Unload2.Name = "btn_Unload2";
-            this.btn_Unload2.Size = new System.Drawing.Size(100, 40);
-            this.btn_Unload2.TabIndex = 340;
-            this.btn_Unload2.Text = "Unload2";
-            this.btn_Unload2.UseVisualStyleBackColor = true;
-            this.btn_Unload2.Click += new System.EventHandler(this.btn_Unload2_Click);
             // 
             // groupBox6
             // 
@@ -727,10 +700,8 @@
         private System.Windows.Forms.Panel pnl_PostStation;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Label lbl_Pos2St;
-        private System.Windows.Forms.Button btn_Unload2;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.Label lbl_Out2St;
-        private System.Windows.Forms.Button btn_LoadPos2;
         private System.Windows.Forms.Label lbl_In2St;
         private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.Button btnLoadPos;

@@ -867,6 +867,8 @@ namespace NDispWin
         public static bool Option_EnableDualMaterial = false;
         public static bool MaterialLowForbidContinue = false;
 
+        public static bool Option_EnableNeedleShort = false;
+
         public static double Option_DensityRange = 0;
 
         public enum ETeachNeedleMethod
