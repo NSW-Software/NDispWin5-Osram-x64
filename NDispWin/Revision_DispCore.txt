@@ -6,6 +6,8 @@ In Prog, after DO_REF not found, camera cannot live
 Todo
 - Integrate LEDStudio
 
+Ver 6.0.10.0 - KN - 20240816 - Released to TZ/WZM for OsWux - Gitted
+[BugFix] Corrected NeedleIsShort, remove redundant index.
 Ver 6.0.9.0 - KN - 20240813 - Released at OsWux - Gitted
 [Feature] Default NewConvSequence, runing New Conveyor Sequenc.
 [Feature] Added Needle Short detection, add io SensNdleShort1,2

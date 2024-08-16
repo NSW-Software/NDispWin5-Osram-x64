@@ -47,13 +47,16 @@ namespace NDispWin
 
             this.WindowState = FormWindowState.Maximized;
 
-            TaskVision.frmMVCGenTLCamera = new frmMVCGenTLCamera();
-            TaskVision.frmMVCGenTLCamera.CamReticles = Reticle.Reticles;
-            TaskVision.frmMVCGenTLCamera.FormBorderStyle = FormBorderStyle.None;
-            TaskVision.frmMVCGenTLCamera.TopLevel = false;
-            TaskVision.frmMVCGenTLCamera.Parent = splitContainer2.Panel1;
-            TaskVision.frmMVCGenTLCamera.Dock = DockStyle.Fill;
-            TaskVision.frmMVCGenTLCamera.Show();
+            if (TaskVision.genTLCamera[0].IsConnected)
+            {
+                TaskVision.frmMVCGenTLCamera = new frmMVCGenTLCamera();
+                TaskVision.frmMVCGenTLCamera.CamReticles = Reticle.Reticles;
+                TaskVision.frmMVCGenTLCamera.FormBorderStyle = FormBorderStyle.None;
+                TaskVision.frmMVCGenTLCamera.TopLevel = false;
+                TaskVision.frmMVCGenTLCamera.Parent = splitContainer2.Panel1;
+                TaskVision.frmMVCGenTLCamera.Dock = DockStyle.Fill;
+                TaskVision.frmMVCGenTLCamera.Show();
+            }
         }
 
         private void UpdateDisplay()

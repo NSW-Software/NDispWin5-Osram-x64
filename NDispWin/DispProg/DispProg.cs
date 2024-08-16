@@ -25694,16 +25694,18 @@ namespace NDispWin
         {
             public static bool CheckIsShorted(ref bool[] Short)//return true if shorted
             {
-                if (TaskDisp.Option_EnableNeedleShort)
-                {
-                    Short[0] = TaskGantry.SensNdle1Short || Short[0];
-                    Short[1] = TaskGantry.SensNdle2Short || Short[1];
-                }
+                if (TaskDisp.Option_EnableNeedleShort) return false;
+
+                Short[0] = TaskGantry.SensNdle1Short || Short[0];
+                Short[1] = TaskGantry.SensNdle2Short || Short[1];
+
                 return Short[0] || Short[1];
             }
             public static bool PromptIsShorted(bool[] Short)//return true if shorted
             {
-                if (Short[0] == true || Short[1] == true || Short[2] == true || Short[3] == true)
+                if (TaskDisp.Option_EnableNeedleShort) return false;
+
+                if (Short[0] == true || Short[1] == true)
                 {
                     string S = "";
                     if (Short[0]) S = S + "Needle 1 ";

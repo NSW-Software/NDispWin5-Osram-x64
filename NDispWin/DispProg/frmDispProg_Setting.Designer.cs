@@ -1685,6 +1685,8 @@
             // cbEnableProcessLog
             // 
             this.cbEnableProcessLog.AutoSize = true;
+            this.cbEnableProcessLog.Checked = true;
+            this.cbEnableProcessLog.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbEnableProcessLog.Location = new System.Drawing.Point(6, 52);
             this.cbEnableProcessLog.Name = "cbEnableProcessLog";
             this.cbEnableProcessLog.Size = new System.Drawing.Size(155, 22);
