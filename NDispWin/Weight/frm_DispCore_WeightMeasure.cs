@@ -47,7 +47,7 @@ namespace NDispWin
             lbox_Result.Items.Clear();
 
             TaskWeight.Cal_Meas_Weight = DispProg.Meas_Weight == 0 ? DispProg.Target_Weight : DispProg.Meas_Weight;
-            TaskWeight.MeasureSpec = DispProg.Meas_Spec;
+            TaskWeight.MeasureSpec = DispProg.Meas_Spec == 0 ? DispProg.Target_Weight : DispProg.Meas_Spec;
             if (DispProg.Meas_Spec_Tol > 0) TaskWeight.MeasureSpecTol = DispProg.Meas_Spec_Tol;
 
             switch (DispProg.Pump_Type)
