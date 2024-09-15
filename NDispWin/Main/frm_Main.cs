@@ -45,7 +45,6 @@ namespace NDispWin
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         public static extern bool SetDllDirectory(string lpPathName);
 
-
         public frm_Main()
         {
             InitializeComponent();

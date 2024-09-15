@@ -50,8 +50,8 @@ namespace NDispWin
         }
         private void frmVisionFailMsg_FormClosed(object sender, FormClosedEventArgs e)
         {
-            bmp_RefImage.Dispose();
-            bmp_FoundImage.Dispose();
+            if (bmp_RefImage != null) bmp_RefImage.Dispose();
+            if (bmp_FoundImage != null) bmp_FoundImage.Dispose();
         }
 
         public DialogResult ShowDialog(

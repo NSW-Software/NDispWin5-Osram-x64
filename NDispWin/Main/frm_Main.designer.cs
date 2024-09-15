@@ -83,7 +83,7 @@
             // tsslSECSGEMConnect2
             // 
             this.tsslSECSGEMConnect2.Name = "tsslSECSGEMConnect2";
-            this.tsslSECSGEMConnect2.Size = new System.Drawing.Size(112, 25);
+            this.tsslSECSGEMConnect2.Size = new System.Drawing.Size(132, 24);
             this.tsslSECSGEMConnect2.Text = "SECSGEMConnect2";
             this.tsslSECSGEMConnect2.Visible = false;
             this.tsslSECSGEMConnect2.Click += new System.EventHandler(this.tsslSECSGEMConnect2_Click);
@@ -157,13 +157,13 @@
             // tslblUser
             // 
             this.tslblUser.Name = "tslblUser";
-            this.tslblUser.Size = new System.Drawing.Size(142, 14);
+            this.tslblUser.Size = new System.Drawing.Size(142, 18);
             this.tslblUser.Text = "[User]";
             // 
             // tslblDateTime
             // 
             this.tslblDateTime.Name = "tslblDateTime";
-            this.tslblDateTime.Size = new System.Drawing.Size(142, 14);
+            this.tslblDateTime.Size = new System.Drawing.Size(142, 18);
             this.tslblDateTime.Text = "DateTime";
             // 
             // toolStripSeparator2

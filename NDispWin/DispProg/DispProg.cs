@@ -5469,141 +5469,132 @@ namespace NDispWin
 
                                             DefineSafety.DoorLock = false;
 
-                                            if (System.IO.File.Exists(GDefine.AppPath + "\\Debug.txt"))
-                                            {
-                                                frm_DispCore_JogGantryVision frm = new frm_DispCore_JogGantryVision();
-                                                frm.Inst = "Position Crosshair to Ref";
-                                                frm.ShowVision = true;
-                                                frm.Top = 0;
-                                                DialogResult dr = frm.ShowDialog();
+                                            //if (System.IO.File.Exists(GDefine.AppPath + "\\Debug.txt"))
+                                            //{
+                                            //    frm_DispCore_JogGantryVision frm = new frm_DispCore_JogGantryVision();
+                                            //    frm.Inst = "Position Crosshair to Ref";
+                                            //    frm.ShowVision = true;
+                                            //    frm.Top = 0;
+                                            //    DialogResult dr = frm.ShowDialog();
 
-                                                if (dr == DialogResult.OK)
-                                                {
-                                                    OK1 = true;
-                                                }
-                                            }
-                                            else
+                                            //    if (dr == DialogResult.OK)
+                                            //    {
+                                            //        OK1 = true;
+                                            //    }
+                                            //}
+                                            //else
+                                            DialogResult dr = DialogResult.None;
+                                            Application.OpenForms[0].BeginInvoke(new Action(() =>
                                             {
                                                 frm_DispCore_VisionFailMsg frm = new frm_DispCore_VisionFailMsg();
                                                 frm.ShowSkipButton = ActiveLine.IPara[11] > 0;
                                                 Log.AddToLog("DO_REF Point 1 fail.");
-                                                DialogResult dr = frm.ShowDialog(FailAction, 
+                                                dr = frm.ShowDialog(FailAction,
                                                     TaskVision.RefTemplate[CmdList.Line[Line].ID, (int)EVisionRef.No1].Image.ToBitmap(),
                                                     FoundDoRef1.ToBitmap(),//Bitmap,
                                                     v_s1, v_ox1, v_oy1, 0,
                                                     CmdList.Line[Line].DPara[0], CmdList.Line[Line].DPara[1], 0);
 
-                                                Application.OpenForms[0].Invoke(new Action(() =>
+                                                //Application.OpenForms[0].BeginInvoke(new Action(() =>
+                                                //{
+                                                if (GDefine.CameraType[0] == GDefine.ECameraType.Spinnaker2)
                                                 {
-                                                    if (GDefine.CameraType[0] == GDefine.ECameraType.Spinnaker2)
+                                                    if (TaskVision.frmMVCGenTLCamera.Visible)
                                                     {
-                                                        //TaskVision.frmCamera.SelectCamera(0);
-                                                        //TaskVision.frmCamera.Grab();
-                                                        if (TaskVision.frmMVCGenTLCamera.Visible)
-                                                        {
-                                                            TaskVision.frmMVCGenTLCamera.SelectCamera(0);
-                                                            if (TaskVision.frmMVCGenTLCamera.Visible) TaskVision.genTLCamera[0].StartGrab();
-                                                        }
+                                                        TaskVision.frmMVCGenTLCamera.SelectCamera(0);
+                                                        if (TaskVision.frmMVCGenTLCamera.Visible) TaskVision.genTLCamera[0].StartGrab();
                                                     }
-                                                    if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL)
-                                                    {
-                                                        if (TaskVision.frmMVCGenTLCamera.Visible)
-                                                        {
-                                                            TaskVision.frmMVCGenTLCamera.SelectCamera(0);
-                                                            if (TaskVision.frmMVCGenTLCamera.Visible) TaskVision.genTLCamera[0].StartGrab();
-                                                        }
-                                                    }
-                                                }));
-
-                                                switch (dr)
+                                                }
+                                                if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL)
                                                 {
-                                                    #region
-                                                    case DialogResult.Retry:
-                                                        Log.AddToLog("DO_REF Retry.");
-                                                        DefineSafety.DoorLock = true;
-                                                        goto _RetryRef1;
-                                                    case DialogResult.Ignore://Skip
-                                                        OK1 = false;
-                                                        Log.AddToLog("DO_REF Skip.");
-                                                        DefineSafety.DoorLock = true;
-                                                        break;
-                                                    case DialogResult.OK://Manual Adjust
-                                                        v_ox1 = TaskGantry.GXPos() - dx1;
-                                                        v_oy1 = TaskGantry.GYPos() - dy1;
-                                                        if (ActiveLine.DPara[7] > 0)//enable Verify Score
-                                                        {
-                                                            double v_ox = 0;
-                                                            double v_oy = 0;
-                                                            double v_s = 0;
-                                                            if (!DoRef(ActiveLine, dx1, dy1, RefID, (int)EVisionRef.No1, out v_ox, out v_oy, out v_s, ref gray_FoundDoRef1)) goto _Error;
+                                                    if (TaskVision.frmMVCGenTLCamera.Visible)
+                                                    {
+                                                        TaskVision.frmMVCGenTLCamera.SelectCamera(0);
+                                                        if (TaskVision.frmMVCGenTLCamera.Visible) TaskVision.genTLCamera[0].StartGrab();
+                                                    }
+                                                }
+                                            }));
 
-                                                            if (v_s < ActiveLine.DPara[7])
+                                            switch (dr)
+                                            {
+                                                #region
+                                                case DialogResult.Retry:
+                                                    Log.AddToLog("DO_REF Retry.");
+                                                    DefineSafety.DoorLock = true;
+                                                    goto _RetryRef1;
+                                                case DialogResult.Ignore://Skip
+                                                    OK1 = false;
+                                                    Log.AddToLog("DO_REF Skip.");
+                                                    DefineSafety.DoorLock = true;
+                                                    break;
+                                                case DialogResult.OK://Manual Adjust
+                                                    v_ox1 = TaskGantry.GXPos() - dx1;
+                                                    v_oy1 = TaskGantry.GYPos() - dy1;
+                                                    if (ActiveLine.DPara[7] > 0)//enable Verify Score
+                                                    {
+                                                        double v_ox = 0;
+                                                        double v_oy = 0;
+                                                        double v_s = 0;
+                                                        if (!DoRef(ActiveLine, dx1, dy1, RefID, (int)EVisionRef.No1, out v_ox, out v_oy, out v_s, ref gray_FoundDoRef1)) goto _Error;
+
+                                                        if (v_s < ActiveLine.DPara[7])
+                                                        {
+                                                            if (NUtils.UserAcc.Active.GroupID < 2)
                                                             {
+                                                                int i_UserIdx = NUtils.UserAcc.Active.UserIndex;
+                                                                NUtils.UserAcc.Users.LoginDlg();
                                                                 if (NUtils.UserAcc.Active.GroupID < 2)
                                                                 {
-                                                                    int i_UserIdx = NUtils.UserAcc.Active.UserIndex;
-                                                                    NUtils.UserAcc.Users.LoginDlg();
-                                                                    if (NUtils.UserAcc.Active.GroupID < 2)
-                                                                    {
-                                                                        Log.AddToLog("DO_REF Vision verification fail.");
-                                                                        goto _Pause;
-                                                                    }
-                                                                    Event.OP_MAIN_LOGIN.Set(NUtils.UserAcc.Active.GroupName, NUtils.UserAcc.Active.UserName);
-                                                                    Log.AddToLog("DO_REF Vision verification - bypassed by User Level");
+                                                                    Log.AddToLog("DO_REF Vision verification fail.");
+                                                                    goto _Pause;
                                                                 }
-                                                                else
-                                                                    Log.AddToLog("DO_REF Vision verification bypassed by default User Level");
+                                                                Event.OP_MAIN_LOGIN.Set(NUtils.UserAcc.Active.GroupName, NUtils.UserAcc.Active.UserName);
+                                                                Log.AddToLog("DO_REF Vision verification - bypassed by User Level");
                                                             }
                                                             else
-                                                                Log.AddToLog("DO_REF Vision verification pass.");
+                                                                Log.AddToLog("DO_REF Vision verification bypassed by default User Level");
                                                         }
+                                                        else
+                                                            Log.AddToLog("DO_REF Vision verification pass.");
+                                                    }
 
-                                                        #region Check Offset in Spec
-                                                        if (Math.Abs(v_ox1) > ActiveLine.DPara[1] || Math.Abs(v_oy1) > ActiveLine.DPara[1])
+                                                    #region Check Offset in Spec
+                                                    if (Math.Abs(v_ox1) > ActiveLine.DPara[1] || Math.Abs(v_oy1) > ActiveLine.DPara[1])
+                                                    {
+                                                        Msg MsgBox = new Msg();
+                                                        EMsgRes MsgRes = MsgBox.Show(Messages.DO_REF_OFFSET_OOS, "", EMsgBtn.smbOK_Stop);
+                                                        if (MsgRes == EMsgRes.smrStop)
                                                         {
-                                                            Msg MsgBox = new Msg();
-                                                            EMsgRes MsgRes = MsgBox.Show(Messages.DO_REF_OFFSET_OOS, "", EMsgBtn.smbOK_Stop);
-                                                            if (MsgRes == EMsgRes.smrStop)
-                                                            {
-                                                                goto _Pause;
-                                                            }
+                                                            goto _Pause;
                                                         }
-                                                        #endregion
-                                                        OK1 = true;
-                                                        Log.AddToLog("DO_REF Manual OK.");
-                                                        DefineSafety.DoorLock = true;
-                                                        break;
-                                                    case DialogResult.Yes://Accept Position
-                                                        OK1 = true;
-                                                        Log.AddToLog("DO_REF Accept.");
-                                                        DefineSafety.DoorLock = true;
-                                                        break;
-                                                    case DialogResult.Cancel://Reject
-                                                        BdStatus = EBoardStatus.Reject;
-                                                        Log.AddToLog("DO_REF Cancel.");
-                                                        DefineSafety.DoorLock = true;
-                                                        goto _EndBoard;
-                                                    default://Stop
-                                                        for (int L = Line; L >= 0; L--)
+                                                    }
+                                                    #endregion
+                                                    OK1 = true;
+                                                    Log.AddToLog("DO_REF Manual OK.");
+                                                    DefineSafety.DoorLock = true;
+                                                    break;
+                                                case DialogResult.Yes://Accept Position
+                                                    OK1 = true;
+                                                    Log.AddToLog("DO_REF Accept.");
+                                                    DefineSafety.DoorLock = true;
+                                                    break;
+                                                case DialogResult.Cancel://Reject
+                                                    BdStatus = EBoardStatus.Reject;
+                                                    Log.AddToLog("DO_REF Cancel.");
+                                                    DefineSafety.DoorLock = true;
+                                                    goto _EndBoard;
+                                                default://Stop
+                                                    for (int L = Line; L >= 0; L--)
+                                                    {
+                                                        if (CmdList.Line[L].Cmd == ECmd.FOR_LAYOUT)
                                                         {
-                                                            if (CmdList.Line[L].Cmd == ECmd.FOR_LAYOUT)
-                                                            {
-                                                                LastLine = L;
-                                                                break;
-                                                            }
+                                                            LastLine = L;
+                                                            break;
                                                         }
-                                                        Log.AddToLog("DO_REF Stop.");
-                                                        //if (GDefine.CameraType[0] == GDefine.ECameraType.Spinnaker2)
-                                                        //{
-                                                        //    Application.OpenForms[0].Invoke(new Action(() =>
-                                                        //    {
-                                                        //        TaskVision.frmCamera.SelectCamera(0);
-                                                        //        TaskVision.frmCamera.Grab();
-                                                        //    }));
-                                                        //}
-                                                        goto _Pause;
-                                                        #endregion
-                                                }
+                                                    }
+                                                    Log.AddToLog("DO_REF Stop.");
+                                                    goto _Pause;
+                                                    #endregion
                                             }
                                             #endregion
                                         }
@@ -5691,17 +5682,19 @@ namespace NDispWin
                                                 }
 
                                                 DefineSafety.DoorLock = false;
-                                                frm_DispCore_VisionFailMsg frm = new frm_DispCore_VisionFailMsg();
-                                                frm.ShowSkipButton = ActiveLine.IPara[11] > 0;
-                                                Log.AddToLog("DO_REF Point 2 fail.");
-                                                DialogResult dr = frm.ShowDialog(FailAction,
-                                                    TaskVision.RefTemplate[CmdList.Line[Line].ID, (int)EVisionRef.No2].Image.ToBitmap(),
-                                                    FoundDoRef2.ToBitmap(),
-                                                    v_s2, v_ox2, v_oy2, Angle_Rad,
-                                                    ActiveLine.DPara[0], ActiveLine.DPara[1], ActiveLine.DPara[2]);
 
-                                                Application.OpenForms[0].Invoke(new Action(() =>
+                                                DialogResult dr = DialogResult.None;
+                                                Application.OpenForms[0].BeginInvoke(new Action(() =>
                                                 {
+                                                    frm_DispCore_VisionFailMsg frm = new frm_DispCore_VisionFailMsg();
+                                                    frm.ShowSkipButton = ActiveLine.IPara[11] > 0;
+                                                    Log.AddToLog("DO_REF Point 2 fail.");
+                                                    dr = frm.ShowDialog(FailAction,
+                                                        TaskVision.RefTemplate[CmdList.Line[Line].ID, (int)EVisionRef.No2].Image.ToBitmap(),
+                                                        FoundDoRef2.ToBitmap(),
+                                                        v_s2, v_ox2, v_oy2, Angle_Rad,
+                                                        ActiveLine.DPara[0], ActiveLine.DPara[1], ActiveLine.DPara[2]);
+
                                                     if (GDefine.CameraType[0] == GDefine.ECameraType.Spinnaker2)
                                                     {
                                                         //TaskVision.frmCamera.SelectCamera(0);
@@ -6300,11 +6293,32 @@ namespace NDispWin
                                             }
                                             else
                                             {
-                                                frmVisionFailMsg2 frmV = new frmVisionFailMsg2();
-                                                string msg = "Point 1 Fail";
-                                                Log.AddToLog(ActiveLine.Cmd.ToString() + " Fail Unit No " + RunTime.UIndex.ToString() + " " + msg);
-                                                frmV.Message = msg;
-                                                DialogResult dr = frmV.ShowDialog();
+                                                DialogResult dr = DialogResult.None;
+                                                Application.OpenForms[0].BeginInvoke(new Action(() =>
+                                                {
+                                                    frmVisionFailMsg2 frmV = new frmVisionFailMsg2();
+                                                    string msg = "Point 1 Fail";
+                                                    Log.AddToLog(ActiveLine.Cmd.ToString() + " Fail Unit No " + RunTime.UIndex.ToString() + " " + msg);
+                                                    frmV.Message = msg;
+                                                    dr = frmV.ShowDialog();
+
+                                                    if (GDefine.CameraType[0] == GDefine.ECameraType.Spinnaker2)
+                                                    {
+                                                        if (TaskVision.frmMVCGenTLCamera.Visible)
+                                                        {
+                                                            TaskVision.frmMVCGenTLCamera.SelectCamera(0);
+                                                            if (TaskVision.frmMVCGenTLCamera.Visible) TaskVision.genTLCamera[0].StartGrab();
+                                                        }
+                                                    }
+                                                    if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL)
+                                                    {
+                                                        if (TaskVision.frmMVCGenTLCamera.Visible)
+                                                        {
+                                                            TaskVision.frmMVCGenTLCamera.SelectCamera(0);
+                                                            if (TaskVision.frmMVCGenTLCamera.Visible) TaskVision.genTLCamera[0].StartGrab();
+                                                        }
+                                                    }
+                                                }));
 
                                                 switch (dr)
                                                 {
@@ -6349,28 +6363,6 @@ namespace NDispWin
                                                         goto _Pause;
                                                         #endregion
                                                 }
-
-                                                Application.OpenForms[0].Invoke(new Action(() =>
-                                                {
-                                                    if (GDefine.CameraType[0] == GDefine.ECameraType.Spinnaker2)
-                                                    {
-                                                        //TaskVision.frmCamera.SelectCamera(0);
-                                                        //TaskVision.frmCamera.Grab();
-                                                        if (TaskVision.frmMVCGenTLCamera.Visible)
-                                                        {
-                                                            TaskVision.frmMVCGenTLCamera.SelectCamera(0);
-                                                            if (TaskVision.frmMVCGenTLCamera.Visible) TaskVision.genTLCamera[0].StartGrab();
-                                                        }
-                                                    }
-                                                    if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL)
-                                                    {
-                                                        if (TaskVision.frmMVCGenTLCamera.Visible)
-                                                        {
-                                                            TaskVision.frmMVCGenTLCamera.SelectCamera(0);
-                                                            if (TaskVision.frmMVCGenTLCamera.Visible) TaskVision.genTLCamera[0].StartGrab();
-                                                        }
-                                                    }
-                                                }));
                                             }
                                             #endregion
                                         }
@@ -6485,12 +6477,17 @@ namespace NDispWin
                                                     goto _EndBoard;
                                                 }
 
-                                                Application.OpenForms[0].Invoke(new Action(() =>
+                                                DialogResult dr = DialogResult.None;
+                                                Application.OpenForms[0].BeginInvoke(new Action(() =>
                                                 {
+                                                    frmVisionFailMsg2 frmV = new frmVisionFailMsg2();
+                                                    string msg = "Point 2 Fail";
+                                                    Log.AddToLog(ActiveLine.Cmd.ToString() + " Fail Unit No " + RunTime.UIndex.ToString() + " " + msg);
+                                                    frmV.Message = msg;
+                                                    dr = frmV.ShowDialog();
+
                                                     if (GDefine.CameraType[0] == GDefine.ECameraType.Spinnaker2)
                                                     {
-                                                        //TaskVision.frmCamera.SelectCamera(0);
-                                                        //TaskVision.frmCamera.Grab();
                                                         if (TaskVision.frmMVCGenTLCamera.Visible)
                                                         {
                                                             TaskVision.frmMVCGenTLCamera.SelectCamera(0);
@@ -6506,12 +6503,6 @@ namespace NDispWin
                                                         }
                                                     }
                                                 }));
-
-                                                frmVisionFailMsg2 frmV = new frmVisionFailMsg2();
-                                                string msg = "Point 2 Fail";
-                                                Log.AddToLog(ActiveLine.Cmd.ToString() + " Fail Unit No " + RunTime.UIndex.ToString() + " " + msg);
-                                                frmV.Message = msg;
-                                                DialogResult dr = frmV.ShowDialog();
 
                                                 switch (dr)
                                                 {
@@ -6556,28 +6547,6 @@ namespace NDispWin
                                                         goto _Pause;
                                                         #endregion
                                                 }
-
-                                                Application.OpenForms[0].Invoke(new Action(() =>
-                                                {
-                                                    if (GDefine.CameraType[0] == GDefine.ECameraType.Spinnaker2)
-                                                    {
-                                                        //TaskVision.frmCamera.SelectCamera(0);
-                                                        //TaskVision.frmCamera.Grab();
-                                                        if (TaskVision.frmMVCGenTLCamera.Visible)
-                                                        {
-                                                            TaskVision.frmMVCGenTLCamera.SelectCamera(0);
-                                                            if (TaskVision.frmMVCGenTLCamera.Visible) TaskVision.genTLCamera[0].StartGrab();
-                                                        }
-                                                    }
-                                                    if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL)
-                                                    {
-                                                        if (TaskVision.frmMVCGenTLCamera.Visible)
-                                                        {
-                                                            TaskVision.frmMVCGenTLCamera.SelectCamera(0);
-                                                            if (TaskVision.frmMVCGenTLCamera.Visible) TaskVision.genTLCamera[0].StartGrab();
-                                                        }
-                                                    }
-                                                }));
                                             }
                                             #endregion
                                         }
@@ -6975,7 +6944,7 @@ namespace NDispWin
                                             TaskVision.ExecVision((int)EVisionRef.No1, line.ID, ref v_ox1, ref v_oy1, ref oa, ref v_s1, ref OK, ref data, ref Image);
                                             Image.Dispose();
 
-                                            Application.OpenForms[0].Invoke(new Action(() =>
+                                            Application.OpenForms[0].BeginInvoke(new Action(() =>
                                             {
                                                 if (GDefine.CameraType[0] == GDefine.ECameraType.Spinnaker2)
                                                 {
@@ -7009,7 +6978,10 @@ namespace NDispWin
                                         #region
                                         DefineSafety.DoorLock = false;
 
-                                        frmVisionFailMsg2 frmV = new frmVisionFailMsg2();
+                                        DialogResult dr = DialogResult.None;
+                                        Application.OpenForms[0].BeginInvoke(new Action(() =>
+                                        {
+                                            frmVisionFailMsg2 frmV = new frmVisionFailMsg2();
                                         frmV.ShowAccept = true;
                                         frmV.ShowSkip = true;
                                         frmV.ShowManual = false;
@@ -7018,10 +6990,8 @@ namespace NDispWin
                                             $"Detected XY: {v_ox1:f3},{v_oy1:f3},S: {v_s1:f3}" + '\n' +
                                             $"Spec XY: {ActiveLine.DPara[1]},{ActiveLine.DPara[1]},S: {ActiveLine.DPara[0]}";
 
-                                        DialogResult dr = frmV.ShowDialog();
+                                        dr = frmV.ShowDialog();
 
-                                        Application.OpenForms[0].Invoke(new Action(() =>
-                                        {
                                             if (GDefine.CameraType[0] == GDefine.ECameraType.Spinnaker2)
                                             {
                                                 //TaskVision.frmCamera.SelectCamera(0);
@@ -7316,16 +7286,17 @@ namespace NDispWin
 
                                             DefineSafety.DoorLock = false;
 
-                                            frmVisionFailMsg2 frmV = new frmVisionFailMsg2();
-                                            string msg = "";
-                                            if (Math.Abs(v_ox) > ActiveLine.DPara[1] || Math.Abs(v_oy) > ActiveLine.DPara[1])
-                                                msg = "Unit Offset exceed XY Tolerance.";
-                                            Log.AddToLog("0" + (char)9 + "DoVision Fail Unit No " + RunTime.UIndex.ToString() + " " + msg);
-                                            frmV.Message = msg;
-                                            DialogResult dr = frmV.ShowDialog();
-
-                                            Application.OpenForms[0].Invoke(new Action(() =>
+                                            DialogResult dr = DialogResult.None;
+                                            Application.OpenForms[0].BeginInvoke(new Action(() =>
                                             {
+                                                frmVisionFailMsg2 frmV = new frmVisionFailMsg2();
+                                                string msg = "";
+                                                if (Math.Abs(v_ox) > ActiveLine.DPara[1] || Math.Abs(v_oy) > ActiveLine.DPara[1])
+                                                    msg = "Unit Offset exceed XY Tolerance.";
+                                                Log.AddToLog("0" + (char)9 + "DoVision Fail Unit No " + RunTime.UIndex.ToString() + " " + msg);
+                                                frmV.Message = msg;
+                                                dr = frmV.ShowDialog();
+
                                                 if (GDefine.CameraType[0] == GDefine.ECameraType.Spinnaker2)
                                                 {
                                                     //TaskVision.frmCamera.SelectCamera(0);
@@ -7397,7 +7368,7 @@ namespace NDispWin
                                     {
                                         if (CmdList.Line[Line].IPara[0] != 2) i_DoRefSkipCntr = 0;
 
-                                        Application.OpenForms[0].Invoke(new Action(() =>
+                                        Application.OpenForms[0].BeginInvoke(new Action(() =>
                                         {
                                             if (GDefine.CameraType[0] == GDefine.ECameraType.Spinnaker2)
                                             {
@@ -7750,7 +7721,7 @@ namespace NDispWin
                                         {
                                             Running = false;
                                         }
-                                        Application.OpenForms[0].Invoke(new Action(() =>
+                                        Application.OpenForms[0].BeginInvoke(new Action(() =>
                                         {
                                             if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL)
                                             {
@@ -7981,20 +7952,19 @@ namespace NDispWin
                                             #region
                                             DefineSafety.DoorLock = false;
 
-                                            frmVisionFailMsg2 frmV = new frmVisionFailMsg2();
-                                            Log.AddToLog("0" + (char)9 + "DoVisInsp Fail Unit No " + RunTime.UIndex.ToString());
-                                            frmV.ShowAccept = true;
-                                            frmV.ShowSkip = true;//updated 5.0.107 - 20210308 - KN
-                                            frmV.ShowManual = false;
-
-                                            DialogResult dr = frmV.ShowDialog();
-
-                                            Application.OpenForms[0].Invoke(new Action(() =>
+                                            DialogResult dr = DialogResult.None;
+                                            Application.OpenForms[0].BeginInvoke(new Action(() =>
                                             {
+                                                frmVisionFailMsg2 frmV = new frmVisionFailMsg2();
+                                                Log.AddToLog("0" + (char)9 + "DoVisInsp Fail Unit No " + RunTime.UIndex.ToString());
+                                                frmV.ShowAccept = true;
+                                                frmV.ShowSkip = true;//updated 5.0.107 - 20210308 - KN
+                                                frmV.ShowManual = false;
+
+                                                dr = frmV.ShowDialog();
+
                                                 if (GDefine.CameraType[0] == GDefine.ECameraType.Spinnaker2)
                                                 {
-                                                    //TaskVision.frmCamera.SelectCamera(0);
-                                                    //TaskVision.frmCamera.Grab();
                                                     if (TaskVision.frmMVCGenTLCamera.Visible)
                                                     {
                                                         TaskVision.frmMVCGenTLCamera.SelectCamera(0);
