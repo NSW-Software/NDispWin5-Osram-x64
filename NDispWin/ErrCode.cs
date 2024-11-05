@@ -95,6 +95,7 @@ namespace NDispWin
         public static TEMessage GANTRY_MOVE_PTP_ABS_ERR = new TEMessage(2400, "Gantry Move Ptp Abs Error.", "1. Check Axis Status.@2. Check Motor and Driver.", TEMessage.EType.Error, false);
         public static TEMessage GANTRY_MOVE_PTP_REL_ERR = new TEMessage(2420, "Gantry Move Ptp Rel Error.", "1. Check Axis Status.@2. Check Motor and Driver.", TEMessage.EType.Error, false);
         public static TEMessage GANTRY_MOVE_LINE_ABS2_ERR = new TEMessage(2450, "Gantry Move Line Abs2 Error.", "1. Check Gantry Status.@2. Check Motor and Driver.", TEMessage.EType.Error, false);
+        public static TEMessage GANTRY_MOVE_LINE_REL2_ERR = new TEMessage(2451, "Gantry Move Line Rel2 Error.", "1. Check Gantry Status.@2. Check Motor and Driver.", TEMessage.EType.Error, false);
         public static TEMessage GANTRY_MOVE_ARC_CENTER_END_ABS_ERR = new TEMessage(2455, "Gantry Move Arc Center Abs Error.", "1. Check Gantry Status.@2. Check Motor and Driver.", TEMessage.EType.Error, false);
         public static TEMessage GANTRY_NOT_READY = new TEMessage(2600, "Gantry Not Ready.", "1. Check Gantry Status.@2. Initialize Gantry.", TEMessage.EType.Error, false);
         public static TEMessage AXIS_ALARM_CLEAR_TIMEOUT = new TEMessage(2610, "Gantry Alarm Clear TimeOut.", "1. Check Axis Status.@2. Check Motor and Driver.", TEMessage.EType.Error, false);
@@ -253,6 +254,10 @@ namespace NDispWin
 
         public static TEMessage COPY_FILE_FAIL = new TEMessage(3850, "Copy File Failed.","", TEMessage.EType.Error, false);
         #endregion
+        public static TEMessage PP4_PUMP_NOT_READY = new TEMessage(3900, "PP Pump Not Ready.", "Check pump.", TEMessage.EType.Error, true);
+        public static TEMessage PP4_ROTATE_DISP_TIMEOUT = new TEMessage(3910, "PP Rotate Disp TimeOut.", "Check pump.", TEMessage.EType.Error, true);
+        public static TEMessage PP4_ROTATE_Fill_TIMEOUT = new TEMessage(3911, "PP Rotate Fill TimeOut.", "Check pump.", TEMessage.EType.Error, true);
+
         public static TEMessage UNKNOWN_EX_ERR = new TEMessage(3999, "Unknown Exception Error.", "Check ExMessage and feedback to NSW Automation.", TEMessage.EType.Error, false);
         #region 4000 Conv Init
         public static TEMessage CONV_INIT_ACCESS = new TEMessage(4000, "Conveyor Init Confirmation.", "Are You Sure To Init Conveyor?", TEMessage.EType.Confirmation, false);

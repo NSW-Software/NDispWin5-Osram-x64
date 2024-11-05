@@ -80,7 +80,7 @@
             this.btn_CalLaserOfst.Name = "btn_CalLaserOfst";
             this.btn_CalLaserOfst.Size = new System.Drawing.Size(107, 36);
             this.btn_CalLaserOfst.TabIndex = 5;
-            this.btn_CalLaserOfst.Text = "Laser Offset";
+            this.btn_CalLaserOfst.Text = "Laser Offset (Search Edge)";
             this.btn_CalLaserOfst.UseVisualStyleBackColor = true;
             this.btn_CalLaserOfst.Click += new System.EventHandler(this.btn_CalLaserOfst_Click);
             // 
@@ -92,7 +92,7 @@
             this.btn_CalLaser.Name = "btn_CalLaser";
             this.btn_CalLaser.Size = new System.Drawing.Size(107, 36);
             this.btn_CalLaser.TabIndex = 4;
-            this.btn_CalLaser.Text = "Laser";
+            this.btn_CalLaser.Text = "Laser Offset (Point)";
             this.btn_CalLaser.UseVisualStyleBackColor = true;
             this.btn_CalLaser.Click += new System.EventHandler(this.btn_CalLaser_Click);
             // 
@@ -194,7 +194,7 @@
             this.cbTempSensorOfstManual.AutoSize = true;
             this.cbTempSensorOfstManual.Location = new System.Drawing.Point(118, 144);
             this.cbTempSensorOfstManual.Name = "cbTempSensorOfstManual";
-            this.cbTempSensorOfstManual.Size = new System.Drawing.Size(76, 22);
+            this.cbTempSensorOfstManual.Size = new System.Drawing.Size(63, 18);
             this.cbTempSensorOfstManual.TabIndex = 187;
             this.cbTempSensorOfstManual.Text = "Manual";
             this.cbTempSensorOfstManual.UseVisualStyleBackColor = true;
@@ -217,7 +217,7 @@
             this.cbox_BypassTeachNeedleCheck.AutoSize = true;
             this.cbox_BypassTeachNeedleCheck.Location = new System.Drawing.Point(8, 221);
             this.cbox_BypassTeachNeedleCheck.Name = "cbox_BypassTeachNeedleCheck";
-            this.cbox_BypassTeachNeedleCheck.Size = new System.Drawing.Size(216, 22);
+            this.cbox_BypassTeachNeedleCheck.Size = new System.Drawing.Size(179, 18);
             this.cbox_BypassTeachNeedleCheck.TabIndex = 184;
             this.cbox_BypassTeachNeedleCheck.Text = "Bypass Teach Needle Check";
             this.cbox_BypassTeachNeedleCheck.UseVisualStyleBackColor = true;

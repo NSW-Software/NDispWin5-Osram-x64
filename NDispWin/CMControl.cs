@@ -3534,6 +3534,30 @@ namespace NDispWin
                 Mutex.ReleaseMutex();
             }
         }
+        public void PathStopDec(TAxis[] Axis)
+        {
+            Mutex.WaitOne();
+            try
+            {
+                IntPtr GpHnd = CreateGroup(Axis);
+                uint AxisNum = (uint)Axis.Count();
+                uint Res = 0;
+                Res = Motion.mAcm_GpStopDec(GpHnd);
+                if (Res != (int)ErrorCode.SUCCESS)
+                {
+                    throw new Exception("Path Stop Dec, " + GetErrorMessage1(Res));
+                }
+
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                Mutex.ReleaseMutex();
+            }
+        }
 
         public void PathMove(TAxis[] Axis)
         {

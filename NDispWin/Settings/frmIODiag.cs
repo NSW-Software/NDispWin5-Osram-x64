@@ -85,6 +85,13 @@ namespace NDispWin
 
             try
             {
+                GDefine.RefreshOutput(btn_SvVac2, TaskGantry.BVac2);
+                GDefine.UpdateInfo(lbl_SvVac2Info, TaskGantry._SvFVac2);
+            }
+            catch { };
+
+            try
+            {
                 GDefine.RefreshOutput(btn_SvPortA1, TaskGantry.DispPortA1);
                 GDefine.UpdateInfo(lbl_SvPortA1Info, TaskGantry._SvPortA1);
             }
@@ -101,6 +108,36 @@ namespace NDispWin
                 GDefine.UpdateInfo(lbl_SvPortC1Info, TaskGantry._SvPortC1);
             }
             catch { };
+
+            try
+            {
+                GDefine.RefreshInput(lblPASensHome, TaskGantry.PASensHome);
+                GDefine.RefreshInput(lblPASensFill, TaskGantry.PASensFill);
+                GDefine.RefreshInput(lblPASensDisp, TaskGantry.PASensDisp);
+                GDefine.RefreshOutput(btnPASvRotFill, TaskGantry.PASvRotFill);
+                GDefine.RefreshOutput(btnPASvRotDisp, TaskGantry.PASvRotDisp);
+            }
+            catch { };
+            GDefine.UpdateInfo(lblPASensHomeInfo, TaskGantry._PASensHome);
+            GDefine.UpdateInfo(lblPASensFillInfo, TaskGantry._PASensFill);
+            GDefine.UpdateInfo(lblPASensDispInfo, TaskGantry._PASensDisp);
+            GDefine.UpdateInfo(lblPASvRotFillInfo, TaskGantry._PASvRotFill);
+            GDefine.UpdateInfo(lblPASvRotDispInfo, TaskGantry._PASvRotDisp);
+
+            try
+            {
+                GDefine.RefreshInput(lblPBSensHome, TaskGantry.PBSensHome);
+                GDefine.RefreshInput(lblPBSensFill, TaskGantry.PBSensFill);
+                GDefine.RefreshInput(lblPBSensDisp, TaskGantry.PBSensDisp);
+                GDefine.RefreshOutput(btnPBSvRotFill, TaskGantry.PBSvRotFill);
+                GDefine.RefreshOutput(btnPBSvRotDisp, TaskGantry.PBSvRotDisp);
+            }
+            catch { };
+            GDefine.UpdateInfo(lblPBSensHomeInfo, TaskGantry._PBSensHome);
+            GDefine.UpdateInfo(lblPBSensFillInfo, TaskGantry._PBSensFill);
+            GDefine.UpdateInfo(lblPBSensDispInfo, TaskGantry._PBSensDisp);
+            GDefine.UpdateInfo(lblPBSvRotFillInfo, TaskGantry._PBSvRotFill);
+            GDefine.UpdateInfo(lblPBSvRotDispInfo, TaskGantry._PBSvRotDisp);
             #endregion
 
             #region General IO Tab
@@ -377,6 +414,10 @@ namespace NDispWin
         {
             TaskGantry.BVac1 = !TaskGantry.BVac1;
         }
+        private void btn_SvVac2_Click(object sender, EventArgs e)
+        {
+            TaskGantry.BVac2 = !TaskGantry.BVac2;
+        }
         private void btn_SvPortA1_Click(object sender, EventArgs e)
         {
             TaskGantry.DispPortA1 = !TaskGantry.DispPortA1;
@@ -642,5 +683,80 @@ namespace NDispWin
             TaskGantry.NICamTrig ^= true;
         }
         #endregion
+
+        private void tpage_DispControl_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblPASensHomeInfo_Click(object sender, EventArgs e)
+        {
+            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._PASensHome);
+            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._PASensHome = frm.Input;
+        }
+        private void lblPASensDispInfo_Click(object sender, EventArgs e)
+        {
+            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._PASensDisp);
+            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._PASensDisp = frm.Input;
+        }
+        private void lblPASensFillInfo_Click(object sender, EventArgs e)
+        {
+            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._PASensFill);
+            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._PASensFill = frm.Input;
+        }
+
+        private void btnPASvRotFill_Click(object sender, EventArgs e)
+        {
+            TaskGantry.PASvRotFill = !TaskGantry.PASvRotFill;
+        }
+        private void btnPASvRotDisp_Click(object sender, EventArgs e)
+        {
+            TaskGantry.PASvRotDisp = !TaskGantry.PASvRotDisp;
+        }
+        private void lblPASvRotFillInfo_Click(object sender, EventArgs e)
+        {
+            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._PASvRotFill);
+            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._PASvRotFill = frm.Output;
+        }
+        private void lblPASvRotDispInfo_Click(object sender, EventArgs e)
+        {
+            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._PASvRotDisp);
+            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._PASvRotDisp = frm.Output;
+        }
+
+        private void lblPBSensHomeInfo_Click(object sender, EventArgs e)
+        {
+            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._PBSensHome);
+            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._PBSensHome = frm.Input;
+        }
+        private void lblPBSensFillInfo_Click(object sender, EventArgs e)
+        {
+            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._PBSensFill);
+            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._PBSensFill = frm.Input;
+        }
+        private void lblPBSensDispInfo_Click(object sender, EventArgs e)
+        {
+            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._PBSensDisp);
+            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._PBSensDisp = frm.Input;
+        }
+        private void lblPBSvRotFillInfo_Click(object sender, EventArgs e)
+        {
+            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._PBSvRotFill);
+            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._PBSvRotFill = frm.Output;
+        }
+        private void lblPBSvRotDispInfo_Click(object sender, EventArgs e)
+        {
+            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._PBSvRotDisp);
+            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._PBSvRotDisp = frm.Output;
+        }
+        private void btnPBSvRotFill_Click(object sender, EventArgs e)
+        {
+            TaskGantry.PBSvRotFill = !TaskGantry.PBSvRotFill;
+        }
+        private void btnPBSvRotDisp_Click(object sender, EventArgs e)
+        {
+            TaskGantry.PBSvRotDisp = !TaskGantry.PBSvRotDisp;
+        }
+
     }
 }

@@ -501,6 +501,45 @@ namespace NDispWin
                 }
             });
         }
+
+        public static void UI_Disable(params dynamic[] except_ctrl)
+        {
+            Application.OpenForms.OfType<Form>()/*.Where(x => !(x is frmPrompt))*/.Where(f => !except_ctrl.Contains(f)).ToList().ForEach(f =>
+            {
+                GetChildItems(f).ToList().ForEach(c =>
+                {
+                    f.Invoke(new Action(() =>
+                    {
+                        if (c is ToolStrip)
+                        {
+                            GetToolStripItems(c as ToolStrip).ToList().ForEach(t => t.Enabled = except_ctrl.Contains(t));
+                            return;
+                        }
+                        if (!c.HasChildren) c.Enabled = except_ctrl.Contains(c);
+                    }));
+                });
+            });
+        }
+        public static void UI_Enable()
+        {
+            Application.OpenForms.OfType<Form>().ToList().ForEach(f =>
+            {
+                GetChildItems(f).ToList().ForEach(c =>
+                {
+                    try
+                    {
+                        f.Invoke(new Action(() =>
+                        {
+                            if (c is ToolStrip) GetToolStripItems(c as ToolStrip).ToList().ForEach(t => t.Enabled = true);
+                            c.Enabled = true;
+                            //UpdateDisplay(f);
+
+                        }));
+                    }
+                    catch { }
+                });
+            });
+        }
     }
 
     public class TEDisplay

@@ -41,10 +41,6 @@
             this.label21 = new System.Windows.Forms.Label();
             this.lbl_Head1OffsetZ_Tol = new System.Windows.Forms.Label();
             this.lbl_ApertureDia_Tol = new System.Windows.Forms.Label();
-            this.lbl_BCamCalPos_Tol = new System.Windows.Forms.Label();
-            this.lbl_BCamCalPos_Setup = new System.Windows.Forms.Label();
-            this.lbl_CamCalPos_Tol = new System.Windows.Forms.Label();
-            this.lbl_CamCalPos_Setup = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
             this.lbl_Head1OffsetZ = new System.Windows.Forms.Label();
             this.label25 = new System.Windows.Forms.Label();
@@ -67,7 +63,6 @@
             this.label32 = new System.Windows.Forms.Label();
             this.label33 = new System.Windows.Forms.Label();
             this.label34 = new System.Windows.Forms.Label();
-            this.lbl_LaserOfst_Setup = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
@@ -259,55 +254,6 @@
             this.lbl_ApertureDia_Tol.Text = "-100";
             this.lbl_ApertureDia_Tol.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.lbl_ApertureDia_Tol.Click += new System.EventHandler(this.lbl_ApertureDiaTol_Click);
-            // 
-            // lbl_BCamCalPos_Tol
-            // 
-            this.lbl_BCamCalPos_Tol.BackColor = System.Drawing.SystemColors.Control;
-            this.lbl_BCamCalPos_Tol.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_BCamCalPos_Tol.Location = new System.Drawing.Point(525, 93);
-            this.lbl_BCamCalPos_Tol.Margin = new System.Windows.Forms.Padding(2);
-            this.lbl_BCamCalPos_Tol.Name = "lbl_BCamCalPos_Tol";
-            this.lbl_BCamCalPos_Tol.Size = new System.Drawing.Size(70, 23);
-            this.lbl_BCamCalPos_Tol.TabIndex = 184;
-            this.lbl_BCamCalPos_Tol.Text = "0.100";
-            this.lbl_BCamCalPos_Tol.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lbl_BCamCalPos_Setup
-            // 
-            this.lbl_BCamCalPos_Setup.BackColor = System.Drawing.SystemColors.Control;
-            this.lbl_BCamCalPos_Setup.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_BCamCalPos_Setup.Location = new System.Drawing.Point(229, 93);
-            this.lbl_BCamCalPos_Setup.Margin = new System.Windows.Forms.Padding(2);
-            this.lbl_BCamCalPos_Setup.Name = "lbl_BCamCalPos_Setup";
-            this.lbl_BCamCalPos_Setup.Size = new System.Drawing.Size(144, 23);
-            this.lbl_BCamCalPos_Setup.TabIndex = 183;
-            this.lbl_BCamCalPos_Setup.Text = "-100";
-            this.lbl_BCamCalPos_Setup.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lbl_CamCalPos_Tol
-            // 
-            this.lbl_CamCalPos_Tol.BackColor = System.Drawing.Color.White;
-            this.lbl_CamCalPos_Tol.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_CamCalPos_Tol.Location = new System.Drawing.Point(525, 66);
-            this.lbl_CamCalPos_Tol.Margin = new System.Windows.Forms.Padding(2);
-            this.lbl_CamCalPos_Tol.Name = "lbl_CamCalPos_Tol";
-            this.lbl_CamCalPos_Tol.Size = new System.Drawing.Size(70, 23);
-            this.lbl_CamCalPos_Tol.TabIndex = 182;
-            this.lbl_CamCalPos_Tol.Text = "0.100";
-            this.lbl_CamCalPos_Tol.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.lbl_CamCalPos_Tol.Click += new System.EventHandler(this.lbl_CamCalPos_Tol_Click);
-            // 
-            // lbl_CamCalPos_Setup
-            // 
-            this.lbl_CamCalPos_Setup.BackColor = System.Drawing.SystemColors.Control;
-            this.lbl_CamCalPos_Setup.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_CamCalPos_Setup.Location = new System.Drawing.Point(229, 66);
-            this.lbl_CamCalPos_Setup.Margin = new System.Windows.Forms.Padding(2);
-            this.lbl_CamCalPos_Setup.Name = "lbl_CamCalPos_Setup";
-            this.lbl_CamCalPos_Setup.Size = new System.Drawing.Size(144, 23);
-            this.lbl_CamCalPos_Setup.TabIndex = 181;
-            this.lbl_CamCalPos_Setup.Text = "-100";
-            this.lbl_CamCalPos_Setup.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label28
             // 
@@ -512,7 +458,6 @@
             this.lbl_LaserOfst_Tol.TabIndex = 185;
             this.lbl_LaserOfst_Tol.Text = "0.100";
             this.lbl_LaserOfst_Tol.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.lbl_LaserOfst_Tol.Click += new System.EventHandler(this.lbl_LaserOfset_Tol_Click);
             // 
             // lbl_HeadZSensRefZ_Tol
             // 
@@ -562,19 +507,6 @@
             this.label34.TabIndex = 179;
             this.label34.Text = "Setup";
             this.label34.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lbl_LaserOfst_Setup
-            // 
-            this.lbl_LaserOfst_Setup.BackColor = System.Drawing.SystemColors.Control;
-            this.lbl_LaserOfst_Setup.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_LaserOfst_Setup.Location = new System.Drawing.Point(229, 120);
-            this.lbl_LaserOfst_Setup.Margin = new System.Windows.Forms.Padding(2);
-            this.lbl_LaserOfst_Setup.Name = "lbl_LaserOfst_Setup";
-            this.lbl_LaserOfst_Setup.Size = new System.Drawing.Size(144, 23);
-            this.lbl_LaserOfst_Setup.TabIndex = 168;
-            this.lbl_LaserOfst_Setup.Text = "-100";
-            this.lbl_LaserOfst_Setup.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.lbl_LaserOfst_Setup.Click += new System.EventHandler(this.lbl_LaserOfst_Setup_Click);
             // 
             // label14
             // 
@@ -847,19 +779,15 @@
             this.panel1.Controls.Add(this.label28);
             this.panel1.Controls.Add(this.label15);
             this.panel1.Controls.Add(this.label20);
-            this.panel1.Controls.Add(this.lbl_CamCalPos_Setup);
             this.panel1.Controls.Add(this.label16);
             this.panel1.Controls.Add(this.lbl_BCamCalPos);
             this.panel1.Controls.Add(this.lbl_Head2OffsetZ);
-            this.panel1.Controls.Add(this.lbl_CamCalPos_Tol);
             this.panel1.Controls.Add(this.lbl_Head1OffsetXY);
             this.panel1.Controls.Add(this.label10);
             this.panel1.Controls.Add(this.lbl_Head2OffsetXY_Tol);
-            this.panel1.Controls.Add(this.lbl_BCamCalPos_Setup);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.label9);
             this.panel1.Controls.Add(this.lbl_ApertureDia);
-            this.panel1.Controls.Add(this.lbl_BCamCalPos_Tol);
             this.panel1.Controls.Add(this.label7);
             this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.lbl_Head2OffsetXY);
@@ -912,7 +840,6 @@
             this.panel2.Controls.Add(this.label14);
             this.panel2.Controls.Add(this.lbl_HeadZSensRefZ);
             this.panel2.Controls.Add(this.lbl_LaserOfst);
-            this.panel2.Controls.Add(this.lbl_LaserOfst_Setup);
             this.panel2.Controls.Add(this.lbl_HeadZSensRefZ_Setup);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 378);
@@ -932,7 +859,7 @@
             this.label36.Padding = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.label36.Size = new System.Drawing.Size(612, 23);
             this.label36.TabIndex = 197;
-            this.label36.Text = "Z Sensor && Laser Sensor";
+            this.label36.Text = "`";
             this.label36.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lbl_HeadZSensRefZ_Setup
@@ -1244,10 +1171,6 @@
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.Label lbl_Head1OffsetXY_Tol;
-        private System.Windows.Forms.Label lbl_BCamCalPos_Tol;
-        private System.Windows.Forms.Label lbl_BCamCalPos_Setup;
-        private System.Windows.Forms.Label lbl_CamCalPos_Tol;
-        private System.Windows.Forms.Label lbl_CamCalPos_Setup;
         private System.Windows.Forms.Label lbl_Head1OffsetZ_Tol;
         private System.Windows.Forms.Label lbl_Head2OffsetZ_Tol;
         private System.Windows.Forms.Label label29;
@@ -1256,7 +1179,6 @@
         private System.Windows.Forms.Label label32;
         private System.Windows.Forms.Label label33;
         private System.Windows.Forms.Label label34;
-        private System.Windows.Forms.Label lbl_LaserOfst_Setup;
         private System.Windows.Forms.Label lbl_LaserOfst_Tol;
         private System.Windows.Forms.Label lbl_HeadZSensRefZ_Tol;
         private System.Windows.Forms.Label lbl_ZSensorCalPos;

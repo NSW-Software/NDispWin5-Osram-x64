@@ -319,6 +319,7 @@
             this.btn_BarrelPress.TabIndex = 59;
             this.btn_BarrelPress.Text = "Barrel Press";
             this.btn_BarrelPress.UseVisualStyleBackColor = true;
+            this.btn_BarrelPress.Click += new System.EventHandler(this.btn_BarrelPress_Click_1);
             this.btn_BarrelPress.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_BarrelPress_MouseDown);
             this.btn_BarrelPress.MouseLeave += new System.EventHandler(this.btn_BarrelPress_MouseLeave);
             this.btn_BarrelPress.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_BarrelPress_MouseUp);

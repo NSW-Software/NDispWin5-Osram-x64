@@ -601,25 +601,38 @@ namespace NDispWin
                     {
                         if (TaskWeight.DispTime == 0)
                         {
-                            #region Signal Handshake PP Handshake
-                            for (int i = 0; i < iDotsPerSample(measType); i++)
+                            switch (GDefine.DispCtrlType[0])
                             {
-                                if (!TaskDisp.CtrlWaitReady(b_Head1Run, b_Head2Run)) goto _Error;
-                                if (!isFilling) isFilling = TaskDisp.IsFilling();
-                                //if (isFilling) break;//5.6.11 abort the sample
-                                if (!TaskDisp.TrigOn(b_Head1Run, b_Head2Run)) goto _Error;
-                                if (!TaskDisp.CtrlWaitResponse(b_Head1Run, b_Head2Run)) goto _Error;
-                                if (!isFilling) isFilling = TaskDisp.IsFilling();
-                                if (!TaskDisp.TrigOff(b_Head1Run, b_Head2Run)) goto _Error;
-                                if (!TaskDisp.CtrlWaitComplete(b_Head1Run, b_Head2Run)) goto _Error;
-                                if (!isFilling) isFilling = TaskDisp.IsFilling();
-                                //isFilling = TaskDisp.IsFilling();
-                                //TaskDisp.Thread_CheckIsFilling_Run(b_Head1Run, b_Head2Run);
-                                Thread.Sleep(100);
-                                //TaskDisp.Thread_CheckIsFilling_Run(b_Head1Run, b_Head2Run);
-                                //if (!isFilling) isFilling = TaskDisp.IsFilling();
+                                case GDefine.EDispCtrlType.HPC3:
+                                    #region HPC3
+                                    for (int i = 0; i < iDotsPerSample(measType); i++)
+                                    {
+                                        if (!TFPump.PP4.Ready(new bool[] { b_Head1Run, b_Head2Run })) goto _Error;
+                                        bool filling = false;
+                                        if (!TFPump.PP4.CheckStrokeThenFill(new bool[] { b_Head1Run, b_Head2Run }, ref filling)) goto _Error;
+                                        if (!filling) isFilling = true;
+                                        if (!TFPump.PP4.SingleShot(new bool[] { b_Head1Run, b_Head2Run })) goto _Error;
+                                        Thread.Sleep(100);
+                                    }
+                                    break;
+                                    #endregion
+                                default:
+                                    #region Signal Handshake PP Handshake
+                                    for (int i = 0; i < iDotsPerSample(measType); i++)
+                                    {
+                                        if (!TaskDisp.CtrlWaitReady(b_Head1Run, b_Head2Run)) goto _Error;
+                                        if (!isFilling) isFilling = TaskDisp.IsFilling();
+                                        if (!TaskDisp.TrigOn(b_Head1Run, b_Head2Run)) goto _Error;
+                                        if (!TaskDisp.CtrlWaitResponse(b_Head1Run, b_Head2Run)) goto _Error;
+                                        if (!isFilling) isFilling = TaskDisp.IsFilling();
+                                        if (!TaskDisp.TrigOff(b_Head1Run, b_Head2Run)) goto _Error;
+                                        if (!TaskDisp.CtrlWaitComplete(b_Head1Run, b_Head2Run)) goto _Error;
+                                        if (!isFilling) isFilling = TaskDisp.IsFilling();
+                                        Thread.Sleep(100);
+                                    }
+                                    break;
+                                    #endregion
                             }
-                            #endregion
                         }
                         else
                         {
@@ -1689,6 +1702,7 @@ namespace NDispWin
 
                     if (!TaskWeight.Weight_DownWeightUp(HeadNo, EMeasType.Meas, ref d_mg, ref b_IsFilling))
                     {
+                        frm_Message.Close();
                         goto _Error;
                     }
 

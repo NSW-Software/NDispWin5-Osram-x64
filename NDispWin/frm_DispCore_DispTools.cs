@@ -28,6 +28,34 @@ namespace NDispWin
 
             pnl_OsramSCC.Location = new Point(4, 4);
             pnl_OsramSCC.Visible = (TaskDisp.VolumeOfst_Protocol == TaskDisp.EVolumeOfstProtocol.OSRAM_SCC);
+
+            frm_PP.Visible = false;
+            if (DispProg.Pump_Type == TaskDisp.EPumpType.PP || DispProg.Pump_Type == TaskDisp.EPumpType.PP2D)
+            {
+                switch (GDefine.DispCtrlType[0])
+                {
+                    case GDefine.EDispCtrlType.HPC3:
+                        frmSetupPP_HPC3 frm = new frmSetupPP_HPC3();
+                        frm.TopLevel = false;
+                        frm.Parent = pnl_DispTool_PumpTool;
+                        frm.FormBorderStyle = FormBorderStyle.None;
+                        frm.AutoSize = false;
+                        frm.Dock = DockStyle.Fill;
+                        frm.BringToFront();
+                        frm.ToolsOnly();
+                        frm.Show();
+                        break;
+                    default:
+                        frm_PP.TopLevel = false;
+                        frm_PP.Parent = pnl_DispTool_PumpTool;
+                        frm_PP.FormBorderStyle = FormBorderStyle.None;
+                        frm_PP.AutoSize = false;
+                        frm_PP.Dock = DockStyle.Fill;
+                        frm_PP.BringToFront();
+                        frm_PP.Show();
+                        break;
+                }
+            }
         }
 
         private void EnableControls(bool Enable, Button Button1, Button Button2)
@@ -217,18 +245,18 @@ namespace NDispWin
             btn_PumpAction.Visible = Pump.Action.Enabled;
             btn_PurgeStage.Visible = (DispProg.PurgeStage.Count > 0);
 
-            if (DispProg.Pump_Type == TaskDisp.EPumpType.PP || DispProg.Pump_Type == TaskDisp.EPumpType.PP2D)
-            {
-                frm_PP.TopLevel = false;
-                frm_PP.Parent = pnl_DispTool_PumpTool;
-                frm_PP.FormBorderStyle = FormBorderStyle.None;
-                frm_PP.AutoSize = false;
-                frm_PP.Dock = DockStyle.Fill;
-                frm_PP.BringToFront();
-                frm_PP.Show();
-            }
-            else
-                frm_PP.Visible = false;
+            //if (DispProg.Pump_Type == TaskDisp.EPumpType.PP || DispProg.Pump_Type == TaskDisp.EPumpType.PP2D)
+            //{
+            //    frm_PP.TopLevel = false;
+            //    frm_PP.Parent = pnl_DispTool_PumpTool;
+            //    frm_PP.FormBorderStyle = FormBorderStyle.None;
+            //    frm_PP.AutoSize = false;
+            //    frm_PP.Dock = DockStyle.Fill;
+            //    frm_PP.BringToFront();
+            //    frm_PP.Show();
+            //}
+            //else
+            //    frm_PP.Visible = false;
 
             if (DispProg.Pump_Type == TaskDisp.EPumpType.HM)
             {

@@ -526,18 +526,46 @@ namespace NDispWin
             {
                 #region Check Ready
                 if (Head == TaskWeight.EHeadNo.One)
-                    if (!TaskDisp.CtrlCheckReady(true, false))
+                    switch (GDefine.DispCtrlType[0])
                     {
-                        Msg MsgBox = new Msg();
-                        MsgBox.Show(Messages.DISPCTRL_NOT_READY, "Pump 1");
-                        return false;
+                        case GDefine.EDispCtrlType.HPC3:
+                            if (!TFPump.PP4.Ready(new bool[] { true, false }))
+                            {
+                                Msg MsgBox = new Msg();
+                                MsgBox.Show(Messages.PP4_PUMP_NOT_READY, "Pump 1");
+                                return false;
+                            }
+                            break;
+                        default:
+                            if (!TaskDisp.CtrlCheckReady(true, false))
+                            {
+                                Msg MsgBox = new Msg();
+                                MsgBox.Show(Messages.DISPCTRL_NOT_READY, "Pump 1");
+                                return false;
+                            }
+                            break;
                     }
                 if (Head == TaskWeight.EHeadNo.Two)
-                    if (!TaskDisp.CtrlCheckReady(false, true))
+                    switch (GDefine.DispCtrlType[0])
                     {
-                        Msg MsgBox = new Msg();
-                        MsgBox.Show(Messages.DISPCTRL_NOT_READY, "Pump 2");
-                        return false;
+                        case GDefine.EDispCtrlType.HPC3:
+                            if (!TFPump.PP4.Ready(new bool[] { false, true }))
+                            {
+                                Msg MsgBox = new Msg();
+                                MsgBox.Show(Messages.PP4_PUMP_NOT_READY, "Pump 2");
+                                return false;
+                            }
+                            break;
+                        default:
+                            {
+                                if (!TaskDisp.CtrlCheckReady(false, true))
+                                {
+                                    Msg MsgBox = new Msg();
+                                    MsgBox.Show(Messages.DISPCTRL_NOT_READY, "Pump 2");
+                                    return false;
+                                }
+                            }
+                            break;
                     }
                 #endregion
                 

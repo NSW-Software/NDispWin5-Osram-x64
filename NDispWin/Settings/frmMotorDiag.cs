@@ -12,7 +12,7 @@ namespace NDispWin
 {
     internal partial class frmMotorDiag : Form
     {
-        enum EAxis { GX, GY, GZ, GX2, GY2, GZ2}
+        enum EAxis { GX, GY, GZ, GX2, GY2, GZ2, PA, PB}
         EAxis SelectedAxis = EAxis.GX;
 
         public frmMotorDiag()
@@ -25,6 +25,9 @@ namespace NDispWin
 
         private void UpdateDisplay()
         {
+            panel1.Visible = true;
+            panel2.Visible = true;
+
             switch (GDefine.GantryConfig)
             {
                 case GDefine.EGantryConfig.XY_ZX2Y2_Z2:
@@ -40,6 +43,8 @@ namespace NDispWin
             btn_GX2Axis.BackColor = SystemColors.Control;
             btn_GY2Axis.BackColor = SystemColors.Control;
             btn_GZ2Axis.BackColor = SystemColors.Control;
+            btnPAAxis.BackColor = SystemColors.Control;
+            btnPBAxis.BackColor = SystemColors.Control;
             switch (SelectedAxis)
             {
                 case EAxis.GX: btn_GXAxis.BackColor = Color.Lime; break;
@@ -48,6 +53,8 @@ namespace NDispWin
                 case EAxis.GX2: btn_GX2Axis.BackColor = Color.Lime; break;
                 case EAxis.GY2: btn_GY2Axis.BackColor = Color.Lime; break;
                 case EAxis.GZ2: btn_GZ2Axis.BackColor = Color.Lime; break;
+                case EAxis.PA: btnPAAxis.BackColor = Color.Lime; break;
+                case EAxis.PB: btnPBAxis.BackColor = Color.Lime; break;
             }
 
             GDefine.UpdateInfo(lbl_GXInfo, TaskGantry.GXAxis);
@@ -56,6 +63,8 @@ namespace NDispWin
             GDefine.UpdateInfo(lbl_GX2AxisInfo, TaskGantry.GX2Axis);
             GDefine.UpdateInfo(lbl_GY2AxisInfo, TaskGantry.GY2Axis);
             GDefine.UpdateInfo(lbl_GZ2AxisInfo, TaskGantry.GZ2Axis);
+            GDefine.UpdateInfo(lblPAAxisInfo, TaskGantry.PAAxis);
+            GDefine.UpdateInfo(lblPBAxisInfo, TaskGantry.PBAxis);
 
             #region Display
             CControl2.TInput Home = new CControl2.TInput();
@@ -145,6 +154,32 @@ namespace NDispWin
                     Alarm = TaskGantry._GZ2Alm;
                     MtrOn = TaskGantry._GZ2MtrOn;
                     AlmClr = TaskGantry._GZ2AlmClr;
+                    break;
+                #endregion
+                case EAxis.PA:
+                    #region
+                    Home = TaskGantry._PASensHome;
+                    //LmtP = TaskGantry._SensGZ2LmtP;
+                    //LmtN = TaskGantry._SensGZ2LmtN;
+                    SLmtP = TaskGantry._PASLmtP;
+                    SLmtN = TaskGantry._PASLmtN;
+                    //InPos = TaskGantry._PAInp;
+                    Alarm = TaskGantry._PAAlm;
+                    MtrOn = TaskGantry._PAMtrOn;
+                    AlmClr = TaskGantry._PAAlmClr;
+                    break;
+                #endregion
+                case EAxis.PB:
+                    #region
+                    Home = TaskGantry._PBSensHome;
+                    //LmtP = TaskGantry._SensGZ2LmtP;
+                    //LmtN = TaskGantry._SensGZ2LmtN;
+                    SLmtP = TaskGantry._PBSLmtP;
+                    SLmtN = TaskGantry._PBSLmtN;
+                    //InPos = TaskGantry._PBInp;
+                    Alarm = TaskGantry._PBAlm;
+                    MtrOn = TaskGantry._PBMtrOn;
+                    AlmClr = TaskGantry._PBAlmClr;
                     break;
                     #endregion
             }
@@ -477,7 +512,9 @@ namespace NDispWin
                 case EAxis.GX2: Input = TaskGantry._SensGX2Home; break;
                 case EAxis.GY2: Input = TaskGantry._SensGY2Home; break;
                 case EAxis.GZ2: Input = TaskGantry._SensGZ2Home; break;
-            }            
+                case EAxis.PA: Input = TaskGantry._PASensHome; break;
+                case EAxis.PB: Input = TaskGantry._PBSensHome; break;
+            }
             frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(Input);
             if (frm.ShowDialog() == DialogResult.OK)
             {
@@ -489,7 +526,9 @@ namespace NDispWin
                     case EAxis.GX2: TaskGantry._SensGX2Home = frm.Input; break;
                     case EAxis.GY2: TaskGantry._SensGY2Home = frm.Input; break;
                     case EAxis.GZ2: TaskGantry._SensGZ2Home = frm.Input; break;
-                }            
+                    case EAxis.PA: TaskGantry._PASensHome = frm.Input; break;
+                    case EAxis.PB: TaskGantry._PBSensHome = frm.Input; break;
+                }
             }
             UpdateDisplay();
         }
@@ -640,6 +679,8 @@ namespace NDispWin
                 case EAxis.GX2: Input = TaskGantry._GX2Alm; break;
                 case EAxis.GY2: Input = TaskGantry._GY2Alm; break;
                 case EAxis.GZ2: Input = TaskGantry._GZ2Alm; break;
+                case EAxis.PA: Input = TaskGantry._PAAlm; break;
+                case EAxis.PB: Input = TaskGantry._PBAlm; break;
             }
             frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(Input);
             if (frm.ShowDialog() == DialogResult.OK)
@@ -652,6 +693,8 @@ namespace NDispWin
                     case EAxis.GX2: TaskGantry._GX2Alm = frm.Input; break;
                     case EAxis.GY2: TaskGantry._GY2Alm = frm.Input; break;
                     case EAxis.GZ2: TaskGantry._GZ2Alm = frm.Input; break;
+                    case EAxis.PA: TaskGantry._PAAlm = frm.Input; break;
+                    case EAxis.PB: TaskGantry._PBAlm = frm.Input; break;
                 }
             }
             UpdateDisplay();
@@ -667,6 +710,8 @@ namespace NDispWin
                 case EAxis.GX2: Output = TaskGantry._GX2MtrOn; break;
                 case EAxis.GY2: Output = TaskGantry._GY2MtrOn; break;
                 case EAxis.GZ2: Output = TaskGantry._GZ2MtrOn; break;
+                case EAxis.PA: Output = TaskGantry._PAMtrOn; break;
+                case EAxis.PB: Output = TaskGantry._PBMtrOn; break;
             }
             frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(Output);
             if (frm.ShowDialog() == DialogResult.OK)
@@ -679,6 +724,8 @@ namespace NDispWin
                     case EAxis.GX2: TaskGantry._GX2MtrOn = frm.Output; break;
                     case EAxis.GY2: TaskGantry._GY2MtrOn = frm.Output; break;
                     case EAxis.GZ2: TaskGantry._GZ2MtrOn = frm.Output; break;
+                    case EAxis.PA: TaskGantry._PAMtrOn = frm.Output; break;
+                    case EAxis.PB: TaskGantry._PBMtrOn = frm.Output; break;
                 }
             }
             UpdateDisplay();
@@ -707,6 +754,38 @@ namespace NDispWin
                     case EAxis.GY2: TaskGantry._GY2AlmClr = frm.Output; break;
                     case EAxis.GZ2: TaskGantry._GZ2AlmClr = frm.Output; break;
                 }
+            }
+            UpdateDisplay();
+        }
+
+        private void btnPAAxis_Click(object sender, EventArgs e)
+        {
+            SelectedAxis = EAxis.PA;
+            UpdateDisplay();
+        }
+
+        private void lblPAAxisInfo_Click(object sender, EventArgs e)
+        {
+            frmDeviceAxisConfigEditor frm = new frmDeviceAxisConfigEditor(TaskGantry.PAAxis);
+            if (frm.ShowDialog() == DialogResult.OK)
+            {
+                TaskGantry.PAAxis = frm.Axis;
+            }
+            UpdateDisplay();
+        }
+
+        private void btnPBAxis_Click(object sender, EventArgs e)
+        {
+            SelectedAxis = EAxis.PB;
+            UpdateDisplay();
+        }
+
+        private void lblPBAxisInfo_Click(object sender, EventArgs e)
+        {
+            frmDeviceAxisConfigEditor frm = new frmDeviceAxisConfigEditor(TaskGantry.PBAxis);
+            if (frm.ShowDialog() == DialogResult.OK)
+            {
+                TaskGantry.PBAxis = frm.Axis;
             }
             UpdateDisplay();
         }

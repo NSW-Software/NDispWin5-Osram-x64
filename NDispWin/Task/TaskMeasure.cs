@@ -2048,6 +2048,82 @@ namespace NDispWin
 
                 return true;
             }
+            public bool SaveOsram(string tileID)
+            {
+                string dp = "f4";
+                if (Index.Count == 0) return true;
+
+
+                string path = GDefine.DataPath + "\\" + "Meas_Meniscus" + "\\";
+
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+
+                string filename = path + "\\" + tileID + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".txt";
+
+
+                if (!File.Exists(filename))
+                {
+                    FileStream F = new FileStream(filename, FileMode.Append, FileAccess.Write, FileShare.Write);
+                    StreamWriter W = new StreamWriter(F);
+                    try
+                    {
+                        W.WriteLine("#Tile ID:" + (char)9 + tileID);
+                        W.WriteLine("#Date/Time:" + (char)9 + DateTime.Now.ToString("dd-MM-yyyy") + " / " + DateTime.Now.ToString("HH:mm ss"));
+                        W.WriteLine("");
+
+                        string S = "No" + (char)9 +
+                            "Col" + (char)9 +
+                            "Row" + (char)9 +
+                            "CCol" + (char)9 +
+                            "CRow" + (char)9 +
+                            "Meniscus" + (char)9 +
+                            "Ref1" + (char)9 +
+                            "Ref2" + (char)9 +
+                            "Meas" + (char)9;
+                        W.WriteLine(S);
+                    }
+                    catch
+                    {
+                    }
+                    finally
+                    {
+                        W.Close();
+                    }
+                }
+
+                {
+                    FileStream F = new FileStream(filename, FileMode.Append, FileAccess.Write, FileShare.Write);
+                    StreamWriter W = new StreamWriter(F);
+                    try
+                    {
+
+                        for (int i = 0; i < Index.Count; i++)
+                        {
+                            string S = "";
+                            S = S + Index[i].ToString() + (char)9;
+                            S = S + Col[i].ToString() + (char)9;
+                            S = S + Row[i].ToString() + (char)9;
+                            S = S + CCol[i].ToString() + (char)9;
+                            S = S + CRow[i].ToString() + (char)9;
+                            S = S + Height[i].ToString(dp) + (char)9;
+                            S = S + Ref1[i].ToString(dp) + (char)9;
+                            S = S + Ref2[i].ToString(dp) + (char)9;
+                            S = S + Meas[i].ToString(dp) + (char)9;
+
+                            W.WriteLine(S);
+                        }
+                    }
+                    catch
+                    {
+                    }
+                    finally
+                    {
+                        W.Close();
+                    }
+                }
+                return true;
+            }
         }
         public static bool Execute(DispProg.TLine CmdLine, ref MeasL_H_Profile Profile, ref Data Data, double X1, double Y1, double X2, double Y2, double X3, double Y3)
         {
@@ -2499,6 +2575,5 @@ namespace NDispWin
             GDefine.Status = EStatus.Stop;
             return false;
         }
-
     }
 }

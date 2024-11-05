@@ -1860,7 +1860,7 @@ namespace NDispWin
         public static EZSensorType ZSensorType = EZSensorType.None;
         public static double ZSensor_DistPerPulse = 0.0005;
 
-        public enum EDispCtrlType { None, HPC, HPC15, Vermes, Vermes1560 };
+        public enum EDispCtrlType { None, HPC, HPC15, Vermes, Vermes1560, HPC3 };
         //public static ECameraType CameraType = ECameraType.None;
         //public static string CameraIPAddress = "192.168.0.100";
         public enum EDispHeaterType { None, Vermes_HC48 };
@@ -2127,7 +2127,6 @@ namespace NDispWin
             FPressComport[1] = IniFile.ReadInteger("FPressCtrl2", "ComPort", 9);
 
             FPressCtrl.PressUnit = (FPressCtrl.EPressUnit)IniFile.ReadInteger("FPressCtrl", "PressUnit", 0);
-
             SysConfig.FPressAdjType = (SysConfig.EFPressAdjType)IniFile.ReadInteger("FPressCtrl", "Type", 0);
             FPressCtrl.Gain[0] = IniFile.ReadDouble("FPressCtrl", "Gain_A", 1);
             FPressCtrl.Gain[1] = IniFile.ReadDouble("FPressCtrl", "Gain_B", 1);

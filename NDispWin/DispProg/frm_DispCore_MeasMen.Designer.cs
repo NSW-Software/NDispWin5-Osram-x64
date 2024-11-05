@@ -55,6 +55,9 @@
             this.btn_Cancel = new System.Windows.Forms.Button();
             this.btn_OK = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.lblContError = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.lbl_StartDelay = new System.Windows.Forms.Label();
@@ -70,9 +73,7 @@
             this.lbox_Cond = new System.Windows.Forms.ListBox();
             this.btn_Cond = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label15 = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
-            this.lblContError = new System.Windows.Forms.Label();
+            this.btnMeasAtPos = new System.Windows.Forms.Button();
             this.gbox_Positions.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -351,6 +352,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btnMeasAtPos);
             this.panel1.Controls.Add(this.btn_Test);
             this.panel1.Controls.Add(this.btn_Cancel);
             this.panel1.Controls.Add(this.btn_OK);
@@ -425,6 +427,41 @@
             this.groupBox1.TabIndex = 164;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Setting";
+            // 
+            // label15
+            // 
+            this.label15.AccessibleDescription = "";
+            this.label15.Location = new System.Drawing.Point(84, 74);
+            this.label15.Margin = new System.Windows.Forms.Padding(2);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(50, 23);
+            this.label15.TabIndex = 164;
+            this.label15.Text = "(count)";
+            this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label16
+            // 
+            this.label16.AccessibleDescription = "Cont Error";
+            this.label16.Location = new System.Drawing.Point(5, 74);
+            this.label16.Margin = new System.Windows.Forms.Padding(2);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(75, 23);
+            this.label16.TabIndex = 162;
+            this.label16.Text = "Cont Error";
+            this.label16.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblContError
+            // 
+            this.lblContError.BackColor = System.Drawing.SystemColors.Window;
+            this.lblContError.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblContError.Location = new System.Drawing.Point(138, 74);
+            this.lblContError.Margin = new System.Windows.Forms.Padding(2);
+            this.lblContError.Name = "lblContError";
+            this.lblContError.Size = new System.Drawing.Size(75, 23);
+            this.lblContError.TabIndex = 163;
+            this.lblContError.Text = "0";
+            this.lblContError.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblContError.Click += new System.EventHandler(this.lblContError_Click);
             // 
             // label11
             // 
@@ -600,40 +637,17 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Condition";
             // 
-            // label15
+            // btnMeasAtPos
             // 
-            this.label15.AccessibleDescription = "";
-            this.label15.Location = new System.Drawing.Point(84, 74);
-            this.label15.Margin = new System.Windows.Forms.Padding(2);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(50, 23);
-            this.label15.TabIndex = 164;
-            this.label15.Text = "(count)";
-            this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label16
-            // 
-            this.label16.AccessibleDescription = "Cont Error";
-            this.label16.Location = new System.Drawing.Point(5, 74);
-            this.label16.Margin = new System.Windows.Forms.Padding(2);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(75, 23);
-            this.label16.TabIndex = 162;
-            this.label16.Text = "Cont Error";
-            this.label16.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblContError
-            // 
-            this.lblContError.BackColor = System.Drawing.SystemColors.Window;
-            this.lblContError.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblContError.Location = new System.Drawing.Point(138, 74);
-            this.lblContError.Margin = new System.Windows.Forms.Padding(2);
-            this.lblContError.Name = "lblContError";
-            this.lblContError.Size = new System.Drawing.Size(75, 23);
-            this.lblContError.TabIndex = 163;
-            this.lblContError.Text = "0";
-            this.lblContError.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.lblContError.Click += new System.EventHandler(this.lblContError_Click);
+            this.btnMeasAtPos.AccessibleDescription = "Meas At Pos";
+            this.btnMeasAtPos.Location = new System.Drawing.Point(83, 4);
+            this.btnMeasAtPos.Margin = new System.Windows.Forms.Padding(2);
+            this.btnMeasAtPos.Name = "btnMeasAtPos";
+            this.btnMeasAtPos.Size = new System.Drawing.Size(75, 36);
+            this.btnMeasAtPos.TabIndex = 40;
+            this.btnMeasAtPos.Text = "Meas At Pos";
+            this.btnMeasAtPos.UseVisualStyleBackColor = true;
+            this.btnMeasAtPos.Click += new System.EventHandler(this.btnMeasAtPos_Click);
             // 
             // frm_DispCore_MeasMen
             // 
@@ -711,5 +725,6 @@
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label lblContError;
+        private System.Windows.Forms.Button btnMeasAtPos;
     }
 }

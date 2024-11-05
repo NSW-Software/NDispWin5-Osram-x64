@@ -729,5 +729,10 @@ namespace NDispWin
         {
             TaskDisp.TrigOff(false, true);
         }
+
+        private void btn_BarrelPress_Click_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }

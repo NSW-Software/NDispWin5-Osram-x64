@@ -77,6 +77,28 @@
             this.tpage_ControllerIO = new System.Windows.Forms.TabPage();
             this.btn_Help = new System.Windows.Forms.Button();
             this.tpage_DispControl = new System.Windows.Forms.TabPage();
+            this.btn_SvVac2 = new System.Windows.Forms.Button();
+            this.lbl_SvVac2Info = new System.Windows.Forms.Label();
+            this.lblPBSensHome = new System.Windows.Forms.Label();
+            this.lblPBSensHomeInfo = new System.Windows.Forms.Label();
+            this.lblPBSensDisp = new System.Windows.Forms.Label();
+            this.lblPBSensFill = new System.Windows.Forms.Label();
+            this.lblPBSensDispInfo = new System.Windows.Forms.Label();
+            this.lblPBSensFillInfo = new System.Windows.Forms.Label();
+            this.btnPBSvRotDisp = new System.Windows.Forms.Button();
+            this.lblPBSvRotDispInfo = new System.Windows.Forms.Label();
+            this.btnPBSvRotFill = new System.Windows.Forms.Button();
+            this.lblPBSvRotFillInfo = new System.Windows.Forms.Label();
+            this.lblPASensHome = new System.Windows.Forms.Label();
+            this.lblPASensHomeInfo = new System.Windows.Forms.Label();
+            this.lblPASensDisp = new System.Windows.Forms.Label();
+            this.lblPASensFill = new System.Windows.Forms.Label();
+            this.lblPASensDispInfo = new System.Windows.Forms.Label();
+            this.lblPASensFillInfo = new System.Windows.Forms.Label();
+            this.btnPASvRotDisp = new System.Windows.Forms.Button();
+            this.lblPASvRotDispInfo = new System.Windows.Forms.Label();
+            this.btnPASvRotFill = new System.Windows.Forms.Button();
+            this.lblPASvRotFillInfo = new System.Windows.Forms.Label();
             this.tpage_GeneralIO = new System.Windows.Forms.TabPage();
             this.lblSensNdleShort2 = new System.Windows.Forms.Label();
             this.lblSensNdleShort2Info = new System.Windows.Forms.Label();
@@ -758,6 +780,28 @@
             // 
             this.tpage_DispControl.AccessibleDescription = "Disp Control";
             this.tpage_DispControl.BackColor = System.Drawing.SystemColors.Control;
+            this.tpage_DispControl.Controls.Add(this.btn_SvVac2);
+            this.tpage_DispControl.Controls.Add(this.lbl_SvVac2Info);
+            this.tpage_DispControl.Controls.Add(this.lblPBSensHome);
+            this.tpage_DispControl.Controls.Add(this.lblPBSensHomeInfo);
+            this.tpage_DispControl.Controls.Add(this.lblPBSensDisp);
+            this.tpage_DispControl.Controls.Add(this.lblPBSensFill);
+            this.tpage_DispControl.Controls.Add(this.lblPBSensDispInfo);
+            this.tpage_DispControl.Controls.Add(this.lblPBSensFillInfo);
+            this.tpage_DispControl.Controls.Add(this.btnPBSvRotDisp);
+            this.tpage_DispControl.Controls.Add(this.lblPBSvRotDispInfo);
+            this.tpage_DispControl.Controls.Add(this.btnPBSvRotFill);
+            this.tpage_DispControl.Controls.Add(this.lblPBSvRotFillInfo);
+            this.tpage_DispControl.Controls.Add(this.lblPASensHome);
+            this.tpage_DispControl.Controls.Add(this.lblPASensHomeInfo);
+            this.tpage_DispControl.Controls.Add(this.lblPASensDisp);
+            this.tpage_DispControl.Controls.Add(this.lblPASensFill);
+            this.tpage_DispControl.Controls.Add(this.lblPASensDispInfo);
+            this.tpage_DispControl.Controls.Add(this.lblPASensFillInfo);
+            this.tpage_DispControl.Controls.Add(this.btnPASvRotDisp);
+            this.tpage_DispControl.Controls.Add(this.lblPASvRotDispInfo);
+            this.tpage_DispControl.Controls.Add(this.btnPASvRotFill);
+            this.tpage_DispControl.Controls.Add(this.lblPASvRotFillInfo);
             this.tpage_DispControl.Controls.Add(this.lbl_SvPortC1Info);
             this.tpage_DispControl.Controls.Add(this.btn_SvFPress1);
             this.tpage_DispControl.Controls.Add(this.lbl_SvPortB1Info);
@@ -776,6 +820,298 @@
             this.tpage_DispControl.Size = new System.Drawing.Size(582, 349);
             this.tpage_DispControl.TabIndex = 1;
             this.tpage_DispControl.Text = "Disp Control";
+            this.tpage_DispControl.Click += new System.EventHandler(this.tpage_DispControl_Click);
+            // 
+            // btn_SvVac2
+            // 
+            this.btn_SvVac2.AccessibleDescription = "Sv Vac 2";
+            this.btn_SvVac2.Location = new System.Drawing.Point(293, 39);
+            this.btn_SvVac2.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_SvVac2.Name = "btn_SvVac2";
+            this.btn_SvVac2.Size = new System.Drawing.Size(80, 30);
+            this.btn_SvVac2.TabIndex = 59;
+            this.btn_SvVac2.Text = "Sv Vac 2";
+            this.btn_SvVac2.UseVisualStyleBackColor = true;
+            this.btn_SvVac2.Click += new System.EventHandler(this.btn_SvVac2_Click);
+            // 
+            // lbl_SvVac2Info
+            // 
+            this.lbl_SvVac2Info.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lbl_SvVac2Info.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_SvVac2Info.ForeColor = System.Drawing.Color.Navy;
+            this.lbl_SvVac2Info.Location = new System.Drawing.Point(377, 39);
+            this.lbl_SvVac2Info.Margin = new System.Windows.Forms.Padding(2);
+            this.lbl_SvVac2Info.Name = "lbl_SvVac2Info";
+            this.lbl_SvVac2Info.Size = new System.Drawing.Size(200, 30);
+            this.lbl_SvVac2Info.TabIndex = 58;
+            this.lbl_SvVac2Info.Text = "lbl_SvVac2Info";
+            this.lbl_SvVac2Info.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblPBSensHome
+            // 
+            this.lblPBSensHome.AccessibleDescription = "PB SensHome";
+            this.lblPBSensHome.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblPBSensHome.ForeColor = System.Drawing.Color.Navy;
+            this.lblPBSensHome.Location = new System.Drawing.Point(293, 178);
+            this.lblPBSensHome.Margin = new System.Windows.Forms.Padding(2);
+            this.lblPBSensHome.Name = "lblPBSensHome";
+            this.lblPBSensHome.Size = new System.Drawing.Size(80, 30);
+            this.lblPBSensHome.TabIndex = 57;
+            this.lblPBSensHome.Text = "PB SensHome";
+            this.lblPBSensHome.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblPBSensHomeInfo
+            // 
+            this.lblPBSensHomeInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblPBSensHomeInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPBSensHomeInfo.ForeColor = System.Drawing.Color.Navy;
+            this.lblPBSensHomeInfo.Location = new System.Drawing.Point(377, 178);
+            this.lblPBSensHomeInfo.Margin = new System.Windows.Forms.Padding(2);
+            this.lblPBSensHomeInfo.Name = "lblPBSensHomeInfo";
+            this.lblPBSensHomeInfo.Size = new System.Drawing.Size(200, 30);
+            this.lblPBSensHomeInfo.TabIndex = 56;
+            this.lblPBSensHomeInfo.Text = "lblPBSensHomeInfo";
+            this.lblPBSensHomeInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblPBSensHomeInfo.Click += new System.EventHandler(this.lblPBSensHomeInfo_Click);
+            // 
+            // lblPBSensDisp
+            // 
+            this.lblPBSensDisp.AccessibleDescription = "PB Sens Disp";
+            this.lblPBSensDisp.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblPBSensDisp.ForeColor = System.Drawing.Color.Navy;
+            this.lblPBSensDisp.Location = new System.Drawing.Point(293, 246);
+            this.lblPBSensDisp.Margin = new System.Windows.Forms.Padding(2);
+            this.lblPBSensDisp.Name = "lblPBSensDisp";
+            this.lblPBSensDisp.Size = new System.Drawing.Size(80, 30);
+            this.lblPBSensDisp.TabIndex = 55;
+            this.lblPBSensDisp.Text = "PB Sens Disp";
+            this.lblPBSensDisp.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblPBSensFill
+            // 
+            this.lblPBSensFill.AccessibleDescription = "PB Sens Fill";
+            this.lblPBSensFill.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblPBSensFill.ForeColor = System.Drawing.Color.Navy;
+            this.lblPBSensFill.Location = new System.Drawing.Point(293, 212);
+            this.lblPBSensFill.Margin = new System.Windows.Forms.Padding(2);
+            this.lblPBSensFill.Name = "lblPBSensFill";
+            this.lblPBSensFill.Size = new System.Drawing.Size(80, 30);
+            this.lblPBSensFill.TabIndex = 54;
+            this.lblPBSensFill.Text = "PB Sens Fill";
+            this.lblPBSensFill.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblPBSensDispInfo
+            // 
+            this.lblPBSensDispInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblPBSensDispInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPBSensDispInfo.ForeColor = System.Drawing.Color.Navy;
+            this.lblPBSensDispInfo.Location = new System.Drawing.Point(377, 246);
+            this.lblPBSensDispInfo.Margin = new System.Windows.Forms.Padding(2);
+            this.lblPBSensDispInfo.Name = "lblPBSensDispInfo";
+            this.lblPBSensDispInfo.Size = new System.Drawing.Size(200, 30);
+            this.lblPBSensDispInfo.TabIndex = 53;
+            this.lblPBSensDispInfo.Text = "lblPBSensDispInfo";
+            this.lblPBSensDispInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblPBSensDispInfo.Click += new System.EventHandler(this.lblPBSensDispInfo_Click);
+            // 
+            // lblPBSensFillInfo
+            // 
+            this.lblPBSensFillInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblPBSensFillInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPBSensFillInfo.ForeColor = System.Drawing.Color.Navy;
+            this.lblPBSensFillInfo.Location = new System.Drawing.Point(377, 212);
+            this.lblPBSensFillInfo.Margin = new System.Windows.Forms.Padding(2);
+            this.lblPBSensFillInfo.Name = "lblPBSensFillInfo";
+            this.lblPBSensFillInfo.Size = new System.Drawing.Size(200, 30);
+            this.lblPBSensFillInfo.TabIndex = 52;
+            this.lblPBSensFillInfo.Text = "lblPBSensFillInfo";
+            this.lblPBSensFillInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblPBSensFillInfo.Click += new System.EventHandler(this.lblPBSensFillInfo_Click);
+            // 
+            // btnPBSvRotDisp
+            // 
+            this.btnPBSvRotDisp.AccessibleDescription = "Sv Rot Disp";
+            this.btnPBSvRotDisp.Location = new System.Drawing.Point(293, 314);
+            this.btnPBSvRotDisp.Margin = new System.Windows.Forms.Padding(2);
+            this.btnPBSvRotDisp.Name = "btnPBSvRotDisp";
+            this.btnPBSvRotDisp.Size = new System.Drawing.Size(80, 30);
+            this.btnPBSvRotDisp.TabIndex = 51;
+            this.btnPBSvRotDisp.Text = "Sv Rot Disp";
+            this.btnPBSvRotDisp.UseVisualStyleBackColor = true;
+            this.btnPBSvRotDisp.Click += new System.EventHandler(this.btnPBSvRotDisp_Click);
+            // 
+            // lblPBSvRotDispInfo
+            // 
+            this.lblPBSvRotDispInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblPBSvRotDispInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPBSvRotDispInfo.ForeColor = System.Drawing.Color.Navy;
+            this.lblPBSvRotDispInfo.Location = new System.Drawing.Point(377, 314);
+            this.lblPBSvRotDispInfo.Margin = new System.Windows.Forms.Padding(2);
+            this.lblPBSvRotDispInfo.Name = "lblPBSvRotDispInfo";
+            this.lblPBSvRotDispInfo.Size = new System.Drawing.Size(200, 30);
+            this.lblPBSvRotDispInfo.TabIndex = 50;
+            this.lblPBSvRotDispInfo.Text = "lblPBSvRotDispInfo";
+            this.lblPBSvRotDispInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblPBSvRotDispInfo.Click += new System.EventHandler(this.lblPBSvRotDispInfo_Click);
+            // 
+            // btnPBSvRotFill
+            // 
+            this.btnPBSvRotFill.AccessibleDescription = "Sv Rot Fill";
+            this.btnPBSvRotFill.Location = new System.Drawing.Point(292, 280);
+            this.btnPBSvRotFill.Margin = new System.Windows.Forms.Padding(2);
+            this.btnPBSvRotFill.Name = "btnPBSvRotFill";
+            this.btnPBSvRotFill.Size = new System.Drawing.Size(80, 30);
+            this.btnPBSvRotFill.TabIndex = 49;
+            this.btnPBSvRotFill.Text = "Sv Rot Fill";
+            this.btnPBSvRotFill.UseVisualStyleBackColor = true;
+            this.btnPBSvRotFill.Click += new System.EventHandler(this.btnPBSvRotFill_Click);
+            // 
+            // lblPBSvRotFillInfo
+            // 
+            this.lblPBSvRotFillInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblPBSvRotFillInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPBSvRotFillInfo.ForeColor = System.Drawing.Color.Navy;
+            this.lblPBSvRotFillInfo.Location = new System.Drawing.Point(377, 280);
+            this.lblPBSvRotFillInfo.Margin = new System.Windows.Forms.Padding(2);
+            this.lblPBSvRotFillInfo.Name = "lblPBSvRotFillInfo";
+            this.lblPBSvRotFillInfo.Size = new System.Drawing.Size(200, 30);
+            this.lblPBSvRotFillInfo.TabIndex = 48;
+            this.lblPBSvRotFillInfo.Text = "lblPBSvRotFillInfo";
+            this.lblPBSvRotFillInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblPBSvRotFillInfo.Click += new System.EventHandler(this.lblPBSvRotFillInfo_Click);
+            // 
+            // lblPASensHome
+            // 
+            this.lblPASensHome.AccessibleDescription = "PA SensHome";
+            this.lblPASensHome.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblPASensHome.ForeColor = System.Drawing.Color.Navy;
+            this.lblPASensHome.Location = new System.Drawing.Point(5, 178);
+            this.lblPASensHome.Margin = new System.Windows.Forms.Padding(2);
+            this.lblPASensHome.Name = "lblPASensHome";
+            this.lblPASensHome.Size = new System.Drawing.Size(80, 30);
+            this.lblPASensHome.TabIndex = 47;
+            this.lblPASensHome.Text = "PA SensHome";
+            this.lblPASensHome.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblPASensHomeInfo
+            // 
+            this.lblPASensHomeInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblPASensHomeInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPASensHomeInfo.ForeColor = System.Drawing.Color.Navy;
+            this.lblPASensHomeInfo.Location = new System.Drawing.Point(89, 178);
+            this.lblPASensHomeInfo.Margin = new System.Windows.Forms.Padding(2);
+            this.lblPASensHomeInfo.Name = "lblPASensHomeInfo";
+            this.lblPASensHomeInfo.Size = new System.Drawing.Size(200, 30);
+            this.lblPASensHomeInfo.TabIndex = 46;
+            this.lblPASensHomeInfo.Text = "lblPASensHomeInfo";
+            this.lblPASensHomeInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblPASensHomeInfo.Click += new System.EventHandler(this.lblPASensHomeInfo_Click);
+            // 
+            // lblPASensDisp
+            // 
+            this.lblPASensDisp.AccessibleDescription = "PA Sens Disp";
+            this.lblPASensDisp.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblPASensDisp.ForeColor = System.Drawing.Color.Navy;
+            this.lblPASensDisp.Location = new System.Drawing.Point(5, 246);
+            this.lblPASensDisp.Margin = new System.Windows.Forms.Padding(2);
+            this.lblPASensDisp.Name = "lblPASensDisp";
+            this.lblPASensDisp.Size = new System.Drawing.Size(80, 30);
+            this.lblPASensDisp.TabIndex = 45;
+            this.lblPASensDisp.Text = "PA Sens Disp";
+            this.lblPASensDisp.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblPASensFill
+            // 
+            this.lblPASensFill.AccessibleDescription = "PA Sens Fill";
+            this.lblPASensFill.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblPASensFill.ForeColor = System.Drawing.Color.Navy;
+            this.lblPASensFill.Location = new System.Drawing.Point(5, 212);
+            this.lblPASensFill.Margin = new System.Windows.Forms.Padding(2);
+            this.lblPASensFill.Name = "lblPASensFill";
+            this.lblPASensFill.Size = new System.Drawing.Size(80, 30);
+            this.lblPASensFill.TabIndex = 44;
+            this.lblPASensFill.Text = "PA Sens Fill";
+            this.lblPASensFill.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblPASensDispInfo
+            // 
+            this.lblPASensDispInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblPASensDispInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPASensDispInfo.ForeColor = System.Drawing.Color.Navy;
+            this.lblPASensDispInfo.Location = new System.Drawing.Point(89, 246);
+            this.lblPASensDispInfo.Margin = new System.Windows.Forms.Padding(2);
+            this.lblPASensDispInfo.Name = "lblPASensDispInfo";
+            this.lblPASensDispInfo.Size = new System.Drawing.Size(200, 30);
+            this.lblPASensDispInfo.TabIndex = 43;
+            this.lblPASensDispInfo.Text = "lblPASensDispInfo";
+            this.lblPASensDispInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblPASensDispInfo.Click += new System.EventHandler(this.lblPASensDispInfo_Click);
+            // 
+            // lblPASensFillInfo
+            // 
+            this.lblPASensFillInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblPASensFillInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPASensFillInfo.ForeColor = System.Drawing.Color.Navy;
+            this.lblPASensFillInfo.Location = new System.Drawing.Point(89, 212);
+            this.lblPASensFillInfo.Margin = new System.Windows.Forms.Padding(2);
+            this.lblPASensFillInfo.Name = "lblPASensFillInfo";
+            this.lblPASensFillInfo.Size = new System.Drawing.Size(200, 30);
+            this.lblPASensFillInfo.TabIndex = 41;
+            this.lblPASensFillInfo.Text = "lblPASensFillInfo";
+            this.lblPASensFillInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblPASensFillInfo.Click += new System.EventHandler(this.lblPASensFillInfo_Click);
+            // 
+            // btnPASvRotDisp
+            // 
+            this.btnPASvRotDisp.AccessibleDescription = "Sv Rot Disp";
+            this.btnPASvRotDisp.Location = new System.Drawing.Point(5, 314);
+            this.btnPASvRotDisp.Margin = new System.Windows.Forms.Padding(2);
+            this.btnPASvRotDisp.Name = "btnPASvRotDisp";
+            this.btnPASvRotDisp.Size = new System.Drawing.Size(80, 30);
+            this.btnPASvRotDisp.TabIndex = 40;
+            this.btnPASvRotDisp.Text = "Sv Rot Disp";
+            this.btnPASvRotDisp.UseVisualStyleBackColor = true;
+            this.btnPASvRotDisp.Click += new System.EventHandler(this.btnPASvRotDisp_Click);
+            // 
+            // lblPASvRotDispInfo
+            // 
+            this.lblPASvRotDispInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblPASvRotDispInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPASvRotDispInfo.ForeColor = System.Drawing.Color.Navy;
+            this.lblPASvRotDispInfo.Location = new System.Drawing.Point(89, 314);
+            this.lblPASvRotDispInfo.Margin = new System.Windows.Forms.Padding(2);
+            this.lblPASvRotDispInfo.Name = "lblPASvRotDispInfo";
+            this.lblPASvRotDispInfo.Size = new System.Drawing.Size(200, 30);
+            this.lblPASvRotDispInfo.TabIndex = 39;
+            this.lblPASvRotDispInfo.Text = "lblPASvRotDispInfo";
+            this.lblPASvRotDispInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblPASvRotDispInfo.Click += new System.EventHandler(this.lblPASvRotDispInfo_Click);
+            // 
+            // btnPASvRotFill
+            // 
+            this.btnPASvRotFill.AccessibleDescription = "Sv Rot Fill";
+            this.btnPASvRotFill.Location = new System.Drawing.Point(5, 280);
+            this.btnPASvRotFill.Margin = new System.Windows.Forms.Padding(2);
+            this.btnPASvRotFill.Name = "btnPASvRotFill";
+            this.btnPASvRotFill.Size = new System.Drawing.Size(80, 30);
+            this.btnPASvRotFill.TabIndex = 38;
+            this.btnPASvRotFill.Text = "Sv Rot Fill";
+            this.btnPASvRotFill.UseVisualStyleBackColor = true;
+            this.btnPASvRotFill.Click += new System.EventHandler(this.btnPASvRotFill_Click);
+            // 
+            // lblPASvRotFillInfo
+            // 
+            this.lblPASvRotFillInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblPASvRotFillInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPASvRotFillInfo.ForeColor = System.Drawing.Color.Navy;
+            this.lblPASvRotFillInfo.Location = new System.Drawing.Point(89, 280);
+            this.lblPASvRotFillInfo.Margin = new System.Windows.Forms.Padding(2);
+            this.lblPASvRotFillInfo.Name = "lblPASvRotFillInfo";
+            this.lblPASvRotFillInfo.Size = new System.Drawing.Size(200, 30);
+            this.lblPASvRotFillInfo.TabIndex = 37;
+            this.lblPASvRotFillInfo.Text = "lblPASvRotFillInfo";
+            this.lblPASvRotFillInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblPASvRotFillInfo.Click += new System.EventHandler(this.lblPASvRotFillInfo_Click);
             // 
             // tpage_GeneralIO
             // 
@@ -1555,5 +1891,27 @@
         private System.Windows.Forms.Label lblSensNdleShort2Info;
         private System.Windows.Forms.Label lblSensNdleShort1;
         private System.Windows.Forms.Label lblSensNdleShort1Info;
+        private System.Windows.Forms.Button btnPASvRotDisp;
+        private System.Windows.Forms.Label lblPASvRotDispInfo;
+        private System.Windows.Forms.Button btnPASvRotFill;
+        private System.Windows.Forms.Label lblPASvRotFillInfo;
+        private System.Windows.Forms.Label lblPASensHome;
+        private System.Windows.Forms.Label lblPASensHomeInfo;
+        private System.Windows.Forms.Label lblPASensDisp;
+        private System.Windows.Forms.Label lblPASensFill;
+        private System.Windows.Forms.Label lblPASensDispInfo;
+        private System.Windows.Forms.Label lblPASensFillInfo;
+        private System.Windows.Forms.Label lblPBSensHome;
+        private System.Windows.Forms.Label lblPBSensHomeInfo;
+        private System.Windows.Forms.Label lblPBSensDisp;
+        private System.Windows.Forms.Label lblPBSensFill;
+        private System.Windows.Forms.Label lblPBSensDispInfo;
+        private System.Windows.Forms.Label lblPBSensFillInfo;
+        private System.Windows.Forms.Button btnPBSvRotDisp;
+        private System.Windows.Forms.Label lblPBSvRotDispInfo;
+        private System.Windows.Forms.Button btnPBSvRotFill;
+        private System.Windows.Forms.Label lblPBSvRotFillInfo;
+        private System.Windows.Forms.Button btn_SvVac2;
+        private System.Windows.Forms.Label lbl_SvVac2Info;
     }
 }

@@ -240,6 +240,12 @@
     <Compile Include="frmDispProg_ParallelLines.designer.cs">
       <DependentUpon>frmDispProg_ParallelLines.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmSetupPP_HPC3.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSetupPP_HPC3.Designer.cs">
+      <DependentUpon>frmSetupPP_HPC3.cs</DependentUpon>
+    </Compile>
     <Compile Include="JogAndVision\frmJogControl.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -337,6 +343,7 @@
     <Compile Include="TFCL3.cs" />
     <Compile Include="TFMatrix.cs" />
     <Compile Include="TFMisc.cs" />
+    <Compile Include="TFPump.cs" />
     <Compile Include="Vermes\frmVermesMDS3200.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1176,6 +1183,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmDispProg_ParallelLines.resx">
       <DependentUpon>frmDispProg_ParallelLines.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSetupPP_HPC3.resx">
+      <DependentUpon>frmSetupPP_HPC3.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="JogAndVision\frmJogControl.resx">
       <DependentUpon>frmJogControl.cs</DependentUpon>

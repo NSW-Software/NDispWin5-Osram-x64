@@ -7,6 +7,11 @@ Todo
 - Integrate LEDStudio
 
 
+Ver 6.1.0.1 - KN - 20240826 - Released to Syafiq for OsKM - Gitted
+[Feature] frm_DispCore_MeasMen.MeasAtPos to measure at crosshair position.
+[Improve] Added TaskDisp.Laser_Ofst to save Laser Offset position
+[HseKeep] Remove Camera_Cal_Pos_Setup, BCamera_Cal_Pos_Setup, Camera_Cal_Pos_Tol, Laser_Ofst_Setup, Laser_Ofst_XY_Tol; residue codes that are not used.
+[Feature] Added HPC3 support.
 Ver 6.0.10.1 - KN - 20240826 - Released to Syafiq for OsKM - Gitted
 [BugFix] Corrected TaskMeasure.Meas_Spec to follow target weight when value is 0.
 Ver 6.0.10.0 - KN - 20240816 - Released to TZ/WZM for OsWux - Gitted

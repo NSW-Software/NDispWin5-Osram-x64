@@ -173,6 +173,11 @@ namespace NDispWin
             try { combox_DispCtrl2Type.SelectedIndex = (int)GDefine.DispCtrlType[1]; } catch { };
             combox_DispCtrl2Comport.SelectedIndex = GDefine.DispCtrlComport[1];
 
+            combox_DispCtrl1Comport.Enabled = GDefine.DispCtrlType[0] != GDefine.EDispCtrlType.HPC3;
+            btn_DispCtrl1Connect.Enabled = GDefine.DispCtrlType[0] != GDefine.EDispCtrlType.HPC3;
+            combox_DispCtrl2Comport.Enabled = GDefine.DispCtrlType[1] != GDefine.EDispCtrlType.HPC3;
+            btn_DispCtrl2Connect.Enabled = GDefine.DispCtrlType[1] != GDefine.EDispCtrlType.HPC3;
+
             cbxDispHeaterType.Text = GDefine.DispHeaterType[0].ToString();
             cbxDispHeaterComport.Text = GDefine.DispHeaterComport[0];
 
@@ -182,7 +187,6 @@ namespace NDispWin
 
             btn_DispCtrl1Connect.Text = TaskDisp.DispCtrlOpened(0) ? Lang_Disconnect : Lang_Connect;
             btn_DispCtrl1Connect.BackColor = TaskDisp.DispCtrlOpened(0) ? Color.Lime : this.BackColor;
-            combox_DispCtrl1Comport.SelectedIndex = GDefine.DispCtrlComport[0];
 
             btn_DispCtrl2Connect.Text = TaskDisp.DispCtrlOpened(1) ? Lang_Disconnect : Lang_Connect;
             btn_DispCtrl2Connect.BackColor = TaskDisp.DispCtrlOpened(1) ? Color.Lime : this.BackColor;
@@ -593,6 +597,7 @@ namespace NDispWin
         private void combox_DispCtrl1Type_SelectionChangeCommitted(object sender, EventArgs e)
         {
             GDefine.DispCtrlType[0] = (GDefine.EDispCtrlType)combox_DispCtrl1Type.SelectedIndex;
+            UpdateDisplay();
         }
         private void combox_DispCtrl1Comport_SelectionChangeCommitted(object sender, EventArgs e)
         {
@@ -623,6 +628,7 @@ namespace NDispWin
         private void combox_DispCtrl2Type_SelectionChangeCommitted(object sender, EventArgs e)
         {
             GDefine.DispCtrlType[1] = (GDefine.EDispCtrlType)combox_DispCtrl2Type.SelectedIndex;
+            UpdateDisplay();
         }
         private void combox_DispCtrl2Comport_SelectionChangeCommitted(object sender, EventArgs e)
         {

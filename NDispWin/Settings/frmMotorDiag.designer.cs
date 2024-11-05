@@ -30,6 +30,12 @@
         {
             this.components = new System.ComponentModel.Container();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.btnPBAxis = new System.Windows.Forms.Button();
+            this.lblPBAxisInfo = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.btnPAAxis = new System.Windows.Forms.Button();
+            this.lblPAAxisInfo = new System.Windows.Forms.Label();
             this.btn_Home = new System.Windows.Forms.Button();
             this.pnl_GZ2 = new System.Windows.Forms.Panel();
             this.btn_GZ2Axis = new System.Windows.Forms.Button();
@@ -70,6 +76,8 @@
             this.lbl_LmtP = new System.Windows.Forms.Label();
             this.tmr_Display = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
+            this.panel2.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.pnl_GZ2.SuspendLayout();
             this.pnl_GY2.SuspendLayout();
             this.pnl_GX2.SuspendLayout();
@@ -82,6 +90,8 @@
             // groupBox1
             // 
             this.groupBox1.AutoSize = true;
+            this.groupBox1.Controls.Add(this.panel2);
+            this.groupBox1.Controls.Add(this.panel1);
             this.groupBox1.Controls.Add(this.btn_Home);
             this.groupBox1.Controls.Add(this.pnl_GZ2);
             this.groupBox1.Controls.Add(this.pnl_GY2);
@@ -93,15 +103,89 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(5, 5, 5, 0);
-            this.groupBox1.Size = new System.Drawing.Size(265, 347);
+            this.groupBox1.Size = new System.Drawing.Size(265, 419);
             this.groupBox1.TabIndex = 128;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Axis Name";
             // 
+            // panel2
+            // 
+            this.panel2.AutoSize = true;
+            this.panel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.panel2.Controls.Add(this.btnPBAxis);
+            this.panel2.Controls.Add(this.lblPBAxisInfo);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel2.Location = new System.Drawing.Point(5, 314);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(255, 42);
+            this.panel2.TabIndex = 146;
+            this.panel2.Visible = false;
+            // 
+            // btnPBAxis
+            // 
+            this.btnPBAxis.Location = new System.Drawing.Point(0, 0);
+            this.btnPBAxis.Margin = new System.Windows.Forms.Padding(2);
+            this.btnPBAxis.Name = "btnPBAxis";
+            this.btnPBAxis.Size = new System.Drawing.Size(100, 40);
+            this.btnPBAxis.TabIndex = 126;
+            this.btnPBAxis.Text = "PB";
+            this.btnPBAxis.UseVisualStyleBackColor = true;
+            this.btnPBAxis.Click += new System.EventHandler(this.btnPBAxis_Click);
+            // 
+            // lblPBAxisInfo
+            // 
+            this.lblPBAxisInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblPBAxisInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPBAxisInfo.Location = new System.Drawing.Point(104, 0);
+            this.lblPBAxisInfo.Margin = new System.Windows.Forms.Padding(2);
+            this.lblPBAxisInfo.Name = "lblPBAxisInfo";
+            this.lblPBAxisInfo.Size = new System.Drawing.Size(150, 40);
+            this.lblPBAxisInfo.TabIndex = 130;
+            this.lblPBAxisInfo.Text = "DI 1";
+            this.lblPBAxisInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblPBAxisInfo.Click += new System.EventHandler(this.lblPBAxisInfo_Click);
+            // 
+            // panel1
+            // 
+            this.panel1.AutoSize = true;
+            this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.panel1.Controls.Add(this.btnPAAxis);
+            this.panel1.Controls.Add(this.lblPAAxisInfo);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(5, 272);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(255, 42);
+            this.panel1.TabIndex = 145;
+            this.panel1.Visible = false;
+            // 
+            // btnPAAxis
+            // 
+            this.btnPAAxis.Location = new System.Drawing.Point(0, 0);
+            this.btnPAAxis.Margin = new System.Windows.Forms.Padding(2);
+            this.btnPAAxis.Name = "btnPAAxis";
+            this.btnPAAxis.Size = new System.Drawing.Size(100, 40);
+            this.btnPAAxis.TabIndex = 126;
+            this.btnPAAxis.Text = "PA";
+            this.btnPAAxis.UseVisualStyleBackColor = true;
+            this.btnPAAxis.Click += new System.EventHandler(this.btnPAAxis_Click);
+            // 
+            // lblPAAxisInfo
+            // 
+            this.lblPAAxisInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblPAAxisInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPAAxisInfo.Location = new System.Drawing.Point(104, 0);
+            this.lblPAAxisInfo.Margin = new System.Windows.Forms.Padding(2);
+            this.lblPAAxisInfo.Name = "lblPAAxisInfo";
+            this.lblPAAxisInfo.Size = new System.Drawing.Size(150, 40);
+            this.lblPAAxisInfo.TabIndex = 130;
+            this.lblPAAxisInfo.Text = "DI 1";
+            this.lblPAAxisInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblPAAxisInfo.Click += new System.EventHandler(this.lblPAAxisInfo_Click);
+            // 
             // btn_Home
             // 
             this.btn_Home.AccessibleDescription = "Home";
-            this.btn_Home.Location = new System.Drawing.Point(7, 294);
+            this.btn_Home.Location = new System.Drawing.Point(7, 366);
             this.btn_Home.Margin = new System.Windows.Forms.Padding(2);
             this.btn_Home.Name = "btn_Home";
             this.btn_Home.Size = new System.Drawing.Size(100, 36);
@@ -354,7 +438,7 @@
             this.groupBox2.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(5, 5, 5, 0);
-            this.groupBox2.Size = new System.Drawing.Size(342, 347);
+            this.groupBox2.Size = new System.Drawing.Size(342, 419);
             this.groupBox2.TabIndex = 137;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "IO";
@@ -594,7 +678,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(639, 376);
+            this.ClientSize = new System.Drawing.Size(639, 468);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -608,6 +692,8 @@
             this.Load += new System.EventHandler(this.frm_DispCore_MotorDiag_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
             this.pnl_GZ2.ResumeLayout(false);
             this.pnl_GY2.ResumeLayout(false);
             this.pnl_GX2.ResumeLayout(false);
@@ -662,5 +748,11 @@
         private System.Windows.Forms.Panel pnl_GX2;
         private System.Windows.Forms.Panel pnl_GZ;
         private System.Windows.Forms.Panel pnl_GY;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Button btnPBAxis;
+        private System.Windows.Forms.Label lblPBAxisInfo;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button btnPAAxis;
+        private System.Windows.Forms.Label lblPAAxisInfo;
     }
 }

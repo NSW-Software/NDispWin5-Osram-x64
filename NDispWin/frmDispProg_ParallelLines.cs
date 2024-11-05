@@ -39,6 +39,8 @@ namespace NDispWin
             lblLagLength.Text = $"{CmdLine.DPara[1]:f3}";
             lblRelLeadStartHeight.Text = $"{CmdLine.DPara[2]:f3}";
             lblRelLagEndHeight.Text = $"{CmdLine.DPara[3]:f3}";
+            lblStartOfst.Text = $"{CmdLine.DPara[6]:f3}";
+            lblEndOfst.Text = $"{CmdLine.DPara[7]:f3}";
             lblAddLineTime.Text = $"{CmdLine.DPara[4]:f3}";
 
             lblX0.Text = CmdLine.X[0].ToString("F3");
@@ -349,11 +351,25 @@ namespace NDispWin
             UC.AdjustExec(CmdName + ", RelLagEndHeight", ref CmdLine.DPara[3], -0.5, 0.5);
             UpdateDisplay();
         }
+        private void lblStartOfst_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec(CmdName + ", StartOffset", ref CmdLine.DPara[6], -0.5, 0.5);
+            UpdateDisplay();
+        }
+        private void lblEndOfst_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec(CmdName + ", EndOffset", ref CmdLine.DPara[7], -0.5, 0.5);
+            UpdateDisplay();
+        }
         private void lblAddLineTime_Click(object sender, EventArgs e)
         {
             UC.AdjustExec(CmdName + ", AddLineTime", ref CmdLine.DPara[4], -1000, 1000);
             UpdateDisplay();
         }
 
+        private void groupBox2_Enter(object sender, EventArgs e)
+        {
+
+        }
     }
 }

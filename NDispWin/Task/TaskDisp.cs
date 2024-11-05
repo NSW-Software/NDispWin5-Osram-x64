@@ -682,23 +682,24 @@ namespace NDispWin
 
         #region Camera Cal Pos
         public static TPos2 Camera_Cal_Pos = new TPos2(0, 0);//camera calibration, Camera Cal XYPos Current
-        public static TPos2 Camera_Cal_Pos_Setup = new TPos2(0, 0);//camera calibration, Camera Cal XYPos Setup
-        public static double Camera_Cal_Pos_Tol = 0;//camera calibration, Camera Cal XYPos Tol
+        //public static TPos2 Camera_Cal_Pos_Setup = new TPos2(0, 0);//camera calibration, Camera Cal XYPos Setup
+        //public static double Camera_Cal_Pos_Tol = 0;//camera calibration, Camera Cal XYPos Tol
         public static double Camera_Cal_Needle1_Z = 0;//camera calibration, Needle1 Z
         public static double Camera_Cal_Needle2_Z = 0;//camera calibration, Needle2 Z
         public static TLightRGBA Camera_Cal_LightRGB = new TLightRGBA(25, 25, 25, 0);
 
         public static TPos2 BCamera_Cal_Pos = new TPos2(0, 0);//bottom camera calibration, BottomCamera XYPos
-        public static TPos2 BCamera_Cal_Pos_Setup = new TPos2(0, 0);//bottom camera calibration, Camera Cal XYPos Setup
         public static double BCamera_Cal_Needle1_Z = 0;//BCamera calibration, Needle1 Z
         public static double BCamera_Cal_Needle2_Z = 0;//BCamera calibration, Needle2 Z
         public static TLightRGBA BCamera_Cal_LightRGB = new TLightRGBA(25, 25, 25, 0);
         public static TLightRGBA BCamera_CalNeedle_LightRGB = new TLightRGBA(25, 25, 25, 0);
 
         public static TPos2 Camera_ZSensor_Pos = new TPos2(0, 0);//ZSensor, Camera XYPos
-
         public static TLightRGBA Camera_ZSensor_LightRGB = new TLightRGBA(25, 25, 25, 0);
+
+        public static TPos2 Camera_LaserOfst_Pos = new TPos2(0, 0);//Laser Pos, Camera XYPos
         public static TLightRGBA Camera_LaserOfst_LightRGB = new TLightRGBA(25, 25, 25, 0);
+
         public static TLightRGBA Camera_TouchDot_LightRGB = new TLightRGBA(25, 25, 25, 0);
         public static TLightRGBA Camera_TouchDotSet_LightRGB = new TLightRGBA(25, 25, 25, 0);
         public static TLightRGBA TempSensor_Cal_LightRGB = new TLightRGBA(25, 25, 25, 0);
@@ -1096,9 +1097,6 @@ namespace NDispWin
             #region Camera Cal Pos
             Camera_Cal_Pos.X = IniFile.ReadDouble("Camera", "Cal_Pos_X", 0);
             Camera_Cal_Pos.Y = IniFile.ReadDouble("Camera", "Cal_Pos_Y", 0);
-            Camera_Cal_Pos_Setup.X = IniFile.ReadDouble("Camera", "Cal_Pos_X_Setup", 0);
-            Camera_Cal_Pos_Setup.Y = IniFile.ReadDouble("Camera", "Cal_Pos_Y_Setup", 0);
-            Camera_Cal_Pos_Tol = IniFile.ReadDouble("Camera", "Cal_Pos_Tol", 0.2);
             Camera_Cal_Needle1_Z = IniFile.ReadDouble("Camera", "Cal_Needle1_Z", 0);
             Camera_Cal_Needle2_Z = IniFile.ReadDouble("Camera", "Cal_Needle2_Z", 0);
             Camera_Cal_LightRGB.R = IniFile.ReadInteger("Camera", "Cal_LightRGB_R", 25);
@@ -1108,8 +1106,6 @@ namespace NDispWin
 
             BCamera_Cal_Pos.X = IniFile.ReadDouble("BCamera", "Cal_Pos_X", 0);
             BCamera_Cal_Pos.Y = IniFile.ReadDouble("BCamera", "Cal_Pos_Y", 0);
-            BCamera_Cal_Pos_Setup.X = IniFile.ReadDouble("BCamera", "Cal_Pos_X_Setup", 0);
-            BCamera_Cal_Pos_Setup.Y = IniFile.ReadDouble("BCamera", "Cal_Pos_Y_Setup", 0);
             BCamera_Cal_Needle1_Z = IniFile.ReadDouble("BCamera", "Cal_Needle1_Z", 0);
             BCamera_Cal_Needle2_Z = IniFile.ReadDouble("BCamera", "Cal_Needle2_Z", 0);
             BCamera_Cal_LightRGB.R = IniFile.ReadInteger("BCamera", "Cal_LightRGB_R", 25);
@@ -1127,14 +1123,19 @@ namespace NDispWin
             Camera_ZSensor_LightRGB.G = IniFile.ReadInteger("Camera", "ZSensor_LightRGB_G", 25);
             Camera_ZSensor_LightRGB.B = IniFile.ReadInteger("Camera", "ZSensor_LightRGB_B", 25);
             Camera_ZSensor_LightRGB.A = IniFile.ReadInteger("Camera", "ZSensor_LightRGB_A", 25);
+
+            Camera_LaserOfst_Pos.X = IniFile.ReadDouble("Camera", "LaserOfst_X", 0);
+            Camera_LaserOfst_Pos.Y = IniFile.ReadDouble("Camera", "LaserOfst_Y", 0);
             Camera_LaserOfst_LightRGB.R = IniFile.ReadInteger("Camera", "LaserOfst_LightRGB_R", 25);
             Camera_LaserOfst_LightRGB.G = IniFile.ReadInteger("Camera", "LaserOfst_LightRGB_G", 25);
             Camera_LaserOfst_LightRGB.B = IniFile.ReadInteger("Camera", "LaserOfst_LightRGB_B", 25);
             Camera_LaserOfst_LightRGB.A = IniFile.ReadInteger("Camera", "LaserOfst_LightRGB_A", 25);
+
             Camera_TouchDot_LightRGB.R = IniFile.ReadInteger("Camera", "TouchDot_LightRGB_R", 25);
             Camera_TouchDot_LightRGB.G = IniFile.ReadInteger("Camera", "TouchDot_LightRGB_G", 25);
             Camera_TouchDot_LightRGB.B = IniFile.ReadInteger("Camera", "TouchDot_LightRGB_B", 25);
             Camera_TouchDot_LightRGB.A = IniFile.ReadInteger("Camera", "TouchDot_LightRGB_A", 25);
+
             Camera_TouchDotSet_LightRGB.R = IniFile.ReadInteger("Camera", "TouchDotSet_LightRGB_R", 25);
             Camera_TouchDotSet_LightRGB.G = IniFile.ReadInteger("Camera", "TouchDotSet_LightRGB_G", 25);
             Camera_TouchDotSet_LightRGB.B = IniFile.ReadInteger("Camera", "TouchDotSet_LightRGB_B", 25);
@@ -1176,9 +1177,6 @@ namespace NDispWin
             #region Laser Pos
             Laser_Ofst.X = IniFile.ReadDouble("Laser", "Ofst_X", 0);
             Laser_Ofst.Y = IniFile.ReadDouble("Laser", "Ofst_Y", 0);
-            Laser_Ofst_Setup.X = IniFile.ReadDouble("Laser", "Ofst_X_Setup", 0);
-            Laser_Ofst_Setup.Y = IniFile.ReadDouble("Laser", "Ofst_Y_Setup", 0);
-            Laser_Ofst_XY_Tol = IniFile.ReadDouble("Laser", "Ofst_XY_Tol", 0);
             Laser_RefPosZ = IniFile.ReadDouble("Laser", "RefPos_Z", 0);
             //Laser_RefPosZ_Setup = IniFile.ReadDouble("Laser", "RefPos_Z_Setup", 0);
             Laser_CalValue = IniFile.ReadDouble("Laser", "CalValue", 0);
@@ -1405,9 +1403,6 @@ namespace NDispWin
             #region Camera Cal Pos
             IniFile.WriteDouble("Camera", "Cal_Pos_X", Camera_Cal_Pos.X);
             IniFile.WriteDouble("Camera", "Cal_Pos_Y", Camera_Cal_Pos.Y);
-            IniFile.WriteDouble("Camera", "Cal_Pos_X_Setup", Camera_Cal_Pos_Setup.X);
-            IniFile.WriteDouble("Camera", "Cal_Pos_Y_Setup", Camera_Cal_Pos_Setup.Y);
-            IniFile.WriteDouble("Camera", "Cal_Pos_Tol", Camera_Cal_Pos_Tol);
             IniFile.WriteDouble("Camera", "Cal_Needle1_Z", Camera_Cal_Needle1_Z);
             IniFile.WriteDouble("Camera", "Cal_Needle2_Z", Camera_Cal_Needle2_Z);
             IniFile.WriteInteger("Camera", "Cal_LightRGB_R", Camera_Cal_LightRGB.R);
@@ -1417,8 +1412,6 @@ namespace NDispWin
 
             IniFile.WriteDouble("BCamera", "Cal_Pos_X", BCamera_Cal_Pos.X);
             IniFile.WriteDouble("BCamera", "Cal_Pos_Y", BCamera_Cal_Pos.Y);
-            IniFile.WriteDouble("BCamera", "Cal_Pos_X_Setup", BCamera_Cal_Pos_Setup.X);
-            IniFile.WriteDouble("BCamera", "Cal_Pos_Y_Setup", BCamera_Cal_Pos_Setup.Y);
             IniFile.WriteDouble("BCamera", "Cal_Needle1_Z", BCamera_Cal_Needle1_Z);
             IniFile.WriteDouble("BCamera", "Cal_Needle2_Z", BCamera_Cal_Needle2_Z);
             IniFile.WriteInteger("BCamera", "Cal_LightRGB_R", BCamera_Cal_LightRGB.R);
@@ -1436,14 +1429,19 @@ namespace NDispWin
             IniFile.WriteInteger("Camera", "ZSensor_LightRGB_G", Camera_ZSensor_LightRGB.G);
             IniFile.WriteInteger("Camera", "ZSensor_LightRGB_B", Camera_ZSensor_LightRGB.B);
             IniFile.WriteInteger("Camera", "ZSensor_LightRGB_A", Camera_ZSensor_LightRGB.A);
+
+            IniFile.WriteDouble("Camera", "LaserOfst_X", Camera_LaserOfst_Pos.X);
+            IniFile.WriteDouble("Camera", "LaserOfst_Y", Camera_LaserOfst_Pos.Y);
             IniFile.WriteInteger("Camera", "LaserOfst_LightRGB_R", Camera_LaserOfst_LightRGB.R);
             IniFile.WriteInteger("Camera", "LaserOfst_LightRGB_G", Camera_LaserOfst_LightRGB.G);
             IniFile.WriteInteger("Camera", "LaserOfst_LightRGB_B", Camera_LaserOfst_LightRGB.B);
             IniFile.WriteInteger("Camera", "LaserOfst_LightRGB_A", Camera_LaserOfst_LightRGB.A);
+
             IniFile.WriteInteger("Camera", "TouchDot_LightRGB_R", Camera_TouchDot_LightRGB.R);
             IniFile.WriteInteger("Camera", "TouchDot_LightRGB_G", Camera_TouchDot_LightRGB.G);
             IniFile.WriteInteger("Camera", "TouchDot_LightRGB_B", Camera_TouchDot_LightRGB.B);
             IniFile.WriteInteger("Camera", "TouchDot_LightRGB_A", Camera_TouchDot_LightRGB.A);
+            
             IniFile.WriteInteger("Camera", "TouchDotSet_LightRGB_R", Camera_TouchDotSet_LightRGB.R);
             IniFile.WriteInteger("Camera", "TouchDotSet_LightRGB_G", Camera_TouchDotSet_LightRGB.G);
             IniFile.WriteInteger("Camera", "TouchDotSet_LightRGB_B", Camera_TouchDotSet_LightRGB.B);
@@ -1486,9 +1484,6 @@ namespace NDispWin
             #region Laser Pos
             IniFile.WriteDouble("Laser", "Ofst_X", Laser_Ofst.X);
             IniFile.WriteDouble("Laser", "Ofst_Y", Laser_Ofst.Y);
-            IniFile.WriteDouble("Laser", "Ofst_X_Setup", Laser_Ofst_Setup.X);
-            IniFile.WriteDouble("Laser", "Ofst_Y_Setup", Laser_Ofst_Setup.Y);
-            IniFile.WriteDouble("Laser", "Ofst_XY_Tol", Laser_Ofst_XY_Tol);
             IniFile.WriteDouble("Laser", "RefPos_Z", Laser_RefPosZ);
             IniFile.WriteDouble("Laser", "CalValue", Laser_CalValue);
             #endregion
@@ -2238,28 +2233,16 @@ namespace NDispWin
                 switch (Type)
                 {
                     case ECalHeadOffsetMethod.CrossHair:
-                        Camera_Cal_Pos_Setup.X = TaskGantry.GXPos();
-                        Camera_Cal_Pos_Setup.Y = TaskGantry.GYPos();
-                        Camera_Cal_Pos.X = Camera_Cal_Pos_Setup.X;
-                        Camera_Cal_Pos.Y = Camera_Cal_Pos_Setup.Y;
+                        Camera_Cal_Pos.X = TaskGantry.GXPos();
+                        Camera_Cal_Pos.Y = TaskGantry.GYPos();
                         Camera_Cal_Needle1_Z = Z;
-                        //Head_Ofst_Setup[0].X = X - Camera_Cal_Pos.X;
-                        //Head_Ofst_Setup[0].Y = Y - Camera_Cal_Pos.Y;
-                        //Head_Ofst[0].X = Head_Ofst_Setup[0].X;
-                        //Head_Ofst[0].Y = Head_Ofst_Setup[0].Y;
                         _Head_Ofst[0].X = X - Camera_Cal_Pos.X;
                         _Head_Ofst[0].Y = Y - Camera_Cal_Pos.Y;
                         break;
                     case ECalHeadOffsetMethod.BCamera:
-                        BCamera_Cal_Pos_Setup.X = TaskGantry.GXPos();
-                        BCamera_Cal_Pos_Setup.Y = TaskGantry.GYPos();
-                        BCamera_Cal_Pos.X = BCamera_Cal_Pos_Setup.X;
-                        BCamera_Cal_Pos.Y = BCamera_Cal_Pos_Setup.Y;
+                        BCamera_Cal_Pos.X = TaskGantry.GXPos();
+                        BCamera_Cal_Pos.Y = TaskGantry.GYPos();
                         BCamera_Cal_Needle1_Z = Z;
-                        //Head_Ofst_Setup[0].X = X - BCamera_Cal_Pos.X;
-                        //Head_Ofst_Setup[0].Y = Y - BCamera_Cal_Pos.Y;
-                        //Head_Ofst[0].X = Head_Ofst_Setup[0].X;
-                        //Head_Ofst[0].Y = Head_Ofst_Setup[0].Y;
                         _Head_Ofst[0].X = X - BCamera_Cal_Pos.X;
                         _Head_Ofst[0].Y = Y - BCamera_Cal_Pos.Y;
                         break;
@@ -3057,11 +3040,8 @@ namespace NDispWin
                 TPos2 oldLaser_Ofst = new TPos2(Laser_Ofst);
                 if (CalLaser && GDefine.HSensorType > GDefine.EHeightSensorType.None)
                 {
-                    Laser_Ofst_Setup.X = LaserPosX - CX;
-                    Laser_Ofst.X = Laser_Ofst_Setup.X;
-                    Laser_Ofst_Setup.Y = LaserPosY - CY;
-                    Laser_Ofst.Y = Laser_Ofst_Setup.Y;
-
+                    Laser_Ofst.X = LaserPosX - CX;
+                    Laser_Ofst.Y = LaserPosY - CY;
                     Event.SETUP_LASER_OFST_UPDATE.Set("LaserOffset", Laser_Ofst.X.ToString("f3") + "," + Laser_Ofst.Y.ToString("f3"));
                 }
                 #endregion
@@ -4561,13 +4541,11 @@ namespace NDispWin
             try
             {
                 #region Teach Camera Position
-                //if (!TaskDisp.TaskMoveGZZ2Up()) return false;
-                //if (!TaskDisp.TaskMoveAbsGZ(DispProg.CameraZPos)) return false;
                 if (!TaskDisp.TaskMoveGZFocus(0)) return false;
 
                 #region Move Camera XY to ZSensor
                 if (!TaskGantry.SetMotionParamGXY()) return false;
-                if (!TaskGantry.MoveAbsGXY(Camera_ZSensor_Pos.X, Camera_ZSensor_Pos.Y, false)) return false;
+                if (!TaskGantry.MoveAbsGXY(Camera_LaserOfst_Pos.X, Camera_LaserOfst_Pos.Y, false)) return false;
                 if (GDefine.GantryConfig == GDefine.EGantryConfig.XY_ZX2Y2_Z2)
                 {
                     if (!TaskGantry.SetMotionParamExGX2Y2()) return false;
@@ -4661,8 +4639,8 @@ namespace NDispWin
                 #endregion
 
                 #region Computation
-                Camera_ZSensor_Pos.X = CX;
-                Camera_ZSensor_Pos.Y = CY;
+                Camera_LaserOfst_Pos.X = CX;
+                Camera_LaserOfst_Pos.Y = CY;
 
                 Head_ZSensor_RefPosZ_Setup[0] = TouchZ1;
                 Head_ZSensor_RefPosZ[0] = Head_ZSensor_RefPosZ_Setup[0];
@@ -4670,10 +4648,8 @@ namespace NDispWin
                 //Head_Ofst[0].Z = Head_Ofst_Setup[0].Z;
                 Head_Ofst[0].Z = 0;
 
-                Laser_Ofst_Setup.X = LaserPosX - CX;
-                Laser_Ofst.X = Laser_Ofst_Setup.X;
-                Laser_Ofst_Setup.Y = LaserPosY - CY;
-                Laser_Ofst.Y = Laser_Ofst_Setup.Y;
+                Laser_Ofst.X = LaserPosX - CX;
+                Laser_Ofst.Y = LaserPosY - CY;
                 #endregion
 
                 double TouchZ2 = 0;
@@ -4722,7 +4698,7 @@ namespace NDispWin
 
                 #region Move Camera XY to ZSensor
                 if (!TaskGantry.SetMotionParamGXY()) return false;
-                if (!TaskGantry.MoveAbsGXY(Camera_ZSensor_Pos.X, Camera_ZSensor_Pos.Y, false)) return false;
+                if (!TaskGantry.MoveAbsGXY(Camera_LaserOfst_Pos.X, Camera_LaserOfst_Pos.Y, false)) return false;
                 if (GDefine.GantryConfig == GDefine.EGantryConfig.XY_ZX2Y2_Z2)
                 {
                     if (!TaskGantry.SetMotionParamExGX2Y2()) return false;
@@ -4942,14 +4918,11 @@ namespace NDispWin
                 TaskVision.LightingOn(TaskVision.DefLightRGB);
 
                 #region Computation
-                Camera_ZSensor_Pos.X = CX;
-                Camera_ZSensor_Pos.Y = CY;
+                Camera_LaserOfst_Pos.X = CX;
+                Camera_LaserOfst_Pos.Y = CY;
 
-                Laser_Ofst_Setup.X = LaserPos_X - CX;
-                Laser_Ofst.X = Laser_Ofst_Setup.X;
-                Laser_Ofst_Setup.Y = LaserPos_Y - CY;
-                Laser_Ofst.Y = Laser_Ofst_Setup.Y;
-                //Laser_RefPosZ = d_LaserZValue;
+                Laser_Ofst.X = LaserPos_X - CX;
+                Laser_Ofst.Y = LaserPos_Y - CY;
                 #endregion
             }
             catch (Exception Ex)
@@ -6143,56 +6116,106 @@ namespace NDispWin
                         break;
                 }
 
-                if (DispA || DispB)
+                switch (GDefine.DispCtrlType[0])
                 {
-                    #region
-                    int iCount = Count;
-                    while (iCount > 0)
-                    {
+                    case GDefine.EDispCtrlType.HPC3:
                         if (DispA || DispB)
                         {
-                            if (Trig && Time > 0)
+                            #region
+                            int iCount = Count;
+                            while (iCount > 0)
                             {
-                                if (!TaskDisp.CtrlWaitReady(DispA, DispB)) goto _Stop;
-                            }
+                                if (DispA || DispB)
+                                {
+                                    if (Trig && Time > 0)
+                                    {
+                                        if (!TFPump.PP4.Ready(new bool[] { DispA, DispB })) goto _Stop;
+                                    }
+                                    if (OnVac) TaskGantry.SvCleanVac = true;
+                                }
 
-                            if (OnVac) TaskGantry.SvCleanVac = true;
+                                if (Time > 0)
+                                {
+                                    if (Trig)
+                                    {
+                                        if (!TFPump.PP4.ShotStart(new bool[] { DispA, DispB })) goto _Stop;
+                                    }
+
+                                    int t = GDefine.GetTickCount() + Time;
+                                    while (GDefine.GetTickCount() <= t) { Thread.Sleep(1); }
+
+                                    if (!TFPump.PP4.ShotStop(new bool[] { DispA, DispB })) goto _Stop;
+                                }
+
+                                if (Delay == 0) Delay = 10;
+                                if (Delay > 0)
+                                {
+                                    int t = GDefine.GetTickCount() + Delay;
+                                    while (GDefine.GetTickCount() <= t) { Thread.Sleep(1); }
+                                }
+
+                                if (OnVac) TaskGantry.SvCleanVac = false;
+
+                                iCount--;
+                            }
+                            #endregion
                         }
 
-                        if (Time > 0)
+                        break;
+                    default:
+                        if (DispA || DispB)
                         {
-                            if (Trig)
+                            #region
+                            int iCount = Count;
+                            while (iCount > 0)
                             {
-                                if (!TaskDisp.CtrlWaitReady(DispA, DispB)) goto _Stop;
-                                if (!TrigOn(DispA, DispB)) goto _Stop;
-                                if (!TaskDisp.CtrlWaitResponse(DispA, DispB)) goto _Stop;
+                                if (DispA || DispB)
+                                {
+                                    if (Trig && Time > 0)
+                                    {
+                                        if (!TaskDisp.CtrlWaitReady(DispA, DispB)) goto _Stop;
+                                    }
+
+                                    if (OnVac) TaskGantry.SvCleanVac = true;
+                                }
+
+                                if (Time > 0)
+                                {
+                                    if (Trig)
+                                    {
+                                        if (!TaskDisp.CtrlWaitReady(DispA, DispB)) goto _Stop;
+                                        if (!TrigOn(DispA, DispB)) goto _Stop;
+                                        if (!TaskDisp.CtrlWaitResponse(DispA, DispB)) goto _Stop;
+                                    }
+
+                                    int t = GDefine.GetTickCount() + Time;
+                                    while (GDefine.GetTickCount() <= t) { Thread.Sleep(1); }
+
+                                    if (!TrigOff(DispA, DispB)) goto _Stop;
+                                    if (!CtrlWaitComplete(DispA, DispB)) goto _Stop;
+                                }
+
+                                if (Delay == 0) Delay = 10;
+                                if (Delay > 0)
+                                {
+                                    int t = GDefine.GetTickCount() + Delay;
+                                    while (GDefine.GetTickCount() <= t) { Thread.Sleep(1); }
+                                }
+
+                                if (OnVac) TaskGantry.SvCleanVac = false;
+
+                                iCount--;
                             }
-
-                            int t = GDefine.GetTickCount() + Time;
-                            while (GDefine.GetTickCount() <= t) { Thread.Sleep(1); }
-
-                            if (!TrigOff(DispA, DispB)) goto _Stop;
-                            if (!CtrlWaitComplete(DispA, DispB)) goto _Stop;
+                            #endregion
                         }
-
-                        if (Delay == 0) Delay = 10;
-                        if (Delay > 0)
-                        {
-                            int t = GDefine.GetTickCount() + Delay;
-                            while (GDefine.GetTickCount() <= t) { Thread.Sleep(1); }
-                        }
-
-                        if (OnVac) TaskGantry.SvCleanVac = false;
-
-                        iCount--;
-                    }
-                    #endregion
+                        break;
                 }
+
                 if (MoveUp)
                 {
                     if (!TaskMoveGZZ2Up()) return false;
                 }
-
+                                
                 if (DispProg.DispCtrl_ForceTimeMode)
                 {
                     SetDispCtrlTimedMode(DispA, DispB);
@@ -6227,7 +6250,15 @@ namespace NDispWin
             GDefine.Status = EStatus.Ready;
             return true;
         _Stop:
-            TrigOff(DispA, DispB);
+            switch (GDefine.DispCtrlType[0])
+            {
+                case GDefine.EDispCtrlType.HPC3:
+                    if (!TFPump.PP4.ShotAbort(new bool[] { DispA, DispB })) goto _Stop;
+                    break;
+                default:
+                    TrigOff(DispA, DispB);
+                    break;
+            }
             TaskGantry.SvCleanVac = false;
             TaskMoveGZZ2Up();
             GDefine.Status = EStatus.Stop;
@@ -6855,6 +6886,8 @@ namespace NDispWin
                     return TaskDisp.Vermes3200[CtrlNo].IsOpen;
                 case GDefine.EDispCtrlType.Vermes1560:
                     return TaskDisp.Vermes1560[CtrlNo].IsOpen;
+                case GDefine.EDispCtrlType.HPC3:
+                    return true;
             }
         }
         public static void ShowDispCtrl(int CtrlNo)
@@ -6899,6 +6932,14 @@ namespace NDispWin
                         int.TryParse(TaskDisp.Vermes1560[CtrlNo].sp.PortName.Remove(0, 3), out GDefine.DispCtrlComport[CtrlNo]);
                         break;
                     }
+                case GDefine.EDispCtrlType.HPC3:
+                    {
+                        frmSetupPP_HPC3 frm = new frmSetupPP_HPC3();
+                        frm.TopMost = true;
+                        frm.ShowDialog();
+                        frm.BringToFront();
+                    }
+                    break;
             }
         }
 
@@ -6914,6 +6955,8 @@ namespace NDispWin
 
         public static bool CtrlCheckReady(bool DispA, bool DispB)
         {
+            if (GDefine.DispCtrlType[0] == GDefine.EDispCtrlType.HPC3) return true;
+
             if (DispReadyLogic == EDispIOLogic.None) return true;
 
             if (DispReadyLogic == EDispIOLogic.Low)
@@ -6952,6 +6995,8 @@ namespace NDispWin
         }
         public static bool CtrlWaitReady(bool DispA, bool DispB)
         {
+            if (GDefine.DispCtrlType[0] == GDefine.EDispCtrlType.HPC3) return true;
+
             if (!DispA && !DispB) return true;
 
             if (DispReadyLogic == EDispIOLogic.None || TaskDisp.DispReady_TimeOut <= 0) return true;
@@ -7087,6 +7132,8 @@ namespace NDispWin
         static int i_NoRespCount = 0;
         public static bool CtrlWaitResponse(bool DispA, bool DispB)
         {
+            if (GDefine.DispCtrlType[0] == GDefine.EDispCtrlType.HPC3) return true;
+
             if (!DispA && !DispB) return true;
 
             if (DispResponseLogic == EDispIOLogic.None || TaskDisp.DispResponse_TimeOut <= 0)
@@ -7204,6 +7251,8 @@ namespace NDispWin
         }
         public static bool CtrlWaitComplete(bool DispA, bool DispB)
         {
+            if (GDefine.DispCtrlType[0] == GDefine.EDispCtrlType.HPC3) return true;
+
             if (DispCompleteLogic == EDispIOLogic.None || TaskDisp.DispComplete_TimeOut <= 0) return true;
 
             if (DispCompleteLogic == EDispIOLogic.Low)
@@ -8482,6 +8531,8 @@ namespace NDispWin
 
                             return res;
                         }
+                    case GDefine.EDispCtrlType.HPC3:
+                        return true;
                 }
                 return true;
             }
@@ -8605,6 +8656,8 @@ namespace NDispWin
                             bsValueB = newValueB;
                             return HPC_15[0].SetBackSuckAmount(DispA, DispB, newValueA, newValueB);
                         }
+                    case GDefine.EDispCtrlType.HPC3:
+                        return true;
                 }
                 return true;
             }
@@ -8979,41 +9032,78 @@ namespace NDispWin
 
         public static double CalcPPDispTime(double vol_ul)//get disp time PLC frequency
         {
-            double dia = TaskDisp.HPC_15[0].PP_Dia_mm;
-            double dpp = TaskDisp.HPC_15[0].PP_DPP_mm;
-            double acTime = (double)TaskDisp.HPC_15[0].Param.Disp_AC[0, 0] / 1000;//accel is time value in s
-            double dcTime = (double)TaskDisp.HPC_15[0].Param.Disp_DC[0, 0] / 1000;//decel is time value in s
-            double speed_mm_s = TaskDisp.HPC_15[0].Param.Disp_SP_mm_s[0, 0];
-            double speed_pulse_s = TaskDisp.HPC_15[0].Speed_mm_s_Get_Freq(speed_mm_s);
-
-            double pistonArea = Math.PI * Math.Pow(dia / 2, 2);
-            double volPerPulse = pistonArea * dpp;
-
-            double pulse = vol_ul / volPerPulse;
-            double acDist = acTime * speed_mm_s / 2;
-
-            double distAD;//acc and dec same value
-            double distC;
-
-            if (acDist * 2 >= pulse)
+            switch (GDefine.DispCtrlType[0])
             {
-                distAD = pulse / 2;
-                distC = 0;
+                case GDefine.EDispCtrlType.HPC3:
+                    {
+                        double dist = TFPump.PP4.LengthConversion(vol_ul);
+
+
+                        double timeToAcc = (TFPump.PP4.DispSpeed - TFPump.PP4.VelL) / TFPump.PP4.DispAD;
+                        double timeToDec = timeToAcc;
+
+                        //double distAD = 0.5 * (TFPump.PP4.DispSpeed - TFPump.PP4.VelL) * timeToAcc + (TFPump.PP4.VelL * timeToAcc);
+                        //double distAD = (0.5*TFPump.PP4.DispSpeed - 0.5*TFPump.PP4.VelL) * timeToAcc + (TFPump.PP4.VelL * timeToAcc);
+                        //double distAD = (0.5*TFPump.PP4.DispSpeed - 0.5*TFPump.PP4.VelL + TFPump.PP4.VelL) * timeToAcc);
+                        //double distAD = (0.5*TFPump.PP4.DispSpeed + 0.5*TFPump.PP4.VelL) * timeToAcc);
+                        //double distAD = 0.5 * (TFPump.PP4.DispSpeed + TFPump.PP4.VelL) * timeToAcc);
+                        double distAD = 0.5 * (TFPump.PP4.DispSpeed + TFPump.PP4.VelL) * timeToAcc;
+                        double distC;
+
+                        if (distAD * 2 >= dist)
+                        {
+                            distAD = dist / 2;
+                            distC = 0;
+                        }
+                        else 
+                        {
+                            distC = dist - (distAD * 2);
+                        }
+
+                        double timeConst = distC / TFPump.PP4.DispSpeed;
+                        double timeTotal = timeToAcc + timeConst + timeToDec;
+
+                        return timeTotal;
+                    }
+                default:
+                    {
+                        double dia = TaskDisp.HPC_15[0].PP_Dia_mm;
+                        double dpp = TaskDisp.HPC_15[0].PP_DPP_mm;
+                        double acTime = (double)TaskDisp.HPC_15[0].Param.Disp_AC[0, 0] / 1000;//accel is time value in s
+                        double dcTime = (double)TaskDisp.HPC_15[0].Param.Disp_DC[0, 0] / 1000;//decel is time value in s
+                        double speed_mm_s = TaskDisp.HPC_15[0].Param.Disp_SP_mm_s[0, 0];
+                        double speed_pulse_s = TaskDisp.HPC_15[0].Speed_mm_s_Get_Freq(speed_mm_s);
+
+                        double pistonArea = Math.PI * Math.Pow(dia / 2, 2);
+                        double volPerPulse = pistonArea * dpp;
+
+                        double pulse = vol_ul / volPerPulse;
+                        double acDist = acTime * speed_mm_s / 2;
+
+                        double distAD;//acc and dec same value
+                        double distC;
+
+                        if (acDist * 2 >= pulse)
+                        {
+                            distAD = pulse / 2;
+                            distC = 0;
+                        }
+                        else
+                        {
+                            distAD = acDist;
+                            distC = pulse - (distAD * 2);
+                        }
+
+                        double vMax = distAD / acDist * speed_pulse_s;
+
+                        double timeToAcc = vMax / speed_pulse_s * acTime;
+                        double timeToDec = timeToAcc;
+                        double timeConst = distC / speed_pulse_s;
+                        double timeTotal = timeToAcc + timeConst + timeToDec;
+
+                        return timeTotal;
+                    }
             }
-            else
-            {
-                distAD = acDist;
-                distC = pulse - (distAD * 2);
-            }
-
-            double vMax = distAD / acDist * speed_pulse_s;
-
-            double timeToAcc = vMax / speed_pulse_s * acTime;
-            double timeToDec = timeToAcc;
-            double timeConst = distC / speed_pulse_s;
-            double timeTotal = timeToAcc + timeConst + timeToDec;
-
-            return timeTotal;
         }
 
         public static void PP_CalcDispTime(ref double Time)//get disp time using linear parameters
@@ -9120,6 +9210,8 @@ namespace NDispWin
                     return DispProg.PP_HeadA_Max_Volume;
                 case GDefine.EDispCtrlType.HPC15:
                     return HPC_15[0].MaxAmount(HPC15.eDispUnit.ul);
+                case GDefine.EDispCtrlType.HPC3:
+                    return 1300;
             }
         }
 

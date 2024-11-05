@@ -169,60 +169,6 @@ namespace NDispWin
             UpdateDisplay();
         }
 
-        private void btn_Test_Click(object sender, EventArgs e)
-        {
-            Enabled = false;
-
-            NSW.Net.Stats Stats = new NSW.Net.Stats();
-            string dp = "f4";
-
-            try
-            {
-                lbox_Data.Items.Clear();
-
-                TaskMeasMen.Data Data = new TaskMeasMen.Data();
-                TaskMeasMen.MeasL_H_Profile Profile = new TaskMeasMen.MeasL_H_Profile();
-
-                double X1 = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + CmdLine.X[0];
-                double Y1 = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.Y[0];
-                double X2 = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + CmdLine.X[1];
-                double Y2 = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.Y[1];
-                double X3 = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + CmdLine.X[2];
-                double Y3 = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.Y[2];
-                TaskMeasMen.Execute(CmdLine, ref Profile, ref Data, X1, Y1, X2, Y2, X3, Y3);
-
-                #region Summary List Display
-                string S =
-                    "Col" + (char)9 +
-                    "Row" + (char)9 +
-                    "Height" + (char)9 +
-                    "Ref1" + (char)9 +
-                    "Ref2" + (char)9 +
-                    "Meas" + (char)9;
-                lbox_Data.Items.Add(S);
-
-                S = "";
-                S = S + Data.Col.ToString() + (char)9;
-                S = S + Data.Row.ToString() + (char)9;
-                S = S + Data.Height.ToString(dp) + (char)9;
-                S = S + Data.Ref1.ToString(dp) + (char)9;
-                S = S + Data.Ref2.ToString(dp) + (char)9;
-                S = S + Data.Meas.ToString(dp) + (char)9;
-
-                lbox_Data.Items.Add(S);
-                #endregion 
-            }
-            catch (Exception ex)
-            {
-                Msg Msg = new Msg();
-                Msg.Show(ex.Message.ToString());
-            }
-            finally
-            {
-                Enabled = true;
-            }
-        }
-
         private void btn_OK_Click(object sender, EventArgs e)
         {
             DispProg.Script[ProgNo].CmdList.Line[LineNo].Copy(CmdLine);
@@ -230,7 +176,6 @@ namespace NDispWin
             frm_DispProg2.Done = true;
             Close();
         }
-
         private void btn_Cancel_Click(object sender, EventArgs e)
         {
             frm_DispProg2.Done = true;
@@ -294,6 +239,120 @@ namespace NDispWin
         {
             UC.AdjustExec(CmdName + ", Cont Error (count)", ref CmdLine.IPara[5], 0, 1000);
             UpdateDisplay();
+        }
+
+        private void btn_Test_Click(object sender, EventArgs e)
+        {
+            Enabled = false;
+
+            string dp = "f4";
+
+            try
+            {
+                lbox_Data.Items.Clear();
+
+                TaskMeasMen.Data Data = new TaskMeasMen.Data();
+                TaskMeasMen.MeasL_H_Profile Profile = new TaskMeasMen.MeasL_H_Profile();
+
+                double X1 = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + CmdLine.X[0];
+                double Y1 = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.Y[0];
+                double X2 = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + CmdLine.X[1];
+                double Y2 = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.Y[1];
+                double X3 = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + CmdLine.X[2];
+                double Y3 = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.Y[2];
+                TaskMeasMen.Execute(CmdLine, ref Profile, ref Data, X1, Y1, X2, Y2, X3, Y3);
+
+                #region Summary List Display
+                string S =
+                    "Col" + (char)9 +
+                    "Row" + (char)9 +
+                    "Height" + (char)9 +
+                    "Ref1" + (char)9 +
+                    "Ref2" + (char)9 +
+                    "Meas" + (char)9;
+                lbox_Data.Items.Add(S);
+
+                S = "";
+                S = S + Data.Col.ToString() + (char)9;
+                S = S + Data.Row.ToString() + (char)9;
+                S = S + Data.Height.ToString(dp) + (char)9;
+                S = S + Data.Ref1.ToString(dp) + (char)9;
+                S = S + Data.Ref2.ToString(dp) + (char)9;
+                S = S + Data.Meas.ToString(dp) + (char)9;
+
+                lbox_Data.Items.Add(S);
+                #endregion 
+            }
+            catch (Exception ex)
+            {
+                Msg Msg = new Msg();
+                Msg.Show(ex.Message.ToString());
+            }
+            finally
+            {
+                Enabled = true;
+            }
+        }
+
+        private void btnMeasAtPos_Click(object sender, EventArgs e)
+        {
+            Enabled = false;
+
+            string dp = "f4";
+
+            try
+            {
+                lbox_Data.Items.Clear();
+
+                TaskMeasMen.Data Data = new TaskMeasMen.Data();
+                TaskMeasMen.MeasL_H_Profile Profile = new TaskMeasMen.MeasL_H_Profile();
+
+                double x1 = CmdLine.X[0];
+                double y1 = CmdLine.Y[0];
+                double x2 = CmdLine.X[1];
+                double y2 = CmdLine.Y[1];
+                double x3 = CmdLine.X[2];
+                double y3 = CmdLine.Y[2];
+
+                double X3 = TaskGantry.GXPos();
+                double Y3 = TaskGantry.GYPos();
+                double X1 = X3 + (x1 - x3);
+                double Y1 = Y3 + (y1 - y3);
+                double X2 = Y3 + (x2 - x3);
+                double Y2 = Y3 + (y2 - y3);
+
+                TaskMeasMen.Execute(CmdLine, ref Profile, ref Data, X1, Y1, X2, Y2, X3, Y3);
+
+                #region Summary List Display
+                string S =
+                    "Col" + (char)9 +
+                    "Row" + (char)9 +
+                    "Height" + (char)9 +
+                    "Ref1" + (char)9 +
+                    "Ref2" + (char)9 +
+                    "Meas" + (char)9;
+                lbox_Data.Items.Add(S);
+
+                S = "";
+                S = S + Data.Col.ToString() + (char)9;
+                S = S + Data.Row.ToString() + (char)9;
+                S = S + Data.Height.ToString(dp) + (char)9;
+                S = S + Data.Ref1.ToString(dp) + (char)9;
+                S = S + Data.Ref2.ToString(dp) + (char)9;
+                S = S + Data.Meas.ToString(dp) + (char)9;
+
+                lbox_Data.Items.Add(S);
+                #endregion 
+            }
+            catch (Exception ex)
+            {
+                Msg Msg = new Msg();
+                Msg.Show(ex.Message.ToString());
+            }
+            finally
+            {
+                Enabled = true;
+            }
         }
     }
 }

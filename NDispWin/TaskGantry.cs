@@ -36,6 +36,8 @@ namespace NDispWin
 
         internal static CControl2.TAxis SZAxis = new CControl2.TAxis(Device_0, 0x04, "SZ", "SZ");//ZSensor 
 
+        internal static CControl2.TAxis PAAxis = new CControl2.TAxis(Device_0, 0x06, "PA", "PA");
+        internal static CControl2.TAxis PBAxis = new CControl2.TAxis(Device_0, 0x07, "PB", "PB");
 
         #endregion
         #region GXInput
@@ -148,6 +150,166 @@ namespace NDispWin
         internal static CControl2.TOutput _RYMtrOn = new CControl2.TOutput(Device_1, 0x02, 0x01, "", "RY Motor On");
         internal static CControl2.TOutput _RYAlmClr = new CControl2.TOutput(Device_1, 0x02, 0x02, "", "RY AlmClr");
         #endregion
+        #region PA IO
+        internal static CControl2.TInput _PASensHome = new CControl2.TInput(Device_0, 0x06, 0x0004, "", "PA Sens Home");
+        internal static CControl2.TInput _PAAlm = new CControl2.TInput(Device_0, 0x06, 0x0080, "", "PA Alarm");
+        internal static CControl2.TInput _PASLmtP = new CControl2.TInput(Device_0, 0x06, 0x0100, "", "PA SLmtP");
+        internal static CControl2.TInput _PASLmtN = new CControl2.TInput(Device_0, 0x06, 0x0200, "", "PA SLmtN");
+        internal static CControl2.TOutput _PAMtrOn = new CControl2.TOutput(Device_0, 0x06, 0x0100, "", "PA Motor On");
+        internal static CControl2.TOutput _PAAlmClr = new CControl2.TOutput(Device_0, 0x06, 0x0200, "", "PA AlmClr");
+
+        internal static CControl2.TInput _PASensDisp = new CControl2.TInput(Device_0, 0x06, 0x0002, "", "PA SensDisp");
+        internal static CControl2.TInput _PASensFill = new CControl2.TInput(Device_0, 0x06, 0x0004, "", "PA SensFill");
+        internal static CControl2.TOutput _PASvRotDisp = new CControl2.TOutput(Device_0, 0x06, 0x02, "", "PA SvRotDisp");
+        internal static CControl2.TOutput _PASvRotFill = new CControl2.TOutput(Device_0, 0x06, 0x01, "", "PA SvRotFill");
+
+        public static bool PASensHome
+        {
+            get
+            {
+                try
+                {
+                    return TaskGantry.GetInput(ref _PASensHome);
+                }
+                catch { }
+                return false;
+            }
+        }
+        public static bool PASensDisp
+        {
+            get
+            {
+                try
+                {
+                    return TaskGantry.GetInput(ref _PASensDisp);
+                }
+                catch { }
+                return false;
+            }
+        }
+        public static bool PASensFill
+        {
+            get
+            {
+                try
+                {
+                    return TaskGantry.GetInput(ref _PASensFill);
+                }
+                catch { }
+                return false;
+            }
+        }
+        public static bool PASvRotDisp
+        {
+            get
+            {
+                return _PASvRotDisp.Status;
+            }
+            set
+            {
+                try
+                {
+                    CommonControl.SetDO(ref _PASvRotDisp, value ? CControl2.EOutputStatus.Hi : CControl2.EOutputStatus.Lo);
+                }
+                catch { }
+            }
+        }
+        public static bool PASvRotFill
+        {
+            get
+            {
+                return _PASvRotFill.Status;
+            }
+            set
+            {
+                try
+                {
+                    CommonControl.SetDO(ref _PASvRotFill, value ? CControl2.EOutputStatus.Hi : CControl2.EOutputStatus.Lo);
+                }
+                catch { }
+            }
+        }
+        #endregion
+        #region PB IO
+        internal static CControl2.TInput _PBSensHome = new CControl2.TInput(Device_0, 0x07, 0x0004, "", "PB Sens Home");
+        internal static CControl2.TInput _PBAlm = new CControl2.TInput(Device_0, 0x07, 0x0080, "", "PB Alarm");
+        internal static CControl2.TInput _PBSLmtP = new CControl2.TInput(Device_0, 0x07, 0x0100, "", "PB SLmtP");
+        internal static CControl2.TInput _PBSLmtN = new CControl2.TInput(Device_0, 0x07, 0x0200, "", "PB SLmtN");
+        internal static CControl2.TOutput _PBMtrOn = new CControl2.TOutput(Device_0, 0x07, 0x0100, "", "PB Motor On");
+        internal static CControl2.TOutput _PBAlmClr = new CControl2.TOutput(Device_0, 0x07, 0x0200, "", "PB AlmClr");
+
+        internal static CControl2.TInput _PBSensDisp = new CControl2.TInput(Device_0, 0x07, 0x0002, "", "PB SensDisp");
+        internal static CControl2.TInput _PBSensFill = new CControl2.TInput(Device_0, 0x07, 0x0004, "", "PB SensFill");
+        internal static CControl2.TOutput _PBSvRotDisp = new CControl2.TOutput(Device_0, 0x07, 0x02, "", "PB SvRotDisp");
+        internal static CControl2.TOutput _PBSvRotFill = new CControl2.TOutput(Device_0, 0x07, 0x01, "", "PB SvRotFill");
+
+        public static bool PBSensHome
+        {
+            get
+            {
+                try
+                {
+                    return TaskGantry.GetInput(ref _PBSensHome);
+                }
+                catch { }
+                return false;
+            }
+        }
+        public static bool PBSensDisp
+        {
+            get
+            {
+                try
+                {
+                    return TaskGantry.GetInput(ref _PBSensDisp);
+                }
+                catch { }
+                return false;
+            }
+        }
+        public static bool PBSensFill
+        {
+            get
+            {
+                try
+                {
+                    return TaskGantry.GetInput(ref _PBSensFill);
+                }
+                catch { }
+                return false;
+            }
+        }
+        public static bool PBSvRotDisp
+        {
+            get
+            {
+                return _PBSvRotDisp.Status;
+            }
+            set
+            {
+                try
+                {
+                    CommonControl.SetDO(ref _PBSvRotDisp, value ? CControl2.EOutputStatus.Hi : CControl2.EOutputStatus.Lo);
+                }
+                catch { }
+            }
+        }
+        public static bool PBSvRotFill
+        {
+            get
+            {
+                return _PBSvRotFill.Status;
+            }
+            set
+            {
+                try
+                {
+                    CommonControl.SetDO(ref _PBSvRotFill, value ? CControl2.EOutputStatus.Hi : CControl2.EOutputStatus.Lo);
+                }
+                catch { }
+            }
+        }
+        #endregion
 
         #region IO
         internal static CControl2.TInput _BtnStart = new CControl2.TInput(Device_0, 0x02, 0x0002, "", "Btn Start");
@@ -172,6 +334,7 @@ namespace NDispWin
         internal static CControl2.TOutput _SvFPress2 = new CControl2.TOutput(Device_0, 0x05, 0x08, "", "Sv FPress2");
 
         internal static CControl2.TOutput _SvFVac1 = new CControl2.TOutput(Device_0, 0x05, 0x04, "", "Sv FVac1");
+        internal static CControl2.TOutput _SvFVac2 = new CControl2.TOutput(Device_0, 0x05, 0x08, "", "Sv FVac2");
 
         internal static CControl2.TOutput _SvPortA1 = new CControl2.TOutput(Device_0, 0x03, 0x04, "", "Sv DispPortA1");
         internal static CControl2.TOutput _SvPortB1 = new CControl2.TOutput(Device_0, 0x03, 0x04, "", "Sv DispPortB1");
@@ -206,6 +369,8 @@ namespace NDispWin
 
         internal static CControl2.TInput _SensNdle1Short = new CControl2.TInput(new CControl2.TDevice(CControl2.EDeviceType.NONE, 0, "", ""), 0x03, 0x03, "", "Sens Needle1 Short");
         internal static CControl2.TInput _SensNdle2Short = new CControl2.TInput(new CControl2.TDevice(CControl2.EDeviceType.NONE, 0, "", ""), 0x03, 0x03, "", "Sens Needle2 Short");
+
+
         #endregion
 
         public enum TOutputState { On, Off, St };
@@ -321,6 +486,8 @@ namespace NDispWin
             SaveDeviceConfig(ref GY2Axis, FileName);
             SaveDeviceConfig(ref GZ2Axis, FileName);
             SaveDeviceConfig(ref SZAxis, FileName);
+            SaveDeviceConfig(ref PAAxis, FileName);
+            SaveDeviceConfig(ref PBAxis, FileName);
             #endregion
             #region IO
             SaveDeviceConfig(ref _SensGXHome, FileName);
@@ -423,6 +590,24 @@ namespace NDispWin
             SaveDeviceConfig(ref _RYMtrOn, FileName);
             SaveDeviceConfig(ref _RYAlmClr, FileName);
 
+            SaveDeviceConfig(ref _PASensHome, FileName);
+            SaveDeviceConfig(ref _PAAlm, FileName);
+            SaveDeviceConfig(ref _PASLmtP, FileName);
+            SaveDeviceConfig(ref _PASLmtN, FileName);
+            SaveDeviceConfig(ref _PAMtrOn, FileName);
+            SaveDeviceConfig(ref _PAAlmClr, FileName);
+            SaveDeviceConfig(ref _PASensDisp, FileName);
+            SaveDeviceConfig(ref _PASensFill, FileName);
+
+            SaveDeviceConfig(ref _PBSensHome, FileName);
+            SaveDeviceConfig(ref _PBAlm, FileName);
+            SaveDeviceConfig(ref _PBSLmtP, FileName);
+            SaveDeviceConfig(ref _PBSLmtN, FileName);
+            SaveDeviceConfig(ref _PBMtrOn, FileName);
+            SaveDeviceConfig(ref _PBAlmClr, FileName);
+            SaveDeviceConfig(ref _PBSensDisp, FileName);
+            SaveDeviceConfig(ref _PBSensFill, FileName);
+
             SaveDeviceConfig(ref _BtnStart, FileName);
             SaveDeviceConfig(ref _BtnStop, FileName);
             SaveDeviceConfig(ref _DispARdy, FileName);
@@ -440,6 +625,7 @@ namespace NDispWin
             SaveDeviceConfig(ref _SvFPress1, FileName);
             SaveDeviceConfig(ref _SvFPress2, FileName);
             SaveDeviceConfig(ref _SvFVac1, FileName);
+            SaveDeviceConfig(ref _SvFVac2, FileName);
             SaveDeviceConfig(ref _SvPortA1, FileName);
             SaveDeviceConfig(ref _SvPortB1, FileName);
             SaveDeviceConfig(ref _SvPortC1, FileName);
@@ -507,6 +693,8 @@ namespace NDispWin
             LoadDeviceConfig(ref GY2Axis, FileName);
             LoadDeviceConfig(ref GZ2Axis, FileName);
             LoadDeviceConfig(ref SZAxis, FileName);
+            LoadDeviceConfig(ref PAAxis, FileName);
+            LoadDeviceConfig(ref PBAxis, FileName);
             #endregion
             #region IO
             LoadDeviceConfig(ref _SensGXHome, FileName);
@@ -609,6 +797,24 @@ namespace NDispWin
             LoadDeviceConfig(ref _RYMtrOn, FileName);
             LoadDeviceConfig(ref _RYAlmClr, FileName);
 
+            LoadDeviceConfig(ref _PASensHome, FileName);
+            LoadDeviceConfig(ref _PAAlm, FileName);
+            LoadDeviceConfig(ref _PASLmtP, FileName);
+            LoadDeviceConfig(ref _PASLmtN, FileName);
+            LoadDeviceConfig(ref _PAMtrOn, FileName);
+            LoadDeviceConfig(ref _PAAlmClr, FileName);
+            LoadDeviceConfig(ref _PASensDisp, FileName);
+            LoadDeviceConfig(ref _PASensFill, FileName);
+
+            LoadDeviceConfig(ref _PBSensHome, FileName);
+            LoadDeviceConfig(ref _PBAlm, FileName);
+            LoadDeviceConfig(ref _PBSLmtP, FileName);
+            LoadDeviceConfig(ref _PBSLmtN, FileName);
+            LoadDeviceConfig(ref _PBMtrOn, FileName);
+            LoadDeviceConfig(ref _PBAlmClr, FileName);
+            LoadDeviceConfig(ref _PBSensDisp, FileName);
+            LoadDeviceConfig(ref _PBSensFill, FileName);
+
             LoadDeviceConfig(ref _BtnStart, FileName);
             LoadDeviceConfig(ref _BtnStop, FileName);
             LoadDeviceConfig(ref _DispARdy, FileName);
@@ -626,6 +832,7 @@ namespace NDispWin
             LoadDeviceConfig(ref _SvFPress1, FileName);
             LoadDeviceConfig(ref _SvFPress2, FileName);
             LoadDeviceConfig(ref _SvFVac1, FileName);
+            LoadDeviceConfig(ref _SvFVac2, FileName);
             LoadDeviceConfig(ref _SvPortA1, FileName);
             LoadDeviceConfig(ref _SvPortB1, FileName);
             LoadDeviceConfig(ref _SvPortC1, FileName);
@@ -1253,13 +1460,14 @@ namespace NDispWin
             if (Axis.Name == "GZ4") return MotorAlarm(Axis, ref _GZ4Alm, Prompt);
             if (Axis.Name == "RX") return MotorAlarm(Axis, ref _RXAlm, Prompt);
             if (Axis.Name == "RY") return MotorAlarm(Axis, ref _RYAlm, Prompt);
+            if (Axis.Name == "PA") return MotorAlarm(Axis, ref _PAAlm, Prompt);
+            if (Axis.Name == "PB") return MotorAlarm(Axis, ref _PBAlm, Prompt);
             return true;
         }
         internal static bool MotorAlarmPrompt(CControl2.TAxis Axis)
         {
             return MotorAlarm(Axis, true);
         }
-
 
         internal static bool AxisErrorPrompt(CControl2.TAxis Axis)
         {
@@ -1337,6 +1545,8 @@ namespace NDispWin
                 case "GZ4": return MotorOnOff(Axis, ref _GZ4MtrOn, On);
                 case "RX": return MotorOnOff(Axis, ref _RXMtrOn, On);
                 case "RY": return MotorOnOff(Axis, ref _RYMtrOn, On);
+                case "PA": return MotorOnOff(Axis, ref _PAMtrOn, On);
+                case "PB": return MotorOnOff(Axis, ref _PBMtrOn, On);
             }
         }
 
@@ -1362,6 +1572,8 @@ namespace NDispWin
                 case "GZ4": return AlmClear(ref _GZ4AlmClr, On);
                 case "RX": return AlmClear(ref _RXAlmClr, On);
                 case "RY": return AlmClear(ref _RYAlmClr, On);
+                case "PA": return AlmClear(ref _PAAlmClr, On);
+                case "PB": return AlmClear(ref _PBAlmClr, On);
             }
         }
         #endregion
@@ -1592,6 +1804,29 @@ namespace NDispWin
         public static void GYPos(double Pos)
         {
             CommonControl.SetLPos(GYAxis, Pos);
+        }
+
+        public static double PAPos
+        {
+            get
+            {
+                return LogicalPos(PAAxis);
+            }
+            set
+            {
+                CommonControl.SetLPos(PAAxis, value);
+            }
+        }
+        public static double PBPos
+        {
+            get
+            {
+                return LogicalPos(PBAxis);
+            }
+            set
+            {
+                CommonControl.SetLPos(PBAxis, value);
+            }
         }
         #endregion
 
@@ -2212,9 +2447,18 @@ namespace NDispWin
                         bool b_HeadA = true;
                         bool b_HeadB = (DispProg.Head_Operation == TaskDisp.EHeadOperation.Sync);
 
-                        if (!TaskDisp.DoInitPP(b_HeadA, b_HeadB)) goto _Error;
-                        Thread.Sleep(50);
-                        if (!TaskDisp.CtrlWaitReady(b_HeadA, b_HeadB)) goto _Error;
+
+                        switch (GDefine.DispCtrlType[0])
+                        {
+                            case GDefine.EDispCtrlType.HPC3:
+                                TFPump.PP4.Init(new bool[] { b_HeadA, b_HeadB });
+                                break;
+                            default:
+                                if (!TaskDisp.DoInitPP(b_HeadA, b_HeadB)) goto _Error;
+                                Thread.Sleep(50);
+                                if (!TaskDisp.CtrlWaitReady(b_HeadA, b_HeadB)) goto _Error;
+                                break;
+                        }
                     }
                 }
             }
@@ -2397,6 +2641,34 @@ namespace NDispWin
                 Msg MsgBox = new Msg();
                 //MsgBox.Show((int)EErrCode.GANTRY_MOVE_LINE_ABS2_ERR, Ex.Message);
                 MsgBox.Show(Messages.GANTRY_MOVE_LINE_ABS2_ERR, Ex.Message);
+                return false;
+            }
+            return true;
+        }
+        internal static bool MoveLineRel(CControl2.TAxis Axis1, CControl2.TAxis Axis2, double Pos1, double Pos2)
+        {
+            string EMsg = "MovePtp";
+            DispProg.Idle.Reset();
+
+            if (GDefine.SysOffline) { return true; }
+
+            if (MotorAlarmPrompt(Axis1)) return false;
+            if (MotorAlarmPrompt(Axis2)) return false;
+            if (AxisErrorPrompt(Axis1)) return false;
+            if (AxisErrorPrompt(Axis2)) return false;
+
+            try
+            {
+                CommonControl.MoveLineRel2(Axis1, Axis2, Pos1, Pos2);
+            }
+            catch (Exception Ex)
+            {
+                GDefine.Status = EStatus.ErrorInit;
+
+                EMsg = EMsg + (char)13 + Ex.Message.ToString();
+                Msg MsgBox = new Msg();
+                //MsgBox.Show((int)EErrCode.GANTRY_MOVE_LINE_ABS2_ERR, Ex.Message);
+                MsgBox.Show(Messages.GANTRY_MOVE_LINE_REL2_ERR, Ex.Message);
                 return false;
             }
             return true;
@@ -3771,6 +4043,24 @@ namespace NDispWin
                 return _SvFVac1.Status;
             }        
         }
+        public static bool BVac2
+        {
+            set
+            {
+                try
+                {
+                    if (value)
+                        CommonControl.SetDO(ref _SvFVac2, CControl2.EOutputStatus.Hi);
+                    else
+                        CommonControl.SetDO(ref _SvFVac2, CControl2.EOutputStatus.Lo);
+                }
+                catch { }
+            }
+            get
+            {
+                return _SvFVac2.Status;
+            }
+        }
         public static bool DispPortA1
         {
             set
@@ -4047,7 +4337,6 @@ namespace NDispWin
                 return _TlBzr.Status;
             }
         }
-
 
         public static bool NICamSigOK
         {

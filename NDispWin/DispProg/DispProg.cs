@@ -454,7 +454,7 @@ namespace NDispWin
             /* Parameters
             ID              nil
             IPara[0..9]     [ModelNo, .1., Disp, VHType, UseWeight, Reverse, .6., .7., .8., .9.]
-            DPara[0..9]     [LeadLen, LagLen, .2., .3., .4., .5., .6., .7., .8., .9.]
+            DPara[0..9]     [LeadLen, LagLen, RelLeadHeight, RelLagHeight, AddLineTime, .5., StartOfst, EndOfst, .8., .9.]
             DPara[10..19]   [CutTailLength, Speed, Height, Type, ..]
             DPara[20..29]   [FirstLineMass, LineMass, LastLineMass, ..]
             X[0..99]        [XStart, ..]
@@ -1498,9 +1498,40 @@ namespace NDispWin
                 WriteSubEntry(writer, "DispOffsetTol", PP_Head_DispOffsetTol);
                 WriteSubEntry(writer, "DispAdjustReso", PP_Head_DispAdjustReso);
 
+                WriteSubEntry(writer, "DispSpeed", TFPump.PP4.DispSpeed);
+                WriteSubEntry(writer, "DispAD", TFPump.PP4.DispAD);
+                WriteSubEntry(writer, "BSuckSpeed", TFPump.PP4.BSuckSpeed);
+                WriteSubEntry(writer, "BSuckAD", TFPump.PP4.BSuckAD);
+
+                WriteSubEntry(writer, "VelL", TFPump.PP4.VelL);
+                WriteSubEntry(writer, "AccDec", TFPump.PP4.AccDec);
+                WriteSubEntry(writer, "InitSpeed", TFPump.PP4.InitSpeed);
+                WriteSubEntry(writer, "CleanSpeed", TFPump.PP4.CleanSpeed);
+                WriteSubEntry(writer, "FillSpeed", TFPump.PP4.FillSpeed);
+                WriteSubEntry(writer, "AfFillSpeed", TFPump.PP4.AfFillSpeed);
+
+                WriteSubEntry(writer, "PistonDiameter", TFPump.PP4.PistonDiameter);
+        WriteSubEntry(writer, "PistonStroke", TFPump.PP4.PistonStroke);
+                WriteSubEntry(writer, "RemoveAirPos", TFPump.PP4.RemoveAirPos);
+                WriteSubEntry(writer, "RemoveAirPress", TFPump.PP4.RemoveAirPress);
+                WriteSubEntry(writer, "AfFillDist", TFPump.PP4.AfFillDist);
+
+                WriteSubEntry(writer, "ProcessAmount", TFPump.PP4.ProcessAmount);
+                WriteSubEntry(writer, "ProcessTimeOut", TFPump.PP4.ProcessTimeOut);
+
+                WriteSubEntry(writer, "MoveDelay", TFPump.PP4.MoveDelay);
+                WriteSubEntry(writer, "PressOnDelay", TFPump.PP4.PressOnDelay);
+                WriteSubEntry(writer, "PressOffDelay", TFPump.PP4.PressOffDelay);
+                WriteSubEntry(writer, "VacDuration", TFPump.PP4.VacDuration);
+                WriteSubEntry(writer, "RotaryDelay", TFPump.PP4.RotaryDelay);
+
+                WriteSubEntry(writer, "RemoveAirTime", TFPump.PP4.RemoveAirTime);
+                WriteSubEntry(writer, "RemoveBubbleTime", TFPump.PP4.RemoveBubbleTime);
+                WriteSubEntry(writer, "CleanFillCount", TFPump.PP4.CleanFillCount);
+                WriteSubEntry(writer, "ShotCount", TFPump.PP4.ShotCount);
+
                 writer.WriteEndElement();//end entry
                 #endregion
-
 
                 #region section = Options
                 writer.WriteStartElement("entry");
@@ -2030,6 +2061,33 @@ namespace NDispWin
                                                         case "DispAdjustReso":
                                                             PP_Head_DispAdjustReso = ReadSubEntry(reader, 0.001);
                                                             break;
+
+                                                        case "DispSpeed": TFPump.PP4.DispSpeed = ReadSubEntry(reader, (double)1); break;
+                                                        case "DispAD": TFPump.PP4.DispAD = ReadSubEntry(reader, (double)100); break;
+                                                        case "BSuckSpeed": TFPump.PP4.BSuckSpeed = ReadSubEntry(reader, (double)1); break;
+                                                        case "BSuckAD": TFPump.PP4.BSuckAD = ReadSubEntry(reader, (double)100); break;
+                                                        case "VelL": TFPump.PP4.VelL = ReadSubEntry(reader, (double)0.1); break;
+                                                        case "AccDec": TFPump.PP4.AccDec = ReadSubEntry(reader, (double)100); break;
+                                                        case "InitSpeed": TFPump.PP4.InitSpeed = ReadSubEntry(reader, (double)2.5); break;
+                                                        case "CleanSpeed": TFPump.PP4.CleanSpeed = ReadSubEntry(reader, (double)5); break;
+                                                        case "FillSpeed": TFPump.PP4.FillSpeed = ReadSubEntry(reader, (double)2.5); break;
+                                                        case "AfFillSpeed": TFPump.PP4.AfFillSpeed = ReadSubEntry(reader, (double)2.5); break;
+                                                        case "PistonDiameter": TFPump.PP4.PistonDiameter = ReadSubEntry(reader, (double)4); break;
+                                                        case "PistonStroke": TFPump.PP4.PistonStroke = ReadSubEntry(reader, (double)42); break;
+                                                        case "RemoveAirPos": TFPump.PP4.RemoveAirPos = ReadSubEntry(reader, (double)5); break;
+                                                        case "RemoveAirPress": TFPump.PP4.RemoveAirPress = ReadSubEntry(reader, (double)0.1); break;
+                                                        case "AfFillDist": TFPump.PP4.AfFillDist = ReadSubEntry(reader, (double)5); break;
+                                                        case "ProcessAmount": TFPump.PP4.ProcessAmount = ReadSubEntry(reader, (double)90); break;
+                                                        case "ProcessTimeOut": TFPump.PP4.ProcessTimeOut = ReadSubEntry(reader, (double)60); break;
+                                                        case "MoveDelay": TFPump.PP4.MoveDelay = ReadSubEntry(reader, 10); break;
+                                                        case "PressOnDelay": TFPump.PP4.PressOnDelay = ReadSubEntry(reader, 500); break;
+                                                        case "PressOffDelay": TFPump.PP4.PressOffDelay = ReadSubEntry(reader, 500); break;
+                                                        case "VacDuration": TFPump.PP4.VacDuration = ReadSubEntry(reader, 250); break;
+                                                        case "RotaryDelay": TFPump.PP4.RotaryDelay = ReadSubEntry(reader, 1000); break;
+                                                        case "RemoveAirTime": TFPump.PP4.RemoveAirTime = ReadSubEntry(reader, (double)1); break;
+                                                        case "RemoveBubbleTime": TFPump.PP4.RemoveBubbleTime = ReadSubEntry(reader, (double)1); break;
+                                                        case "CleanFillCount": TFPump.PP4.CleanFillCount = ReadSubEntry(reader, 1); break;
+                                                        case "ShotCount": TFPump.PP4.ShotCount = ReadSubEntry(reader, 1); break;
                                                     }
                                                 }
                                             }
@@ -10450,38 +10508,70 @@ namespace NDispWin
                                     switch (CmdList.Line[Line].Cmd)
                                     {
                                         case ECmd.PP_CLEANFILL:
-                                            if (!TaskDisp.TaskGotoTPos2(TaskDisp.Needle_Flush_Pos)) goto _Error;
-                                            if (!TaskDisp.DoCleanFill(true, rt_SyncHead2)) goto _Error;
-                                            if (!TaskDisp.CtrlWaitResponse(true, rt_SyncHead2)) goto _Error;
-                                            if (!TaskDisp.CtrlWaitReady(true, rt_SyncHead2)) goto _Error;
+                                            switch (GDefine.DispCtrlType[0])
+                                            {
+                                                case GDefine.EDispCtrlType.HPC3:
+                                                    if (!TaskDisp.TaskGotoTPos2(TaskDisp.Needle_Clean_Pos)) goto _Error;
+                                                    if (!TFPump.PP4.PCleanFill(new bool[] { true, rt_SyncHead2 })) goto _Error;
+                                                    break;
+                                                default:
+                                                    if (!TaskDisp.TaskGotoTPos2(TaskDisp.Needle_Flush_Pos)) goto _Error;
+                                                    if (!TaskDisp.DoCleanFill(true, rt_SyncHead2)) goto _Error;
+                                                    if (!TaskDisp.CtrlWaitResponse(true, rt_SyncHead2)) goto _Error;
+                                                    if (!TaskDisp.CtrlWaitReady(true, rt_SyncHead2)) goto _Error;
+                                                    break;
+                                            }
                                             break;
                                         case ECmd.PP_FILL:
-                                            if (!TaskDisp.TaskGotoTPos2(TaskDisp.Needle_Clean_Pos)) goto _Error;
-                                            if (!TaskDisp.DoFill(true, rt_SyncHead2)) goto _Error;
-                                            Thread.Sleep(50);
-                                            if (!TaskDisp.CtrlWaitResponse(true, rt_SyncHead2)) goto _Error;
-                                            if (!TaskDisp.CtrlWaitReady(true, rt_SyncHead2)) goto _Error;
+                                            switch (GDefine.DispCtrlType[0])
+                                            {
+                                                case GDefine.EDispCtrlType.HPC3:
+                                                    if (!TaskDisp.TaskGotoTPos2(TaskDisp.Needle_Clean_Pos)) goto _Error;
+                                                    if (!TFPump.PP4.PFill(new bool[] { true, rt_SyncHead2 } )) goto _Error;
+                                                    break;
+                                                default:
+                                                    if (!TaskDisp.TaskGotoTPos2(TaskDisp.Needle_Clean_Pos)) goto _Error;
+                                                    if (!TaskDisp.DoFill(true, rt_SyncHead2)) goto _Error;
+                                                    Thread.Sleep(50);
+                                                    if (!TaskDisp.CtrlWaitResponse(true, rt_SyncHead2)) goto _Error;
+                                                    if (!TaskDisp.CtrlWaitReady(true, rt_SyncHead2)) goto _Error;
+                                                    break;
+                                            }
                                             break;
                                         case ECmd.PP_RECYCLE_B:
                                             {
-                                                if (!TaskDisp.TaskGotoTPos2(TaskDisp.Needle_Clean_Pos)) goto _Error;
-                                                int Count = ActiveLine.IPara[2];
-                                                TaskDisp.ERecycleMethod Method = (TaskDisp.ERecycleMethod)ActiveLine.IPara[3];
-                                                for (int i = 0; i < Count; i++)
+                                                switch (GDefine.DispCtrlType[0])
                                                 {
-                                                    if (!TaskDisp.RecycleBarrel(true, rt_SyncHead2, Method)) goto _Error;
-                                                    if (!TaskDisp.CtrlWaitResponse(true, rt_SyncHead2)) goto _Error;
-                                                    if (!TaskDisp.CtrlWaitReady(true, rt_SyncHead2)) goto _Error;
+                                                    case GDefine.EDispCtrlType.HPC3:
+                                                        break;
+                                                    default:
+                                                        if (!TaskDisp.TaskGotoTPos2(TaskDisp.Needle_Clean_Pos)) goto _Error;
+                                                        int Count = ActiveLine.IPara[2];
+                                                        TaskDisp.ERecycleMethod Method = (TaskDisp.ERecycleMethod)ActiveLine.IPara[3];
+                                                        for (int i = 0; i < Count; i++)
+                                                        {
+                                                            if (!TaskDisp.RecycleBarrel(true, rt_SyncHead2, Method)) goto _Error;
+                                                            if (!TaskDisp.CtrlWaitResponse(true, rt_SyncHead2)) goto _Error;
+                                                            if (!TaskDisp.CtrlWaitReady(true, rt_SyncHead2)) goto _Error;
+                                                        }
+                                                        break;
                                                 }
                                                 break;
                                             }
                                         case ECmd.PP_RECYCLE_N:
                                             {
-                                                if (!TaskDisp.TaskGotoTPos2(TaskDisp.Needle_Clean_Pos)) goto _Error;
-                                                int Count = ActiveLine.IPara[2];
-                                                if (!TaskDisp.RecycleNeedle(true, rt_SyncHead2, Count)) goto _Error;
-                                                if (!TaskDisp.CtrlWaitResponse(true, rt_SyncHead2)) goto _Error;
-                                                if (!TaskDisp.CtrlWaitReady(true, rt_SyncHead2)) goto _Error;
+                                                switch (GDefine.DispCtrlType[0])
+                                                {
+                                                    case GDefine.EDispCtrlType.HPC3:
+                                                        break;
+                                                    default:
+                                                        if (!TaskDisp.TaskGotoTPos2(TaskDisp.Needle_Clean_Pos)) goto _Error;
+                                                        int Count = ActiveLine.IPara[2];
+                                                        if (!TaskDisp.RecycleNeedle(true, rt_SyncHead2, Count)) goto _Error;
+                                                        if (!TaskDisp.CtrlWaitResponse(true, rt_SyncHead2)) goto _Error;
+                                                        if (!TaskDisp.CtrlWaitReady(true, rt_SyncHead2)) goto _Error;
+                                                        break;
+                                                }
                                                 break;
                                             }
                                     }
@@ -11496,7 +11586,10 @@ namespace NDispWin
                         {
                             if (rt_MeniscusDatas.Count > 0) rt_MeniscusDatas.SaveLmds(rt_Read_IDs[0, 0]);
                         }
-
+                        if (TaskDisp.Preference == TaskDisp.EPreference.Osram)
+                        {
+                            if (rt_MeniscusDatas.Count > 0) rt_MeniscusDatas.SaveOsram(rt_Read_IDs[0, 0]);
+                        }
 
                         BdReady = true;
                         Define_Run.UpdateProcessStatus_BdReady();  
@@ -25775,7 +25868,7 @@ namespace NDispWin
                         if (DispProg.Stats.Board.DispCount[0] > 0 && DispProg.Stats.Board.DispCount[0] % Count == 0) return true;
                         break;
                     case EDispProgCondExec.PPFilling:
-                        return TaskDisp.IsFilling();
+                        return TaskDisp.IsFilling() || (TFPump.PP4.FillState[0] > TFPump.PP4.EFillState.None || TFPump.PP4.FillState[1] > TFPump.PP4.EFillState.None);
                     case EDispProgCondExec.Disp_Counter:
                         if (DispProg.Stats.Board.DispCounter >= Count)
                         {

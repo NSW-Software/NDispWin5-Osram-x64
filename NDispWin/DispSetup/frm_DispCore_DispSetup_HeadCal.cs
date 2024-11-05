@@ -32,19 +32,13 @@ namespace NDispWin
 
         private void UpdateDisplay()
         {
-            lbl_CamCalPos_Setup.Text = TaskDisp.Camera_Cal_Pos_Setup.X.ToString("F3") + ", " + TaskDisp.Camera_Cal_Pos_Setup.Y.ToString("F3");
             lbl_CamCalPos.Text = TaskDisp.Camera_Cal_Pos.X.ToString("F3") + ", " + TaskDisp.Camera_Cal_Pos.Y.ToString("F3");
-            lbl_CamCalPos_Tol.Text = TaskDisp.Camera_Cal_Pos_Tol.ToString("F3");
-
-            lbl_BCamCalPos_Setup.Text = TaskDisp.BCamera_Cal_Pos_Setup.X.ToString("F3") + ", " + TaskDisp.BCamera_Cal_Pos_Setup.Y.ToString("F3");
             lbl_BCamCalPos.Text = TaskDisp.BCamera_Cal_Pos.X.ToString("F3") + ", " + TaskDisp.BCamera_Cal_Pos.Y.ToString("F3");
-            lbl_BCamCalPos_Tol.Text = TaskDisp.Camera_Cal_Pos_Tol.ToString("F3");
 
             //lbl_Head1OffsetXY_Setup.Text = TaskDisp.Head_Ofst_Setup[0].X.ToString("F3") + ", " + TaskDisp.Head_Ofst_Setup[0].Y.ToString("F3");
             //lbl_Head1OffsetZ_Setup.Text = TaskDisp.Head_Ofst_Setup[0].Z.ToString("F3");
             lbl_Head1OffsetXY.Text = TaskDisp.Head_Ofst[0].X.ToString("F3") + ", " + TaskDisp.Head_Ofst[0].Y.ToString("F3");
             lbl_Head1OffsetZ.Text = TaskDisp.Head_Ofst[0].Z.ToString("F3");
-            lbl_Head1OffsetXY_Tol.Text = TaskDisp.Head_Ofst_XY_Tol.ToString("F3");
 
             //lbl_Head2OffsetXY_Setup.Text = TaskDisp.Head_Ofst_Setup[1].X.ToString("F3") + ", " + TaskDisp.Head_Ofst_Setup[1].Y.ToString("F3");
             //lbl_Head2OffsetZ_Setup.Text = TaskDisp.Head_Ofst_Setup[1].Z.ToString("F3");
@@ -63,9 +57,7 @@ namespace NDispWin
             lbl_HeadZSensRefZ_Tol.Text = TaskDisp.Head_ZSensor_RefPosZ_Tol.ToString("F3");
 
             lbl_LaserOfst.Text = TaskDisp.Laser_Ofst.X.ToString("F3") + ", " + TaskDisp.Laser_Ofst.Y.ToString("F3");
-            lbl_LaserOfst_Setup.Text = TaskDisp.Laser_Ofst_Setup.X.ToString("F3") + ", " + TaskDisp.Laser_Ofst_Setup.Y.ToString("F3");
-            lbl_LaserOfst_Tol.Text = TaskDisp.Laser_Ofst_XY_Tol.ToString("F3");
-            
+          
             lbl_LaserRefZ.Text = TaskDisp.Laser_RefPosZ.ToString("F3");
 
             pnl_Head2.Visible = (GDefine.GantryConfig == GDefine.EGantryConfig.XY_ZX2Y2_Z2);
@@ -109,11 +101,6 @@ namespace NDispWin
             UpdateDisplay();
         }
 
-        private void lbl_CamCalPos_Tol_Click(object sender, EventArgs e)
-        {
-            UC.AdjustExec("Disp Setup, Camera Cal Pos Tolerance (mm)", ref TaskDisp.Camera_Cal_Pos_Tol, 0, 1000);
-        }
-
         private void lbl_Head1OffsetXY_Tol_Click(object sender, EventArgs e)
         {
             UC.AdjustExec("Disp Setup, Head Offset XY Tolerance (mm)", ref TaskDisp.Head_Ofst_XY_Tol, 0, 1000);
@@ -145,11 +132,6 @@ namespace NDispWin
         private void lbl_ZSensorRefZ_Tol_Click(object sender, EventArgs e)
         {
             UC.AdjustExec("Disp Setup, ZSensor Ref Z Tol (mm)", ref TaskDisp.Head_ZSensor_RefPosZ_Tol, 0, 5000);
-        }
-
-        private void lbl_LaserOfset_Tol_Click(object sender, EventArgs e)
-        {
-            UC.AdjustExec("Disp Setup, Laser Offset Tol (mm)", ref TaskDisp.Laser_Ofst_XY_Tol, 0, 5000);
         }
 
         private void lbl_Head2DefDistX_Click(object sender, EventArgs e)
