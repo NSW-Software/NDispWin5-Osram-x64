@@ -418,6 +418,17 @@ namespace NDispWin
         {
             TaskGantry.BVac2 = !TaskGantry.BVac2;
         }
+        private void lbl_SvVac1Info_Click(object sender, EventArgs e)
+        {
+            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._SvFVac1);
+            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._SvFVac1 = frm.Output;
+        }
+        private void lbl_SvVac2Info_Click(object sender, EventArgs e)
+        {
+            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._SvFVac2);
+            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._SvFVac2 = frm.Output;
+        }
+
         private void btn_SvPortA1_Click(object sender, EventArgs e)
         {
             TaskGantry.DispPortA1 = !TaskGantry.DispPortA1;
@@ -429,11 +440,6 @@ namespace NDispWin
         private void btn_SvPortC1_Click(object sender, EventArgs e)
         {
             TaskGantry.DispPortC1 = !TaskGantry.DispPortC1;
-        }
-        private void lbl_SvVac1Info_Click(object sender, EventArgs e)
-        {
-            frmDeviceIOConfigEditor frm = new frmDeviceIOConfigEditor(TaskGantry._SvFVac1);
-            if (frm.ShowDialog() == DialogResult.OK) TaskGantry._SvFVac1 = frm.Output;
         }
         private void lbl_SvPortA1Info_Click(object sender, EventArgs e)
         {
@@ -757,6 +763,5 @@ namespace NDispWin
         {
             TaskGantry.PBSvRotDisp = !TaskGantry.PBSvRotDisp;
         }
-
     }
 }

@@ -49,6 +49,10 @@ namespace NDispWin
             this.btnFill = new System.Windows.Forms.Button();
             this.btnInit = new System.Windows.Forms.Button();
             this.gbxAmount = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.lblHBBSuckAmount = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.lblHBDispAmount = new System.Windows.Forms.Label();
             this.label30 = new System.Windows.Forms.Label();
             this.lblHABSuckAmount = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
@@ -115,10 +119,6 @@ namespace NDispWin
             this.btnPBSvVac = new System.Windows.Forms.Button();
             this.btnPASvVac = new System.Windows.Forms.Button();
             this.tmr100ms = new System.Windows.Forms.Timer(this.components);
-            this.label1 = new System.Windows.Forms.Label();
-            this.lblHBBSuckAmount = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.lblHBDispAmount = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tpOperation.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -361,6 +361,48 @@ namespace NDispWin
             this.gbxAmount.TabIndex = 98;
             this.gbxAmount.TabStop = false;
             this.gbxAmount.Text = "Pump A / Pump B";
+            // 
+            // label1
+            // 
+            this.label1.Location = new System.Drawing.Point(222, 21);
+            this.label1.Margin = new System.Windows.Forms.Padding(3);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(100, 23);
+            this.label1.TabIndex = 97;
+            this.label1.Text = "Disp Amount";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblHBBSuckAmount
+            // 
+            this.lblHBBSuckAmount.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.lblHBBSuckAmount.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblHBBSuckAmount.Location = new System.Drawing.Point(328, 50);
+            this.lblHBBSuckAmount.Margin = new System.Windows.Forms.Padding(3);
+            this.lblHBBSuckAmount.Name = "lblHBBSuckAmount";
+            this.lblHBBSuckAmount.Size = new System.Drawing.Size(75, 23);
+            this.lblHBBSuckAmount.TabIndex = 100;
+            this.lblHBBSuckAmount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label3
+            // 
+            this.label3.Location = new System.Drawing.Point(222, 50);
+            this.label3.Margin = new System.Windows.Forms.Padding(3);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(100, 23);
+            this.label3.TabIndex = 98;
+            this.label3.Text = "BSuck Amount";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblHBDispAmount
+            // 
+            this.lblHBDispAmount.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.lblHBDispAmount.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblHBDispAmount.Location = new System.Drawing.Point(328, 21);
+            this.lblHBDispAmount.Margin = new System.Windows.Forms.Padding(3);
+            this.lblHBDispAmount.Name = "lblHBDispAmount";
+            this.lblHBDispAmount.Size = new System.Drawing.Size(75, 23);
+            this.lblHBDispAmount.TabIndex = 99;
+            this.lblHBDispAmount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label30
             // 
@@ -1152,48 +1194,6 @@ namespace NDispWin
             // 
             this.tmr100ms.Enabled = true;
             this.tmr100ms.Tick += new System.EventHandler(this.tmr100ms_Tick);
-            // 
-            // label1
-            // 
-            this.label1.Location = new System.Drawing.Point(222, 21);
-            this.label1.Margin = new System.Windows.Forms.Padding(3);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(100, 23);
-            this.label1.TabIndex = 97;
-            this.label1.Text = "Disp Amount";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblHBBSuckAmount
-            // 
-            this.lblHBBSuckAmount.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.lblHBBSuckAmount.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblHBBSuckAmount.Location = new System.Drawing.Point(328, 50);
-            this.lblHBBSuckAmount.Margin = new System.Windows.Forms.Padding(3);
-            this.lblHBBSuckAmount.Name = "lblHBBSuckAmount";
-            this.lblHBBSuckAmount.Size = new System.Drawing.Size(75, 23);
-            this.lblHBBSuckAmount.TabIndex = 100;
-            this.lblHBBSuckAmount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label3
-            // 
-            this.label3.Location = new System.Drawing.Point(222, 50);
-            this.label3.Margin = new System.Windows.Forms.Padding(3);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(100, 23);
-            this.label3.TabIndex = 98;
-            this.label3.Text = "BSuck Amount";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblHBDispAmount
-            // 
-            this.lblHBDispAmount.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.lblHBDispAmount.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblHBDispAmount.Location = new System.Drawing.Point(328, 21);
-            this.lblHBDispAmount.Margin = new System.Windows.Forms.Padding(3);
-            this.lblHBDispAmount.Name = "lblHBDispAmount";
-            this.lblHBDispAmount.Size = new System.Drawing.Size(75, 23);
-            this.lblHBDispAmount.TabIndex = 99;
-            this.lblHBDispAmount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // frmSetupPP_HPC3
             // 

@@ -63,6 +63,8 @@ namespace NDispWin
                     SetDllDirectory(@"C:\Program Files (x86)\Euresys\Open eVision 2.5\Bin64");
                 else
                     SetDllDirectory(@"C:\Program Files (x86)\Euresys\Open eVision 2.5\Bin32");
+
+                SetDllDirectory(@"C:\Program Files(x86)\FLIR Systems\Spinnaker\bin\vs2015");
             }
             else
             {
@@ -71,6 +73,8 @@ namespace NDispWin
                 SetDllDirectory(@"C:\Program Files\Point Grey Research\Spinnaker\bin\vs2015");
 
                 SetDllDirectory(@"C:\Program Files (x86)\Euresys\Open eVision 2.5\Bin32");
+
+                SetDllDirectory(@"C:\Program Files\FLIR Systems\Spinnaker\bin\vs2015");
             }
 
             GDefine.CreateDirs();

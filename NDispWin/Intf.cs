@@ -11,11 +11,6 @@ namespace NDispWin
 {
     public class Intf
     {
-        public static FileVersionInfo GetVersionInfo
-        {
-            get { return FileVersionInfo.GetVersionInfo(Application.StartupPath + "\\" + "DispCore.dll"); }
-        }
-
         #region initialization and environment setting
         struct FileVer
         {

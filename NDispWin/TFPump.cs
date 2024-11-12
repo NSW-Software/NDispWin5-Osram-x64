@@ -371,20 +371,18 @@ namespace NDispWin
                 double length = volume_ul / (Math.PI * Math.Pow(PistonDiameter / 2, 2));
                 return length;
             }
-            public static bool CheckStrokeThenFill(bool[] pumpSelect, ref bool isFilling)
+            public static bool CheckStrokeThenFill(bool[] pumpSelect)
             {
                 var dispDist1 = LengthConversion(DispAmounts[0]);
                 var dispDist2 = LengthConversion(DispAmounts[1]);
 
                 bool[] pumpSelectLocal = new bool[] { false, false };
-                if (pumpSelect[0] && (dispDist1 + Math.Abs(TaskGantry.PAPos)) > PistonStroke * (ProcessAmount/100)) pumpSelectLocal[0] = true;
+                if (pumpSelect[0] && (dispDist1 + Math.Abs(TaskGantry.PAPos)) > PistonStroke * (ProcessAmount / 100)) pumpSelectLocal[0] = true;
                 if (pumpSelect[1] && (dispDist2 + Math.Abs(TaskGantry.PBPos)) > PistonStroke * (ProcessAmount / 100)) pumpSelectLocal[1] = true;
-
-                isFilling = pumpSelectLocal[0] || pumpSelectLocal[1];
 
                 return PFill(pumpSelectLocal);
             }
-            public static bool[] CheckStrokeToFill(bool[] pumpSelect)//Return to fill flag
+            public static bool[] CheckStrokeToFill(bool[] pumpSelect)//Return ToFill flag
             {
                 var dispDist1 = LengthConversion(DispAmounts[0]);
                 var dispDist2 = LengthConversion(DispAmounts[1]);
@@ -394,6 +392,13 @@ namespace NDispWin
                 if (pumpSelect[1] && (dispDist2 + Math.Abs(TaskGantry.PBPos)) > PistonStroke * (ProcessAmount / 100)) pumpSelectLocal[1] = true;
 
                 return pumpSelectLocal;
+            }
+            public static bool IsFilled(bool[] pumpSelect)
+            {
+                bool f1 = pumpSelect[0] && FillState[0] > EFillState.None;
+                bool f2 = pumpSelect[1] && FillState[1] > EFillState.None;
+
+                return f1 || f2;
             }
 
             public static bool SingleShot(bool[] pumpSelect)

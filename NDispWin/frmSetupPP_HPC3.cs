@@ -15,6 +15,13 @@ namespace NDispWin
         public frmSetupPP_HPC3()
         {
             InitializeComponent();
+
+            Text = "SetupPP_HPC3";
+        }
+
+        private void frmSetupPP_HPC3_Load(object sender, EventArgs e)
+        {
+            UpdateDisplay();
         }
 
         public void ToolsOnly()
@@ -75,7 +82,7 @@ namespace NDispWin
             #endregion
         }
 
-        bool[] pumpSelect = new bool[] {false, false };
+        bool[] pumpSelect = new bool[] {true, false };
 
         private void lblHADispAmount_Click(object sender, EventArgs e)
         {
@@ -187,7 +194,7 @@ namespace NDispWin
                 await Task.Run(() =>
                 {
                     bool isFilling = false;
-                    TFPump.PP4.CheckStrokeThenFill(pumpSelect, ref isFilling);
+                    TFPump.PP4.CheckStrokeThenFill(pumpSelect);
                     TFPump.PP4.SingleShot(pumpSelect);
                 });
                 if (CancelShot) break;
@@ -364,6 +371,7 @@ namespace NDispWin
             lblPASensDisp.BackColor = TaskGantry.PASensDisp ? Color.Lime : Color.LightGray;
             lblPASensFill.BackColor = TaskGantry.PASensFill ? Color.Lime : Color.LightGray;
             btnPASvFPress.BackColor = TaskGantry.BPress1 ? Color.Red : Color.LightGray;
+            btnPASvVac.BackColor = TaskGantry.BVac1 ? Color.Red : Color.LightGray;
             btnPASvRotDisp.BackColor = TaskGantry.PASvRotDisp ? Color.Red : Color.LightGray;
             btnPASvRotFill.BackColor = TaskGantry.PASvRotFill ? Color.Red : Color.LightGray;
 
@@ -371,6 +379,7 @@ namespace NDispWin
             lblPBSensDisp.BackColor = TaskGantry.PBSensDisp ? Color.Lime : Color.LightGray;
             lblPBSensFill.BackColor = TaskGantry.PBSensFill ? Color.Lime : Color.LightGray;
             btnPBSvFPress.BackColor = TaskGantry.BPress2 ?  Color.Red : Color.LightGray;
+            btnPBSvVac.BackColor = TaskGantry.BVac2 ? Color.Red : Color.LightGray;
             btnPBSvRotDisp.BackColor = TaskGantry.PBSvRotDisp ? Color.Red : Color.LightGray;
             btnPBSvRotFill.BackColor = TaskGantry.PBSvRotFill ? Color.Red : Color.LightGray;
         }
@@ -383,17 +392,14 @@ namespace NDispWin
         {
             TaskGantry.BPress1 = !TaskGantry.BPress1;
         }
-
         private void btnPASvVac_Click(object sender, EventArgs e)
         {
             TaskGantry.BVac1 = !TaskGantry.BVac1;
         }
-
         private void btnPASvRotDisp_Click(object sender, EventArgs e)
         {
             TaskGantry.PASvRotDisp = !TaskGantry.PASvRotDisp;
         }
-
         private void btnPASvRotFill_Click(object sender, EventArgs e)
         {
             TaskGantry.PASvRotFill = !TaskGantry.PASvRotFill;
@@ -403,17 +409,14 @@ namespace NDispWin
         {
             TaskGantry.BPress2 = !TaskGantry.BPress2;
         }
-
         private void btnPBSvVac_Click(object sender, EventArgs e)
         {
             TaskGantry.BVac2 = !TaskGantry.BVac2;
         }
-
         private void btnPBSvRotDisp_Click(object sender, EventArgs e)
         {
             TaskGantry.PBSvRotDisp = !TaskGantry.PBSvRotDisp;
         }
-
         private void btnPBSvRotFill_Click(object sender, EventArgs e)
         {
             TaskGantry.PBSvRotFill = !TaskGantry.PBSvRotFill;
@@ -425,7 +428,6 @@ namespace NDispWin
             pumpSelect[1] = false;
             UpdateDisplay();
         }
-
         private void btn_HeadB_Click(object sender, EventArgs e)
         {
             pumpSelect[0] = false;
@@ -436,11 +438,6 @@ namespace NDispWin
         {
             pumpSelect[0] = true;
             pumpSelect[1] = true;
-            UpdateDisplay();
-        }
-
-        private void frmSetupPP_HPC3_Load(object sender, EventArgs e)
-        {
             UpdateDisplay();
         }
     }

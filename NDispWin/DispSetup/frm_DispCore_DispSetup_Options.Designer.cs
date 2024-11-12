@@ -33,19 +33,18 @@
             this.lblOption_DrawOfstAdjustRate = new System.Windows.Forms.Label();
             this.lbl_XYShortDist = new System.Windows.Forms.Label();
             this.cbox_EnableDualMaterial = new System.Windows.Forms.CheckBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.lbl_OriginAdjustLimitXY = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.lbl_XYPeakSpeedRatio = new System.Windows.Forms.Label();
             this.cbox_EnableMaterialLow = new System.Windows.Forms.CheckBox();
-            this.label8 = new System.Windows.Forms.Label();
+            this.lbl_XYPeakSpeedRatio = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
             this.cbox_EnableChuckVac = new System.Windows.Forms.CheckBox();
             this.lbl_OriginAdjustLimitZ = new System.Windows.Forms.Label();
             this.cbox_EnableRunSingleHead = new System.Windows.Forms.CheckBox();
             this.label13 = new System.Windows.Forms.Label();
             this.cbox_PromptRunSingleHead = new System.Windows.Forms.CheckBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.cbox_EnableDrawOfstAdjust = new System.Windows.Forms.CheckBox();
             this.label5 = new System.Windows.Forms.Label();
             this.lbl_IdlePurgeTimer = new System.Windows.Forms.Label();
@@ -63,6 +62,15 @@
             this.cbox_CopyLogToServer = new System.Windows.Forms.CheckBox();
             this.label18 = new System.Windows.Forms.Label();
             this.tbox_LogServerPath = new System.Windows.Forms.TextBox();
+            this.btn_Idle = new System.Windows.Forms.Button();
+            this.lbl_IdlePurgePostVacTime = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.lbl_IdlePurgeInterval = new System.Windows.Forms.Label();
+            this.lbl_IdlePurgeDuration = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.cbxIdlePosition = new System.Windows.Forms.ComboBox();
             this.gbox_Operation.SuspendLayout();
             this.Program.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -74,31 +82,39 @@
             // 
             this.gbox_Operation.AccessibleDescription = "Operation";
             this.gbox_Operation.AutoSize = true;
+            this.gbox_Operation.Controls.Add(this.label14);
+            this.gbox_Operation.Controls.Add(this.cbxIdlePosition);
+            this.gbox_Operation.Controls.Add(this.lbl_IdlePurgeTimer);
+            this.gbox_Operation.Controls.Add(this.lbl_IdlePurgePostVacTime);
+            this.gbox_Operation.Controls.Add(this.label10);
+            this.gbox_Operation.Controls.Add(this.label12);
+            this.gbox_Operation.Controls.Add(this.label17);
+            this.gbox_Operation.Controls.Add(this.lbl_IdlePurgeInterval);
+            this.gbox_Operation.Controls.Add(this.lbl_IdlePurgeDuration);
+            this.gbox_Operation.Controls.Add(this.btn_Idle);
             this.gbox_Operation.Controls.Add(this.label7);
             this.gbox_Operation.Controls.Add(this.lblOption_DrawOfstAdjustRate);
             this.gbox_Operation.Controls.Add(this.lbl_XYShortDist);
             this.gbox_Operation.Controls.Add(this.cbox_EnableDualMaterial);
+            this.gbox_Operation.Controls.Add(this.label8);
             this.gbox_Operation.Controls.Add(this.lbl_OriginAdjustLimitXY);
             this.gbox_Operation.Controls.Add(this.label11);
-            this.gbox_Operation.Controls.Add(this.label9);
-            this.gbox_Operation.Controls.Add(this.lbl_XYPeakSpeedRatio);
             this.gbox_Operation.Controls.Add(this.cbox_EnableMaterialLow);
-            this.gbox_Operation.Controls.Add(this.label8);
+            this.gbox_Operation.Controls.Add(this.lbl_XYPeakSpeedRatio);
             this.gbox_Operation.Controls.Add(this.label1);
+            this.gbox_Operation.Controls.Add(this.label9);
             this.gbox_Operation.Controls.Add(this.cbox_EnableChuckVac);
             this.gbox_Operation.Controls.Add(this.lbl_OriginAdjustLimitZ);
             this.gbox_Operation.Controls.Add(this.cbox_EnableRunSingleHead);
             this.gbox_Operation.Controls.Add(this.label13);
             this.gbox_Operation.Controls.Add(this.cbox_PromptRunSingleHead);
-            this.gbox_Operation.Controls.Add(this.label3);
             this.gbox_Operation.Controls.Add(this.cbox_EnableDrawOfstAdjust);
             this.gbox_Operation.Controls.Add(this.label5);
-            this.gbox_Operation.Controls.Add(this.lbl_IdlePurgeTimer);
             this.gbox_Operation.Controls.Add(this.cbox_EnableStartIdle);
             this.gbox_Operation.Dock = System.Windows.Forms.DockStyle.Top;
             this.gbox_Operation.Location = new System.Drawing.Point(3, 18);
             this.gbox_Operation.Name = "gbox_Operation";
-            this.gbox_Operation.Size = new System.Drawing.Size(588, 226);
+            this.gbox_Operation.Size = new System.Drawing.Size(588, 291);
             this.gbox_Operation.TabIndex = 0;
             this.gbox_Operation.TabStop = false;
             this.gbox_Operation.Text = "Operation";
@@ -131,7 +147,7 @@
             // 
             this.lbl_XYShortDist.BackColor = System.Drawing.SystemColors.Window;
             this.lbl_XYShortDist.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_XYShortDist.Location = new System.Drawing.Point(445, 183);
+            this.lbl_XYShortDist.Location = new System.Drawing.Point(447, 248);
             this.lbl_XYShortDist.Margin = new System.Windows.Forms.Padding(2);
             this.lbl_XYShortDist.Name = "lbl_XYShortDist";
             this.lbl_XYShortDist.Size = new System.Drawing.Size(75, 23);
@@ -153,6 +169,18 @@
             this.cbox_EnableDualMaterial.Visible = false;
             this.cbox_EnableDualMaterial.Click += new System.EventHandler(this.cbox_EnableDualMaterial_Click);
             // 
+            // label8
+            // 
+            this.label8.AccessibleDescription = "XY Short Dist Peak Speed Ratio, Dist";
+            this.label8.Location = new System.Drawing.Point(5, 248);
+            this.label8.Margin = new System.Windows.Forms.Padding(2);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(243, 23);
+            this.label8.TabIndex = 190;
+            this.label8.Text = "XY Short Dist Peak Speed Ratio, Dist";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label8.Click += new System.EventHandler(this.label8_Click);
+            // 
             // lbl_OriginAdjustLimitXY
             // 
             this.lbl_OriginAdjustLimitXY.BackColor = System.Drawing.SystemColors.Window;
@@ -169,37 +197,13 @@
             // label11
             // 
             this.label11.AccessibleDescription = "";
-            this.label11.Location = new System.Drawing.Point(394, 183);
+            this.label11.Location = new System.Drawing.Point(396, 248);
             this.label11.Margin = new System.Windows.Forms.Padding(2);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(47, 23);
             this.label11.TabIndex = 192;
             this.label11.Text = "(mm)";
             this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label9
-            // 
-            this.label9.AccessibleDescription = "";
-            this.label9.Location = new System.Drawing.Point(250, 183);
-            this.label9.Margin = new System.Windows.Forms.Padding(2);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(47, 23);
-            this.label9.TabIndex = 192;
-            this.label9.Text = "(0..1)";
-            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lbl_XYPeakSpeedRatio
-            // 
-            this.lbl_XYPeakSpeedRatio.BackColor = System.Drawing.SystemColors.Window;
-            this.lbl_XYPeakSpeedRatio.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_XYPeakSpeedRatio.Location = new System.Drawing.Point(301, 183);
-            this.lbl_XYPeakSpeedRatio.Margin = new System.Windows.Forms.Padding(2);
-            this.lbl_XYPeakSpeedRatio.Name = "lbl_XYPeakSpeedRatio";
-            this.lbl_XYPeakSpeedRatio.Size = new System.Drawing.Size(75, 23);
-            this.lbl_XYPeakSpeedRatio.TabIndex = 191;
-            this.lbl_XYPeakSpeedRatio.Text = "1";
-            this.lbl_XYPeakSpeedRatio.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.lbl_XYPeakSpeedRatio.Click += new System.EventHandler(this.lbl_XYPeakSpeedRatio_Click);
             // 
             // cbox_EnableMaterialLow
             // 
@@ -214,17 +218,18 @@
             this.cbox_EnableMaterialLow.Visible = false;
             this.cbox_EnableMaterialLow.Click += new System.EventHandler(this.cbox_EnableMaterialLow_Click);
             // 
-            // label8
+            // lbl_XYPeakSpeedRatio
             // 
-            this.label8.AccessibleDescription = "XY Short Dist Peak Speed Ratio, Dist";
-            this.label8.Location = new System.Drawing.Point(3, 183);
-            this.label8.Margin = new System.Windows.Forms.Padding(2);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(243, 23);
-            this.label8.TabIndex = 190;
-            this.label8.Text = "XY Short Dist Peak Speed Ratio, Dist";
-            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label8.Click += new System.EventHandler(this.label8_Click);
+            this.lbl_XYPeakSpeedRatio.BackColor = System.Drawing.SystemColors.Window;
+            this.lbl_XYPeakSpeedRatio.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lbl_XYPeakSpeedRatio.Location = new System.Drawing.Point(303, 248);
+            this.lbl_XYPeakSpeedRatio.Margin = new System.Windows.Forms.Padding(2);
+            this.lbl_XYPeakSpeedRatio.Name = "lbl_XYPeakSpeedRatio";
+            this.lbl_XYPeakSpeedRatio.Size = new System.Drawing.Size(75, 23);
+            this.lbl_XYPeakSpeedRatio.TabIndex = 191;
+            this.lbl_XYPeakSpeedRatio.Text = "1";
+            this.lbl_XYPeakSpeedRatio.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lbl_XYPeakSpeedRatio.Click += new System.EventHandler(this.lbl_XYPeakSpeedRatio_Click);
             // 
             // label1
             // 
@@ -236,6 +241,17 @@
             this.label1.TabIndex = 172;
             this.label1.Text = "Draw Ofst Adjust Limit";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label9
+            // 
+            this.label9.AccessibleDescription = "";
+            this.label9.Location = new System.Drawing.Point(252, 248);
+            this.label9.Margin = new System.Windows.Forms.Padding(2);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(47, 23);
+            this.label9.TabIndex = 192;
+            this.label9.Text = "(0..1)";
+            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // cbox_EnableChuckVac
             // 
@@ -296,17 +312,6 @@
             this.cbox_PromptRunSingleHead.UseVisualStyleBackColor = true;
             this.cbox_PromptRunSingleHead.Click += new System.EventHandler(this.cbox_PromptRunSingleHead_Click);
             // 
-            // label3
-            // 
-            this.label3.AccessibleDescription = "";
-            this.label3.Location = new System.Drawing.Point(378, 156);
-            this.label3.Margin = new System.Windows.Forms.Padding(2);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(63, 23);
-            this.label3.TabIndex = 188;
-            this.label3.Text = "(s)";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
             // cbox_EnableDrawOfstAdjust
             // 
             this.cbox_EnableDrawOfstAdjust.AccessibleDescription = "Enable Draw Ofst Adjust";
@@ -322,22 +327,22 @@
             // label5
             // 
             this.label5.AccessibleDescription = "Idle Purge Timer";
-            this.label5.Location = new System.Drawing.Point(264, 156);
+            this.label5.Location = new System.Drawing.Point(188, 154);
             this.label5.Margin = new System.Windows.Forms.Padding(2);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(125, 23);
+            this.label5.Size = new System.Drawing.Size(101, 23);
             this.label5.TabIndex = 186;
-            this.label5.Text = "Idle Purge Timer";
+            this.label5.Text = "Time To Idle (s)";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lbl_IdlePurgeTimer
             // 
             this.lbl_IdlePurgeTimer.BackColor = System.Drawing.SystemColors.Window;
             this.lbl_IdlePurgeTimer.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_IdlePurgeTimer.Location = new System.Drawing.Point(445, 156);
+            this.lbl_IdlePurgeTimer.Location = new System.Drawing.Point(293, 154);
             this.lbl_IdlePurgeTimer.Margin = new System.Windows.Forms.Padding(2);
             this.lbl_IdlePurgeTimer.Name = "lbl_IdlePurgeTimer";
-            this.lbl_IdlePurgeTimer.Size = new System.Drawing.Size(75, 23);
+            this.lbl_IdlePurgeTimer.Size = new System.Drawing.Size(40, 23);
             this.lbl_IdlePurgeTimer.TabIndex = 187;
             this.lbl_IdlePurgeTimer.Text = "3";
             this.lbl_IdlePurgeTimer.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -376,7 +381,7 @@
             this.Program.Controls.Add(this.cbox_EnableScriptCheckUnitMode);
             this.Program.Controls.Add(this.cbox_EnableScriptCheck);
             this.Program.Dock = System.Windows.Forms.DockStyle.Top;
-            this.Program.Location = new System.Drawing.Point(3, 244);
+            this.Program.Location = new System.Drawing.Point(3, 309);
             this.Program.Name = "Program";
             this.Program.Size = new System.Drawing.Size(588, 84);
             this.Program.TabIndex = 178;
@@ -451,7 +456,7 @@
             this.groupBox1.Controls.Add(this.lbl_Option_VolumeDisplayDecimalPlace);
             this.groupBox1.Controls.Add(this.cbox_EnableHPCManualCtrls);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox1.Location = new System.Drawing.Point(3, 328);
+            this.groupBox1.Location = new System.Drawing.Point(3, 393);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(588, 87);
             this.groupBox1.TabIndex = 193;
@@ -481,7 +486,7 @@
             this.groupBox3.Controls.Add(this.label18);
             this.groupBox3.Controls.Add(this.tbox_LogServerPath);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox3.Location = new System.Drawing.Point(3, 415);
+            this.groupBox3.Location = new System.Drawing.Point(3, 480);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(588, 88);
             this.groupBox3.TabIndex = 232;
@@ -520,6 +525,110 @@
             this.tbox_LogServerPath.TabIndex = 231;
             this.tbox_LogServerPath.TextChanged += new System.EventHandler(this.tbox_LogServerPath_TextChanged);
             this.tbox_LogServerPath.Validated += new System.EventHandler(this.tbox_LogServerPath_Validated);
+            // 
+            // btn_Idle
+            // 
+            this.btn_Idle.AccessibleDescription = "Idle";
+            this.btn_Idle.Location = new System.Drawing.Point(21, 197);
+            this.btn_Idle.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_Idle.Name = "btn_Idle";
+            this.btn_Idle.Size = new System.Drawing.Size(70, 35);
+            this.btn_Idle.TabIndex = 206;
+            this.btn_Idle.Text = "Idle";
+            this.btn_Idle.UseVisualStyleBackColor = true;
+            this.btn_Idle.Click += new System.EventHandler(this.btn_Idle_Click);
+            // 
+            // lbl_IdlePurgePostVacTime
+            // 
+            this.lbl_IdlePurgePostVacTime.BackColor = System.Drawing.SystemColors.Window;
+            this.lbl_IdlePurgePostVacTime.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lbl_IdlePurgePostVacTime.Location = new System.Drawing.Point(506, 208);
+            this.lbl_IdlePurgePostVacTime.Margin = new System.Windows.Forms.Padding(2);
+            this.lbl_IdlePurgePostVacTime.Name = "lbl_IdlePurgePostVacTime";
+            this.lbl_IdlePurgePostVacTime.Size = new System.Drawing.Size(75, 23);
+            this.lbl_IdlePurgePostVacTime.TabIndex = 212;
+            this.lbl_IdlePurgePostVacTime.Text = "999";
+            this.lbl_IdlePurgePostVacTime.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lbl_IdlePurgePostVacTime.Click += new System.EventHandler(this.lbl_IdlePurgePostVacTime_Click);
+            // 
+            // label10
+            // 
+            this.label10.AccessibleDescription = "Post Vac Time (ms)";
+            this.label10.Location = new System.Drawing.Point(349, 208);
+            this.label10.Margin = new System.Windows.Forms.Padding(2);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(150, 23);
+            this.label10.TabIndex = 211;
+            this.label10.Text = "Post Vac Time (ms)";
+            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label12
+            // 
+            this.label12.AccessibleDescription = "Purge Interval (s)";
+            this.label12.Location = new System.Drawing.Point(349, 154);
+            this.label12.Margin = new System.Windows.Forms.Padding(2);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(150, 23);
+            this.label12.TabIndex = 210;
+            this.label12.Text = "Purge Interval (s)";
+            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label17
+            // 
+            this.label17.AccessibleDescription = "Purge Duration (ms)";
+            this.label17.Location = new System.Drawing.Point(349, 181);
+            this.label17.Margin = new System.Windows.Forms.Padding(2);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(150, 23);
+            this.label17.TabIndex = 209;
+            this.label17.Text = "Purge Duration (ms)";
+            this.label17.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lbl_IdlePurgeInterval
+            // 
+            this.lbl_IdlePurgeInterval.BackColor = System.Drawing.SystemColors.Window;
+            this.lbl_IdlePurgeInterval.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lbl_IdlePurgeInterval.Location = new System.Drawing.Point(507, 154);
+            this.lbl_IdlePurgeInterval.Margin = new System.Windows.Forms.Padding(2);
+            this.lbl_IdlePurgeInterval.Name = "lbl_IdlePurgeInterval";
+            this.lbl_IdlePurgeInterval.Size = new System.Drawing.Size(75, 23);
+            this.lbl_IdlePurgeInterval.TabIndex = 208;
+            this.lbl_IdlePurgeInterval.Text = "999";
+            this.lbl_IdlePurgeInterval.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lbl_IdlePurgeInterval.Click += new System.EventHandler(this.lbl_IdlePurgeInterval_Click);
+            // 
+            // lbl_IdlePurgeDuration
+            // 
+            this.lbl_IdlePurgeDuration.BackColor = System.Drawing.SystemColors.Window;
+            this.lbl_IdlePurgeDuration.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lbl_IdlePurgeDuration.Location = new System.Drawing.Point(506, 181);
+            this.lbl_IdlePurgeDuration.Margin = new System.Windows.Forms.Padding(2);
+            this.lbl_IdlePurgeDuration.Name = "lbl_IdlePurgeDuration";
+            this.lbl_IdlePurgeDuration.Size = new System.Drawing.Size(75, 23);
+            this.lbl_IdlePurgeDuration.TabIndex = 207;
+            this.lbl_IdlePurgeDuration.Text = "999";
+            this.lbl_IdlePurgeDuration.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lbl_IdlePurgeDuration.Click += new System.EventHandler(this.lbl_IdlePurgeDuration_Click);
+            // 
+            // label14
+            // 
+            this.label14.AccessibleDescription = "Idle Position";
+            this.label14.Location = new System.Drawing.Point(163, 209);
+            this.label14.Margin = new System.Windows.Forms.Padding(2);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(81, 23);
+            this.label14.TabIndex = 214;
+            this.label14.Text = "Idle Position";
+            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // cbxIdlePosition
+            // 
+            this.cbxIdlePosition.FormattingEnabled = true;
+            this.cbxIdlePosition.Location = new System.Drawing.Point(249, 209);
+            this.cbxIdlePosition.Name = "cbxIdlePosition";
+            this.cbxIdlePosition.Size = new System.Drawing.Size(95, 22);
+            this.cbxIdlePosition.TabIndex = 213;
+            this.cbxIdlePosition.SelectionChangeCommitted += new System.EventHandler(this.cbxIdlePosition_SelectionChangeCommitted);
             // 
             // frm_DispCore_DispSetup_Options
             // 
@@ -571,7 +680,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label lbl_IdlePurgeTimer;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.CheckBox cbox_EnableHPCManualCtrls;
         private System.Windows.Forms.Label lbl_XYPeakSpeedRatio;
         private System.Windows.Forms.Label label8;
@@ -586,5 +694,14 @@
         private System.Windows.Forms.CheckBox cbox_CopyLogToServer;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label lblOption_DrawOfstAdjustRate;
+        private System.Windows.Forms.Button btn_Idle;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.ComboBox cbxIdlePosition;
+        private System.Windows.Forms.Label lbl_IdlePurgePostVacTime;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label lbl_IdlePurgeInterval;
+        private System.Windows.Forms.Label lbl_IdlePurgeDuration;
     }
 }

@@ -45,7 +45,6 @@ namespace NDispWin
             lbl_X2Y2.Text = CmdLine.X[1].ToString("F3") + ", " + CmdLine.Y[1].ToString("F3");
             lbl_X3Y3.Text = CmdLine.X[2].ToString("F3") + ", " + CmdLine.Y[2].ToString("F3");
 
-            lbl_StartDelay.Text = CmdLine.IPara[3].ToString();
             lbl_SettleTime.Text = CmdLine.IPara[4].ToString();
             lblContError.Text = CmdLine.IPara[5].ToString();
 
@@ -318,10 +317,14 @@ namespace NDispWin
                 double Y3 = TaskGantry.GYPos();
                 double X1 = X3 + (x1 - x3);
                 double Y1 = Y3 + (y1 - y3);
-                double X2 = Y3 + (x2 - x3);
+                double X2 = X3 + (x2 - x3);
                 double Y2 = Y3 + (y2 - y3);
 
                 TaskMeasMen.Execute(CmdLine, ref Profile, ref Data, X1, Y1, X2, Y2, X3, Y3);
+
+                if (!TaskDisp.TaskMoveGZZ2Up()) return;
+                if (!TaskGantry.SetMotionParamGXY()) return;
+                if (!TaskGantry.MoveAbsGXY(X3, Y3, true)) return;
 
                 #region Summary List Display
                 string S =

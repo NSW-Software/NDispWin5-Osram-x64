@@ -35,16 +35,52 @@ namespace NDispWin
             cbEnableWeight.Checked = CmdLine.IPara[4] > 0;
             cbDispense.Checked = CmdLine.IPara[2] > 0;
 
-            lblLeadLength.Text = $"{CmdLine.DPara[0]:f3}";
-            lblLagLength.Text = $"{CmdLine.DPara[1]:f3}";
-            lblRelLeadStartHeight.Text = $"{CmdLine.DPara[2]:f3}";
-            lblRelLagEndHeight.Text = $"{CmdLine.DPara[3]:f3}";
+            lblStartLength.Text = $"{CmdLine.DPara[0]:f3}";
+            llEndLength.Text = $"{CmdLine.DPara[1]:f3}";
+
+            if (CmdLine.DPara[2] == 0) CmdLine.DPara[2] = 0.1;
+            if (CmdLine.DPara[3] == 0) CmdLine.DPara[3] = 0.1;
+            lblStartGap.Text = $"{CmdLine.DPara[2]:f3}";
+            lblEndGap.Text = $"{CmdLine.DPara[3]:f3}";
+
+            lblSpeedAdjust.Text = $"{CmdLine.DPara[4]:f3}";
+
             lblStartOfst.Text = $"{CmdLine.DPara[6]:f3}";
             lblEndOfst.Text = $"{CmdLine.DPara[7]:f3}";
-            lblAddLineTime.Text = $"{CmdLine.DPara[4]:f3}";
+
+            lblStartVolume.Text = $"{CmdLine.DPara[8]:f3}";
+            cbEndDisp.Checked = CmdLine.IPara[6] > 0;
 
             lblX0.Text = CmdLine.X[0].ToString("F3");
             lblY0.Text = CmdLine.Y[0].ToString("F3");
+            double[] endPt = new double[] { 0, 0 };
+            {
+                TLayout layout = new TLayout();
+                layout.Copy(DispProg.rt_Layouts[0]);
+
+                //StartCR = (0, 0);
+                Point lastCR;// = new Point(0, 0);
+                int lastUnitNo = 0;//Last UnitNo of Hort/Vert line 
+
+                EVHType vhType = EVHType.Hort;//0=Horizontal, 1=Vertical
+                try { vhType = (EVHType)CmdLine.IPara[3]; } catch { };
+
+                if (vhType == EVHType.Hort)
+                {
+                    lastCR = new Point(layout.UColCount - 1, 0);
+                    layout.RCGetUnitNo(ref lastUnitNo, lastCR.X, lastCR.Y);//Get the last unit number of the current row.
+                }
+                else
+                {
+                    lastCR = new Point(0, layout.URowCount - 1);
+                    layout.RCGetUnitNo(ref lastUnitNo, lastCR.X, lastCR.Y);//Get the last unit number of the current col.
+                }
+
+                endPt[0] = CmdLine.X[0] + DispProg.rt_LayoutRelPos[lastUnitNo].X;
+                endPt[1] = CmdLine.Y[0] + DispProg.rt_LayoutRelPos[lastUnitNo].Y;
+            }
+            lblEndX.Text = $"{endPt[0]:f3}";
+            lblEndY.Text = $"{endPt[1]:f3}";
 
             gbxWeight.Visible = CmdLine.IPara[4] > 0;
             lblLineWeight.Text = $"{CmdLine.DPara[21]:f3}";
@@ -75,12 +111,10 @@ namespace NDispWin
 
             UpdateDisplay();
         }
-
         private void frmDispProg_ParallelLines_FormClosing(object sender, FormClosingEventArgs e)
         {
 
         }
-
         private void frmDispProg_ParallelLines_FormClosed(object sender, FormClosedEventArgs e)
         {
 
@@ -140,25 +174,34 @@ namespace NDispWin
 
             UpdateDisplay();
         }
+        private void cbReverse_Click(object sender, EventArgs e)
+        {
+            if (CmdLine.IPara[5] > 0)
+                CmdLine.IPara[5] = 0;
+            else
+                CmdLine.IPara[5] = 1;
+
+            bool enabled = CmdLine.IPara[5] > 0;
+            Log.OnSet(CmdName + ", Enable Reverse", !enabled, enabled);
+
+            UpdateDisplay();
+        }
 
         private void lblCutTailLength_Click(object sender, EventArgs e)
         {
             UC.AdjustExec(CmdName + ", CutTail Length (mm)", ref CmdLine.DPara[10], 0, 10);
             UpdateDisplay();
         }
-
         private void lblCutTailSpeed_Click(object sender, EventArgs e)
         {
             UC.AdjustExec(CmdName + ", CutTail Length (mm/s)", ref CmdLine.DPara[11], 0, 100);
             UpdateDisplay();
         }
-
         private void lblCutTailHeight_Click(object sender, EventArgs e)
         {
             UC.AdjustExec(CmdName + ", CutTail Height (mm)", ref CmdLine.DPara[12], 0, 100);
             UpdateDisplay();
         }
-
         private void lblCutTailType_Click(object sender, EventArgs e)
         {
             int i = (int)CmdLine.DPara[13];
@@ -172,28 +215,20 @@ namespace NDispWin
             UC.AdjustExec(CmdName + ", LineDirection", ref CmdLine.IPara[3], EVHType.Hort);
             UpdateDisplay();
         }
-
         private void lblLineWeight_Click(object sender, EventArgs e)
         {
             UC.AdjustExec(CmdName + ", LineWeight", ref CmdLine.DPara[21], 0, 100);
             UpdateDisplay();
         }
-
         private void lblFirstLineWeight_Click(object sender, EventArgs e)
         {
             UC.AdjustExec(CmdName + ", FirstLineWeight", ref CmdLine.DPara[20], 0, 100);
             UpdateDisplay();
         }
-
         private void lblLastLineWeight_Click(object sender, EventArgs e)
         {
             UC.AdjustExec(CmdName + ", LastLineWeight", ref CmdLine.DPara[22], 0, 100);
             UpdateDisplay();
-        }
-
-        private void gbox_Pos_Enter(object sender, EventArgs e)
-        {
-
         }
 
         private void lblX0_Click(object sender, EventArgs e)
@@ -203,7 +238,6 @@ namespace NDispWin
             CmdLine.X[0] = X;
             UpdateDisplay();
         }
-
         private void lblY0_Click(object sender, EventArgs e)
         {
             double Y = Math.Round(CmdLine.Y[0], 3);
@@ -211,7 +245,6 @@ namespace NDispWin
             CmdLine.Y[0] = Y;
             UpdateDisplay();
         }
-
         private void btnEditXY0_Click(object sender, EventArgs e)
         {
             frm_DispCore_EditXY frm = new frm_DispCore_EditXY();
@@ -227,7 +260,6 @@ namespace NDispWin
 
             UpdateDisplay();
         }
-
         private void btnSetXY0_Click(object sender, EventArgs e)
         {
             NSW.Net.Point2D Old = new NSW.Net.Point2D(CmdLine.X[0], CmdLine.Y[0]);
@@ -243,7 +275,6 @@ namespace NDispWin
 
             UpdateDisplay();
         }
-
         private void btnGotoXY0_Click(object sender, EventArgs e)
         {
             double X = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + CmdLine.X[0];
@@ -264,7 +295,6 @@ namespace NDispWin
             CmdLine.X[1] = X;
             UpdateDisplay();
         }
-
         private void lblY1_Click(object sender, EventArgs e)
         {
             double Y = Math.Round(CmdLine.Y[1], 3);
@@ -272,7 +302,6 @@ namespace NDispWin
             CmdLine.Y[1] = Y;
             UpdateDisplay();
         }
-
         private void btnEditXY1_Click(object sender, EventArgs e)
         {
             frm_DispCore_EditXY frm = new frm_DispCore_EditXY();
@@ -288,7 +317,6 @@ namespace NDispWin
 
             UpdateDisplay();
         }
-
         private void btnSetXY1_Click(object sender, EventArgs e)
         {
             NSW.Net.Point2D Old = new NSW.Net.Point2D(CmdLine.X[0], CmdLine.Y[0]);
@@ -304,7 +332,6 @@ namespace NDispWin
 
             UpdateDisplay();
         }
-
         private void btnGotoXY1_Click(object sender, EventArgs e)
         {
             double X = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + CmdLine.X[1];
@@ -318,37 +345,19 @@ namespace NDispWin
             if (!TaskGantry.MoveAbsGXY(X, Y)) return;
         }
 
-        private void cbReverse_Click(object sender, EventArgs e)
+        private void lblStartLength_Click(object sender, EventArgs e)
         {
-            if (CmdLine.IPara[5] > 0)
-                CmdLine.IPara[5] = 0;
-            else
-                CmdLine.IPara[5] = 1;
-
-            bool enabled = CmdLine.IPara[5] > 0;
-            Log.OnSet(CmdName + ", Enable Reverse", !enabled, enabled);
-
+            UC.AdjustExec(CmdName + ", StartLength", ref CmdLine.DPara[0], 0, 10);
             UpdateDisplay();
         }
-
-        private void lblLeadLength_Click(object sender, EventArgs e)
+        private void lblStartGap_Click(object sender, EventArgs e)
         {
-            UC.AdjustExec(CmdName + ", LeadLength", ref CmdLine.DPara[0], 0, 100);
+            UC.AdjustExec(CmdName + ", StartGap", ref CmdLine.DPara[2], 0, 1);
             UpdateDisplay();
         }
-        private void lblLagLength_Click(object sender, EventArgs e)
+        private void lblStartVolume_Click(object sender, EventArgs e)
         {
-            UC.AdjustExec(CmdName + ", LagLength", ref CmdLine.DPara[1], 0, 100);
-            UpdateDisplay();
-        }
-        private void lblRelLeadStartHeight_Click(object sender, EventArgs e)
-        {
-            UC.AdjustExec(CmdName + ", RelLeadStartHeight", ref CmdLine.DPara[2], -0.5, 0.5);
-            UpdateDisplay();
-        }
-        private void lblRelLagEndHeight_Click(object sender, EventArgs e)
-        {
-            UC.AdjustExec(CmdName + ", RelLagEndHeight", ref CmdLine.DPara[3], -0.5, 0.5);
+            UC.AdjustExec(CmdName + ", StartVolume", ref CmdLine.DPara[8], 0, 1);
             UpdateDisplay();
         }
         private void lblStartOfst_Click(object sender, EventArgs e)
@@ -356,20 +365,68 @@ namespace NDispWin
             UC.AdjustExec(CmdName + ", StartOffset", ref CmdLine.DPara[6], -0.5, 0.5);
             UpdateDisplay();
         }
+
+        private void lblEndLength_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec(CmdName + ", EndLength", ref CmdLine.DPara[1], 0, 10);
+            UpdateDisplay();
+        }
+        private void lblEndGap_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec(CmdName + ", EndGap", ref CmdLine.DPara[3], 0, 1);
+            UpdateDisplay();
+        }
         private void lblEndOfst_Click(object sender, EventArgs e)
         {
             UC.AdjustExec(CmdName + ", EndOffset", ref CmdLine.DPara[7], -0.5, 0.5);
             UpdateDisplay();
         }
-        private void lblAddLineTime_Click(object sender, EventArgs e)
+        private void cbEndDisp_Click(object sender, EventArgs e)
         {
-            UC.AdjustExec(CmdName + ", AddLineTime", ref CmdLine.DPara[4], -1000, 1000);
+            CmdLine.IPara[6] = CmdLine.IPara[6] > 0 ? 0 : 1;
+
+            bool enabled = CmdLine.IPara[6] > 0;
+            Log.OnSet(CmdName + ", EndDispense", !enabled, enabled);
+
             UpdateDisplay();
         }
 
-        private void groupBox2_Enter(object sender, EventArgs e)
+        private void lblSpeedAdjust_Click(object sender, EventArgs e)
         {
+            UC.AdjustExec(CmdName + ", SpeedAdjust", ref CmdLine.DPara[4], -75, 75);
+            UpdateDisplay();
+        }
 
+        private void btnGotoEndXY_Click(object sender, EventArgs e)
+        {
+            TLayout layout = new TLayout();
+            layout.Copy(DispProg.rt_Layouts[0]);
+
+            //StartCR = (0, 0);
+            Point lastCR;// = new Point(0, 0);
+            int lastUnitNo = 0;//Last UnitNo of Hort/Vert line 
+
+            EVHType vhType = EVHType.Hort;//0=Horizontal, 1=Vertical
+            try { vhType = (EVHType)CmdLine.IPara[3]; } catch { };
+
+            if (vhType == EVHType.Hort)
+            {
+                lastCR = new Point(layout.UColCount - 1, 0);
+                layout.RCGetUnitNo(ref lastUnitNo, lastCR.X, lastCR.Y);//Get the last unit number of the current row.
+            }
+            else
+            {
+                lastCR = new Point(0, layout.URowCount - 1);
+                layout.RCGetUnitNo(ref lastUnitNo, lastCR.X, lastCR.Y);//Get the last unit number of the current col.
+            }
+
+            double X = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + CmdLine.X[0] + DispProg.rt_LayoutRelPos[lastUnitNo].X;
+            double Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.Y[0] + DispProg.rt_LayoutRelPos[lastUnitNo].Y;
+
+            if (!TaskDisp.TaskMoveGZZ2Up()) return;
+
+            if (!TaskGantry.SetMotionParamGXY()) return;
+            if (!TaskGantry.MoveAbsGXY(X, Y)) return;
         }
     }
 }

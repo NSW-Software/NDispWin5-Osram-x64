@@ -15,6 +15,8 @@ namespace NDispWin
         {
             InitializeComponent();
             GControl.LogForm(this);
+
+            cbxIdlePosition.DataSource = Enum.GetNames(typeof(TaskDisp.EMaintPos));
         }
 
         private void frm_DispCore_DispSetup_Options_Load(object sender, EventArgs e)
@@ -44,6 +46,10 @@ namespace NDispWin
 
             cbox_EnableStartIdle.Checked = TaskDisp.Option_EnableStartIdle;
             lbl_IdlePurgeTimer.Text = TaskDisp.Option_IdlePurgeTimer.ToString();
+            cbxIdlePosition.Text = TaskDisp.Idle_Position.ToString();
+            lbl_IdlePurgeInterval.Text = $"{TaskDisp.Idle_PurgeInterval:f0}";
+            lbl_IdlePurgeDuration.Text = $"{TaskDisp.Idle_PurgeDuration:f0}";
+            lbl_IdlePurgePostVacTime.Text = $"{TaskDisp.Idle_PostVacTime:f0}";
 
             cbox_EnableScriptCheck.Checked = TaskDisp.Option_EnableScriptCheck;
             cbox_EnableScriptCheckUnitMode.Checked = TaskDisp.Option_EnableScriptCheckUnitMode;
@@ -209,6 +215,37 @@ namespace NDispWin
         private void groupBox3_Enter(object sender, EventArgs e)
         {
 
+        }
+
+        private void label3_Click_1(object sender, EventArgs e)
+        {
+        }
+
+        private void lbl_IdlePurgeInterval_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec("Idle Purge Interval (s)", ref TaskDisp.Idle_PurgeInterval, 5, 600);
+            UpdateDisplay();
+        }
+        private void lbl_IdlePurgeDuration_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec("Idle Purge Duration (ms)", ref TaskDisp.Idle_PurgeDuration, 10, 50000);
+            UpdateDisplay();
+        }
+        private void lbl_IdlePurgePostVacTime_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec("Idle Post Vac Time (ms)", ref TaskDisp.Idle_PostVacTime, 0, 5000);
+            UpdateDisplay();
+        }
+        private void cbxIdlePosition_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            TaskDisp.Idle_Position = (TaskDisp.EMaintPos)cbxIdlePosition.SelectedIndex;
+        }
+
+        private void btn_Idle_Click(object sender, EventArgs e)
+        {
+            frm_DispCore_IdlePurge frm = new frm_DispCore_IdlePurge();
+            frm.AutoStart = true;
+            frm.ShowDialog();
         }
     }
 }

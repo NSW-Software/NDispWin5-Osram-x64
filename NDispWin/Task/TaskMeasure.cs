@@ -1790,6 +1790,8 @@ namespace NDispWin
         {
             public int Index = 0;
 
+            public int ID = 0;
+
             public int Col = 0;
             public int Row = 0;
 
@@ -1813,34 +1815,34 @@ namespace NDispWin
 
                 string Filename = Path + "\\" + DateTime.Now.ToString("yyyyMMdd") + ".txt";
 
-                if (!File.Exists(Filename))
-                {
-                    FileStream F = new FileStream(Filename, FileMode.Append, FileAccess.Write, FileShare.Write);
-                    StreamWriter W = new StreamWriter(F);
-                    try
-                    {
+                //if (!File.Exists(Filename))
+                //{
+                //    FileStream F = new FileStream(Filename, FileMode.Append, FileAccess.Write, FileShare.Write);
+                //    StreamWriter W = new StreamWriter(F);
+                //    try
+                //    {
 
-                        string S = //"Unit" + (char)9 +
-                             "DateTime" + (char)9 +
-                             "Header1" + (char)9 +
-                             "Header2" + (char)9 +
-                             "Header3" + (char)9 +
-                             "Col" + (char)9 +
-                             "Row" + (char)9 +
-                             "Height" + (char)9 +
-                             "Ref1" + (char)9 +
-                             "Ref2" + (char)9 +
-                             "Meas" + (char)9;
-                        W.WriteLine(S);
-                    }
-                    catch
-                    {
-                    }
-                    finally
-                    {
-                        W.Close();
-                    }
-                }
+                //        string S = //"Unit" + (char)9 +
+                //             "DateTime" + (char)9 +
+                //             "Header1" + (char)9 +
+                //             "Header2" + (char)9 +
+                //             "Header3" + (char)9 +
+                //             "Col" + (char)9 +
+                //             "Row" + (char)9 +
+                //             "Height" + (char)9 +
+                //             "Ref1" + (char)9 +
+                //             "Ref2" + (char)9 +
+                //             "Meas" + (char)9;
+                //        W.WriteLine(S);
+                //    }
+                //    catch
+                //    {
+                //    }
+                //    finally
+                //    {
+                //        W.Close();
+                //    }
+                //}
 
                 try
                 {
@@ -1856,6 +1858,7 @@ namespace NDispWin
                             "Header3" + (char)9 +
                             "Col" + (char)9 +
                             "Row" + (char)9 +
+                            "MeasID" + (char)9 +
                             "Height" + (char)9 +
                             "Ref1" + (char)9 +
                             "Ref2" + (char)9 +
@@ -1869,6 +1872,7 @@ namespace NDispWin
                     S = S + s_Col3 + (char)9;
                     S = S + Col.ToString() + (char)9;
                     S = S + Row.ToString() + (char)9;
+                    S = S + $"{ID}" + (char)9;
                     S = S + Height.ToString(dp) + (char)9;
                     S = S + Ref1.ToString(dp) + (char)9;
                     S = S + Ref2.ToString(dp) + (char)9;
@@ -1898,6 +1902,8 @@ namespace NDispWin
             public List<int> CCol = new List<int>();
             public List<int> CRow = new List<int>();
 
+            public List<int> ID = new List<int>();
+
             public List<double> Ref1 = new List<double>();
             public List<double> Ref2 = new List<double>();
             public List<double> Meas = new List<double>();
@@ -1920,6 +1926,8 @@ namespace NDispWin
                 this.CCol.Clear();
                 this.CRow.Clear();
 
+                this.ID.Clear();
+
                 this.Ref1.Clear();
                 this.Ref2.Clear();
                 this.Meas.Clear();
@@ -1933,6 +1941,8 @@ namespace NDispWin
                 this.Row.Add(Data.Row);
                 this.CCol.Add(Data.CCol);
                 this.CRow.Add(Data.CRow);
+
+                this.ID.Add(Data.ID);
 
                 this.Ref1.Add(Data.Ref1);
                 this.Ref2.Add(Data.Ref2);
@@ -2077,6 +2087,7 @@ namespace NDispWin
                             "Row" + (char)9 +
                             "CCol" + (char)9 +
                             "CRow" + (char)9 +
+                            "ID" + (char)9 +
                             "Meniscus" + (char)9 +
                             "Ref1" + (char)9 +
                             "Ref2" + (char)9 +
@@ -2106,6 +2117,7 @@ namespace NDispWin
                             S = S + Row[i].ToString() + (char)9;
                             S = S + CCol[i].ToString() + (char)9;
                             S = S + CRow[i].ToString() + (char)9;
+                            S = S + ID[i].ToString() + (char)9;
                             S = S + Height[i].ToString(dp) + (char)9;
                             S = S + Ref1[i].ToString(dp) + (char)9;
                             S = S + Ref2[i].ToString(dp) + (char)9;
@@ -2133,7 +2145,6 @@ namespace NDispWin
             {
                 TModelPara Model = new TModelPara(DispProg.ModelList, CmdLine.IPara[0]);
 
-                double MSpeed = CmdLine.DPara[0];
                 double StartV = Model.LineStartV;
                 double DriveV = Model.LineSpeed;
                 double Accel = Model.LineAccel;
@@ -2144,14 +2155,8 @@ namespace NDispWin
 
                 NSW.Net.Stats Stats = new NSW.Net.Stats();
 
-                //switch (Ref1Pattern)
-                #region
-                //{
-                //    default:
-                //    case EMeasPattern.Point:
-                //        #region
+                #region Meas Re1
                 {
-                    //            //TaskLaser.Sensor.IFD2451.Trig.Mode = CLaser.MEDAQ.E_IFD2451_TrigMode.None;
                     TaskLaser.TrigMode = false;
 
                     if (!TaskGantry.SetMotionParamGXY()) goto _Error;
@@ -2164,133 +2169,13 @@ namespace NDispWin
                     Profile.Ref1.Add(Value);
                     Data.Ref1 = Value;
                 }
-                //    #endregion
-                //    break;
-                //case EMeasPattern.LineInline:
-                //case EMeasPattern.LinePerpend:
-                //case EMeasPattern.Cross:
-                //    #region
-                //    {
-                //        //TaskLaser.Sensor.IFD2451.Trig.Mode = CLaser.MEDAQ.E_IFD2451_TrigMode.Software;
-
-                //        double P1X = X1;
-                //        double P1Y = Y1;
-                //        double P2X = X2;
-                //        double P2Y = Y2;
-                //        switch (Ref1Pattern)
-                //        {
-                //            case EMeasPattern.LineInline:
-                //            case EMeasPattern.Cross:
-                //                #region
-                //                LineGetParallelLine(X1, Y1, X2, Y2, RefLineLen, ref P1X, ref P1Y, ref P2X, ref P2Y);
-
-                //                TaskLaser.TrigMode = true;
-
-                //                if (!TaskGantry.SetMotionParamGXY(StartV, DriveV, Accel)) goto _Error;
-                //                if (!TaskGantry.MoveAbsGXY(P1X, P1Y)) goto _Error;
-
-                //                int t = GDefine.GetTickCount() + SettleTime;
-                //                while (GDefine.GetTickCount() <= t) Thread.Sleep(0);
-
-                //                //TaskLaser.Sensor.IFD2451.Trig.Count = -1;
-
-                //                if (!TaskGantry.SetMotionParamGXY(MSpeed, MSpeed, Accel)) goto _Error;
-                //                if (!TaskGantry.MoveAbsGXY(P2X, P2Y, false)) goto _Error;
-
-                //                //TaskLaser.Sensor.IFD2451.Trig.SwTrig();
-                //                TaskLaser.SwTrig();
-
-                //                if (!TaskGantry.WaitGXY()) goto _Error;
-
-                //                int DataAvail = 0;
-                //                TaskLaser.DataAvail(ref DataAvail);
-                //                double[] ScaleData = new double[DataAvail];
-                //                int Count = 0;
-                //                TaskLaser.TransferData(ScaleData, ref Count);
-                //                //TaskLaser.Sensor.IFD2451.Trig.StopMeas();
-
-                //                for (int i = 0; i < Count; i++)
-                //                {
-                //                    Profile.Ref1.Add(ScaleData[i]);
-                //                }
-                //                #endregion
-                //                break;
-                //        }
-                //        switch (Ref1Pattern)
-                //        {
-                //            case EMeasPattern.LinePerpend:
-                //            case EMeasPattern.Cross:
-                //                #region
-                //                LineGetPerpendLine(X1, Y1, X2, Y2, RefLineLen, ref P1X, ref P1Y, ref P2X, ref P2Y);
-
-                //                TaskLaser.TrigMode = true;
-
-                //                if (!TaskGantry.SetMotionParamGXY(StartV, DriveV, Accel)) goto _Error;
-                //                if (!TaskGantry.MoveAbsGXY(P1X, P1Y)) goto _Error;
-
-                //                int t = GDefine.GetTickCount() + SettleTime;
-                //                while (GDefine.GetTickCount() <= t) Thread.Sleep(0);
-
-                //                //TaskLaser.Sensor.IFD2451.Trig.Count = -1;
-
-                //                if (!TaskGantry.SetMotionParamGXY(MSpeed, MSpeed, Accel)) goto _Error;
-                //                if (!TaskGantry.MoveAbsGXY(P2X, P2Y, false)) goto _Error;
-
-                //                //TaskLaser.Sensor.IFD2451.Trig.SwTrig();
-                //                TaskLaser.SwTrig();
-
-                //                if (!TaskGantry.WaitGXY()) goto _Error;
-
-                //                int DataAvail = 0;
-                //                TaskLaser.DataAvail(ref DataAvail);
-                //                double[] ScaleData = new double[DataAvail];
-                //                int Count = 0;
-                //                TaskLaser.TransferData(ScaleData, ref Count);
-                //                //TaskLaser.Sensor.IFD2451.Trig.StopMeas();
-
-                //                for (int i = 0; i < Count; i++)
-                //                {
-                //                    Profile.Ref1.Add(ScaleData[i]);
-                //                }
-                //                #endregion
-                //                break;
-                //        }
-
-                //        switch (Ref1Judge)
-                //        {
-                //            #region
-                //            case EMeasJudge.Min:
-                //                Data.Ref1 = Profile.Ref1.Min();
-                //                break;
-                //            case EMeasJudge.Max:
-                //                Data.Ref1 = Profile.Ref1.Max();
-                //                break;
-                //            case EMeasJudge.Ave:
-                //                Data.Ref1 = Profile.Ref1.Average();
-                //                break;
-                //            default:
-                //            case EMeasJudge.Median:
-                //                Data.Ref1 = Stats.Median(Profile.Ref1);
-                //                break;
-                //                #endregion
-                //        }
-                //    }
-                //    #endregion
-                //    break;
-                //}
                 #endregion
 
                 double X_Meas = X3;
                 double Y_Meas = Y3;
-                //switch (MeasPattern)
-                    #region
-                    //{
-                    //    default:
-                    //    case EMeasPattern.Point:
-                    #region
-                    {
-                        //TaskLaser.Sensor.IFD2451.Trig.Mode = CLaser.MEDAQ.E_IFD2451_TrigMode.None;
-                        TaskLaser.TrigMode = false;
+                #region Meas Meas
+                {
+                    TaskLaser.TrigMode = false;
 
                     if (!TaskGantry.SetMotionParamGXY(StartV, DriveV, Accel)) goto _Error;
                     if (!TaskGantry.MoveAbsGXY(X_Meas + TaskDisp.Laser_Ofst.X, Y_Meas + TaskDisp.Laser_Ofst.Y, true)) goto _Error;
@@ -2303,129 +2188,9 @@ namespace NDispWin
                     Data.Meas = Value;
                 }
                 #endregion
-                //        break;
-                //    case EMeasPattern.LineInline:
-                //    case EMeasPattern.LinePerpend:
-                //    case EMeasPattern.Cross:
-                //        #region
-                //        {
-                //            TaskLaser.Sensor.IFD2451.Trig.Mode = CLaser.MEDAQ.E_IFD2451_TrigMode.Software;
 
-                //            double P1X = X1;
-                //            double P1Y = Y1;
-                //            double P2X = X2;
-                //            double P2Y = Y2;
-                //            switch (MeasPattern)
-                //            {
-                //                case EMeasPattern.LineInline:
-                //                case EMeasPattern.Cross:
-                //                    #region
-                //                    LineGetParallelLine(X_Mid, Y_Mid, X2, Y2, MeasLineLen, ref P1X, ref P1Y, ref P2X, ref P2Y);
-
-                //                    TaskLaser.TrigMode = true;
-
-                //                    if (!TaskGantry.SetMotionParamGXY(StartV, DriveV, Accel)) goto _Error;
-                //                    if (!TaskGantry.MoveAbsGXY(P1X, P1Y)) goto _Error;
-
-                //                    int t = GDefine.GetTickCount() + SettleTime;
-                //                    while (GDefine.GetTickCount() <= t) Thread.Sleep(0);
-
-                //                    TaskLaser.Sensor.IFD2451.Trig.Count = -1;
-
-                //                    if (!TaskGantry.SetMotionParamGXY(MSpeed, MSpeed, Accel)) goto _Error;
-                //                    if (!TaskGantry.MoveAbsGXY(P2X, P2Y, false)) goto _Error;
-
-                //                    TaskLaser.Sensor.IFD2451.Trig.SwTrig();
-                //                    TaskLaser.SwTrig();
-
-                //                    if (!TaskGantry.WaitGXY()) goto _Error;
-
-                //                    int DataAvail = 0;
-                //                    TaskLaser.DataAvail(ref DataAvail);
-                //                    double[] ScaleData = new double[DataAvail];
-                //                    int Count = 0;
-                //                    TaskLaser.TransferData(ScaleData, ref Count);
-                //                    TaskLaser.Sensor.IFD2451.Trig.StopMeas();
-
-                //                    for (int i = 0; i < Count; i++)
-                //                    {
-                //                        Profile.Meas.Add(ScaleData[i]);
-                //                    }
-                //                    #endregion
-                //                    break;
-                //            }
-                //            switch (MeasPattern)
-                //            {
-                //                case EMeasPattern.LinePerpend:
-                //                case EMeasPattern.Cross:
-                //                    #region
-                //                    LineGetPerpendLine(X_Mid, Y_Mid, X2, Y2, MeasLineLen, ref P1X, ref P1Y, ref P2X, ref P2Y);
-
-                //                    TaskLaser.TrigMode = true;
-
-                //                    if (!TaskGantry.SetMotionParamGXY(StartV, DriveV, Accel)) goto _Error;
-                //                    if (!TaskGantry.MoveAbsGXY(P1X, P1Y)) goto _Error;
-
-                //                    int t = GDefine.GetTickCount() + SettleTime;
-                //                    while (GDefine.GetTickCount() <= t) Thread.Sleep(0);
-
-                //                    TaskLaser.Sensor.IFD2451.Trig.Count = -1;
-
-                //                    if (!TaskGantry.SetMotionParamGXY(MSpeed, MSpeed, Accel)) goto _Error;
-                //                    if (!TaskGantry.MoveAbsGXY(P2X, P2Y, false)) goto _Error;
-
-                //                    TaskLaser.Sensor.IFD2451.Trig.SwTrig();
-                //                    TaskLaser.SwTrig();
-
-                //                    if (!TaskGantry.WaitGXY()) goto _Error;
-
-                //                    int DataAvail = 0;
-                //                    TaskLaser.DataAvail(ref DataAvail);
-                //                    double[] ScaleData = new double[DataAvail];
-                //                    int Count = 0;
-                //                    TaskLaser.TransferData(ScaleData, ref Count);
-                //                    TaskLaser.Sensor.IFD2451.Trig.StopMeas();
-
-                //                    for (int i = 0; i < Count; i++)
-                //                    {
-                //                        Profile.Meas.Add(ScaleData[i]);
-                //                    }
-                //                    #endregion
-                //                    break;
-                //            }
-
-                //            switch (MeasJudge)
-                //            {
-                //                #region
-                //                case EMeasJudge.Min:
-                //                    Data.Meas = Profile.Meas.Min();
-                //                    break;
-                //                case EMeasJudge.Max:
-                //                    Data.Meas = Profile.Meas.Max();
-                //                    break;
-                //                case EMeasJudge.Ave:
-                //                    Data.Meas = Profile.Meas.Average();
-                //                    break;
-                //                default:
-                //                case EMeasJudge.Median:
-                //                    Data.Meas = Stats.Median(Profile.Meas);
-                //                    break;
-                //                    #endregion
-                //            }
-                //        }
-                //        #endregion
-                //        break;
-                //}
-                #endregion
-
-                //switch (Ref2Pattern)
-                #region
-                //{
-                //    default:
-                //    case EMeasPattern.Point:
                 #region
                 {
-                    //TaskLaser.Sensor.IFD2451.Trig.Mode = CLaser.MEDAQ.E_IFD2451_TrigMode.None;
                     TaskLaser.TrigMode = false;
 
                     if (!TaskGantry.SetMotionParamGXY(StartV, DriveV, Accel)) goto _Error;
@@ -2439,118 +2204,6 @@ namespace NDispWin
                     Data.Ref2 = Value;
                 }
                 #endregion
-                //    break;
-                //case EMeasPattern.LineInline:
-                //case EMeasPattern.LinePerpend:
-                //case EMeasPattern.Cross:
-                //    #region
-                //    {
-                //        //TaskLaser.Sensor.IFD2451.Trig.Mode = CLaser.MEDAQ.E_IFD2451_TrigMode.Software;
-
-                //        double P1X = X1;
-                //        double P1Y = Y1;
-                //        double P2X = X2;
-                //        double P2Y = Y2;
-                //        switch (Ref2Pattern)
-                //        {
-                //            case EMeasPattern.LineInline:
-                //            case EMeasPattern.Cross:
-                //                #region
-                //                LineGetParallelLine(X2, Y2, X1, Y1, RefLineLen, ref P1X, ref P1Y, ref P2X, ref P2Y);
-
-                //                TaskLaser.TrigMode = true;
-
-                //                if (!TaskGantry.SetMotionParamGXY(StartV, DriveV, Accel)) goto _Error;
-                //                if (!TaskGantry.MoveAbsGXY(P2X, P2Y)) goto _Error;
-
-                //                int t = GDefine.GetTickCount() + SettleTime;
-                //                while (GDefine.GetTickCount() <= t) Thread.Sleep(0);
-
-                //                //TaskLaser.Sensor.IFD2451.Trig.Count = -1;
-
-                //                if (!TaskGantry.SetMotionParamGXY(MSpeed, MSpeed, Accel)) goto _Error;
-                //                if (!TaskGantry.MoveAbsGXY(P1X, P1Y, false)) goto _Error;
-
-                //                //TaskLaser.Sensor.IFD2451.Trig.SwTrig();
-                //                TaskLaser.SwTrig();
-
-                //                if (!TaskGantry.WaitGXY()) goto _Error;
-
-                //                int DataAvail = 0;
-                //                TaskLaser.DataAvail(ref DataAvail);
-                //                double[] ScaleData = new double[DataAvail];
-                //                int Count = 0;
-                //                TaskLaser.TransferData(ScaleData, ref Count);
-                //                //TaskLaser.Sensor.IFD2451.Trig.StopMeas();
-
-                //                for (int i = 0; i < Count; i++)
-                //                {
-                //                    Profile.Ref2.Add(ScaleData[i]);
-                //                }
-                //                #endregion
-                //                break;
-                //        }
-                //        switch (Ref2Pattern)
-                //        {
-                //            case EMeasPattern.LinePerpend:
-                //            case EMeasPattern.Cross:
-                //                #region
-                //                LineGetPerpendLine(X2, Y2, X1, Y1, RefLineLen, ref P1X, ref P1Y, ref P2X, ref P2Y);
-
-                //                TaskLaser.TrigMode = true;
-
-                //                if (!TaskGantry.SetMotionParamGXY(StartV, DriveV, Accel)) goto _Error;
-                //                if (!TaskGantry.MoveAbsGXY(P2X, P2Y)) goto _Error;
-                //                int t = GDefine.GetTickCount() + SettleTime;
-                //                while (GDefine.GetTickCount() <= t) Thread.Sleep(0);
-
-                //                //TaskLaser.Sensor.IFD2451.Trig.Count = -1;
-
-                //                if (!TaskGantry.SetMotionParamGXY(MSpeed, MSpeed, Accel)) goto _Error;
-                //                if (!TaskGantry.MoveAbsGXY(P1X, P1Y, false)) goto _Error;
-
-                //                //TaskLaser.Sensor.IFD2451.Trig.SwTrig();
-                //                TaskLaser.SwTrig();
-
-                //                if (!TaskGantry.WaitGXY()) goto _Error;
-
-                //                int DataAvail = 0;
-                //                TaskLaser.DataAvail(ref DataAvail);
-                //                double[] ScaleData = new double[DataAvail];
-                //                int Count = 0;
-                //                TaskLaser.TransferData(ScaleData, ref Count);
-                //                //TaskLaser.Sensor.IFD2451.Trig.StopMeas();
-
-                //                for (int i = 0; i < Count; i++)
-                //                {
-                //                    Profile.Ref2.Add(ScaleData[i]);
-                //                }
-                //                #endregion
-                //                break;
-                //        }
-
-                //        switch (Ref2Judge)
-                //        {
-                //            #region
-                //            case EMeasJudge.Min:
-                //                Data.Ref2 = Profile.Ref2.Min();
-                //                break;
-                //            case EMeasJudge.Max:
-                //                Data.Ref2 = Profile.Ref2.Max();
-                //                break;
-                //            case EMeasJudge.Ave:
-                //                Data.Ref2 = Profile.Ref2.Average();
-                //                break;
-                //            default:
-                //            case EMeasJudge.Median:
-                //                Data.Ref2 = Stats.Median(Profile.Ref2);
-                //                break;
-                //                #endregion
-                //        }
-                //    }
-                #endregion
-                //        break;
-                //#endregion
 
                 double Ref = (Data.Ref1 + Data.Ref2) / 2;
                 Data.Height = Data.Meas - Ref;

@@ -5,8 +5,18 @@ In Prog, after DO_REF not found, camera cannot live
 
 Todo
 - Integrate LEDStudio
+- DO_REF scale iamge to facilite learn
+- Improve Reticle Window Adjust
 
 
+
+Ver 6.1.0.5 - KN - 20241111 - Released to Syafiq for OsPg
+[Bugfix] Prevent DispProgCmd.Par_Lines Pump2 move
+[Improve] Added MeasID to TaskMeasMen.Save
+[Changes] Idle Purge uses Flush Position
+[Bugfix] WeightMeas ignore after fill
+[Hsekeep] TaskCalLaserOfstPoint() and TaskCalLaserOfstEdge()
+[Bugfix] TaskCalLaserOfstPoint() and TaskCalLaserOfstEdge() save LaserOfst lightings
 Ver 6.1.0.1 - KN - 20240826 - Released to Syafiq for OsKM - Gitted
 [Feature] frm_DispCore_MeasMen.MeasAtPos to measure at crosshair position.
 [Improve] Added TaskDisp.Laser_Ofst to save Laser Offset position

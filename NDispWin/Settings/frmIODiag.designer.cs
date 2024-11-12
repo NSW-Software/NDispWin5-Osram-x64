@@ -846,6 +846,7 @@
             this.lbl_SvVac2Info.TabIndex = 58;
             this.lbl_SvVac2Info.Text = "lbl_SvVac2Info";
             this.lbl_SvVac2Info.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lbl_SvVac2Info.Click += new System.EventHandler(this.lbl_SvVac2Info_Click);
             // 
             // lblPBSensHome
             // 

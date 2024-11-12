@@ -160,7 +160,7 @@
             this.lbl_Desc.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lbl_Desc.Location = new System.Drawing.Point(0, 0);
             this.lbl_Desc.Name = "lbl_Desc";
-            this.lbl_Desc.Size = new System.Drawing.Size(73, 21);
+            this.lbl_Desc.Size = new System.Drawing.Size(58, 17);
             this.lbl_Desc.TabIndex = 18;
             this.lbl_Desc.Text = "lbl_Desc";
             // 
@@ -182,7 +182,7 @@
             this.lbl_CAct.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lbl_CAct.Location = new System.Drawing.Point(0, 0);
             this.lbl_CAct.Name = "lbl_CAct";
-            this.lbl_CAct.Size = new System.Drawing.Size(71, 21);
+            this.lbl_CAct.Size = new System.Drawing.Size(57, 17);
             this.lbl_CAct.TabIndex = 20;
             this.lbl_CAct.Text = "lbl_CAct";
             // 
@@ -191,10 +191,10 @@
             this.lbl_Desc_Alt.AutoSize = true;
             this.lbl_Desc_Alt.Dock = System.Windows.Forms.DockStyle.Top;
             this.lbl_Desc_Alt.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lbl_Desc_Alt.Location = new System.Drawing.Point(0, 21);
+            this.lbl_Desc_Alt.Location = new System.Drawing.Point(0, 17);
             this.lbl_Desc_Alt.Margin = new System.Windows.Forms.Padding(3, 0, 3, 8);
             this.lbl_Desc_Alt.Name = "lbl_Desc_Alt";
-            this.lbl_Desc_Alt.Size = new System.Drawing.Size(103, 21);
+            this.lbl_Desc_Alt.Size = new System.Drawing.Size(81, 17);
             this.lbl_Desc_Alt.TabIndex = 21;
             this.lbl_Desc_Alt.Text = "lbl_Desc_Alt";
             // 
@@ -203,10 +203,10 @@
             this.lbl_CAct_Alt.AutoSize = true;
             this.lbl_CAct_Alt.Dock = System.Windows.Forms.DockStyle.Top;
             this.lbl_CAct_Alt.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lbl_CAct_Alt.Location = new System.Drawing.Point(0, 21);
+            this.lbl_CAct_Alt.Location = new System.Drawing.Point(0, 17);
             this.lbl_CAct_Alt.Margin = new System.Windows.Forms.Padding(3, 0, 3, 8);
             this.lbl_CAct_Alt.Name = "lbl_CAct_Alt";
-            this.lbl_CAct_Alt.Size = new System.Drawing.Size(101, 21);
+            this.lbl_CAct_Alt.Size = new System.Drawing.Size(80, 17);
             this.lbl_CAct_Alt.TabIndex = 22;
             this.lbl_CAct_Alt.Text = "lbl_CAct_Alt";
             // 
@@ -275,7 +275,7 @@
             this.panel2.Controls.Add(this.btn_AlmClr);
             this.panel2.Controls.Add(this.btn_Cancel);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(5, 422);
+            this.panel2.Location = new System.Drawing.Point(5, 426);
             this.panel2.Name = "panel2";
             this.panel2.Padding = new System.Windows.Forms.Padding(3);
             this.panel2.Size = new System.Drawing.Size(937, 47);
@@ -317,28 +317,28 @@
             this.tsslVersion,
             this.tsslType,
             this.tsslDateTime});
-            this.statusStrip1.Location = new System.Drawing.Point(5, 469);
+            this.statusStrip1.Location = new System.Drawing.Point(5, 473);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(937, 26);
+            this.statusStrip1.Size = new System.Drawing.Size(937, 22);
             this.statusStrip1.TabIndex = 31;
             this.statusStrip1.Text = "statusStrip1";
             // 
             // tsslVersion
             // 
             this.tsslVersion.Name = "tsslVersion";
-            this.tsslVersion.Size = new System.Drawing.Size(78, 20);
+            this.tsslVersion.Size = new System.Drawing.Size(62, 17);
             this.tsslVersion.Text = "tsslVersion";
             // 
             // tsslType
             // 
             this.tsslType.Name = "tsslType";
-            this.tsslType.Size = new System.Drawing.Size(61, 20);
+            this.tsslType.Size = new System.Drawing.Size(48, 17);
             this.tsslType.Text = "tsslType";
             // 
             // tsslDateTime
             // 
             this.tsslDateTime.Name = "tsslDateTime";
-            this.tsslDateTime.Size = new System.Drawing.Size(95, 20);
+            this.tsslDateTime.Size = new System.Drawing.Size(74, 17);
             this.tsslDateTime.Text = "tsslDateTime";
             // 
             // frm_MsgBox
@@ -355,7 +355,7 @@
             this.Controls.Add(this.statusStrip1);
             this.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.ForeColor = System.Drawing.Color.Navy;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MinimumSize = new System.Drawing.Size(530, 500);
             this.Name = "frm_MsgBox";
             this.Opacity = 0.95D;

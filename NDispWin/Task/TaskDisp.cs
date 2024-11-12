@@ -809,6 +809,7 @@ namespace NDispWin
         public static int Idle_PurgeDuration = 0;//(ms)
         public static int Idle_PostVacTime = 0;//(ms)
         public static int Idle_PurgeInterval = 5;//(s)
+        public static EMaintPos Idle_Position = EMaintPos.Purge;
 
         public static string[] WeightProgramName = new string[2] { "", "" };
         public static EHeadNo[] WeightProgramHead = new EHeadNo[2] { EHeadNo.Head1, EHeadNo.Head1 };
@@ -1233,6 +1234,7 @@ namespace NDispWin
             Idle_PurgeDuration = IniFile.ReadInteger("Idle", "PurgeDuration", 100);
             Idle_PostVacTime = IniFile.ReadInteger("Idle", "PostVacTime", 100);
             Idle_PurgeInterval = IniFile.ReadInteger("Idle", "PurgeInterval", 60);
+            Idle_Position = (EMaintPos)IniFile.ReadInteger("Idle", "Position", (int)EMaintPos.Purge);
 
             #region Needle Weight
             //for (int i = 0; i < MAX_HEADCOUNT; i++)
@@ -1540,6 +1542,7 @@ namespace NDispWin
             IniFile.WriteInteger("Idle", "PurgeDuration", Idle_PurgeDuration);
             IniFile.WriteInteger("Idle", "PostVacTime", Idle_PostVacTime);
             IniFile.WriteInteger("Idle", "PurgeInterval", Idle_PurgeInterval);
+            IniFile.WriteInteger("Idle", "Position", (int)Idle_Position);
 
             #region Needle PreDisp
             //for (int i = 0; i < MAX_HEADCOUNT; i++)
@@ -4573,7 +4576,7 @@ namespace NDispWin
                 }
                 #endregion
                 TaskDisp.Camera_LaserOfst_LightRGB = TaskVision.CurrentLightRGBA;
-                TaskVision.LightingOn(TaskVision.DefLightRGB);
+                TaskVision.LightingOff();
                 #endregion
 
                 double CX = TaskGantry.GXPos();
@@ -4581,11 +4584,8 @@ namespace NDispWin
 
                 double LaserPosX = 0;
                 double LaserPosY = 0;
-                //double LaserZValue = 0;
 
                 #region Teach Laser Position
-                //if (GDefine.HSensorType > GDefine.EHeightSensorType.None)
-                //{
                 if (!TaskDisp.TaskMoveGZZ2Up()) return false;
 
                 if (!TaskGantry.SetMotionParamGXY()) return false;
@@ -4602,12 +4602,7 @@ namespace NDispWin
 
                 LaserPosX = TaskGantry.GXPos();
                 LaserPosY = TaskGantry.GYPos();
-                //double i = 0;
-                //if (!TaskLaser.GetHeight(ref i)) return false;
-                //LaserZValue = i;
 
-                //string s = (LaserPosX - CX).ToString("f3") + "," + (LaserPosY - CY).ToString("f3") + "/" + LaserZValue.ToString("f4");
-                //Event.Log("Laser Ofst/Laser Value", s);
                 string s = (LaserPosX - CX).ToString("f3") + "," + (LaserPosY - CY).ToString("f3");
                 Event.SETUP_LASER_OFST_UPDATE.Set("LaserOffset", s);
 
@@ -4644,8 +4639,6 @@ namespace NDispWin
 
                 Head_ZSensor_RefPosZ_Setup[0] = TouchZ1;
                 Head_ZSensor_RefPosZ[0] = Head_ZSensor_RefPosZ_Setup[0];
-                //Head_Ofst_Setup[0].Z = 0;
-                //Head_Ofst[0].Z = Head_Ofst_Setup[0].Z;
                 Head_Ofst[0].Z = 0;
 
                 Laser_Ofst.X = LaserPosX - CX;
@@ -4672,12 +4665,11 @@ namespace NDispWin
                     }
                 }
 
+                TaskVision.LightingOn(TaskVision.DefLightRGB);
 
                 #region Computation
                 Head_ZSensor_RefPosZ_Setup[1] = TouchZ2;
                 Head_ZSensor_RefPosZ[1] = Head_ZSensor_RefPosZ_Setup[1];
-                //Head_Ofst_Setup[1].Z = 0;
-                //Head_Ofst[1].Z = Head_Ofst_Setup[1].Z;
                 Head_Ofst[1].Z = 0;
                 #endregion
             }
@@ -4725,17 +4717,13 @@ namespace NDispWin
                     return false;
                 }
                 #endregion
-                //TaskDisp.Camera_Cal_LightRGB = TaskVision.CurrentLightRGBA;
+                TaskDisp.Camera_LaserOfst_LightRGB = TaskVision.CurrentLightRGBA;
                 TaskVision.LightingOff();
-                //LightingTaskVision.DefLightRGB);
                 #endregion
 
                 double CX = TaskGantry.GXPos();
                 double CY = TaskGantry.GYPos();
 
-                //#region Teach Laser Position
-                //if (GDefine.HSensorType > GDefine.EHeightSensorType.None)
-                //{
                 TaskLaser.TrigMode = false;
 
                 #region Move Laser to ZSensor Pos
@@ -4883,15 +4871,6 @@ namespace NDispWin
                 #region Move to Laser Pos, Get LaserZValue
                 if (!TaskGantry.SetMotionParamGXY()) return false;
                 if (!TaskGantry.MoveAbsGXY(LaserPos_X, LaserPos_Y)) return false;
-                //if (!TaskGantry.AxesWait(TaskGantry.GXAxis, TaskGantry.GYAxis))
-
-                //double d_LaserZValue = 0;
-                //if (!TaskLaser.GetHeight(ref d_LaserZValue))
-                //{
-                //    Msg MsgBox = new Msg();
-                //    MsgBox.Show(ErrCode.LASER_OUT_OF_RANGE_ERR);
-                //    return false;
-                //}
 
                 _RetryLaser:
                 t = GDefine.GetTickCount() + TaskLaser.SettleTime;
@@ -4914,7 +4893,6 @@ namespace NDispWin
                 Event.SETUP_REFZ_UPDATE.Set("RefPos", d_ZSensor_LaserZ_New.ToString("f3"));
                 #endregion
 
-                TaskDisp.Camera_LaserOfst_LightRGB = TaskVision.CurrentLightRGBA;
                 TaskVision.LightingOn(TaskVision.DefLightRGB);
 
                 #region Computation
@@ -9335,7 +9313,19 @@ namespace NDispWin
 
                 TaskDisp.FPressOn(new bool[2] { DispA, DispB });
 
-                TPos3[] Pos3 = new TPos3[2] { TaskDisp.Needle_Purge_Pos[0], TaskDisp.Needle_Purge_Pos[1] };
+                TPos3[] Pos3 = new TPos3[2] { new TPos3(0, 0, 0), new TPos3(0, 0, 0) };
+                switch ((EMaintPos)Idle_Position)
+                {
+                    case EMaintPos.Clean:
+                        Pos3 = new TPos3[2] { new TPos3(Needle_Clean_Pos[0]), new TPos3(Needle_Clean_Pos[1]) };
+                        break;
+                    case EMaintPos.Purge:
+                        Pos3 = new TPos3[2] { new TPos3(Needle_Purge_Pos[0]), new TPos3(Needle_Purge_Pos[1]) };
+                        break;
+                    case EMaintPos.Flush:
+                        Pos3 = new TPos3[2] { new TPos3(Needle_Flush_Pos[0]), new TPos3(Needle_Flush_Pos[1]) };
+                        break;
+                }
 
                 if (!TaskDisp.TaskMoveGZZ2Up()) return false;
                 if (!TaskDisp.GotoXYPos(Pos3[0], Pos3[1])) return false;

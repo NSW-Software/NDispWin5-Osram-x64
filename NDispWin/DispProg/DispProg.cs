@@ -453,8 +453,8 @@ namespace NDispWin
             PAR_LINES = 461,
             /* Parameters
             ID              nil
-            IPara[0..9]     [ModelNo, .1., Disp, VHType, UseWeight, Reverse, .6., .7., .8., .9.]
-            DPara[0..9]     [LeadLen, LagLen, RelLeadHeight, RelLagHeight, AddLineTime, .5., StartOfst, EndOfst, .8., .9.]
+            IPara[0..9]     [ModelNo, .1., Disp, VHType, UseWeight, Reverse, EndDisp, .7., .8., .9.]
+            DPara[0..9]     [LeadLen, LagLen, RelLeadHeight, RelLagHeight, AddLineTime, .5., StartOfst, EndOfst, StartVolume, .9.]
             DPara[10..19]   [CutTailLength, Speed, Height, Type, ..]
             DPara[20..29]   [FirstLineMass, LineMass, LastLineMass, ..]
             X[0..99]        [XStart, ..]
@@ -11166,6 +11166,7 @@ namespace NDispWin
                                         int Col = 0; int Row = 0; int CCol = 0; int CRow = 0;
                                         rt_Layouts[rt_LayoutID].UnitNoGetRC(RunTime.UIndex, ref Col, ref Row, ref CCol, ref CRow);
                                         rt_Data.Index = RunTime.UIndex;
+                                        rt_Data.Index = ActiveLine.ID;
                                         rt_Data.Col = Col + 1;
                                         rt_Data.Row = Row + 1;
                                         rt_Data.CCol = CCol + 1;
@@ -11233,6 +11234,7 @@ namespace NDispWin
                                         int Col = 0; int Row = 0; int CCol = 0; int CRow = 0;
                                         rt_Layouts[rt_LayoutID].UnitNoGetRC(RunTime.UIndex2, ref Col, ref Row, ref CCol, ref CRow);
                                         rt_Data2.Index = RunTime.UIndex2;
+                                        rt_Data2.Index = ActiveLine.ID;
                                         rt_Data2.Col = Col + 1;
                                         rt_Data2.Row = Row + 1;
                                         rt_Data2.CCol = CCol + 1;

@@ -1221,13 +1221,16 @@ namespace NDispWin
                 EVHType vhType = EVHType.Hort;//0=Horizontal, 1=Vertical
                 try { vhType = (EVHType)Line.IPara[3]; } catch { };
 
-                double leadLength = Line.DPara[0];
-                double lagLength = Line.DPara[1];
-                double relLeadStartHeight = Line.DPara[2];
-                double relLagEndHeight = Line.DPara[3];
-                double addLineTime = Line.DPara[4];
+                bool endDispense = Line.IPara[6] > 0;
+
+                double startLength = Line.DPara[0];
+                double endLength = Line.DPara[1];
+                double startGap = Line.DPara[2];
+                double endGap = Line.DPara[3];
+                double speedAdjust = Line.DPara[4];
                 double startOfst = Line.DPara[6];
                 double endOfst = Line.DPara[7];
+                double startVolume = Line.DPara[8];
 
                 bool[] bHeadRun = new bool[2] { false, false };
                 bool bHead2IsValid = false;
@@ -1248,6 +1251,9 @@ namespace NDispWin
                                     {
                                         if (!TaskDisp.TaskGotoTPos2(TaskDisp.Needle_Clean_Pos)) goto _Error;
                                         if (!TFPump.PP4.PFill(pumpToFill)) goto _Error;
+
+                                        if (!TaskDisp.TaskCleanNeedle(bHeadRun[0], bHeadRun[1], RunMode == ERunMode.Normal)) goto _Error;
+                                        if (!TaskDisp.TaskPurgeNeedle(bHeadRun[0], bHeadRun[1], RunMode == ERunMode.Normal)) goto _Error;
                                     }
                                 }
 
@@ -1338,24 +1344,29 @@ namespace NDispWin
                 DispProg.UpdateZHeight(bSyncHead2, absEnd.X, absEnd.Y, absEnd.X, absEnd.Y, ref absEndZ[0], ref absEndZ[1]);//Head2 Z follow Head1
                 #endregion
 
-                //Calculate the start end ofst
-                //TPos2 relStartOfst = new TPos2(startOfst / lineLength * relLineEndXY.X, leadLength / lineLength * relLineEndXY.Y);
-
                 //Calculate the relative line end pos
                 TPos2 relLineEndXY = new TPos2(absEnd.X - absStart[0].X, absEnd.Y - absStart[0].Y);
                 double relEndZ = absEndZ[0] - absZ[0];
 
                 //Calculate the lead lag relative pos
                 double lineLength = Math.Sqrt(Math.Pow(relLineEndXY.X, 2) + Math.Pow(relLineEndXY.Y, 2));
-                TPos2 relLeadXY = new TPos2(leadLength / lineLength * relLineEndXY.X, leadLength / lineLength * relLineEndXY.Y);
-                TPos2 relLagXY = new TPos2(lagLength / lineLength * relLineEndXY.X, lagLength / lineLength * relLineEndXY.Y);
+                //TPos2 relLeadXY = new TPos2(leadLength / lineLength * relLineEndXY.X, leadLength / lineLength * relLineEndXY.Y);
+                //TPos2 relLagXY = new TPos2(lagLength / lineLength * relLineEndXY.X, lagLength / lineLength * relLineEndXY.Y);
 
                 TPos2 relStartOfstXY = new TPos2(startOfst / lineLength * relLineEndXY.X, startOfst / lineLength * relLineEndXY.Y);
                 TPos2 relEndOfstXY = new TPos2(endOfst / lineLength * relLineEndXY.X, endOfst / lineLength * relLineEndXY.Y);
 
+                //Calc the Rise and Fall relative pos
+                double constLineLength = lineLength - startLength - endLength;
+                TPos2 relStartXY = new TPos2(startLength / lineLength * relLineEndXY.X, startLength / lineLength * relLineEndXY.Y);
+                TPos2 relEndXY = new TPos2(endLength / lineLength * relLineEndXY.X, endLength / lineLength * relLineEndXY.Y);
+                TPos2 relConstXY = new TPos2(constLineLength / lineLength * relLineEndXY.X, constLineLength / lineLength * relLineEndXY.Y);
+
+
                 #region Move abs Start Pos + lead length, move head2 to position
                 if (!TaskGantry.SetMotionParamGXY()) goto _Error;
-                TPos2 GXY = new TPos2(absStart[0].X - relLeadXY.X + relStartOfstXY.X, absStart[0].Y - relLeadXY.Y + relStartOfstXY.Y);
+                //TPos2 GXY = new TPos2(absStart[0].X - relLeadXY.X + relStartOfstXY.X, absStart[0].Y - relLeadXY.Y + relStartOfstXY.Y);
+                TPos2 GXY = new TPos2(absStart[0].X + relStartOfstXY.X, absStart[0].Y + relStartOfstXY.Y);
                 if (RunMode == ERunMode.Normal || RunMode == ERunMode.Dry)
                 {
                     GXY.X += TaskDisp.Head_Ofst[0].X;
@@ -1396,7 +1407,9 @@ namespace NDispWin
                         }
                 }
 
-                double[] GZ = new double[] { Math.Min(absZ[0] + Model.DispGap + relLeadStartHeight, TaskDisp.ZDefPos), Math.Min(absZ[1] + Model.DispGap + TaskDisp.Head2_ZOffset + relLeadStartHeight, TaskDisp.ZDefPos) };//include H2 ZOffset
+                double[] GZ = new double[] { Math.Min(absZ[0] + Model.DispGap, TaskDisp.ZDefPos), Math.Min(absZ[1] + Model.DispGap + TaskDisp.Head2_ZOffset, TaskDisp.ZDefPos) };//include H2 ZOffset
+                if (startLength > 0)
+                    GZ = new double[] { Math.Min(absZ[0] + startGap, TaskDisp.ZDefPos), Math.Min(absZ[1] + TaskDisp.Head2_ZOffset + startGap, TaskDisp.ZDefPos) };//include H2 ZOffset
 
                 //Move to abs DispGap
                 switch (RunMode)
@@ -1438,7 +1451,7 @@ namespace NDispWin
                             //CControl2.TOutput[] Output = null;
                             //DispProg.Outputs(bHeadRun, ref Output);
                             //CommonControl.P1245.PathAddDO(Axis, Output, disp && RunMode == ERunMode.Normal);
-                            CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.GPDELAY, true, Model.StartDelay, 0, null, null);
+                            CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.GPDELAY, true, Model.DnWait, 0, null, null);
                             #endregion
 
                             CommonControl.P1245.SetAccel(Axis, Model.LineAccel);
@@ -1468,44 +1481,74 @@ namespace NDispWin
                                 double vol = targetWeight / TaskWeight.CurrentCal[0];
                                 double dispVol = vol + DispProg.PP_HeadA_BackSuckVol;
                                 DispProg.PP_HeadA_DispBaseVol = dispVol;
-                                double time = TaskDisp.CalcPPDispTime(dispVol) + addLineTime;
-                                //LineSpeed = (lineLength + leadLength + lagLength) / time;
+                                double time = TaskDisp.CalcPPDispTime(dispVol);// + addLineTime;
+                                time = time + (time * speedAdjust/100);
+
                                 LineSpeed = lineLength / time;
-                                Log.AddToEventLog($"DispVol(ul) {vol}, BSuck(ul) {DispProg.PP_HeadA_BackSuckVol}, LineSpeed {LineSpeed}");
+                                if (!endDispense)
+                                {
+                                    LineSpeed = (lineLength - endLength) / time;
+                                }
+                                Log.AddToEventLog($"DispVol(ul) {vol}, BSuck(ul) {DispProg.PP_HeadA_BackSuckVol}, LineTime {time}, LineSpeed {LineSpeed}");
                                 if (LineSpeed > 150) throw new Exception("Auto Line Speed over 150mm/s. Run Aborted.");
                             }
 
                             if (RunMode == ERunMode.Normal || RunMode == ERunMode.Dry)
                             {
                                 double nettDispVol = DispProg.PP_HeadA_DispBaseVol + DispProg.PP_HeadA_BackSuckVol;
-                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, LineSpeed, LineSpeed, new double[6] { relLeadXY.X, relLeadXY.Y, -relLeadStartHeight, -relLeadStartHeight, 0, 0 }, null);
-                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, LineSpeed, LineSpeed, new double[6] { relLineEndXY.X + relEndOfstXY.X, relLineEndXY.Y + relEndOfstXY.Y, relEndZ, relEndZ, -TFPump.PP4.LengthConversion(nettDispVol), 0 }, null);
-                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, LineSpeed, LineSpeed, new double[4] { relLagXY.X, relLagXY.Y, relLagEndHeight, relLagEndHeight }, null);
+                                double pp = -TFPump.PP4.LengthConversion(nettDispVol);
+
+                                double startDispVol = (pp - (-startVolume)) * startLength / lineLength;
+                                double fallDispVol = (pp - (-startVolume)) * endLength / lineLength;
+                                //double constDispVol = pp * constLineLength / lineLength;
+                                double constDispVol = pp - startDispVol - fallDispVol - (-startVolume);
+                                double dd = startDispVol + constDispVol + fallDispVol + (-startVolume);
+
+                                if (!endDispense)
+                                {
+                                    startDispVol = (pp - (- startVolume)) * startLength / (lineLength - endLength);
+                                    //constDispVol = pp * constLineLength / (lineLength - endLength);
+                                    //constDispVol = pp - startVolume;
+                                    constDispVol = pp - startDispVol - (-startVolume);
+                                    fallDispVol = 0;
+
+                                    dd = startDispVol + constDispVol + (-startVolume);
+                                }
+                                Log.AddToEventLog($"PP Dist {pp:f4} {startDispVol:f4}+{constDispVol:f4}+{fallDispVol:f4}+{-startVolume:f4}");
+
+                                //CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, LineSpeed, LineSpeed, new double[6] { relLeadXY.X, relLeadXY.Y, -relLeadStartHeight, -relLeadStartHeight, 0, 0 }, null);
+                                //CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, LineSpeed, LineSpeed, new double[6] { relLineEndXY.X + relEndOfstXY.X, relLineEndXY.Y + relEndOfstXY.Y, relEndZ, relEndZ, -TFPump.PP4.LengthConversion(nettDispVol), 0 }, null);
+                                //CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, LineSpeed, LineSpeed, new double[4] { relLagXY.X, relLagXY.Y, relLagEndHeight, relLagEndHeight }, null);
+                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, LineSpeed, 0, new double[6] { 0, 0, 0, 0, -startVolume, 0 }, null);
+                                if (startLength > 0) CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, LineSpeed, 0, new double[6] { relStartXY.X, relStartXY.Y, Model.DispGap - startGap, 0, startDispVol, 0 }, null);
+                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, LineSpeed, LineSpeed, new double[6] { relConstXY.X + relEndOfstXY.X, relConstXY.Y + relEndOfstXY.Y, relEndZ, 0, constDispVol, 0 }, null);
+                                if (endLength > 0) CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, LineSpeed, 0, new double[6] { relEndXY.X, relEndXY.Y, endGap - Model.DispGap, 0, fallDispVol, 0 }, null);
                             }
                             else
                             {
-                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, LineSpeed, LineSpeed, new double[4] { relLeadXY.X, relLeadXY.Y, 0, 0 }, null);
-                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, LineSpeed, LineSpeed, new double[4] { relLineEndXY.X, relLineEndXY.Y, 0, 0 }, null);
-                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, LineSpeed, LineSpeed, new double[4] { relLagXY.X, relLagXY.Y, 0, 0 }, null);
+                                //CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, LineSpeed, LineSpeed, new double[4] { relLeadXY.X, relLeadXY.Y, 0, 0 }, null);
+                                //CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, LineSpeed, LineSpeed, new double[4] { relLineEndXY.X, relLineEndXY.Y, 0, 0 }, null);
+                                //CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, LineSpeed, LineSpeed, new double[4] { relLagXY.X, relLagXY.Y, 0, 0 }, null);
+                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, LineSpeed, LineSpeed, new double[6] { relStartXY.X, relStartXY.Y, 0, 0, 0, 0 }, null);
+                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, LineSpeed, LineSpeed, new double[6] { relConstXY.X + relEndOfstXY.X, relConstXY.Y + relEndOfstXY.Y, 0, 0, 0, 0 }, null);
+                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, LineSpeed, LineSpeed, new double[6] { relEndXY.X, relEndXY.Y, 0, 0, 0, 0 }, null);
                             }
 
                             CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.GPDELAY, true, Model.PostWait, 0, null, null);
 
                             #region Path CutTail
-                            //double priorLineLength = Math.Sqrt(Math.Pow(relLagXY.X, 2) + Math.Pow(relLagXY.Y, 2));
-                            //if (priorLineLength == 0) goto _SkipCutTail;
                             double cutTailLength = Line.DPara[10];
                             double priorLineLength = lineLength;
                             double extRelX = relLineEndXY.X * cutTailLength / priorLineLength;
                             double extRelY = relLineEndXY.Y * cutTailLength / priorLineLength;
 
-                            double lagLineLength = Math.Sqrt(Math.Pow(relLagXY.X, 2) + Math.Pow(relLagXY.Y, 2));
+                            double lagLineLength = Math.Sqrt(Math.Pow(relEndXY.X, 2) + Math.Pow(relEndXY.Y, 2));
                             if (lagLineLength > 0)
                             //goto _SkipCutTail;
                             {
                                 priorLineLength = lagLineLength;
-                                extRelX = relLagXY.X * cutTailLength / priorLineLength;
-                                extRelY = relLagXY.Y * cutTailLength / priorLineLength;
+                                extRelX = relEndXY.X * cutTailLength / priorLineLength;
+                                extRelY = relEndXY.Y * cutTailLength / priorLineLength;
                             }
 
                             double cutTailSpeed = Line.DPara[11];
@@ -1594,8 +1637,8 @@ namespace NDispWin
                                 double vol = targetWeight / TaskWeight.CurrentCal[0];
                                 double dispVol = vol + DispProg.PP_HeadA_BackSuckVol;
                                 DispProg.PP_HeadA_DispBaseVol = dispVol;
-                                double time = TaskDisp.CalcPPDispTime(dispVol) + addLineTime;
-                                LineSpeed = (lineLength + leadLength + lagLength) / time;
+                                double time = TaskDisp.CalcPPDispTime(dispVol) + speedAdjust;
+                                LineSpeed = (lineLength + startLength + endLength) / time;
                                 Log.AddToEventLog($"DispVol(ul) {vol}, BSuck(ul) {DispProg.PP_HeadA_BackSuckVol}, LineSpeed {LineSpeed}");
                                 if (LineSpeed > 100) throw new Exception("Auto Line Speed over 50mm/s. Run Aborted.");
 
@@ -1610,17 +1653,17 @@ namespace NDispWin
 
                             if (RunMode == ERunMode.Normal || RunMode == ERunMode.Dry)
                             {
-                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel4DDirect, false, LineSpeed, LineSpeed, new double[4] { relLeadXY.X, relLeadXY.Y, -relLeadStartHeight, -relLeadStartHeight }, null);
-                                CommonControl.P1245.PathAddDO(Axis, Output, disp && RunMode == ERunMode.Normal);
-                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel4DDirect, false, LineSpeed, LineSpeed, new double[4] { relLineEndXY.X, relLineEndXY.Y, relEndZ, relEndZ }, null);
-                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel4DDirect, false, LineSpeed, LineSpeed, new double[4] { relLagXY.X, relLagXY.Y, relLagEndHeight, relLagEndHeight }, null);
-                                CommonControl.P1245.PathAddDO(Axis, Output, false);
+                                //CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel4DDirect, false, LineSpeed, LineSpeed, new double[4] { relLeadXY.X, relLeadXY.Y, -relRiseHeight, -relRiseHeight }, null);
+                                //CommonControl.P1245.PathAddDO(Axis, Output, disp && RunMode == ERunMode.Normal);
+                                //CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel4DDirect, false, LineSpeed, LineSpeed, new double[4] { relLineEndXY.X, relLineEndXY.Y, relEndZ, relEndZ }, null);
+                                //CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel4DDirect, false, LineSpeed, LineSpeed, new double[4] { relLagXY.X, relLagXY.Y, relFallHeight, relFallHeight }, null);
+                                //CommonControl.P1245.PathAddDO(Axis, Output, false);
                             }
                             else
                             {
-                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel4DDirect, false, LineSpeed, LineSpeed, new double[4] { relLeadXY.X, relLeadXY.Y, 0, 0 }, null);
-                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel4DDirect, false, LineSpeed, LineSpeed, new double[4] { relLineEndXY.X, relLineEndXY.Y, 0, 0 }, null);
-                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel4DDirect, false, LineSpeed, LineSpeed, new double[4] { relLagXY.X, relLagXY.Y, 0, 0 }, null);
+                                //CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel4DDirect, false, LineSpeed, LineSpeed, new double[4] { relLeadXY.X, relLeadXY.Y, 0, 0 }, null);
+                                //CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel4DDirect, false, LineSpeed, LineSpeed, new double[4] { relLineEndXY.X, relLineEndXY.Y, 0, 0 }, null);
+                                //CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel4DDirect, false, LineSpeed, LineSpeed, new double[4] { relLagXY.X, relLagXY.Y, 0, 0 }, null);
                             }
 
                             CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.GPDELAY, true, Model.PostWait, 0, null, null);
@@ -1633,13 +1676,13 @@ namespace NDispWin
                             double extRelX = relLineEndXY.X * cutTailLength / priorLineLength;
                             double extRelY = relLineEndXY.Y * cutTailLength / priorLineLength;
 
-                            double lagLineLength = Math.Sqrt(Math.Pow(relLagXY.X, 2) + Math.Pow(relLagXY.Y, 2));
+                            double lagLineLength = Math.Sqrt(Math.Pow(relEndXY.X, 2) + Math.Pow(relEndXY.Y, 2));
                             if (lagLineLength > 0)
                             //goto _SkipCutTail;
                             {
                                 priorLineLength = lagLineLength;
-                                extRelX = relLagXY.X * cutTailLength / priorLineLength;
-                                extRelY = relLagXY.Y * cutTailLength / priorLineLength;
+                                extRelX = relEndXY.X * cutTailLength / priorLineLength;
+                                extRelY = relEndXY.Y * cutTailLength / priorLineLength;
                             }
 
                             double cutTailSpeed = Line.DPara[11];

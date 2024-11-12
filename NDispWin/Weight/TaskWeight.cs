@@ -608,9 +608,8 @@ namespace NDispWin
                                     for (int i = 0; i < iDotsPerSample(measType); i++)
                                     {
                                         if (!TFPump.PP4.Ready(new bool[] { b_Head1Run, b_Head2Run })) goto _Error;
-                                        bool filling = false;
-                                        if (!TFPump.PP4.CheckStrokeThenFill(new bool[] { b_Head1Run, b_Head2Run }, ref filling)) goto _Error;
-                                        if (!filling) isFilling = true;
+                                        if (!TFPump.PP4.CheckStrokeThenFill(new bool[] { b_Head1Run, b_Head2Run })) goto _Error;
+                                        if (!isFilling) isFilling = TFPump.PP4.IsFilled(new bool[] { b_Head1Run, b_Head2Run });
                                         if (!TFPump.PP4.SingleShot(new bool[] { b_Head1Run, b_Head2Run })) goto _Error;
                                         Thread.Sleep(100);
                                     }

@@ -432,6 +432,7 @@
             this.zg1.ScrollMinY2 = 0D;
             this.zg1.Size = new System.Drawing.Size(655, 339);
             this.zg1.TabIndex = 192;
+            this.zg1.UseExtendedPrintDialog = true;
             // 
             // groupBox1
             // 
@@ -473,7 +474,7 @@
             // 
             // label16
             // 
-            this.label16.Location = new System.Drawing.Point(160, 48);
+            this.label16.Location = new System.Drawing.Point(155, 47);
             this.label16.Margin = new System.Windows.Forms.Padding(2);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(70, 23);

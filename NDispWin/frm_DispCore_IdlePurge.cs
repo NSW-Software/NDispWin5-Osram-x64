@@ -122,12 +122,6 @@ namespace NDispWin
         {
             if (TaskDisp.Idle_PurgeInterval == 0) return;
 
-            //if (!GDefine.SwDoor)
-            //{
-            //    btn_Stop_Click(sender, e);
-            //    TaskGantry.CheckDoorSw();
-            //    return;
-            //}
             if (!TaskGantry.CheckDoorSw())
             {
                 btn_Stop_Click(sender, e);
@@ -160,10 +154,7 @@ namespace NDispWin
             this.BringToFront();
 
             tmr_NextPurge--;
-            pbar_TimeToPurge.Maximum = TaskDisp.Idle_PurgeInterval;
-            pbar_TimeToPurge.Value = Math.Min(5, TaskDisp.Idle_PurgeInterval - tmr_NextPurge);
+            lblDesc.Text = "Purge in " + tmr_NextPurge + " s.";
         }
-
-
     }
 }
