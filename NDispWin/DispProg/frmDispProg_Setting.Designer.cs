@@ -140,9 +140,7 @@
             this.lbl_PurgeStageInterval = new System.Windows.Forms.Label();
             this.label33 = new System.Windows.Forms.Label();
             this.lbl_PurgeStageCount = new System.Windows.Forms.Label();
-            this.lbl_PurgeStageOnStartCount = new System.Windows.Forms.Label();
             this.label40 = new System.Windows.Forms.Label();
-            this.label41 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpStation = new System.Windows.Forms.TabPage();
@@ -152,6 +150,13 @@
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.tpAdvance = new System.Windows.Forms.TabPage();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.lblOnStartCleanCount = new System.Windows.Forms.Label();
+            this.label32 = new System.Windows.Forms.Label();
+            this.label34 = new System.Windows.Forms.Label();
+            this.label35 = new System.Windows.Forms.Label();
+            this.lblOnStartPurgeStageCount = new System.Windows.Forms.Label();
+            this.lblOnStartPurgeCount = new System.Windows.Forms.Label();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.lblClstr2ZOfst_ = new System.Windows.Forms.Label();
             this.lblClstr2ZOfst = new System.Windows.Forms.Label();
@@ -171,6 +176,7 @@
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.tpAdvance.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.groupBox8.SuspendLayout();
             this.gboxTempCtrl.SuspendLayout();
@@ -1473,19 +1479,6 @@
             this.lbl_PurgeStageCount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lbl_PurgeStageCount.Click += new System.EventHandler(this.lbl_PurgeStageCount_Click);
             // 
-            // lbl_PurgeStageOnStartCount
-            // 
-            this.lbl_PurgeStageOnStartCount.BackColor = System.Drawing.Color.White;
-            this.lbl_PurgeStageOnStartCount.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_PurgeStageOnStartCount.Location = new System.Drawing.Point(227, 74);
-            this.lbl_PurgeStageOnStartCount.Margin = new System.Windows.Forms.Padding(2);
-            this.lbl_PurgeStageOnStartCount.Name = "lbl_PurgeStageOnStartCount";
-            this.lbl_PurgeStageOnStartCount.Size = new System.Drawing.Size(70, 23);
-            this.lbl_PurgeStageOnStartCount.TabIndex = 150;
-            this.lbl_PurgeStageOnStartCount.Text = "0";
-            this.lbl_PurgeStageOnStartCount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lbl_PurgeStageOnStartCount.Click += new System.EventHandler(this.lbl_PurgeStageOnStartCount_Click);
-            // 
             // label40
             // 
             this.label40.Location = new System.Drawing.Point(5, 20);
@@ -1495,16 +1488,6 @@
             this.label40.TabIndex = 149;
             this.label40.Text = "Count";
             this.label40.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label41
-            // 
-            this.label41.Location = new System.Drawing.Point(5, 74);
-            this.label41.Margin = new System.Windows.Forms.Padding(2);
-            this.label41.Name = "label41";
-            this.label41.Size = new System.Drawing.Size(218, 23);
-            this.label41.TabIndex = 148;
-            this.label41.Text = "Count On Start";
-            this.label41.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tabControl1
             // 
@@ -1549,7 +1532,7 @@
             this.groupBox2.Controls.Add(this.btn_GotoStationZ);
             this.groupBox2.Location = new System.Drawing.Point(6, 287);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(450, 104);
+            this.groupBox2.Size = new System.Drawing.Size(450, 100);
             this.groupBox2.TabIndex = 171;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Adjust";
@@ -1607,7 +1590,7 @@
             this.groupBox4.Controls.Add(this.pnl_CalWeight);
             this.groupBox4.Location = new System.Drawing.Point(6, 163);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(614, 224);
+            this.groupBox4.Size = new System.Drawing.Size(614, 220);
             this.groupBox4.TabIndex = 1;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Setting";
@@ -1630,6 +1613,7 @@
             // 
             // tpAdvance
             // 
+            this.tpAdvance.Controls.Add(this.groupBox5);
             this.tpAdvance.Controls.Add(this.groupBox7);
             this.tpAdvance.Controls.Add(this.groupBox8);
             this.tpAdvance.Controls.Add(this.gboxTempCtrl);
@@ -1642,6 +1626,93 @@
             this.tpAdvance.Text = "Advance";
             this.tpAdvance.UseVisualStyleBackColor = true;
             // 
+            // groupBox5
+            // 
+            this.groupBox5.AutoSize = true;
+            this.groupBox5.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox5.Controls.Add(this.lblOnStartCleanCount);
+            this.groupBox5.Controls.Add(this.label32);
+            this.groupBox5.Controls.Add(this.label34);
+            this.groupBox5.Controls.Add(this.label35);
+            this.groupBox5.Controls.Add(this.lblOnStartPurgeStageCount);
+            this.groupBox5.Controls.Add(this.lblOnStartPurgeCount);
+            this.groupBox5.Location = new System.Drawing.Point(314, 146);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.groupBox5.Size = new System.Drawing.Size(302, 114);
+            this.groupBox5.TabIndex = 5;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "On Start";
+            // 
+            // lblOnStartCleanCount
+            // 
+            this.lblOnStartCleanCount.BackColor = System.Drawing.Color.White;
+            this.lblOnStartCleanCount.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblOnStartCleanCount.Location = new System.Drawing.Point(227, 20);
+            this.lblOnStartCleanCount.Margin = new System.Windows.Forms.Padding(2);
+            this.lblOnStartCleanCount.Name = "lblOnStartCleanCount";
+            this.lblOnStartCleanCount.Size = new System.Drawing.Size(70, 23);
+            this.lblOnStartCleanCount.TabIndex = 153;
+            this.lblOnStartCleanCount.Text = "0";
+            this.lblOnStartCleanCount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblOnStartCleanCount.Click += new System.EventHandler(this.lblOnStartCleanCount_Click);
+            // 
+            // label32
+            // 
+            this.label32.Location = new System.Drawing.Point(5, 47);
+            this.label32.Margin = new System.Windows.Forms.Padding(2);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(218, 23);
+            this.label32.TabIndex = 149;
+            this.label32.Text = "Purge (count)";
+            this.label32.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label34
+            // 
+            this.label34.Location = new System.Drawing.Point(5, 20);
+            this.label34.Margin = new System.Windows.Forms.Padding(2);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(218, 23);
+            this.label34.TabIndex = 152;
+            this.label34.Text = "Clean (count)";
+            this.label34.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label35
+            // 
+            this.label35.Location = new System.Drawing.Point(5, 74);
+            this.label35.Margin = new System.Windows.Forms.Padding(2);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(218, 23);
+            this.label35.TabIndex = 148;
+            this.label35.Text = "Purge Stage (count)";
+            this.label35.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblOnStartPurgeStageCount
+            // 
+            this.lblOnStartPurgeStageCount.BackColor = System.Drawing.Color.White;
+            this.lblOnStartPurgeStageCount.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblOnStartPurgeStageCount.Location = new System.Drawing.Point(227, 74);
+            this.lblOnStartPurgeStageCount.Margin = new System.Windows.Forms.Padding(2);
+            this.lblOnStartPurgeStageCount.Name = "lblOnStartPurgeStageCount";
+            this.lblOnStartPurgeStageCount.Size = new System.Drawing.Size(70, 23);
+            this.lblOnStartPurgeStageCount.TabIndex = 150;
+            this.lblOnStartPurgeStageCount.Text = "0";
+            this.lblOnStartPurgeStageCount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblOnStartPurgeStageCount.Click += new System.EventHandler(this.lbl_OnStartPurgeStageCount_Click);
+            // 
+            // lblOnStartPurgeCount
+            // 
+            this.lblOnStartPurgeCount.BackColor = System.Drawing.Color.White;
+            this.lblOnStartPurgeCount.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblOnStartPurgeCount.Location = new System.Drawing.Point(227, 47);
+            this.lblOnStartPurgeCount.Margin = new System.Windows.Forms.Padding(2);
+            this.lblOnStartPurgeCount.Name = "lblOnStartPurgeCount";
+            this.lblOnStartPurgeCount.Size = new System.Drawing.Size(70, 23);
+            this.lblOnStartPurgeCount.TabIndex = 151;
+            this.lblOnStartPurgeCount.Text = "0";
+            this.lblOnStartPurgeCount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblOnStartPurgeCount.Click += new System.EventHandler(this.lblOnStartPurgeCount_Click);
+            // 
             // groupBox7
             // 
             this.groupBox7.AutoSize = true;
@@ -1653,7 +1724,7 @@
             this.groupBox7.Controls.Add(this.lbl_DispCtrl_ForceTimeMode);
             this.groupBox7.Location = new System.Drawing.Point(314, 6);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(302, 138);
+            this.groupBox7.Size = new System.Drawing.Size(302, 134);
             this.groupBox7.TabIndex = 4;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Options";
@@ -1689,7 +1760,7 @@
             this.cbEnableProcessLog.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbEnableProcessLog.Location = new System.Drawing.Point(6, 52);
             this.cbEnableProcessLog.Name = "cbEnableProcessLog";
-            this.cbEnableProcessLog.Size = new System.Drawing.Size(155, 22);
+            this.cbEnableProcessLog.Size = new System.Drawing.Size(131, 18);
             this.cbEnableProcessLog.TabIndex = 149;
             this.cbEnableProcessLog.Text = "Enable Process Log";
             this.cbEnableProcessLog.UseVisualStyleBackColor = true;
@@ -1708,7 +1779,7 @@
             this.groupBox8.Location = new System.Drawing.Point(6, 327);
             this.groupBox8.Name = "groupBox8";
             this.groupBox8.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.groupBox8.Size = new System.Drawing.Size(305, 93);
+            this.groupBox8.Size = new System.Drawing.Size(305, 89);
             this.groupBox8.TabIndex = 3;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Bias Kernel";
@@ -1741,7 +1812,7 @@
             this.gboxTempCtrl.Controls.Add(this.lbl_PV2);
             this.gboxTempCtrl.Location = new System.Drawing.Point(6, 130);
             this.gboxTempCtrl.Name = "gboxTempCtrl";
-            this.gboxTempCtrl.Size = new System.Drawing.Size(302, 191);
+            this.gboxTempCtrl.Size = new System.Drawing.Size(302, 187);
             this.gboxTempCtrl.TabIndex = 2;
             this.gboxTempCtrl.TabStop = false;
             this.gboxTempCtrl.Text = "Temperature Ctrl";
@@ -1754,13 +1825,11 @@
             this.groupBox6.Controls.Add(this.lbl_PurgeStageInterval);
             this.groupBox6.Controls.Add(this.label40);
             this.groupBox6.Controls.Add(this.label33);
-            this.groupBox6.Controls.Add(this.label41);
             this.groupBox6.Controls.Add(this.lbl_PurgeStageCount);
-            this.groupBox6.Controls.Add(this.lbl_PurgeStageOnStartCount);
             this.groupBox6.Location = new System.Drawing.Point(6, 6);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.groupBox6.Size = new System.Drawing.Size(302, 118);
+            this.groupBox6.Size = new System.Drawing.Size(302, 87);
             this.groupBox6.TabIndex = 1;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Purge Stage";
@@ -1801,6 +1870,7 @@
             this.groupBox3.PerformLayout();
             this.tpAdvance.ResumeLayout(false);
             this.tpAdvance.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
             this.groupBox8.ResumeLayout(false);
@@ -1869,9 +1939,7 @@
         private System.Windows.Forms.Label lbl_PurgeStageInterval;
         private System.Windows.Forms.Label label33;
         private System.Windows.Forms.Label lbl_PurgeStageCount;
-        private System.Windows.Forms.Label lbl_PurgeStageOnStartCount;
         private System.Windows.Forms.Label label40;
-        private System.Windows.Forms.Label label41;
         private System.Windows.Forms.Label label39;
         private System.Windows.Forms.Panel pnl_TargetWeight;
         private System.Windows.Forms.Panel pnl_CalWeight;
@@ -1942,5 +2010,12 @@
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.Label label30;
         private System.Windows.Forms.Label lblMeasWeight;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.Label lblOnStartCleanCount;
+        private System.Windows.Forms.Label label32;
+        private System.Windows.Forms.Label label34;
+        private System.Windows.Forms.Label label35;
+        private System.Windows.Forms.Label lblOnStartPurgeCount;
+        private System.Windows.Forms.Label lblOnStartPurgeStageCount;
     }
 }

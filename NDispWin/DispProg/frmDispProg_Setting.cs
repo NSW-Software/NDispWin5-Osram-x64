@@ -129,9 +129,12 @@ namespace NDispWin
             #endregion
 
             #region Advance
-            lbl_PurgeStageCount.Text = DispProg.PurgeStage.Count.ToString();
-            lbl_PurgeStageInterval.Text = DispProg.PurgeStage.Interval.ToString();
-            lbl_PurgeStageOnStartCount.Text = DispProg.PurgeStage.OnStartCount.ToString();
+            //lbl_PurgeStageCount.Text = DispProg.PurgeStage.Count.ToString();
+            //lbl_PurgeStageInterval.Text = DispProg.PurgeStage.Interval.ToString();
+            //lbl_OnStartPurgeStageCount2.Text = DispProg.PurgeStage.OnStartCount.ToString();
+            lblOnStartPurgeStageCount.Text = $"{DispProg.OnStart.PurgeStageCount}";
+            lblOnStartCleanCount.Text = $"{DispProg.OnStart.CleanCount}";
+            lblOnStartPurgeCount.Text = $"{DispProg.OnStart.PurgeCount}";
 
             gboxTempCtrl.Visible = GDefine.TempCtrl_Type == GDefine.ETempCtrl.Autonics_TX_TK;
             if (GDefine.TempCtrl_Type == GDefine.ETempCtrl.Autonics_TX_TK)
@@ -455,11 +458,6 @@ namespace NDispWin
             UC.AdjustExec("Disp Prog, Purge Stage Interval", ref DispProg.PurgeStage.Interval, 0, 5000);
             UpdateDisplay();
         }
-        private void lbl_PurgeStageOnStartCount_Click(object sender, EventArgs e)
-        {
-            UC.AdjustExec("Disp Prog, Purge Stage OnStart Count", ref DispProg.PurgeStage.OnStartCount, 0, 100);
-            UpdateDisplay();
-        }
 
         private void lbl_SV0_Click(object sender, EventArgs e)
         {
@@ -594,6 +592,22 @@ namespace NDispWin
             UpdateDisplay();
         }
 
+        private void lbl_OnStartPurgeStageCount_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec("Disp Prog, OnStart Purge Stage Count", ref DispProg.OnStart.PurgeStageCount, 0, 5);
+            UpdateDisplay();
+        }
 
+        private void lblOnStartCleanCount_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec("Disp Prog, OnStart Clean Count", ref DispProg.OnStart.CleanCount, 0, 5);
+            UpdateDisplay();
+        }
+
+        private void lblOnStartPurgeCount_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec("Disp Prog, OnStart Purge Count", ref DispProg.OnStart.PurgeCount, 0, 5);
+            UpdateDisplay();
+        }
     }
 }

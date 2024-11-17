@@ -740,7 +740,13 @@ namespace NDispWin
         {
             public static int Count = 0;//Purge Count
             public static int Interval = 0;//0-disable
-            public static int OnStartCount = 0;//0-disable
+        }
+
+        public class OnStart
+        {
+            public static int PurgeCount = 0;//0-disable
+            public static int CleanCount = 0;//0-disable
+            public static int PurgeStageCount = 0;//0-disable
         }
 
         public static double PP_HeadA_Min_Volume = 0;
@@ -987,9 +993,9 @@ namespace NDispWin
                 IniFile.WriteDouble("Heater", "Range" + i.ToString(), HeaterRange[i]);
             }
 
-            IniFile.WriteInteger("PurgeStage", "Count", PurgeStage.Count);
-            IniFile.WriteInteger("PurgeStage", "Interval", PurgeStage.Interval);
-            IniFile.WriteInteger("PurgeStage", "OnStartCount", PurgeStage.OnStartCount);
+            IniFile.WriteInteger("OnStart", "PurgeStageCount", OnStart.PurgeStageCount);
+            IniFile.WriteInteger("OnStart", "CleanCount", OnStart.CleanCount);
+            IniFile.WriteInteger("OnStart", "PurgeCount", OnStart.PurgeCount);
 
             IniFile.WriteString("BiasKernel", "File", BiasKernelFile);
 
@@ -1180,9 +1186,9 @@ namespace NDispWin
                 FlowRate.TargetFlowrate = IniFile.ReadFloat("FlowRate", "Target", 3.0);
                 FlowRate.TargetFlowRateTol = IniFile.ReadFloat("FlowRate", "Tol", 0.1);
 
-                PurgeStage.Count = IniFile.ReadInteger("PurgeStage", "Count", 0);
-                PurgeStage.Interval = IniFile.ReadInteger("PurgeStage", "Interval", 0);
-                PurgeStage.OnStartCount = IniFile.ReadInteger("PurgeStage", "OnStartCount", 0);
+                OnStart.PurgeStageCount = IniFile.ReadInteger("OnStart", "PurgeStageCount", 0);
+                OnStart.CleanCount = IniFile.ReadInteger("OnStart", "CleanCount", 0);
+                OnStart.PurgeCount = IniFile.ReadInteger("OnStart", "PurgeCount", 0);
 
                 BiasKernelFile = IniFile.ReadString("BiasKernel", "File", BiasKernelFile);
 
@@ -1558,7 +1564,17 @@ namespace NDispWin
 
                 WriteSubEntry(writer, "Count", PurgeStage.Count);
                 WriteSubEntry(writer, "Interval", PurgeStage.Interval);
-                WriteSubEntry(writer, "OnStartCount", PurgeStage.OnStartCount);
+
+                writer.WriteEndElement();//end entry
+                #endregion
+
+                #region section = OnStart
+                writer.WriteStartElement("entry");
+                writer.WriteAttributeString("name", "OnStart");
+
+                WriteSubEntry(writer, "PurgeStageCount", OnStart.PurgeStageCount);
+                WriteSubEntry(writer, "CleanCount", OnStart.CleanCount);
+                WriteSubEntry(writer, "PurgeCount", OnStart.PurgeCount);
 
                 writer.WriteEndElement();//end entry
                 #endregion
@@ -2328,8 +2344,29 @@ namespace NDispWin
                                                             PurgeStage.Count = ReadSubEntry(reader, 0); break;
                                                         case "Interval":
                                                             PurgeStage.Interval = ReadSubEntry(reader, 0); break;
-                                                        case "OnStartCount":
-                                                            PurgeStage.OnStartCount = ReadSubEntry(reader, 0); break;
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        if (reader.Name == "entry" && reader["name"] == "OnStart")
+                                        {
+                                            while (reader.Read())
+                                            {
+                                                if (reader.Name == "entry" && reader.MoveToContent() == XmlNodeType.EndElement) break;
+
+                                                if (reader.Name == "subentry")
+                                                {
+                                                    string attName = reader["name"];
+
+                                                    switch (attName)
+                                                    {
+                                                        case "PurgeStageCount":
+                                                            OnStart.PurgeStageCount = ReadSubEntry(reader, 0); break;
+                                                        case "CleanCount":
+                                                            OnStart.CleanCount = ReadSubEntry(reader, 0); break;
+                                                        case "PurgeCount":
+                                                            OnStart.PurgeCount = ReadSubEntry(reader, 0); break;
                                                     }
                                                 }
                                             }
@@ -4539,9 +4576,25 @@ namespace NDispWin
                 switch (RunMode)
                 {
                     case ERunMode.Normal:
-                        if (PurgeStage.OnStartCount > 0)
+
+                        EHeadNo HeadNo = EHeadNo.Head1;
+                        if (TaskDisp.Head_Operation == TaskDisp.EHeadOperation.Sync) HeadNo = EHeadNo.Head12;
+                        bool b_Head1 = (HeadNo == EHeadNo.Head1 || HeadNo == EHeadNo.Head12);
+                        bool b_Head2 = (HeadNo == EHeadNo.Head2 || HeadNo == EHeadNo.Head12);
+
+                        if (OnStart.CleanCount > 0)
                         {
-                            if (!TaskDisp.PurgeStage.Execute(PurgeStage.OnStartCount)) goto _Pause;
+                            if (!TaskDisp.TaskCleanNeedle(b_Head1, b_Head2, RunMode == ERunMode.Normal)) goto _Pause;
+                        }
+
+                        if (OnStart.PurgeCount > 0)
+                        {
+                            if (!TaskDisp.TaskPurgeNeedle(b_Head1, b_Head2, RunMode == ERunMode.Normal)) goto _Pause;
+                        }
+
+                        if (OnStart.PurgeStageCount > 0)
+                        {
+                            if (!TaskDisp.PurgeStage.Execute(OnStart.PurgeStageCount)) goto _Pause;
                         }
                         break;
                     case ERunMode.Dry:

@@ -9,8 +9,11 @@ Todo
 - Improve Reticle Window Adjust
 
 
-
-Ver 6.1.0.5 - KN - 20241111 - Released to Syafiq for OsPg
+Ver 6.1.0.7 - KN - 20241118 - Released to Syafiq for OsPg
+[Feature] Added OnStart.PurgeStageCount, CleanCount, PurgeCount ease setting. Removed PurgeStage.OnStartCount
+Ver 6.1.0.6 - KN - 20241112 - Released to Syafiq for OsPg
+[Bugfix] Corrected PAR_LINES DryMode not dispense.
+Ver 6.1.0.5 - KN - 20241111 - Released to Syafiq for OsPg - Gitted
 [Bugfix] Prevent DispProgCmd.Par_Lines Pump2 move
 [Improve] Added MeasID to TaskMeasMen.Save
 [Changes] Idle Purge uses Flush Position
