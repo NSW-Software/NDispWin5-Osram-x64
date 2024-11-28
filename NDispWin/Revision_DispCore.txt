@@ -7,9 +7,13 @@ Todo
 - Integrate LEDStudio
 - DO_REF scale iamge to facilite learn
 - Improve Reticle Window Adjust
+- PurgeStage Dry Mode do not dispsense
 
 
-Ver 6.1.0.7 - KN - 20241118 - Released to Syafiq for OsPg
+Ver 6.1.0.8 - KN - 20241122 - Released to OsPg, Afif - Gitted
+[Feature] PAR_LINES added IndFirstLine and IndLastLine
+[Feature] Improve frmEditXY to allow value editing.
+Ver 6.1.0.7 - KN - 20241118 - Released to Syafiq for OsPg - Gitted
 [Feature] Added OnStart.PurgeStageCount, CleanCount, PurgeCount ease setting. Removed PurgeStage.OnStartCount
 Ver 6.1.0.6 - KN - 20241112 - Released to Syafiq for OsPg
 [Bugfix] Corrected PAR_LINES DryMode not dispense.

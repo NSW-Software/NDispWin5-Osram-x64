@@ -529,8 +529,10 @@ namespace NDispWin
                     MotorAlarmType = (EMotorAlarmType)Inifile.ReadInteger(SectionName, "MotorAlarmType", (int)EMotorAlarmType.NO);
                     if (AxisName == "GX" || AxisName == "GY")
                         HomeMode = (EHomeMode)Inifile.ReadInteger(SectionName, "HomeMode", (int)EHomeMode.MODE8_LmtSearch);
+                        //HomeMode = (EHomeMode)Inifile.ReadInteger(SectionName, "HomeMode", (int)EHomeMode.MODE11_LmtSearch_Ref);
                     else
-                        HomeMode = (EHomeMode)Inifile.ReadInteger(SectionName, "HomeMode", (int)EHomeMode.MODE7_AbsSearch);
+                        //HomeMode = (EHomeMode)Inifile.ReadInteger(SectionName, "HomeMode", (int)EHomeMode.MODE7_AbsSearch);
+                        HomeMode = EHomeMode.MODE12_AbsSearchReFind;
                 }
                 catch { throw; };
 

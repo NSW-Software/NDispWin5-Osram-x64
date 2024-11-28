@@ -181,6 +181,7 @@
             this.pnl_Layout = new System.Windows.Forms.Panel();
             this.cbFollowPreviousLayout = new System.Windows.Forms.CheckBox();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.cbSetGotoNMinus1 = new System.Windows.Forms.CheckBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.lbl_EnableWafer = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
@@ -501,9 +502,9 @@
             this.gbox_CLayoutMPitch.Controls.Add(this.pnl_CRowMPitchLayout);
             this.gbox_CLayoutMPitch.Controls.Add(this.pnl_CColMPitchLayout);
             this.gbox_CLayoutMPitch.Dock = System.Windows.Forms.DockStyle.Top;
-            this.gbox_CLayoutMPitch.Location = new System.Drawing.Point(3, 353);
+            this.gbox_CLayoutMPitch.Location = new System.Drawing.Point(3, 341);
             this.gbox_CLayoutMPitch.Name = "gbox_CLayoutMPitch";
-            this.gbox_CLayoutMPitch.Size = new System.Drawing.Size(709, 93);
+            this.gbox_CLayoutMPitch.Size = new System.Drawing.Size(713, 89);
             this.gbox_CLayoutMPitch.TabIndex = 125;
             this.gbox_CLayoutMPitch.TabStop = false;
             this.gbox_CLayoutMPitch.Text = "Cluster Layout - MPitch";
@@ -522,9 +523,9 @@
             this.pnl_CRowMPitchLayout.Controls.Add(this.lbl_CRowNo);
             this.pnl_CRowMPitchLayout.Controls.Add(this.label42);
             this.pnl_CRowMPitchLayout.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnl_CRowMPitchLayout.Location = new System.Drawing.Point(3, 56);
+            this.pnl_CRowMPitchLayout.Location = new System.Drawing.Point(3, 52);
             this.pnl_CRowMPitchLayout.Name = "pnl_CRowMPitchLayout";
-            this.pnl_CRowMPitchLayout.Size = new System.Drawing.Size(703, 34);
+            this.pnl_CRowMPitchLayout.Size = new System.Drawing.Size(707, 34);
             this.pnl_CRowMPitchLayout.TabIndex = 152;
             // 
             // label40
@@ -661,9 +662,9 @@
             this.pnl_CColMPitchLayout.Controls.Add(this.lbl_CColDX);
             this.pnl_CColMPitchLayout.Controls.Add(this.label34);
             this.pnl_CColMPitchLayout.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnl_CColMPitchLayout.Location = new System.Drawing.Point(3, 22);
+            this.pnl_CColMPitchLayout.Location = new System.Drawing.Point(3, 18);
             this.pnl_CColMPitchLayout.Name = "pnl_CColMPitchLayout";
-            this.pnl_CColMPitchLayout.Size = new System.Drawing.Size(703, 34);
+            this.pnl_CColMPitchLayout.Size = new System.Drawing.Size(707, 34);
             this.pnl_CColMPitchLayout.TabIndex = 151;
             // 
             // label21
@@ -794,9 +795,9 @@
             this.gbox_CLayoutMatrix.Controls.Add(this.pnl_CRowMatrixLayout);
             this.gbox_CLayoutMatrix.Controls.Add(this.pnl_CColMatrixLayout);
             this.gbox_CLayoutMatrix.Dock = System.Windows.Forms.DockStyle.Top;
-            this.gbox_CLayoutMatrix.Location = new System.Drawing.Point(3, 260);
+            this.gbox_CLayoutMatrix.Location = new System.Drawing.Point(3, 252);
             this.gbox_CLayoutMatrix.Name = "gbox_CLayoutMatrix";
-            this.gbox_CLayoutMatrix.Size = new System.Drawing.Size(709, 93);
+            this.gbox_CLayoutMatrix.Size = new System.Drawing.Size(713, 89);
             this.gbox_CLayoutMatrix.TabIndex = 126;
             this.gbox_CLayoutMatrix.TabStop = false;
             this.gbox_CLayoutMatrix.Text = "Cluster Layout - Matrix";
@@ -813,10 +814,10 @@
             this.pnl_CRowMatrixLayout.Controls.Add(this.lbl_CRowPX);
             this.pnl_CRowMatrixLayout.Controls.Add(this.lbl_CRowPY);
             this.pnl_CRowMatrixLayout.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnl_CRowMatrixLayout.Location = new System.Drawing.Point(3, 56);
+            this.pnl_CRowMatrixLayout.Location = new System.Drawing.Point(3, 52);
             this.pnl_CRowMatrixLayout.Margin = new System.Windows.Forms.Padding(2);
             this.pnl_CRowMatrixLayout.Name = "pnl_CRowMatrixLayout";
-            this.pnl_CRowMatrixLayout.Size = new System.Drawing.Size(703, 34);
+            this.pnl_CRowMatrixLayout.Size = new System.Drawing.Size(707, 34);
             this.pnl_CRowMatrixLayout.TabIndex = 150;
             // 
             // btn_GotoCRow
@@ -927,10 +928,10 @@
             this.pnl_CColMatrixLayout.Controls.Add(this.lbl_CColCount);
             this.pnl_CColMatrixLayout.Controls.Add(this.label49);
             this.pnl_CColMatrixLayout.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnl_CColMatrixLayout.Location = new System.Drawing.Point(3, 22);
+            this.pnl_CColMatrixLayout.Location = new System.Drawing.Point(3, 18);
             this.pnl_CColMatrixLayout.Margin = new System.Windows.Forms.Padding(2);
             this.pnl_CColMatrixLayout.Name = "pnl_CColMatrixLayout";
-            this.pnl_CColMatrixLayout.Size = new System.Drawing.Size(703, 34);
+            this.pnl_CColMatrixLayout.Size = new System.Drawing.Size(707, 34);
             this.pnl_CColMatrixLayout.TabIndex = 149;
             // 
             // label51
@@ -1046,10 +1047,10 @@
             this.gbox_ULayoutRandom.Controls.Add(this.lbl_UnitDY);
             this.gbox_ULayoutRandom.Controls.Add(this.label11);
             this.gbox_ULayoutRandom.Dock = System.Windows.Forms.DockStyle.Top;
-            this.gbox_ULayoutRandom.Location = new System.Drawing.Point(3, 162);
+            this.gbox_ULayoutRandom.Location = new System.Drawing.Point(3, 158);
             this.gbox_ULayoutRandom.Name = "gbox_ULayoutRandom";
             this.gbox_ULayoutRandom.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.gbox_ULayoutRandom.Size = new System.Drawing.Size(709, 98);
+            this.gbox_ULayoutRandom.Size = new System.Drawing.Size(713, 94);
             this.gbox_ULayoutRandom.TabIndex = 123;
             this.gbox_ULayoutRandom.TabStop = false;
             this.gbox_ULayoutRandom.Text = "Unit Layout - Random";
@@ -1222,7 +1223,7 @@
             this.gbox_ULayoutMatrix.Location = new System.Drawing.Point(3, 61);
             this.gbox_ULayoutMatrix.Name = "gbox_ULayoutMatrix";
             this.gbox_ULayoutMatrix.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.gbox_ULayoutMatrix.Size = new System.Drawing.Size(709, 101);
+            this.gbox_ULayoutMatrix.Size = new System.Drawing.Size(713, 97);
             this.gbox_ULayoutMatrix.TabIndex = 121;
             this.gbox_ULayoutMatrix.TabStop = false;
             this.gbox_ULayoutMatrix.Text = "Unit Layout - Matrix";
@@ -1436,7 +1437,7 @@
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
             this.panel1.Padding = new System.Windows.Forms.Padding(2);
-            this.panel1.Size = new System.Drawing.Size(709, 58);
+            this.panel1.Size = new System.Drawing.Size(713, 58);
             this.panel1.TabIndex = 124;
             // 
             // lbl_CRowLayout
@@ -2188,7 +2189,7 @@
             this.cbFollowPreviousLayout.AutoSize = true;
             this.cbFollowPreviousLayout.Location = new System.Drawing.Point(3, 3);
             this.cbFollowPreviousLayout.Name = "cbFollowPreviousLayout";
-            this.cbFollowPreviousLayout.Size = new System.Drawing.Size(176, 22);
+            this.cbFollowPreviousLayout.Size = new System.Drawing.Size(150, 18);
             this.cbFollowPreviousLayout.TabIndex = 187;
             this.cbFollowPreviousLayout.Text = "Follow Previous Layout";
             this.cbFollowPreviousLayout.UseVisualStyleBackColor = true;
@@ -2196,6 +2197,7 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.cbSetGotoNMinus1);
             this.panel2.Controls.Add(this.cbFollowPreviousLayout);
             this.panel2.Controls.Add(this.btn_Cancel);
             this.panel2.Controls.Add(this.btn_OK);
@@ -2204,6 +2206,18 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(744, 40);
             this.panel2.TabIndex = 188;
+            // 
+            // cbSetGotoNMinus1
+            // 
+            this.cbSetGotoNMinus1.AutoSize = true;
+            this.cbSetGotoNMinus1.Location = new System.Drawing.Point(182, 3);
+            this.cbSetGotoNMinus1.Name = "cbSetGotoNMinus1";
+            this.cbSetGotoNMinus1.Size = new System.Drawing.Size(108, 18);
+            this.cbSetGotoNMinus1.TabIndex = 274;
+            this.cbSetGotoNMinus1.Text = "Set Goto (n-1)";
+            this.cbSetGotoNMinus1.UseVisualStyleBackColor = true;
+            this.cbSetGotoNMinus1.CheckedChanged += new System.EventHandler(this.cbSetGotoNMinus1_CheckedChanged);
+            this.cbSetGotoNMinus1.Click += new System.EventHandler(this.cbSetGotoNMinus1_Click);
             // 
             // panel3
             // 
@@ -2524,5 +2538,6 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label lbl_LayoutID;
         private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.CheckBox cbSetGotoNMinus1;
     }
 }

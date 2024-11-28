@@ -151,6 +151,8 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.tpAdvance = new System.Windows.Forms.TabPage();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.cbxEvent = new System.Windows.Forms.ComboBox();
+            this.label31 = new System.Windows.Forms.Label();
             this.lblOnStartCleanCount = new System.Windows.Forms.Label();
             this.label32 = new System.Windows.Forms.Label();
             this.label34 = new System.Windows.Forms.Label();
@@ -1630,6 +1632,8 @@
             // 
             this.groupBox5.AutoSize = true;
             this.groupBox5.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox5.Controls.Add(this.cbxEvent);
+            this.groupBox5.Controls.Add(this.label31);
             this.groupBox5.Controls.Add(this.lblOnStartCleanCount);
             this.groupBox5.Controls.Add(this.label32);
             this.groupBox5.Controls.Add(this.label34);
@@ -1639,16 +1643,35 @@
             this.groupBox5.Location = new System.Drawing.Point(314, 146);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.groupBox5.Size = new System.Drawing.Size(302, 114);
+            this.groupBox5.Size = new System.Drawing.Size(302, 141);
             this.groupBox5.TabIndex = 5;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "On Start";
+            // 
+            // cbxEvent
+            // 
+            this.cbxEvent.FormattingEnabled = true;
+            this.cbxEvent.Location = new System.Drawing.Point(118, 21);
+            this.cbxEvent.Name = "cbxEvent";
+            this.cbxEvent.Size = new System.Drawing.Size(178, 22);
+            this.cbxEvent.TabIndex = 6;
+            this.cbxEvent.SelectionChangeCommitted += new System.EventHandler(this.cbxEvent_SelectionChangeCommitted);
+            // 
+            // label31
+            // 
+            this.label31.Location = new System.Drawing.Point(5, 20);
+            this.label31.Margin = new System.Windows.Forms.Padding(2);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(56, 23);
+            this.label31.TabIndex = 153;
+            this.label31.Text = "Event";
+            this.label31.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblOnStartCleanCount
             // 
             this.lblOnStartCleanCount.BackColor = System.Drawing.Color.White;
             this.lblOnStartCleanCount.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblOnStartCleanCount.Location = new System.Drawing.Point(227, 20);
+            this.lblOnStartCleanCount.Location = new System.Drawing.Point(227, 47);
             this.lblOnStartCleanCount.Margin = new System.Windows.Forms.Padding(2);
             this.lblOnStartCleanCount.Name = "lblOnStartCleanCount";
             this.lblOnStartCleanCount.Size = new System.Drawing.Size(70, 23);
@@ -1659,7 +1682,7 @@
             // 
             // label32
             // 
-            this.label32.Location = new System.Drawing.Point(5, 47);
+            this.label32.Location = new System.Drawing.Point(5, 74);
             this.label32.Margin = new System.Windows.Forms.Padding(2);
             this.label32.Name = "label32";
             this.label32.Size = new System.Drawing.Size(218, 23);
@@ -1669,7 +1692,7 @@
             // 
             // label34
             // 
-            this.label34.Location = new System.Drawing.Point(5, 20);
+            this.label34.Location = new System.Drawing.Point(5, 47);
             this.label34.Margin = new System.Windows.Forms.Padding(2);
             this.label34.Name = "label34";
             this.label34.Size = new System.Drawing.Size(218, 23);
@@ -1679,7 +1702,7 @@
             // 
             // label35
             // 
-            this.label35.Location = new System.Drawing.Point(5, 74);
+            this.label35.Location = new System.Drawing.Point(5, 101);
             this.label35.Margin = new System.Windows.Forms.Padding(2);
             this.label35.Name = "label35";
             this.label35.Size = new System.Drawing.Size(218, 23);
@@ -1691,7 +1714,7 @@
             // 
             this.lblOnStartPurgeStageCount.BackColor = System.Drawing.Color.White;
             this.lblOnStartPurgeStageCount.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblOnStartPurgeStageCount.Location = new System.Drawing.Point(227, 74);
+            this.lblOnStartPurgeStageCount.Location = new System.Drawing.Point(227, 101);
             this.lblOnStartPurgeStageCount.Margin = new System.Windows.Forms.Padding(2);
             this.lblOnStartPurgeStageCount.Name = "lblOnStartPurgeStageCount";
             this.lblOnStartPurgeStageCount.Size = new System.Drawing.Size(70, 23);
@@ -1704,7 +1727,7 @@
             // 
             this.lblOnStartPurgeCount.BackColor = System.Drawing.Color.White;
             this.lblOnStartPurgeCount.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblOnStartPurgeCount.Location = new System.Drawing.Point(227, 47);
+            this.lblOnStartPurgeCount.Location = new System.Drawing.Point(227, 74);
             this.lblOnStartPurgeCount.Margin = new System.Windows.Forms.Padding(2);
             this.lblOnStartPurgeCount.Name = "lblOnStartPurgeCount";
             this.lblOnStartPurgeCount.Size = new System.Drawing.Size(70, 23);
@@ -2017,5 +2040,7 @@
         private System.Windows.Forms.Label label35;
         private System.Windows.Forms.Label lblOnStartPurgeCount;
         private System.Windows.Forms.Label lblOnStartPurgeStageCount;
+        private System.Windows.Forms.ComboBox cbxEvent;
+        private System.Windows.Forms.Label label31;
     }
 }

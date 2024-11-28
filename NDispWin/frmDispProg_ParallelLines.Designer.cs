@@ -48,17 +48,23 @@ namespace NDispWin
             this.lblLineDirection = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.lblFirstLineWeight = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
             this.lblLineWeight = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
             this.lblLastLineWeight = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
             this.cbEnableWeight = new System.Windows.Forms.CheckBox();
             this.gbox_Pos = new System.Windows.Forms.GroupBox();
-            this.btnEditXY0 = new System.Windows.Forms.Button();
+            this.label24 = new System.Windows.Forms.Label();
+            this.btnSetXY2 = new System.Windows.Forms.Button();
+            this.btnGotoXY2 = new System.Windows.Forms.Button();
+            this.btnSetXY1 = new System.Windows.Forms.Button();
+            this.btnGotoEndXY = new System.Windows.Forms.Button();
+            this.btnGotoXY1 = new System.Windows.Forms.Button();
+            this.lblXY2 = new System.Windows.Forms.Label();
+            this.lblXY1 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.cbLastLine = new System.Windows.Forms.CheckBox();
+            this.cbFirstLine = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.lblY0 = new System.Windows.Forms.Label();
-            this.lblX0 = new System.Windows.Forms.Label();
+            this.lblXY0 = new System.Windows.Forms.Label();
             this.btnSetXY0 = new System.Windows.Forms.Button();
             this.btnGotoXY0 = new System.Windows.Forms.Button();
             this.cbReverse = new System.Windows.Forms.CheckBox();
@@ -67,7 +73,6 @@ namespace NDispWin
             this.llEndLength = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.cbDispense = new System.Windows.Forms.CheckBox();
-            this.gbxWeight = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.cbEndDisp = new System.Windows.Forms.CheckBox();
             this.lblStartVolume = new System.Windows.Forms.Label();
@@ -82,20 +87,15 @@ namespace NDispWin
             this.label13 = new System.Windows.Forms.Label();
             this.lblSpeedAdjust = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.lblEndY = new System.Windows.Forms.Label();
-            this.lblEndX = new System.Windows.Forms.Label();
-            this.btnGotoEndXY = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.gbox_Pos.SuspendLayout();
-            this.gbxWeight.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // btn_Cancel
             // 
             this.btn_Cancel.AccessibleDescription = "Cancel";
-            this.btn_Cancel.Location = new System.Drawing.Point(356, 564);
+            this.btn_Cancel.Location = new System.Drawing.Point(356, 518);
             this.btn_Cancel.Margin = new System.Windows.Forms.Padding(2);
             this.btn_Cancel.Name = "btn_Cancel";
             this.btn_Cancel.Padding = new System.Windows.Forms.Padding(3);
@@ -108,7 +108,7 @@ namespace NDispWin
             // btn_OK
             // 
             this.btn_OK.AccessibleDescription = "OK";
-            this.btn_OK.Location = new System.Drawing.Point(277, 564);
+            this.btn_OK.Location = new System.Drawing.Point(277, 518);
             this.btn_OK.Margin = new System.Windows.Forms.Padding(2);
             this.btn_OK.Name = "btn_OK";
             this.btn_OK.Padding = new System.Windows.Forms.Padding(3);
@@ -130,7 +130,7 @@ namespace NDispWin
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.lblCutTailLength);
             this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Location = new System.Drawing.Point(8, 473);
+            this.groupBox1.Location = new System.Drawing.Point(8, 427);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.groupBox1.Size = new System.Drawing.Size(428, 86);
@@ -330,73 +330,40 @@ namespace NDispWin
             // 
             this.lblFirstLineWeight.BackColor = System.Drawing.SystemColors.Window;
             this.lblFirstLineWeight.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblFirstLineWeight.Location = new System.Drawing.Point(348, 20);
+            this.lblFirstLineWeight.Location = new System.Drawing.Point(375, 73);
             this.lblFirstLineWeight.Margin = new System.Windows.Forms.Padding(2);
             this.lblFirstLineWeight.Name = "lblFirstLineWeight";
-            this.lblFirstLineWeight.Size = new System.Drawing.Size(75, 23);
+            this.lblFirstLineWeight.Size = new System.Drawing.Size(48, 23);
             this.lblFirstLineWeight.TabIndex = 144;
             this.lblFirstLineWeight.Text = "-999.999";
             this.lblFirstLineWeight.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.lblFirstLineWeight.Click += new System.EventHandler(this.lblFirstLineWeight_Click);
             // 
-            // label5
-            // 
-            this.label5.AccessibleDescription = "";
-            this.label5.Location = new System.Drawing.Point(218, 20);
-            this.label5.Margin = new System.Windows.Forms.Padding(2);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(126, 23);
-            this.label5.TabIndex = 143;
-            this.label5.Text = "First Line (mg)";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // lblLineWeight
             // 
             this.lblLineWeight.BackColor = System.Drawing.SystemColors.Window;
             this.lblLineWeight.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblLineWeight.Location = new System.Drawing.Point(132, 19);
+            this.lblLineWeight.Location = new System.Drawing.Point(375, 39);
             this.lblLineWeight.Margin = new System.Windows.Forms.Padding(2);
             this.lblLineWeight.Name = "lblLineWeight";
-            this.lblLineWeight.Size = new System.Drawing.Size(75, 23);
+            this.lblLineWeight.Size = new System.Drawing.Size(48, 23);
             this.lblLineWeight.TabIndex = 146;
-            this.lblLineWeight.Text = "-999.999";
+            this.lblLineWeight.Text = "900.9";
             this.lblLineWeight.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.lblLineWeight.Click += new System.EventHandler(this.lblLineWeight_Click);
-            // 
-            // label7
-            // 
-            this.label7.AccessibleDescription = "";
-            this.label7.Location = new System.Drawing.Point(4, 19);
-            this.label7.Margin = new System.Windows.Forms.Padding(2);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(120, 23);
-            this.label7.TabIndex = 145;
-            this.label7.Text = "Line Weight (mg)";
-            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblLastLineWeight
             // 
             this.lblLastLineWeight.BackColor = System.Drawing.SystemColors.Window;
             this.lblLastLineWeight.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblLastLineWeight.Location = new System.Drawing.Point(348, 47);
+            this.lblLastLineWeight.Location = new System.Drawing.Point(375, 106);
             this.lblLastLineWeight.Margin = new System.Windows.Forms.Padding(2);
             this.lblLastLineWeight.Name = "lblLastLineWeight";
-            this.lblLastLineWeight.Size = new System.Drawing.Size(75, 23);
+            this.lblLastLineWeight.Size = new System.Drawing.Size(48, 23);
             this.lblLastLineWeight.TabIndex = 148;
             this.lblLastLineWeight.Text = "-999.999";
             this.lblLastLineWeight.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.lblLastLineWeight.Click += new System.EventHandler(this.lblLastLineWeight_Click);
-            // 
-            // label11
-            // 
-            this.label11.AccessibleDescription = "";
-            this.label11.Location = new System.Drawing.Point(218, 47);
-            this.label11.Margin = new System.Windows.Forms.Padding(2);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(126, 23);
-            this.label11.TabIndex = 147;
-            this.label11.Text = "Last Line (mg)";
-            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // cbEnableWeight
             // 
@@ -415,80 +382,195 @@ namespace NDispWin
             this.gbox_Pos.AccessibleDescription = "Position";
             this.gbox_Pos.AutoSize = true;
             this.gbox_Pos.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.gbox_Pos.Controls.Add(this.label2);
-            this.gbox_Pos.Controls.Add(this.lblEndY);
-            this.gbox_Pos.Controls.Add(this.lblEndX);
+            this.gbox_Pos.Controls.Add(this.label24);
+            this.gbox_Pos.Controls.Add(this.lblLineWeight);
+            this.gbox_Pos.Controls.Add(this.lblFirstLineWeight);
+            this.gbox_Pos.Controls.Add(this.lblLastLineWeight);
+            this.gbox_Pos.Controls.Add(this.btnSetXY2);
+            this.gbox_Pos.Controls.Add(this.btnGotoXY2);
+            this.gbox_Pos.Controls.Add(this.btnSetXY1);
             this.gbox_Pos.Controls.Add(this.btnGotoEndXY);
-            this.gbox_Pos.Controls.Add(this.btnEditXY0);
+            this.gbox_Pos.Controls.Add(this.btnGotoXY1);
+            this.gbox_Pos.Controls.Add(this.lblXY2);
+            this.gbox_Pos.Controls.Add(this.lblXY1);
+            this.gbox_Pos.Controls.Add(this.label17);
+            this.gbox_Pos.Controls.Add(this.cbLastLine);
+            this.gbox_Pos.Controls.Add(this.cbFirstLine);
             this.gbox_Pos.Controls.Add(this.label1);
-            this.gbox_Pos.Controls.Add(this.lblY0);
-            this.gbox_Pos.Controls.Add(this.lblX0);
+            this.gbox_Pos.Controls.Add(this.lblXY0);
             this.gbox_Pos.Controls.Add(this.btnSetXY0);
             this.gbox_Pos.Controls.Add(this.btnGotoXY0);
             this.gbox_Pos.Location = new System.Drawing.Point(8, 89);
             this.gbox_Pos.Name = "gbox_Pos";
             this.gbox_Pos.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.gbox_Pos.Size = new System.Drawing.Size(428, 103);
+            this.gbox_Pos.Size = new System.Drawing.Size(428, 150);
             this.gbox_Pos.TabIndex = 150;
             this.gbox_Pos.TabStop = false;
             this.gbox_Pos.Text = "Position";
             // 
-            // btnEditXY0
+            // label24
             // 
-            this.btnEditXY0.AccessibleDescription = "";
-            this.btnEditXY0.Location = new System.Drawing.Point(248, 22);
-            this.btnEditXY0.Margin = new System.Windows.Forms.Padding(2);
-            this.btnEditXY0.Name = "btnEditXY0";
-            this.btnEditXY0.Size = new System.Drawing.Size(27, 30);
-            this.btnEditXY0.TabIndex = 130;
-            this.btnEditXY0.Text = "...";
-            this.btnEditXY0.UseVisualStyleBackColor = true;
-            this.btnEditXY0.Click += new System.EventHandler(this.btnEditXY0_Click);
+            this.label24.AccessibleDescription = "";
+            this.label24.Location = new System.Drawing.Point(303, 12);
+            this.label24.Margin = new System.Windows.Forms.Padding(2);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(120, 23);
+            this.label24.TabIndex = 161;
+            this.label24.Text = "Line Weight (mg)";
+            this.label24.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // btnSetXY2
+            // 
+            this.btnSetXY2.AccessibleDescription = "Set";
+            this.btnSetXY2.Location = new System.Drawing.Point(223, 103);
+            this.btnSetXY2.Margin = new System.Windows.Forms.Padding(2);
+            this.btnSetXY2.Name = "btnSetXY2";
+            this.btnSetXY2.Size = new System.Drawing.Size(40, 30);
+            this.btnSetXY2.TabIndex = 159;
+            this.btnSetXY2.Text = "Set";
+            this.btnSetXY2.UseVisualStyleBackColor = true;
+            this.btnSetXY2.Click += new System.EventHandler(this.btnSetXY2_Click);
+            // 
+            // btnGotoXY2
+            // 
+            this.btnGotoXY2.AccessibleDescription = "Goto";
+            this.btnGotoXY2.Location = new System.Drawing.Point(267, 103);
+            this.btnGotoXY2.Margin = new System.Windows.Forms.Padding(2);
+            this.btnGotoXY2.Name = "btnGotoXY2";
+            this.btnGotoXY2.Size = new System.Drawing.Size(50, 30);
+            this.btnGotoXY2.TabIndex = 160;
+            this.btnGotoXY2.Text = "Goto";
+            this.btnGotoXY2.UseVisualStyleBackColor = true;
+            this.btnGotoXY2.Click += new System.EventHandler(this.btnGotoXY2_Click);
+            // 
+            // btnSetXY1
+            // 
+            this.btnSetXY1.AccessibleDescription = "Set";
+            this.btnSetXY1.Location = new System.Drawing.Point(223, 69);
+            this.btnSetXY1.Margin = new System.Windows.Forms.Padding(2);
+            this.btnSetXY1.Name = "btnSetXY1";
+            this.btnSetXY1.Size = new System.Drawing.Size(40, 30);
+            this.btnSetXY1.TabIndex = 157;
+            this.btnSetXY1.Text = "Set";
+            this.btnSetXY1.UseVisualStyleBackColor = true;
+            this.btnSetXY1.Click += new System.EventHandler(this.btnSetXY1_Click);
+            // 
+            // btnGotoEndXY
+            // 
+            this.btnGotoEndXY.AccessibleDescription = "GotoE";
+            this.btnGotoEndXY.Location = new System.Drawing.Point(321, 35);
+            this.btnGotoEndXY.Margin = new System.Windows.Forms.Padding(2);
+            this.btnGotoEndXY.Name = "btnGotoEndXY";
+            this.btnGotoEndXY.Size = new System.Drawing.Size(50, 30);
+            this.btnGotoEndXY.TabIndex = 134;
+            this.btnGotoEndXY.Text = "GotoE";
+            this.btnGotoEndXY.UseVisualStyleBackColor = true;
+            this.btnGotoEndXY.Click += new System.EventHandler(this.btnGotoEndXY_Click);
+            // 
+            // btnGotoXY1
+            // 
+            this.btnGotoXY1.AccessibleDescription = "Goto";
+            this.btnGotoXY1.Location = new System.Drawing.Point(267, 69);
+            this.btnGotoXY1.Margin = new System.Windows.Forms.Padding(2);
+            this.btnGotoXY1.Name = "btnGotoXY1";
+            this.btnGotoXY1.Size = new System.Drawing.Size(50, 30);
+            this.btnGotoXY1.TabIndex = 158;
+            this.btnGotoXY1.Text = "Goto";
+            this.btnGotoXY1.UseVisualStyleBackColor = true;
+            this.btnGotoXY1.Click += new System.EventHandler(this.btnGotoXY1_Click);
+            // 
+            // lblXY2
+            // 
+            this.lblXY2.BackColor = System.Drawing.SystemColors.Window;
+            this.lblXY2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblXY2.Location = new System.Drawing.Point(99, 107);
+            this.lblXY2.Margin = new System.Windows.Forms.Padding(2);
+            this.lblXY2.Name = "lblXY2";
+            this.lblXY2.Size = new System.Drawing.Size(120, 23);
+            this.lblXY2.TabIndex = 156;
+            this.lblXY2.Text = "-999.999, -999.999";
+            this.lblXY2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblXY2.Click += new System.EventHandler(this.lblXY2_Click);
+            // 
+            // lblXY1
+            // 
+            this.lblXY1.BackColor = System.Drawing.SystemColors.Window;
+            this.lblXY1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblXY1.Location = new System.Drawing.Point(99, 73);
+            this.lblXY1.Margin = new System.Windows.Forms.Padding(2);
+            this.lblXY1.Name = "lblXY1";
+            this.lblXY1.Size = new System.Drawing.Size(120, 23);
+            this.lblXY1.TabIndex = 154;
+            this.lblXY1.Text = "-999.999, -999.999";
+            this.lblXY1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblXY1.Click += new System.EventHandler(this.lblXY1_Click);
+            // 
+            // label17
+            // 
+            this.label17.AccessibleDescription = "Position";
+            this.label17.Location = new System.Drawing.Point(96, 12);
+            this.label17.Margin = new System.Windows.Forms.Padding(2);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(102, 23);
+            this.label17.TabIndex = 152;
+            this.label17.Text = "Position";
+            this.label17.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // cbLastLine
+            // 
+            this.cbLastLine.AutoSize = true;
+            this.cbLastLine.Location = new System.Drawing.Point(4, 106);
+            this.cbLastLine.Name = "cbLastLine";
+            this.cbLastLine.Padding = new System.Windows.Forms.Padding(3);
+            this.cbLastLine.Size = new System.Drawing.Size(80, 24);
+            this.cbLastLine.TabIndex = 151;
+            this.cbLastLine.Text = "Last Line";
+            this.cbLastLine.UseVisualStyleBackColor = true;
+            this.cbLastLine.Click += new System.EventHandler(this.cbLastLine_Click);
+            // 
+            // cbFirstLine
+            // 
+            this.cbFirstLine.AutoSize = true;
+            this.cbFirstLine.Location = new System.Drawing.Point(4, 73);
+            this.cbFirstLine.Name = "cbFirstLine";
+            this.cbFirstLine.Padding = new System.Windows.Forms.Padding(3);
+            this.cbFirstLine.Size = new System.Drawing.Size(80, 24);
+            this.cbFirstLine.TabIndex = 150;
+            this.cbFirstLine.Text = "First Line";
+            this.cbFirstLine.UseVisualStyleBackColor = true;
+            this.cbFirstLine.Click += new System.EventHandler(this.cbFirstLine_Click);
             // 
             // label1
             // 
-            this.label1.AccessibleDescription = "Start Position";
-            this.label1.Location = new System.Drawing.Point(4, 26);
+            this.label1.AccessibleDescription = "";
+            this.label1.Location = new System.Drawing.Point(5, 39);
             this.label1.Margin = new System.Windows.Forms.Padding(2);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(102, 23);
+            this.label1.Size = new System.Drawing.Size(79, 23);
             this.label1.TabIndex = 133;
-            this.label1.Text = "Start Position";
+            this.label1.Text = "Line Position";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // lblY0
+            // lblXY0
             // 
-            this.lblY0.BackColor = System.Drawing.SystemColors.Window;
-            this.lblY0.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblY0.Location = new System.Drawing.Point(179, 26);
-            this.lblY0.Margin = new System.Windows.Forms.Padding(2);
-            this.lblY0.Name = "lblY0";
-            this.lblY0.Size = new System.Drawing.Size(65, 23);
-            this.lblY0.TabIndex = 110;
-            this.lblY0.Text = "-999.999";
-            this.lblY0.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.lblY0.Click += new System.EventHandler(this.lblY0_Click);
-            // 
-            // lblX0
-            // 
-            this.lblX0.BackColor = System.Drawing.SystemColors.Window;
-            this.lblX0.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblX0.Location = new System.Drawing.Point(110, 26);
-            this.lblX0.Margin = new System.Windows.Forms.Padding(2);
-            this.lblX0.Name = "lblX0";
-            this.lblX0.Size = new System.Drawing.Size(65, 23);
-            this.lblX0.TabIndex = 109;
-            this.lblX0.Text = "-999.999";
-            this.lblX0.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.lblX0.Click += new System.EventHandler(this.lblX0_Click);
+            this.lblXY0.BackColor = System.Drawing.SystemColors.Window;
+            this.lblXY0.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblXY0.Location = new System.Drawing.Point(99, 39);
+            this.lblXY0.Margin = new System.Windows.Forms.Padding(2);
+            this.lblXY0.Name = "lblXY0";
+            this.lblXY0.Size = new System.Drawing.Size(120, 23);
+            this.lblXY0.TabIndex = 109;
+            this.lblXY0.Text = "-999.999, -999.999";
+            this.lblXY0.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblXY0.Click += new System.EventHandler(this.lblXY0_Click);
             // 
             // btnSetXY0
             // 
             this.btnSetXY0.AccessibleDescription = "Set";
-            this.btnSetXY0.Location = new System.Drawing.Point(279, 22);
+            this.btnSetXY0.Location = new System.Drawing.Point(223, 35);
             this.btnSetXY0.Margin = new System.Windows.Forms.Padding(2);
             this.btnSetXY0.Name = "btnSetXY0";
-            this.btnSetXY0.Size = new System.Drawing.Size(70, 30);
+            this.btnSetXY0.Size = new System.Drawing.Size(40, 30);
             this.btnSetXY0.TabIndex = 7;
             this.btnSetXY0.Text = "Set";
             this.btnSetXY0.UseVisualStyleBackColor = true;
@@ -497,10 +579,10 @@ namespace NDispWin
             // btnGotoXY0
             // 
             this.btnGotoXY0.AccessibleDescription = "Goto";
-            this.btnGotoXY0.Location = new System.Drawing.Point(353, 22);
+            this.btnGotoXY0.Location = new System.Drawing.Point(267, 35);
             this.btnGotoXY0.Margin = new System.Windows.Forms.Padding(2);
             this.btnGotoXY0.Name = "btnGotoXY0";
-            this.btnGotoXY0.Size = new System.Drawing.Size(70, 30);
+            this.btnGotoXY0.Size = new System.Drawing.Size(50, 30);
             this.btnGotoXY0.TabIndex = 8;
             this.btnGotoXY0.Text = "Goto";
             this.btnGotoXY0.UseVisualStyleBackColor = true;
@@ -578,24 +660,6 @@ namespace NDispWin
             this.cbDispense.UseVisualStyleBackColor = true;
             this.cbDispense.Click += new System.EventHandler(this.cbDispense_Click);
             // 
-            // gbxWeight
-            // 
-            this.gbxWeight.AutoSize = true;
-            this.gbxWeight.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.gbxWeight.Controls.Add(this.label7);
-            this.gbxWeight.Controls.Add(this.lblLineWeight);
-            this.gbxWeight.Controls.Add(this.label5);
-            this.gbxWeight.Controls.Add(this.lblFirstLineWeight);
-            this.gbxWeight.Controls.Add(this.label11);
-            this.gbxWeight.Controls.Add(this.lblLastLineWeight);
-            this.gbxWeight.Location = new System.Drawing.Point(8, 380);
-            this.gbxWeight.Name = "gbxWeight";
-            this.gbxWeight.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.gbxWeight.Size = new System.Drawing.Size(428, 87);
-            this.gbxWeight.TabIndex = 161;
-            this.gbxWeight.TabStop = false;
-            this.gbxWeight.Text = "Weight";
-            // 
             // groupBox2
             // 
             this.groupBox2.AutoSize = true;
@@ -617,7 +681,7 @@ namespace NDispWin
             this.groupBox2.Controls.Add(this.lblStartLength);
             this.groupBox2.Controls.Add(this.label14);
             this.groupBox2.Controls.Add(this.llEndLength);
-            this.groupBox2.Location = new System.Drawing.Point(8, 198);
+            this.groupBox2.Location = new System.Drawing.Point(8, 245);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.groupBox2.Size = new System.Drawing.Size(428, 176);
@@ -782,63 +846,15 @@ namespace NDispWin
             this.label9.Text = "Speed Adjust (%)";
             this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // label2
-            // 
-            this.label2.AccessibleDescription = "End Position";
-            this.label2.Location = new System.Drawing.Point(4, 60);
-            this.label2.Margin = new System.Windows.Forms.Padding(2);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(102, 23);
-            this.label2.TabIndex = 137;
-            this.label2.Text = "End Position";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblEndY
-            // 
-            this.lblEndY.BackColor = System.Drawing.Color.Transparent;
-            this.lblEndY.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblEndY.Location = new System.Drawing.Point(179, 60);
-            this.lblEndY.Margin = new System.Windows.Forms.Padding(2);
-            this.lblEndY.Name = "lblEndY";
-            this.lblEndY.Size = new System.Drawing.Size(65, 23);
-            this.lblEndY.TabIndex = 136;
-            this.lblEndY.Text = "-999.999";
-            this.lblEndY.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lblEndX
-            // 
-            this.lblEndX.BackColor = System.Drawing.Color.Transparent;
-            this.lblEndX.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblEndX.Location = new System.Drawing.Point(110, 60);
-            this.lblEndX.Margin = new System.Windows.Forms.Padding(2);
-            this.lblEndX.Name = "lblEndX";
-            this.lblEndX.Size = new System.Drawing.Size(65, 23);
-            this.lblEndX.TabIndex = 135;
-            this.lblEndX.Text = "-999.999";
-            this.lblEndX.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // btnGotoEndXY
-            // 
-            this.btnGotoEndXY.AccessibleDescription = "Goto";
-            this.btnGotoEndXY.Location = new System.Drawing.Point(353, 56);
-            this.btnGotoEndXY.Margin = new System.Windows.Forms.Padding(2);
-            this.btnGotoEndXY.Name = "btnGotoEndXY";
-            this.btnGotoEndXY.Size = new System.Drawing.Size(70, 30);
-            this.btnGotoEndXY.TabIndex = 134;
-            this.btnGotoEndXY.Text = "Goto";
-            this.btnGotoEndXY.UseVisualStyleBackColor = true;
-            this.btnGotoEndXY.Click += new System.EventHandler(this.btnGotoEndXY_Click);
-            // 
             // frmDispProg_ParallelLines
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(448, 663);
+            this.ClientSize = new System.Drawing.Size(449, 572);
             this.ControlBox = false;
+            this.Controls.Add(this.gbox_Pos);
             this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.gbxWeight);
             this.Controls.Add(this.cbDispense);
             this.Controls.Add(this.cbReverse);
-            this.Controls.Add(this.gbox_Pos);
             this.Controls.Add(this.cbEnableWeight);
             this.Controls.Add(this.lblLineDirection);
             this.Controls.Add(this.label3);
@@ -861,7 +877,7 @@ namespace NDispWin
             this.Load += new System.EventHandler(this.frmDispProg_ParallelLines_Load);
             this.groupBox1.ResumeLayout(false);
             this.gbox_Pos.ResumeLayout(false);
-            this.gbxWeight.ResumeLayout(false);
+            this.gbox_Pos.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
@@ -890,17 +906,12 @@ namespace NDispWin
         private System.Windows.Forms.Label lblLineDirection;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label lblFirstLineWeight;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label lblLineWeight;
-        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label lblLastLineWeight;
-        private System.Windows.Forms.Label label11;
         private System.Windows.Forms.CheckBox cbEnableWeight;
         private System.Windows.Forms.GroupBox gbox_Pos;
-        private System.Windows.Forms.Button btnEditXY0;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label lblY0;
-        private System.Windows.Forms.Label lblX0;
+        private System.Windows.Forms.Label lblXY0;
         private System.Windows.Forms.Button btnSetXY0;
         private System.Windows.Forms.Button btnGotoXY0;
         private System.Windows.Forms.CheckBox cbReverse;
@@ -909,7 +920,6 @@ namespace NDispWin
         private System.Windows.Forms.Label llEndLength;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.CheckBox cbDispense;
-        private System.Windows.Forms.GroupBox gbxWeight;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label lblSpeedAdjust;
         private System.Windows.Forms.Label label9;
@@ -924,9 +934,16 @@ namespace NDispWin
         private System.Windows.Forms.Label lblStartVolume;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.CheckBox cbEndDisp;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label lblEndY;
-        private System.Windows.Forms.Label lblEndX;
         private System.Windows.Forms.Button btnGotoEndXY;
+        private System.Windows.Forms.CheckBox cbLastLine;
+        private System.Windows.Forms.CheckBox cbFirstLine;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label lblXY1;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Button btnSetXY2;
+        private System.Windows.Forms.Button btnGotoXY2;
+        private System.Windows.Forms.Button btnSetXY1;
+        private System.Windows.Forms.Button btnGotoXY1;
+        private System.Windows.Forms.Label lblXY2;
     }
 }

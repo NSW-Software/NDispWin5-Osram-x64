@@ -46,6 +46,9 @@
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.btn_Cancel = new System.Windows.Forms.Button();
+            this.lblValueY = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.lblValueX = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lbl_OfstY
@@ -148,7 +151,7 @@
             // 
             this.lbl_AdjustRate.BackColor = System.Drawing.Color.White;
             this.lbl_AdjustRate.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_AdjustRate.Location = new System.Drawing.Point(165, 140);
+            this.lbl_AdjustRate.Location = new System.Drawing.Point(165, 111);
             this.lbl_AdjustRate.Margin = new System.Windows.Forms.Padding(2);
             this.lbl_AdjustRate.Name = "lbl_AdjustRate";
             this.lbl_AdjustRate.Size = new System.Drawing.Size(75, 25);
@@ -171,7 +174,7 @@
             // label5
             // 
             this.label5.AccessibleDescription = "Adjust Rate";
-            this.label5.Location = new System.Drawing.Point(7, 140);
+            this.label5.Location = new System.Drawing.Point(7, 111);
             this.label5.Margin = new System.Windows.Forms.Padding(2);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(75, 25);
@@ -204,7 +207,7 @@
             // label10
             // 
             this.label10.AccessibleDescription = "";
-            this.label10.Location = new System.Drawing.Point(86, 140);
+            this.label10.Location = new System.Drawing.Point(86, 111);
             this.label10.Margin = new System.Windows.Forms.Padding(2);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(75, 25);
@@ -214,7 +217,7 @@
             // 
             // btn_OK
             // 
-            this.btn_OK.Location = new System.Drawing.Point(244, 185);
+            this.btn_OK.Location = new System.Drawing.Point(244, 170);
             this.btn_OK.Name = "btn_OK";
             this.btn_OK.Size = new System.Drawing.Size(75, 30);
             this.btn_OK.TabIndex = 227;
@@ -246,7 +249,7 @@
             // 
             // btn_Cancel
             // 
-            this.btn_Cancel.Location = new System.Drawing.Point(327, 185);
+            this.btn_Cancel.Location = new System.Drawing.Point(327, 170);
             this.btn_Cancel.Name = "btn_Cancel";
             this.btn_Cancel.Size = new System.Drawing.Size(75, 30);
             this.btn_Cancel.TabIndex = 229;
@@ -254,12 +257,52 @@
             this.btn_Cancel.UseVisualStyleBackColor = true;
             this.btn_Cancel.Click += new System.EventHandler(this.btn_Cancel_Click);
             // 
+            // lblValueY
+            // 
+            this.lblValueY.BackColor = System.Drawing.Color.White;
+            this.lblValueY.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblValueY.Location = new System.Drawing.Point(165, 140);
+            this.lblValueY.Margin = new System.Windows.Forms.Padding(2);
+            this.lblValueY.Name = "lblValueY";
+            this.lblValueY.Size = new System.Drawing.Size(75, 25);
+            this.lblValueY.TabIndex = 230;
+            this.lblValueY.Text = "-100";
+            this.lblValueY.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblValueY.Click += new System.EventHandler(this.lblValueY_Click);
+            // 
+            // label2
+            // 
+            this.label2.AccessibleDescription = "Value";
+            this.label2.Location = new System.Drawing.Point(8, 140);
+            this.label2.Margin = new System.Windows.Forms.Padding(2);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(75, 25);
+            this.label2.TabIndex = 231;
+            this.label2.Text = "Value";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblValueX
+            // 
+            this.lblValueX.BackColor = System.Drawing.Color.White;
+            this.lblValueX.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblValueX.Location = new System.Drawing.Point(86, 140);
+            this.lblValueX.Margin = new System.Windows.Forms.Padding(2);
+            this.lblValueX.Name = "lblValueX";
+            this.lblValueX.Size = new System.Drawing.Size(75, 25);
+            this.lblValueX.TabIndex = 232;
+            this.lblValueX.Text = "-100";
+            this.lblValueX.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblValueX.Click += new System.EventHandler(this.lblValueX_Click);
+            // 
             // frm_DispCore_EditXY
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(436, 240);
+            this.ClientSize = new System.Drawing.Size(418, 218);
+            this.Controls.Add(this.lblValueX);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.lblValueY);
             this.Controls.Add(this.btn_Cancel);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
@@ -312,5 +355,8 @@
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button btn_Cancel;
+        private System.Windows.Forms.Label lblValueY;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblValueX;
     }
 }

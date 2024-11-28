@@ -34,6 +34,8 @@ namespace NDispWin
             cbFollowPreviousLayout.Visible = CmdLine.ID > 0;
             tbSetting.Enabled = CmdLine.IPara[0] == 0;
 
+            cbSetGotoNMinus1.Checked = bSetGotoNMinus1;
+
             lbl_LayoutID.Text = CmdLine.ID.ToString();
             lbl_Zone.Text = CmdLine.IPara[10].ToString();
 
@@ -358,6 +360,11 @@ namespace NDispWin
             NSW.Net.Point2D Old = new NSW.Net.Point2D(CmdLine.DPara[2], CmdLine.DPara[3]);
             CmdLine.DPara[2] = (X - CmdLine.DPara[0]) / (CmdLine.Index[2] - 1);
             CmdLine.DPara[3] = (Y - CmdLine.DPara[1]) / (CmdLine.Index[2] - 1);
+            if (bSetGotoNMinus1 && CmdLine.Index[2] > 2)
+            {
+                CmdLine.DPara[2] = (X - CmdLine.DPara[0]) / (CmdLine.Index[2] - 2);
+                CmdLine.DPara[3] = (Y - CmdLine.DPara[1]) / (CmdLine.Index[2] - 2);
+            }
             NSW.Net.Point2D New = new NSW.Net.Point2D(CmdLine.DPara[2], CmdLine.DPara[3]);
             Log.OnSet(CmdName + " UColPitch", Old, New);
 
@@ -378,6 +385,11 @@ namespace NDispWin
             NSW.Net.Point2D Old = new NSW.Net.Point2D(CmdLine.DPara[4], CmdLine.DPara[5]);
             CmdLine.DPara[4] = (X - CmdLine.DPara[0]) / (CmdLine.Index[4] - 1);
             CmdLine.DPara[5] = (Y - CmdLine.DPara[1]) / (CmdLine.Index[4] - 1);
+            if (bSetGotoNMinus1 && CmdLine.Index[4] > 2)
+            {
+                CmdLine.DPara[4] = (X - CmdLine.DPara[0]) / (CmdLine.Index[4] - 2);
+                CmdLine.DPara[5] = (Y - CmdLine.DPara[1]) / (CmdLine.Index[4] - 2);
+            }
             NSW.Net.Point2D New = new NSW.Net.Point2D(CmdLine.DPara[4], CmdLine.DPara[5]);
             Log.OnSet(CmdName + " URowPitch", Old, New);
 
@@ -605,6 +617,13 @@ namespace NDispWin
             double Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.DPara[1];
             X = X + (CmdLine.DPara[2] * (CmdLine.Index[2] - 1));
             Y = Y + (CmdLine.DPara[3] * (CmdLine.Index[2] - 1));
+            if (bSetGotoNMinus1 && CmdLine.Index[2] > 2)
+            {
+                X = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + CmdLine.DPara[0];
+                Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.DPara[1];
+                X = X + (CmdLine.DPara[2] * (CmdLine.Index[2] - 2));
+                Y = Y + (CmdLine.DPara[3] * (CmdLine.Index[2] - 2));
+            }
 
             if (!TaskDisp.TaskMoveGZZ2Up()) return;
 
@@ -621,6 +640,13 @@ namespace NDispWin
             double Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.DPara[1];
             X = X + (CmdLine.DPara[4] * (CmdLine.Index[4] - 1));
             Y = Y + (CmdLine.DPara[5] * (CmdLine.Index[4] - 1));
+            if (bSetGotoNMinus1 && CmdLine.Index[4] > 2)
+            {
+                X = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + CmdLine.DPara[0];
+                Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.DPara[1];
+                X = X + (CmdLine.DPara[4] * (CmdLine.Index[4] - 2));
+                Y = Y + (CmdLine.DPara[5] * (CmdLine.Index[4] - 2));
+            }
 
             if (!TaskDisp.TaskMoveGZZ2Up()) return;
 
@@ -1866,6 +1892,18 @@ namespace NDispWin
                 frmDispProg_Layout_Load(sender, e);
             }
 
+            UpdateDisplay();
+        }
+
+        bool bSetGotoNMinus1 = false;
+        private void cbSetGotoNMinus1_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cbSetGotoNMinus1_Click(object sender, EventArgs e)
+        {
+            bSetGotoNMinus1 = !bSetGotoNMinus1;
             UpdateDisplay();
         }
     }

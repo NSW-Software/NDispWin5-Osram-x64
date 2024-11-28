@@ -16,6 +16,8 @@ namespace NDispWin
         {
             InitializeComponent();
             GControl.LogForm(this);
+
+            cbxEvent.DataSource = Enum.GetNames(typeof(DispProg.OnEvent.EEvent));
         }
 
         private string CmdName
@@ -132,9 +134,13 @@ namespace NDispWin
             //lbl_PurgeStageCount.Text = DispProg.PurgeStage.Count.ToString();
             //lbl_PurgeStageInterval.Text = DispProg.PurgeStage.Interval.ToString();
             //lbl_OnStartPurgeStageCount2.Text = DispProg.PurgeStage.OnStartCount.ToString();
-            lblOnStartPurgeStageCount.Text = $"{DispProg.OnStart.PurgeStageCount}";
-            lblOnStartCleanCount.Text = $"{DispProg.OnStart.CleanCount}";
-            lblOnStartPurgeCount.Text = $"{DispProg.OnStart.PurgeCount}";
+            //lblOnStartPurgeStageCount.Text = $"{DispProg.OnStart.PurgeStageCount}";
+            //lblOnStartCleanCount.Text = $"{DispProg.OnStart.CleanCount}";
+            //lblOnStartPurgeCount.Text = $"{DispProg.OnStart.PurgeCount}";
+
+            lblOnStartCleanCount.Text = $"{DispProg.OnEvent.CleanCount[iEvent]}";
+            lblOnStartPurgeCount.Text = $"{DispProg.OnEvent.PurgeCount[iEvent]}";
+            lblOnStartPurgeStageCount.Text = $"{DispProg.OnEvent.PurgeStageCount[iEvent]}";
 
             gboxTempCtrl.Visible = GDefine.TempCtrl_Type == GDefine.ETempCtrl.Autonics_TX_TK;
             if (GDefine.TempCtrl_Type == GDefine.ETempCtrl.Autonics_TX_TK)
@@ -594,19 +600,26 @@ namespace NDispWin
 
         private void lbl_OnStartPurgeStageCount_Click(object sender, EventArgs e)
         {
-            UC.AdjustExec("Disp Prog, OnStart Purge Stage Count", ref DispProg.OnStart.PurgeStageCount, 0, 5);
+            UC.AdjustExec("Disp Prog, OnStart Purge Stage Count", ref DispProg.OnEvent.PurgeStageCount[iEvent], 0, 5);
             UpdateDisplay();
         }
 
         private void lblOnStartCleanCount_Click(object sender, EventArgs e)
         {
-            UC.AdjustExec("Disp Prog, OnStart Clean Count", ref DispProg.OnStart.CleanCount, 0, 5);
+            UC.AdjustExec("Disp Prog, OnStart Clean Count", ref DispProg.OnEvent.CleanCount[iEvent], 0, 5);
             UpdateDisplay();
         }
 
         private void lblOnStartPurgeCount_Click(object sender, EventArgs e)
         {
-            UC.AdjustExec("Disp Prog, OnStart Purge Count", ref DispProg.OnStart.PurgeCount, 0, 5);
+            UC.AdjustExec("Disp Prog, OnStart Purge Count", ref DispProg.OnEvent.PurgeCount[iEvent], 0, 5);
+            UpdateDisplay();
+        }
+
+        int iEvent = 0;
+        private void cbxEvent_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            iEvent = cbxEvent.SelectedIndex;
             UpdateDisplay();
         }
     }

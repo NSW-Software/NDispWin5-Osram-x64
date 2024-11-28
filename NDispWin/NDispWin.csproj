@@ -145,9 +145,9 @@
     <Reference Include="NVision">
       <HintPath>..\dll x64\NVision.dll</HintPath>
     </Reference>
-    <Reference Include="Open_eVision_NetApi_2_5, Version=2.5.0.11304, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="Open_eVision_NetApi_2_5, Version=2.5.0.11304, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\dll x64\Open_eVision_NetApi_2_5.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Euresys\Open eVision 2.5\Bin64\Open_eVision_NetApi_2_5.dll</HintPath>
     </Reference>
     <Reference Include="SocketV1, Version=1.0.0.7, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>

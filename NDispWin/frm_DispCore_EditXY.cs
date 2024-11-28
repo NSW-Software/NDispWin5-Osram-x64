@@ -29,13 +29,15 @@ namespace NDispWin
         private void frm_DispCore_EditXY_Load(object sender, EventArgs e)
         {
             this.Text = ParamName;
+            UpdateDisplay();
         }
 
         private void UpdateDisplay()
         {
+            lblValueX.Text = $"{ValueX + OfstX:f3}";
+            lblValueY.Text = $"{ValueY + OfstY:f3}";
             lbl_OfstX.Text = OfstX.ToString("f3");
             lbl_OfstY.Text = OfstY.ToString("f3");
-
             lbl_AdjustRate.Text = AdjustRate.ToString("f3");
         }
 
@@ -94,6 +96,16 @@ namespace NDispWin
             DialogResult = DialogResult.Cancel;
         }
 
+        private void lblValueX_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec(ParamName + ", ValueX", ref ValueX, -999, 999);
+            UpdateDisplay();
+        }
 
+        private void lblValueY_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec(ParamName + ", ValueY", ref ValueY, -999, 999);
+            UpdateDisplay();
+        }
     }
 }

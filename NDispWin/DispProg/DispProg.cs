@@ -454,11 +454,12 @@ namespace NDispWin
             /* Parameters
             ID              nil
             IPara[0..9]     [ModelNo, .1., Disp, VHType, UseWeight, Reverse, EndDisp, .7., .8., .9.]
+            IPara[10..19]   [.10., IndFirstLine, IndLastLine, .13., .14., .15., .16., .17., .18., .19.]
             DPara[0..9]     [LeadLen, LagLen, RelLeadHeight, RelLagHeight, AddLineTime, .5., StartOfst, EndOfst, StartVolume, .9.]
             DPara[10..19]   [CutTailLength, Speed, Height, Type, ..]
             DPara[20..29]   [FirstLineMass, LineMass, LastLineMass, ..]
-            X[0..99]        [XStart, ..]
-            Y[0..99]        [YStart, ..]
+            X[0..99]        [XStart, XFirstStart, XLastStart, ..]
+            Y[0..99]        [YStart, YFirstStart, YLastStart, ..]
             */
 
             VOL_SET_DOTS = 480,//distribute volume to total number of dots.
@@ -742,11 +743,13 @@ namespace NDispWin
             public static int Interval = 0;//0-disable
         }
 
-        public class OnStart
+        public static class OnEvent//0-OnStart,1-OnFill, 2-OnUCounter, 2-OnDCounter
         {
-            public static int PurgeCount = 0;//0-disable
-            public static int CleanCount = 0;//0-disable
-            public static int PurgeStageCount = 0;//0-disable
+            public enum EEvent { OnStart, OnFill, OnUnitCounter, OnDispCounter, Spare_4, Spare_5, Spare_6, Spare_7, Spare_8, Spare_9};
+            //0-disable
+            public static int[] PurgeCount = new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+            public static int[] CleanCount = new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+            public static int[] PurgeStageCount = new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         }
 
         public static double PP_HeadA_Min_Volume = 0;
@@ -993,10 +996,6 @@ namespace NDispWin
                 IniFile.WriteDouble("Heater", "Range" + i.ToString(), HeaterRange[i]);
             }
 
-            IniFile.WriteInteger("OnStart", "PurgeStageCount", OnStart.PurgeStageCount);
-            IniFile.WriteInteger("OnStart", "CleanCount", OnStart.CleanCount);
-            IniFile.WriteInteger("OnStart", "PurgeCount", OnStart.PurgeCount);
-
             IniFile.WriteString("BiasKernel", "File", BiasKernelFile);
 
             IniFile.Create(Dir, Filename + ".Product.ini");
@@ -1185,10 +1184,6 @@ namespace NDispWin
                 FlowRate.MaxPressure = IniFile.ReadFloat("FlowRate", "MaxPressure", 0.4);
                 FlowRate.TargetFlowrate = IniFile.ReadFloat("FlowRate", "Target", 3.0);
                 FlowRate.TargetFlowRateTol = IniFile.ReadFloat("FlowRate", "Tol", 0.1);
-
-                OnStart.PurgeStageCount = IniFile.ReadInteger("OnStart", "PurgeStageCount", 0);
-                OnStart.CleanCount = IniFile.ReadInteger("OnStart", "CleanCount", 0);
-                OnStart.PurgeCount = IniFile.ReadInteger("OnStart", "PurgeCount", 0);
 
                 BiasKernelFile = IniFile.ReadString("BiasKernel", "File", BiasKernelFile);
 
@@ -1570,11 +1565,11 @@ namespace NDispWin
 
                 #region section = OnStart
                 writer.WriteStartElement("entry");
-                writer.WriteAttributeString("name", "OnStart");
+                writer.WriteAttributeString("name", "OnEvent");
 
-                WriteSubEntry(writer, "PurgeStageCount", OnStart.PurgeStageCount);
-                WriteSubEntry(writer, "CleanCount", OnStart.CleanCount);
-                WriteSubEntry(writer, "PurgeCount", OnStart.PurgeCount);
+                WriteSubEntry(writer, "CleanCount", OnEvent.CleanCount);
+                WriteSubEntry(writer, "PurgeCount", OnEvent.PurgeCount);
+                WriteSubEntry(writer, "PurgeStageCount", OnEvent.PurgeStageCount);
 
                 writer.WriteEndElement();//end entry
                 #endregion
@@ -2349,7 +2344,7 @@ namespace NDispWin
                                             }
                                         }
 
-                                        if (reader.Name == "entry" && reader["name"] == "OnStart")
+                                        if (reader.Name == "entry" && reader["name"] == "OnEvent")
                                         {
                                             while (reader.Read())
                                             {
@@ -2362,11 +2357,11 @@ namespace NDispWin
                                                     switch (attName)
                                                     {
                                                         case "PurgeStageCount":
-                                                            OnStart.PurgeStageCount = ReadSubEntry(reader, 0); break;
+                                                            OnEvent.PurgeStageCount = ReadSubEntry(reader, new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }); break;
                                                         case "CleanCount":
-                                                            OnStart.CleanCount = ReadSubEntry(reader, 0); break;
+                                                            OnEvent.CleanCount = ReadSubEntry(reader, new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }); break;
                                                         case "PurgeCount":
-                                                            OnStart.PurgeCount = ReadSubEntry(reader, 0); break;
+                                                            OnEvent.PurgeCount = ReadSubEntry(reader, new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }); break;
                                                     }
                                                 }
                                             }
@@ -4576,28 +4571,27 @@ namespace NDispWin
                 switch (RunMode)
                 {
                     case ERunMode.Normal:
-
+                    case ERunMode.Dry:
                         EHeadNo HeadNo = EHeadNo.Head1;
                         if (TaskDisp.Head_Operation == TaskDisp.EHeadOperation.Sync) HeadNo = EHeadNo.Head12;
                         bool b_Head1 = (HeadNo == EHeadNo.Head1 || HeadNo == EHeadNo.Head12);
                         bool b_Head2 = (HeadNo == EHeadNo.Head2 || HeadNo == EHeadNo.Head12);
 
-                        if (OnStart.CleanCount > 0)
+                        if (OnEvent.CleanCount[(int)OnEvent.EEvent.OnStart] > 0)
                         {
                             if (!TaskDisp.TaskCleanNeedle(b_Head1, b_Head2, RunMode == ERunMode.Normal)) goto _Pause;
                         }
 
-                        if (OnStart.PurgeCount > 0)
+                        if (OnEvent.PurgeCount[(int)OnEvent.EEvent.OnStart] > 0)
                         {
                             if (!TaskDisp.TaskPurgeNeedle(b_Head1, b_Head2, RunMode == ERunMode.Normal)) goto _Pause;
                         }
 
-                        if (OnStart.PurgeStageCount > 0)
+                        if (OnEvent.PurgeStageCount[(int)OnEvent.EEvent.OnStart] > 0)
                         {
-                            if (!TaskDisp.PurgeStage.Execute(OnStart.PurgeStageCount)) goto _Pause;
+                            if (!TaskDisp.PurgeStage.Execute(OnEvent.PurgeStageCount[(int)OnEvent.EEvent.OnStart])) goto _Pause;
                         }
                         break;
-                    case ERunMode.Dry:
                     case ERunMode.Camera:
                         break;
                 }
@@ -11559,6 +11553,37 @@ namespace NDispWin
                                     break;
                                 }
                                 #endregion
+                        }
+
+                        if (TaskDisp.IsFilling() || (TFPump.PP4.FillState[0] > TFPump.PP4.EFillState.None || TFPump.PP4.FillState[1] > TFPump.PP4.EFillState.None))
+                        {
+                            switch (RunMode)
+                            {
+                                case ERunMode.Normal:
+                                case ERunMode.Dry:
+                                    EHeadNo HeadNo = EHeadNo.Head1;
+                                    if (TaskDisp.Head_Operation == TaskDisp.EHeadOperation.Sync) HeadNo = EHeadNo.Head12;
+                                    bool b_Head1 = (HeadNo == EHeadNo.Head1 || HeadNo == EHeadNo.Head12);
+                                    bool b_Head2 = (HeadNo == EHeadNo.Head2 || HeadNo == EHeadNo.Head12);
+
+                                    if (OnEvent.CleanCount[(int)OnEvent.EEvent.OnFill] > 0)
+                                    {
+                                        if (!TaskDisp.TaskCleanNeedle(b_Head1, b_Head2, true/*RunMode == ERunMode.Normal*/)) goto _Pause;
+                                    }
+
+                                    if (OnEvent.PurgeCount[(int)OnEvent.EEvent.OnFill] > 0)
+                                    {
+                                        if (!TaskDisp.TaskPurgeNeedle(b_Head1, b_Head2, true/*RunMode == ERunMode.Normal*/)) goto _Pause;
+                                    }
+
+                                    if (OnEvent.PurgeStageCount[(int)OnEvent.EEvent.OnFill] > 0)
+                                    {
+                                        if (!TaskDisp.PurgeStage.Execute(OnEvent.PurgeStageCount[(int)OnEvent.EEvent.OnFill])) goto _Pause;
+                                    }
+                                    break;
+                                case ERunMode.Camera:
+                                    break;
+                            }
                         }
 
                         TLine PrevLine(int line, ECmd ccmd)

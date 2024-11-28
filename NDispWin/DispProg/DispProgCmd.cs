@@ -1223,6 +1223,9 @@ namespace NDispWin
 
                 bool endDispense = Line.IPara[6] > 0;
 
+                bool indFirstLine = Line.IPara[11] > 0;
+                bool indLastLine = Line.IPara[12] > 0;
+
                 double startLength = Line.DPara[0];
                 double endLength = Line.DPara[1];
                 double startGap = Line.DPara[2];
@@ -1293,13 +1296,27 @@ namespace NDispWin
                 #endregion
 
                 #region assign and xy translate position
-                TPos2[] absStart = new TPos2[]
+                //TPos2[] absStart = new TPos2[]
+                //{
+                //new TPos2(f_origin_x + DispProg.rt_LayoutRelPos[DispProg.RunTime.UIndex].X + Line.X[0], f_origin_y + DispProg.rt_LayoutRelPos[DispProg.RunTime.UIndex].Y + Line.Y[0]),
+                //new TPos2(f_origin_x + DispProg.rt_LayoutRelPos[DispProg.RunTime.UIndex2].X + Line.X[0], f_origin_y + DispProg.rt_LayoutRelPos[DispProg.RunTime.UIndex2].Y + Line.Y[0])
+                //};
+                //DispProg.TranslatePos(absStart[0].X, absStart[0].Y, DispProg.rt_Head1RefData, ref absStart[0].X, ref absStart[0].Y);
+                //DispProg.TranslatePos(absStart[1].X, absStart[1].Y, DispProg.rt_Head1RefData, ref absStart[1].X, ref absStart[1].Y);
+                TPos2 lineStart = new TPos2(Line.X[0], Line.Y[0]);
+                if (vhType == EVHType.Hort)
                 {
-                new TPos2(f_origin_x + DispProg.rt_LayoutRelPos[DispProg.RunTime.UIndex].X + Line.X[0], f_origin_y + DispProg.rt_LayoutRelPos[DispProg.RunTime.UIndex].Y + Line.Y[0]),
-                new TPos2(f_origin_x + DispProg.rt_LayoutRelPos[DispProg.RunTime.UIndex2].X + Line.X[0], f_origin_y + DispProg.rt_LayoutRelPos[DispProg.RunTime.UIndex2].Y + Line.Y[0])
-                };
-                DispProg.TranslatePos(absStart[0].X, absStart[0].Y, DispProg.rt_Head1RefData, ref absStart[0].X, ref absStart[0].Y);
-                DispProg.TranslatePos(absStart[1].X, absStart[1].Y, DispProg.rt_Head1RefData, ref absStart[1].X, ref absStart[1].Y);
+                    if (indFirstLine && currentUnitCR.Y == 0) lineStart = new TPos2(Line.X[1], Line.Y[1]);
+                    if (indLastLine && currentUnitCR.Y == layout.TRowCount - 1) lineStart = new TPos2(Line.X[2], Line.Y[2]);
+                }
+                else //Vert
+                {
+                    if (indFirstLine && currentUnitCR.X == 0) lineStart = new TPos2(Line.X[1], Line.Y[1]);
+                    if (indLastLine && currentUnitCR.X == layout.TColCount - 1) lineStart = new TPos2(Line.X[2], Line.Y[2]);
+                }
+
+                TPos2 absStart = new TPos2(f_origin_x + DispProg.rt_LayoutRelPos[DispProg.RunTime.UIndex].X + lineStart.X, f_origin_y + DispProg.rt_LayoutRelPos[DispProg.RunTime.UIndex].Y + lineStart.Y);
+                DispProg.TranslatePos(absStart.X, absStart.Y, DispProg.rt_Head1RefData, ref absStart.X, ref absStart.Y);
                 #endregion
 
                 #region Calculate the End positions
@@ -1318,7 +1335,7 @@ namespace NDispWin
                     lastCR = new Point(firstCR.X, (currentClusterCR.Y * layout.URowCount) + layout.URowCount - 1);
                     layout.RCGetUnitNo(ref lastUnitNo, lastCR.X, lastCR.Y);//Get the last unit number of the current col.
                 }
-                TPos2 absEnd = new TPos2(f_origin_x + DispProg.rt_LayoutRelPos[lastUnitNo].X + Line.X[0], f_origin_y + DispProg.rt_LayoutRelPos[lastUnitNo].Y + Line.Y[0]);
+                TPos2 absEnd = new TPos2(f_origin_x + DispProg.rt_LayoutRelPos[lastUnitNo].X + lineStart.X, f_origin_y + DispProg.rt_LayoutRelPos[lastUnitNo].Y + lineStart.Y);
                 DispProg.TranslatePos(absEnd.X, absEnd.Y, DispProg.rt_Head1RefData, ref absEnd.X, ref absEnd.Y);
                 #endregion
 
@@ -1327,8 +1344,8 @@ namespace NDispWin
                 {
                     if ((vhType == EVHType.Hort && firstCR.Y % 2 != 0) || (vhType == EVHType.Vert && firstCR.X % 2 != 0))
                     {
-                        TPos2 temp = new TPos2(absStart[0]);
-                        absStart[0] = new TPos2(absEnd);
+                        TPos2 temp = new TPos2(absStart);
+                        absStart = new TPos2(absEnd);
                         absEnd = new TPos2(temp);
                     }
                 }
@@ -1337,7 +1354,7 @@ namespace NDispWin
                 double[] absZ = new double[] { 0, 0 };
                 absZ[0] = f_origin_z + TaskDisp.Head_Ofst[0].Z; //Assign Z positions
                 absZ[1] = absZ[0] + (TaskDisp.Head_ZSensor_RefPosZ[1] - TaskDisp.Head_ZSensor_RefPosZ[0]); //Update ZPlane if valid Z values
-                DispProg.UpdateZHeight(bSyncHead2, absStart[0].X, absStart[0].Y, absStart[1].X, absStart[1].Y, ref absZ[0], ref absZ[1]);
+                DispProg.UpdateZHeight(bSyncHead2, absStart.X, absStart.Y, absStart.X, absStart.Y, ref absZ[0], ref absZ[1]);
                 double[] zRetGapPos = new double[] { Math.Min(absZ[0] + Model.DispGap + Model.RetGap, TaskDisp.ZDefPos), Math.Min(absZ[1] + Model.DispGap + Model.RetGap, TaskDisp.ZDefPos) };
 
                 double[] absEndZ = new double[] { absZ[0], absZ[1] };
@@ -1345,7 +1362,7 @@ namespace NDispWin
                 #endregion
 
                 //Calculate the relative line end pos
-                TPos2 relLineEndXY = new TPos2(absEnd.X - absStart[0].X, absEnd.Y - absStart[0].Y);
+                TPos2 relLineEndXY = new TPos2(absEnd.X - absStart.X, absEnd.Y - absStart.Y);
                 double relEndZ = absEndZ[0] - absZ[0];
 
                 //Calculate the lead lag relative pos
@@ -1362,11 +1379,10 @@ namespace NDispWin
                 TPos2 relEndXY = new TPos2(endLength / lineLength * relLineEndXY.X, endLength / lineLength * relLineEndXY.Y);
                 TPos2 relConstXY = new TPos2(constLineLength / lineLength * relLineEndXY.X, constLineLength / lineLength * relLineEndXY.Y);
 
-
                 #region Move abs Start Pos + lead length, move head2 to position
                 if (!TaskGantry.SetMotionParamGXY()) goto _Error;
                 //TPos2 GXY = new TPos2(absStart[0].X - relLeadXY.X + relStartOfstXY.X, absStart[0].Y - relLeadXY.Y + relStartOfstXY.Y);
-                TPos2 GXY = new TPos2(absStart[0].X + relStartOfstXY.X, absStart[0].Y + relStartOfstXY.Y);
+                TPos2 GXY = new TPos2(absStart.X + relStartOfstXY.X, absStart.Y + relStartOfstXY.Y);
                 if (RunMode == ERunMode.Normal || RunMode == ERunMode.Dry)
                 {
                     GXY.X += TaskDisp.Head_Ofst[0].X;
@@ -1378,9 +1394,8 @@ namespace NDispWin
                 {
                     if (bHeadRun[1])
                     {
-                        GX2Y2.X = GX2Y2.X - TaskDisp.Head2_DefDistX + (absStart[1].X - absStart[0].X) + TaskDisp.Head2_XOffset;
-                        GX2Y2.Y = GX2Y2.Y + (absStart[1].Y - absStart[0].Y) + TaskDisp.Head2_YOffset;
-
+                        //GX2Y2.X = GX2Y2.X - TaskDisp.Head2_DefDistX + (absStart[1].X - absStart[0].X) + TaskDisp.Head2_XOffset;
+                        //GX2Y2.Y = GX2Y2.Y + (absStart[1].Y - absStart[0].Y) + TaskDisp.Head2_YOffset;
                         if (!TaskGantry.SetMotionParamGX2Y2()) goto _Error;
                         if (!TaskGantry.MoveAbsGX2Y2(GX2Y2.X, GX2Y2.Y, false)) goto _Error;
                     }
@@ -1598,6 +1613,7 @@ namespace NDispWin
                         break;
                     default:
                         {
+                            throw new Exception("DispCtrl Type not supported.");
                             #region Start Disp and StartDelay
                             CControl2.TAxis[] Axis = new CControl2.TAxis[] { TaskGantry.GXAxis, TaskGantry.GYAxis, TaskGantry.GZAxis, TaskGantry.GZ2Axis };
                             CommonControl.P1245.PathFree(Axis);
@@ -1784,14 +1800,6 @@ namespace NDispWin
                     str += $"DispGap={Model.DispGap:f3}\t";
                     str += $"C,R={DispProg.RunTime.Head_CR[0].X},{DispProg.RunTime.Head_CR[0].Y}\t";
                     str += $"X,Y,Z={GXY.X:f3},{GXY.Y:f3},{gz1:f3} XE,YE,ZE ={ GXY.X + relLineEndXY.X:f3},{ GXY.Y + relLineEndXY.Y:f3},{ gz1 + relEndZ:f3}\t";
-                    if (DispProg.Head_Operation == TaskDisp.EHeadOperation.Sync)
-                    {
-                        double gz2 = TaskGantry.EncoderPos(TaskGantry.GZ2Axis);
-                        str += $"C2,R2={DispProg.RunTime.Head_CR[1].X},{DispProg.RunTime.Head_CR[1].Y}\t";
-                        str += $"X2,Y2,Z2={GX2Y2.X:f3},{GX2Y2.Y:f3},{gz2:f3} X2,Y2,Z2={GX2Y2.X + relLineEndXY.X:f3},{GX2Y2.Y + relLineEndXY.Y:f3},{gz2 + relEndZ:f3}\t";
-                        double zdiff = TaskDisp.Head_ZSensor_RefPosZ[1] - TaskDisp.Head_ZSensor_RefPosZ[0];
-                        str += $"XA2,YA2,ZA2={GXY.X + (absStart[1].X - absStart[0].X):f3},{GXY.Y + (absStart[1].Y - absStart[0].Y):f3},{gz2 - TaskDisp.Head_ZSensor_RefPosZ[1] - TaskDisp.Head_ZSensor_RefPosZ[0]:f3}\t";
-                    }
                     GLog.WriteProcessLog(str);
                 }
             }

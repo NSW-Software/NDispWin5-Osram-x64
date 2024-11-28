@@ -11,6 +11,8 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 
+using Euresys.Open_eVision_2_5;
+
 namespace NDispWin
 {
     public partial class frm_Main : Form
@@ -52,6 +54,21 @@ namespace NDispWin
 
             this.WindowState = FormWindowState.Maximized;
 
+            try
+            {
+                //  do not removed, remove will call fail initialiazation of Open_eVision
+                EImageBW8 m_Source = new EImageBW8();
+                string s_tempfile = @"c:\temp.bmp";
+                m_Source.Load(s_tempfile);
+            }
+            catch (Exception ex)
+            {
+                Msg MsgBox = new Msg();
+                MsgBox.Show(ex.Message.ToString());
+            };
+
+
+
             bool x64App = true;
             if (Environment.Is64BitOperatingSystem)
             {
@@ -76,6 +93,8 @@ namespace NDispWin
 
                 SetDllDirectory(@"C:\Program Files\FLIR Systems\Spinnaker\bin\vs2015");
             }
+
+
 
             GDefine.CreateDirs();
 
@@ -121,12 +140,21 @@ namespace NDispWin
         }
         private void StartUp()
         {
-            try
-            {
-                //  do not removed, remove will call fail initialiazation of Open_eVision
-                Euresys.Open_eVision_2_5.EImageBW8 m_Source = new Euresys.Open_eVision_2_5.EImageBW8();
-            }
-            catch { };
+            //try
+            //{
+            //    //  do not removed, remove will call fail initialiazation of Open_eVision
+            //    Euresys.Open_eVision_2_5.EImageBW8 m_Source = new Euresys.Open_eVision_2_5.EImageBW8();
+            //    Euresys.Open_eVision_2_5.EMatrixCode m_MatrixCode = new Euresys.Open_eVision_2_5.EMatrixCode();
+            //    Euresys.Open_eVision_2_5.EMatrixCodeReader m_MatrixCodeReader = new Euresys.Open_eVision_2_5.EMatrixCodeReader();
+
+            //    string s_tempfile = @"c:\temp.bmp";
+            //    m_Source.Load(s_tempfile);
+            //}
+            //catch (Exception ex)
+            //{
+            //    Msg MsgBox = new Msg();
+            //    MsgBox.Show(ex.Message.ToString());
+            //};
 
             //ErrCode ErrCode = new ErrCode();
 

@@ -51,8 +51,9 @@ namespace NDispWin
             lblStartVolume.Text = $"{CmdLine.DPara[8]:f3}";
             cbEndDisp.Checked = CmdLine.IPara[6] > 0;
 
-            lblX0.Text = CmdLine.X[0].ToString("F3");
-            lblY0.Text = CmdLine.Y[0].ToString("F3");
+            lblXY0.Text = $"{CmdLine.X[0]:f3},{CmdLine.Y[0]:f3}";
+            lblXY1.Text = CmdLine.IPara[11] > 0 ? $"{CmdLine.X[1]:f3},{CmdLine.Y[1]:f3}": "";
+            lblXY2.Text = CmdLine.IPara[12] > 0 ? $"{CmdLine.X[2]:f3},{CmdLine.Y[2]:f3}": "";
             double[] endPt = new double[] { 0, 0 };
             {
                 TLayout layout = new TLayout();
@@ -79,10 +80,11 @@ namespace NDispWin
                 endPt[0] = CmdLine.X[0] + DispProg.rt_LayoutRelPos[lastUnitNo].X;
                 endPt[1] = CmdLine.Y[0] + DispProg.rt_LayoutRelPos[lastUnitNo].Y;
             }
-            lblEndX.Text = $"{endPt[0]:f3}";
-            lblEndY.Text = $"{endPt[1]:f3}";
 
-            gbxWeight.Visible = CmdLine.IPara[4] > 0;
+            cbFirstLine.Checked = CmdLine.IPara[11] > 0;
+            cbLastLine.Checked = CmdLine.IPara[12] > 0;
+
+            //gbxWeight.Visible = CmdLine.IPara[4] > 0;
             lblLineWeight.Text = $"{CmdLine.DPara[21]:f3}";
             lblFirstLineWeight.Text = CmdLine.DPara[20] > 0 ? $"{CmdLine.DPara[20]:f3}": $"({CmdLine.DPara[21]:f3})";
             lblLastLineWeight.Text = CmdLine.DPara[22] > 0 ? $"{CmdLine.DPara[22]:f3}" : $"({CmdLine.DPara[21]:f3})";
@@ -231,22 +233,12 @@ namespace NDispWin
             UpdateDisplay();
         }
 
-        private void lblX0_Click(object sender, EventArgs e)
+        private void lblXY0_Click(object sender, EventArgs e)
         {
-            double X = Math.Round(CmdLine.X[0], 3);
-            UC.AdjustExec(CmdName + ", X1", ref X, -1000, 1000);
-            CmdLine.X[0] = X;
-            UpdateDisplay();
-        }
-        private void lblY0_Click(object sender, EventArgs e)
-        {
-            double Y = Math.Round(CmdLine.Y[0], 3);
-            UC.AdjustExec(CmdName + ", Y1", ref Y, -1000, 1000);
-            CmdLine.Y[0] = Y;
-            UpdateDisplay();
-        }
-        private void btnEditXY0_Click(object sender, EventArgs e)
-        {
+            //double X = Math.Round(CmdLine.X[0], 3);
+            //UC.AdjustExec(CmdName + ", X1", ref X, -1000, 1000);
+            //CmdLine.X[0] = X;
+            //UpdateDisplay();
             frm_DispCore_EditXY frm = new frm_DispCore_EditXY();
             frm.ParamName = LineNo.ToString() + " Start XY";
             frm.ValueX = CmdLine.X[0];
@@ -287,39 +279,52 @@ namespace NDispWin
             if (!TaskGantry.SetMotionParamGXY()) return;
             if (!TaskGantry.MoveAbsGXY(X, Y)) return;
         }
+        private void btnGotoEndXY_Click(object sender, EventArgs e)
+        {
+            TLayout layout = new TLayout();
+            layout.Copy(DispProg.rt_Layouts[0]);
 
-        private void lblX1_Click(object sender, EventArgs e)
-        {
-            double X = Math.Round(CmdLine.X[1], 3);
-            UC.AdjustExec(CmdName + ", X2", ref X, -1000, 1000);
-            CmdLine.X[1] = X;
-            UpdateDisplay();
-        }
-        private void lblY1_Click(object sender, EventArgs e)
-        {
-            double Y = Math.Round(CmdLine.Y[1], 3);
-            UC.AdjustExec(CmdName + ", Y2", ref Y, -1000, 1000);
-            CmdLine.Y[1] = Y;
-            UpdateDisplay();
-        }
-        private void btnEditXY1_Click(object sender, EventArgs e)
-        {
-            frm_DispCore_EditXY frm = new frm_DispCore_EditXY();
-            frm.ParamName = LineNo.ToString() + " Start XY";
-            frm.ValueX = CmdLine.X[1];
-            frm.ValueY = CmdLine.Y[1];
+            //StartCR = (0, 0);
+            Point lastCR;// = new Point(0, 0);
+            int lastUnitNo = 0;//Last UnitNo of Hort/Vert line 
 
-            if (frm.ShowDialog() == DialogResult.OK)
+            EVHType vhType = EVHType.Hort;//0=Horizontal, 1=Vertical
+            try { vhType = (EVHType)CmdLine.IPara[3]; } catch { };
+
+            if (vhType == EVHType.Hort)
             {
-                CmdLine.X[1] = frm.ValueX;
-                CmdLine.Y[1] = frm.ValueY;
+                lastCR = new Point(layout.UColCount - 1, 0);
+                layout.RCGetUnitNo(ref lastUnitNo, lastCR.X, lastCR.Y);//Get the last unit number of the current row.
             }
+            else
+            {
+                lastCR = new Point(0, layout.URowCount - 1);
+                layout.RCGetUnitNo(ref lastUnitNo, lastCR.X, lastCR.Y);//Get the last unit number of the current col.
+            }
+
+            double X = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + CmdLine.X[0] + DispProg.rt_LayoutRelPos[lastUnitNo].X;
+            double Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.Y[0] + DispProg.rt_LayoutRelPos[lastUnitNo].Y;
+
+            if (!TaskDisp.TaskMoveGZZ2Up()) return;
+
+            if (!TaskGantry.SetMotionParamGXY()) return;
+            if (!TaskGantry.MoveAbsGXY(X, Y)) return;
+        }
+        private void cbFirstLine_Click(object sender, EventArgs e)
+        {
+            if (CmdLine.IPara[11] > 0)
+                CmdLine.IPara[11] = 0;
+            else
+                CmdLine.IPara[11] = 1;
+
+            bool enabled = CmdLine.IPara[11] > 0;
+            Log.OnSet(CmdName + ", Enable Ind First Line", !enabled, enabled);
 
             UpdateDisplay();
         }
         private void btnSetXY1_Click(object sender, EventArgs e)
         {
-            NSW.Net.Point2D Old = new NSW.Net.Point2D(CmdLine.X[0], CmdLine.Y[0]);
+            NSW.Net.Point2D Old = new NSW.Net.Point2D(CmdLine.X[1], CmdLine.Y[1]);
 
             double X = TaskGantry.GXPos();
             double Y = TaskGantry.GYPos();
@@ -344,6 +349,102 @@ namespace NDispWin
             if (!TaskGantry.SetMotionParamGXY()) return;
             if (!TaskGantry.MoveAbsGXY(X, Y)) return;
         }
+        private void cbLastLine_Click(object sender, EventArgs e)
+        {
+            if (CmdLine.IPara[12] > 0)
+                CmdLine.IPara[12] = 0;
+            else
+                CmdLine.IPara[12] = 1;
+
+            bool enabled = CmdLine.IPara[12] > 0;
+            Log.OnSet(CmdName + ", Enable Ind Last Line", !enabled, enabled);
+
+            UpdateDisplay();
+        }
+        private void btnSetXY2_Click(object sender, EventArgs e)
+        {
+            NSW.Net.Point2D Old = new NSW.Net.Point2D(CmdLine.X[2], CmdLine.Y[2]);
+
+            double X = TaskGantry.GXPos();
+            double Y = TaskGantry.GYPos();
+            DispProg.RealTimeOffset(DispProg.ERealTimeOp.Minus, ref X, ref Y);
+
+            CmdLine.X[2] = X - (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X);
+            CmdLine.Y[2] = Y - (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y);
+
+            Log.OnSet(CmdName + ", Set Start XY", Old, new NSW.Net.Point2D(CmdLine.X[2], CmdLine.Y[2]));
+
+            UpdateDisplay();
+        }
+        private void btnGotoXY2_Click(object sender, EventArgs e)
+        {
+            double X = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + CmdLine.X[2];
+            double Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.Y[2];
+
+            DispProg.RealTimeOffset(DispProg.ERealTimeOp.Add, ref X, ref Y);
+
+            if (!TaskDisp.TaskMoveGZZ2Up()) return;
+
+            if (!TaskGantry.SetMotionParamGXY()) return;
+            if (!TaskGantry.MoveAbsGXY(X, Y)) return;
+        }
+
+        //private void lblX1_Click(object sender, EventArgs e)
+        //{
+        //    double X = Math.Round(CmdLine.X[1], 3);
+        //    UC.AdjustExec(CmdName + ", X2", ref X, -1000, 1000);
+        //    CmdLine.X[1] = X;
+        //    UpdateDisplay();
+        //}
+        //private void lblY1_Click(object sender, EventArgs e)
+        //{
+        //    double Y = Math.Round(CmdLine.Y[1], 3);
+        //    UC.AdjustExec(CmdName + ", Y2", ref Y, -1000, 1000);
+        //    CmdLine.Y[1] = Y;
+        //    UpdateDisplay();
+        //}
+        //private void btnEditXY1_Click(object sender, EventArgs e)
+        //{
+        //    frm_DispCore_EditXY frm = new frm_DispCore_EditXY();
+        //    frm.ParamName = LineNo.ToString() + " Start XY";
+        //    frm.ValueX = CmdLine.X[1];
+        //    frm.ValueY = CmdLine.Y[1];
+
+        //    if (frm.ShowDialog() == DialogResult.OK)
+        //    {
+        //        CmdLine.X[1] = frm.ValueX;
+        //        CmdLine.Y[1] = frm.ValueY;
+        //    }
+
+        //    UpdateDisplay();
+        //}
+        //private void btnSetXY1_Click(object sender, EventArgs e)
+        //{
+        //    NSW.Net.Point2D Old = new NSW.Net.Point2D(CmdLine.X[0], CmdLine.Y[0]);
+
+        //    double X = TaskGantry.GXPos();
+        //    double Y = TaskGantry.GYPos();
+        //    DispProg.RealTimeOffset(DispProg.ERealTimeOp.Minus, ref X, ref Y);
+
+        //    CmdLine.X[1] = X - (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X);
+        //    CmdLine.Y[1] = Y - (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y);
+
+        //    Log.OnSet(CmdName + ", Set Start XY", Old, new NSW.Net.Point2D(CmdLine.X[1], CmdLine.Y[1]));
+
+        //    UpdateDisplay();
+        //}
+        //private void btnGotoXY1_Click(object sender, EventArgs e)
+        //{
+        //    double X = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + CmdLine.X[1];
+        //    double Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.Y[1];
+
+        //    DispProg.RealTimeOffset(DispProg.ERealTimeOp.Add, ref X, ref Y);
+
+        //    if (!TaskDisp.TaskMoveGZZ2Up()) return;
+
+        //    if (!TaskGantry.SetMotionParamGXY()) return;
+        //    if (!TaskGantry.MoveAbsGXY(X, Y)) return;
+        //}
 
         private void lblStartLength_Click(object sender, EventArgs e)
         {
@@ -397,36 +498,36 @@ namespace NDispWin
             UpdateDisplay();
         }
 
-        private void btnGotoEndXY_Click(object sender, EventArgs e)
+        private void lblXY1_Click(object sender, EventArgs e)
         {
-            TLayout layout = new TLayout();
-            layout.Copy(DispProg.rt_Layouts[0]);
+            frm_DispCore_EditXY frm = new frm_DispCore_EditXY();
+            frm.ParamName = LineNo.ToString() + " First Line Start XY";
+            frm.ValueX = CmdLine.X[1];
+            frm.ValueY = CmdLine.Y[1];
 
-            //StartCR = (0, 0);
-            Point lastCR;// = new Point(0, 0);
-            int lastUnitNo = 0;//Last UnitNo of Hort/Vert line 
-
-            EVHType vhType = EVHType.Hort;//0=Horizontal, 1=Vertical
-            try { vhType = (EVHType)CmdLine.IPara[3]; } catch { };
-
-            if (vhType == EVHType.Hort)
+            if (frm.ShowDialog() == DialogResult.OK)
             {
-                lastCR = new Point(layout.UColCount - 1, 0);
-                layout.RCGetUnitNo(ref lastUnitNo, lastCR.X, lastCR.Y);//Get the last unit number of the current row.
-            }
-            else
-            {
-                lastCR = new Point(0, layout.URowCount - 1);
-                layout.RCGetUnitNo(ref lastUnitNo, lastCR.X, lastCR.Y);//Get the last unit number of the current col.
+                CmdLine.X[1] = frm.ValueX;
+                CmdLine.Y[1] = frm.ValueY;
             }
 
-            double X = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + CmdLine.X[0] + DispProg.rt_LayoutRelPos[lastUnitNo].X;
-            double Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.Y[0] + DispProg.rt_LayoutRelPos[lastUnitNo].Y;
+            UpdateDisplay();
+        }
 
-            if (!TaskDisp.TaskMoveGZZ2Up()) return;
+        private void lblXY2_Click(object sender, EventArgs e)
+        {
+            frm_DispCore_EditXY frm = new frm_DispCore_EditXY();
+            frm.ParamName = LineNo.ToString() + " Last Line Start XY";
+            frm.ValueX = CmdLine.X[2];
+            frm.ValueY = CmdLine.Y[2];
 
-            if (!TaskGantry.SetMotionParamGXY()) return;
-            if (!TaskGantry.MoveAbsGXY(X, Y)) return;
+            if (frm.ShowDialog() == DialogResult.OK)
+            {
+                CmdLine.X[2] = frm.ValueX;
+                CmdLine.Y[2] = frm.ValueY;
+            }
+
+            UpdateDisplay();
         }
     }
 }
