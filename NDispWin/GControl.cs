@@ -296,15 +296,17 @@ namespace NDispWin
         }
         public static void UpdateFormControl(Form frm)
         {
+            if (!frm.Created) return;
+
             GetChildItems(frm, UpdateCtrlTypes).ToList().ForEach(ctrl =>
             {
                 if (ctrl is ToolStrip)
                 {
                     GetToolStripItems(ctrl as ToolStrip).ToList().ForEach(tsitem =>
                     {
-                        #region
+                    #region
 
-                        var configUIts = new TEDisplay(frm.Name, tsitem.Name);
+                    var configUIts = new TEDisplay(frm.Name, tsitem.Name);
                         Load(configUIts);
 
                         switch ((ELevel)NUtils.UserAcc.Active.GroupID)
@@ -329,8 +331,8 @@ namespace NDispWin
 
                         tsitem.MouseDown -= Target_MouseDown;
                         tsitem.MouseDown += Target_MouseDown;
-                        #endregion
-                    });
+                    #endregion
+                });
 
                     return; //return to block toolstrip as UI
                 }

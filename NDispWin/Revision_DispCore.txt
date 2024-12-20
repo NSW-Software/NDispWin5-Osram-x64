@@ -10,6 +10,8 @@ Todo
 - PurgeStage Dry Mode do not dispsense
 
 
+Ver 6.1.0.9 - KN - 20241220 - Released to OsWx, TZ - Gitted
+[Changes] TaskWeight.Weight_DownWeightUp add delay time for PP from 100 to 500ms, HPC3 from 100 to 250ms. Prevent longer backsuck overlap.
 Ver 6.1.0.8 - KN - 20241122 - Released to OsPg, Afif - Gitted
 [Feature] PAR_LINES added IndFirstLine and IndLastLine
 [Feature] Improve frmEditXY to allow value editing.

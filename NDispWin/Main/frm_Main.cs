@@ -67,8 +67,6 @@ namespace NDispWin
                 MsgBox.Show(ex.Message.ToString());
             };
 
-
-
             bool x64App = true;
             if (Environment.Is64BitOperatingSystem)
             {

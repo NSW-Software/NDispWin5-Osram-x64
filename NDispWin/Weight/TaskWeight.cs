@@ -611,7 +611,7 @@ namespace NDispWin
                                         if (!TFPump.PP4.CheckStrokeThenFill(new bool[] { b_Head1Run, b_Head2Run })) goto _Error;
                                         if (!isFilling) isFilling = TFPump.PP4.IsFilled(new bool[] { b_Head1Run, b_Head2Run });
                                         if (!TFPump.PP4.SingleShot(new bool[] { b_Head1Run, b_Head2Run })) goto _Error;
-                                        Thread.Sleep(100);
+                                        Thread.Sleep(250);
                                     }
                                     break;
                                     #endregion
@@ -627,7 +627,7 @@ namespace NDispWin
                                         if (!TaskDisp.TrigOff(b_Head1Run, b_Head2Run)) goto _Error;
                                         if (!TaskDisp.CtrlWaitComplete(b_Head1Run, b_Head2Run)) goto _Error;
                                         if (!isFilling) isFilling = TaskDisp.IsFilling();
-                                        Thread.Sleep(100);
+                                        Thread.Sleep(500);
                                     }
                                     break;
                                     #endregion
@@ -2291,7 +2291,6 @@ namespace NDispWin
                     #region
                     double weight = 0;
                     if (!TaskWeight.Weight_DownWeightUp(headNo, totalDispTime_s, ref weight)) goto _Abort;
-
                     list_Weight.Add(weight);
                     s_Log = "[" + (list_Weight.Count).ToString() + "] " + weight.ToString(dp_WEIGHT);
                     AddLog(s_Log);
