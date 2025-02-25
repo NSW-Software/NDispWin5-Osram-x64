@@ -119,6 +119,8 @@ namespace NDispWin
             this.btnPBSvVac = new System.Windows.Forms.Button();
             this.btnPASvVac = new System.Windows.Forms.Button();
             this.tmr100ms = new System.Windows.Forms.Timer(this.components);
+            this.label10 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tpOperation.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -450,6 +452,8 @@ namespace NDispWin
             // 
             // tpParameters
             // 
+            this.tpParameters.Controls.Add(this.label14);
+            this.tpParameters.Controls.Add(this.label10);
             this.tpParameters.Controls.Add(this.lblPBFPress);
             this.tpParameters.Controls.Add(this.label57);
             this.tpParameters.Controls.Add(this.lblRemoveAirPress);
@@ -1195,6 +1199,28 @@ namespace NDispWin
             this.tmr100ms.Enabled = true;
             this.tmr100ms.Tick += new System.EventHandler(this.tmr100ms_Tick);
             // 
+            // label10
+            // 
+            this.label10.AccessibleDescription = "Pump A";
+            this.label10.Location = new System.Drawing.Point(112, 313);
+            this.label10.Margin = new System.Windows.Forms.Padding(3);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(72, 19);
+            this.label10.TabIndex = 153;
+            this.label10.Text = "Pump A";
+            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label14
+            // 
+            this.label14.AccessibleDescription = "Pump B";
+            this.label14.Location = new System.Drawing.Point(191, 313);
+            this.label14.Margin = new System.Windows.Forms.Padding(3);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(72, 19);
+            this.label14.TabIndex = 154;
+            this.label14.Text = "Pump B";
+            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // frmSetupPP_HPC3
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -1308,5 +1334,7 @@ namespace NDispWin
         private System.Windows.Forms.Label lblHBBSuckAmount;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label lblHBDispAmount;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label10;
     }
 }

@@ -1093,12 +1093,14 @@ namespace NDispWin
         {
             if (Material.EnableUnitCounter)
             {
-                if (MessageBox.Show("Reset Material Unit Counter?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                if (MessageBox.Show("Reset Material Unit and Panel Counter?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     Log.OnSet("Reset Material Unit Counter A", Material.Unit.Count[0], 0);
                     Material.Unit.Count[0] = 0;
                     Log.OnSet("Reset Material Unit Counter B", Material.Unit.Count[1], 0);
                     Material.Unit.Count[1] = 0;
+                    Log.OnSet("Reset Material Panel Counter", Material.Panel.Count, 0);
+                    Material.Panel.Count = 0;
                     GDefine.SaveDefault();
                 }
                 UpdateDisplay();

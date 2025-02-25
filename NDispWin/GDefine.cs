@@ -1882,10 +1882,6 @@ namespace NDispWin
 
         public static int[] FPressComport = new int[2] { 1, 2 };
 
-        public enum EIDReader { None, DataMan, QRCode, DataMatrix }
-        public static EIDReader IDReader_Type = EIDReader.None;
-        public static string IDReader_Addr = "COM1";
-
         public enum ETempCtrl { None, Autonics_TX_TK }
         public static ETempCtrl TempCtrl_Type = ETempCtrl.None;
 
@@ -2006,8 +2002,8 @@ namespace NDispWin
 
             IniFile.WriteInteger("FPressCtrl", "PressUnit", (int)FPressCtrl.PressUnit);
 
-            IniFile.WriteInteger("IDReader", "Type", (int)IDReader_Type);
-            IniFile.WriteString("IDReader", "Address", IDReader_Addr);
+            //IniFile.WriteInteger("IDReader", "Type", (int)IDReader_Type);
+            //IniFile.WriteString("IDReader", "Address", IDReader_Addr);
 
             IniFile.WriteInteger("TempSensor", "Type", (int)SysConfig.TempSensorType);
             IniFile.WriteString("TempSensor", "Comport", SysConfig.TempSensorComport);
@@ -2130,9 +2126,6 @@ namespace NDispWin
             SysConfig.FPressAdjType = (SysConfig.EFPressAdjType)IniFile.ReadInteger("FPressCtrl", "Type", 0);
             FPressCtrl.Gain[0] = IniFile.ReadDouble("FPressCtrl", "Gain_A", 1);
             FPressCtrl.Gain[1] = IniFile.ReadDouble("FPressCtrl", "Gain_B", 1);
-
-            IDReader_Type = (EIDReader)IniFile.ReadInteger("IDReader", "Type", 0);
-            IDReader_Addr = IniFile.ReadString("IDReader", "Address", "COM1");
 
             try { SysConfig.TempSensorType = (SysConfig.ETempSensorType)IniFile.ReadInteger("TempSensor", "Type", 0); } catch { SysConfig.TempSensorType = 0; }
             SysConfig.TempSensorComport = IniFile.ReadString("TempSensor", "Comport", "COM1");
@@ -2648,7 +2641,6 @@ namespace NDispWin
             NSW.Net.RegistryUtils Reg = new NSW.Net.RegistryUtils();
             Reg.WriteKey("NSWAUTOMATION_STAT", Key, Value.ToString());
         }
-
 
         public enum EConveyorType
         {

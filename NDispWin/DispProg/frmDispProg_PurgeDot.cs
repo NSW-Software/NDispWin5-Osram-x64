@@ -212,8 +212,6 @@ namespace NDispWin
             double Y2 = CmdLine.Y[1];
             double Z2 = CmdLine.Z[1];
             
-            //if (!TaskGantry.SetMotionParamGZZ2()) return;
-            //if (!TaskGantry.MoveAbsGZZ2(0)) return;
             if (!TaskDisp.TaskMoveGZZ2Up()) return;
 
             if (!TaskGantry.SetMotionParamGXYX2Y2()) return;

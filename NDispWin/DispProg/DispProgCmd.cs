@@ -1296,13 +1296,6 @@ namespace NDispWin
                 #endregion
 
                 #region assign and xy translate position
-                //TPos2[] absStart = new TPos2[]
-                //{
-                //new TPos2(f_origin_x + DispProg.rt_LayoutRelPos[DispProg.RunTime.UIndex].X + Line.X[0], f_origin_y + DispProg.rt_LayoutRelPos[DispProg.RunTime.UIndex].Y + Line.Y[0]),
-                //new TPos2(f_origin_x + DispProg.rt_LayoutRelPos[DispProg.RunTime.UIndex2].X + Line.X[0], f_origin_y + DispProg.rt_LayoutRelPos[DispProg.RunTime.UIndex2].Y + Line.Y[0])
-                //};
-                //DispProg.TranslatePos(absStart[0].X, absStart[0].Y, DispProg.rt_Head1RefData, ref absStart[0].X, ref absStart[0].Y);
-                //DispProg.TranslatePos(absStart[1].X, absStart[1].Y, DispProg.rt_Head1RefData, ref absStart[1].X, ref absStart[1].Y);
                 TPos2 lineStart = new TPos2(Line.X[0], Line.Y[0]);
                 if (vhType == EVHType.Hort)
                 {
@@ -1534,7 +1527,8 @@ namespace NDispWin
                                     fallDispVol = 0;
                                 }
 
-                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, LineSpeed, 0, new double[6] { 0, 0, 0, 0, -startVolume, 0 }, null);
+                                double sLineSpeed = TFPump.PP4.DispSpeed;
+                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, sLineSpeed, 0, new double[6] { 0, 0, 0, 0, -startVolume, 0 }, null);
                                 if (startLength > 0) CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, LineSpeed, 0, new double[6] { relStartXY.X, relStartXY.Y, Model.DispGap - startGap, 0, startDispVol, 0 }, null);
                                 CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, LineSpeed, LineSpeed, new double[6] { relConstXY.X + relEndOfstXY.X, relConstXY.Y + relEndOfstXY.Y, relEndZ, 0, constDispVol, 0 }, null);
                                 if (endLength > 0) CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, LineSpeed, 0, new double[6] { relEndXY.X, relEndXY.Y, endGap - Model.DispGap, 0, fallDispVol, 0 }, null);

@@ -220,6 +220,8 @@ namespace NDispWin
                 InfoPanel_Map.Dispose();
             }
 
+            Event.DEBUG_INFO.Set("Auto Form Close", $"TaskConvStatus={convStatus}, TaskDispStatus={dispStatus}");
+
             GC.Collect();
         }
 
@@ -836,6 +838,8 @@ namespace NDispWin
             Close();
         }
 
+        TaskStatus convStatus;
+        TaskStatus dispStatus;
         private async void AutoRun()
         {
             EnableControl(false);
@@ -918,7 +922,12 @@ namespace NDispWin
                 }
             });
 
-            await Task.Run(() => Task.WaitAll(taskConv, taskDisp));
+            await Task.Run(() =>
+            {
+                Task.WaitAll(taskConv, taskDisp);
+                convStatus = taskConv.Status;
+                dispStatus = taskDisp.Status;
+            });
 
             TaskConv.In.Smema_DO_McReady = false;
             TaskConv.Out.Smema_DO_BdReady = false;

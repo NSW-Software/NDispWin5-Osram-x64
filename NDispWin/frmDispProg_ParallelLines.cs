@@ -235,10 +235,6 @@ namespace NDispWin
 
         private void lblXY0_Click(object sender, EventArgs e)
         {
-            //double X = Math.Round(CmdLine.X[0], 3);
-            //UC.AdjustExec(CmdName + ", X1", ref X, -1000, 1000);
-            //CmdLine.X[0] = X;
-            //UpdateDisplay();
             frm_DispCore_EditXY frm = new frm_DispCore_EditXY();
             frm.ParamName = LineNo.ToString() + " Start XY";
             frm.ValueX = CmdLine.X[0];
@@ -252,13 +248,44 @@ namespace NDispWin
 
             UpdateDisplay();
         }
+        private void lblXY1_Click(object sender, EventArgs e)
+        {
+            frm_DispCore_EditXY frm = new frm_DispCore_EditXY();
+            frm.ParamName = LineNo.ToString() + " First Line Start XY";
+            frm.ValueX = CmdLine.X[1];
+            frm.ValueY = CmdLine.Y[1];
+
+            if (frm.ShowDialog() == DialogResult.OK)
+            {
+                CmdLine.X[1] = frm.ValueX;
+                CmdLine.Y[1] = frm.ValueY;
+            }
+
+            UpdateDisplay();
+        }
+        private void lblXY2_Click(object sender, EventArgs e)
+        {
+            frm_DispCore_EditXY frm = new frm_DispCore_EditXY();
+            frm.ParamName = LineNo.ToString() + " Last Line Start XY";
+            frm.ValueX = CmdLine.X[2];
+            frm.ValueY = CmdLine.Y[2];
+
+            if (frm.ShowDialog() == DialogResult.OK)
+            {
+                CmdLine.X[2] = frm.ValueX;
+                CmdLine.Y[2] = frm.ValueY;
+            }
+
+            UpdateDisplay();
+        }
+
         private void btnSetXY0_Click(object sender, EventArgs e)
         {
             NSW.Net.Point2D Old = new NSW.Net.Point2D(CmdLine.X[0], CmdLine.Y[0]);
 
             double X = TaskGantry.GXPos();
             double Y = TaskGantry.GYPos();
-            DispProg.RealTimeOffset(DispProg.ERealTimeOp.Minus, ref X, ref Y);
+            DispProg.InvTranslate(0, ref X, ref Y);
 
             CmdLine.X[0] = X - (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X);
             CmdLine.Y[0] = Y - (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y);
@@ -271,8 +298,7 @@ namespace NDispWin
         {
             double X = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + CmdLine.X[0];
             double Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.Y[0];
-
-            DispProg.RealTimeOffset(DispProg.ERealTimeOp.Add, ref X, ref Y);
+            DispProg.Translate(0, ref X, ref Y);
 
             if (!TaskDisp.TaskMoveGZZ2Up()) return;
 
@@ -305,6 +331,8 @@ namespace NDispWin
             double X = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + CmdLine.X[0] + DispProg.rt_LayoutRelPos[lastUnitNo].X;
             double Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.Y[0] + DispProg.rt_LayoutRelPos[lastUnitNo].Y;
 
+            DispProg.Translate(0, ref X, ref Y);
+
             if (!TaskDisp.TaskMoveGZZ2Up()) return;
 
             if (!TaskGantry.SetMotionParamGXY()) return;
@@ -328,7 +356,7 @@ namespace NDispWin
 
             double X = TaskGantry.GXPos();
             double Y = TaskGantry.GYPos();
-            DispProg.RealTimeOffset(DispProg.ERealTimeOp.Minus, ref X, ref Y);
+            DispProg.InvTranslate(0, ref X, ref Y);
 
             CmdLine.X[1] = X - (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X);
             CmdLine.Y[1] = Y - (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y);
@@ -342,7 +370,7 @@ namespace NDispWin
             double X = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + CmdLine.X[1];
             double Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.Y[1];
 
-            DispProg.RealTimeOffset(DispProg.ERealTimeOp.Add, ref X, ref Y);
+            DispProg.Translate(0, ref X, ref Y);
 
             if (!TaskDisp.TaskMoveGZZ2Up()) return;
 
@@ -367,7 +395,8 @@ namespace NDispWin
 
             double X = TaskGantry.GXPos();
             double Y = TaskGantry.GYPos();
-            DispProg.RealTimeOffset(DispProg.ERealTimeOp.Minus, ref X, ref Y);
+
+            DispProg.InvTranslate(0, ref X, ref Y);
 
             CmdLine.X[2] = X - (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X);
             CmdLine.Y[2] = Y - (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y);
@@ -381,70 +410,13 @@ namespace NDispWin
             double X = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + CmdLine.X[2];
             double Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.Y[2];
 
-            DispProg.RealTimeOffset(DispProg.ERealTimeOp.Add, ref X, ref Y);
+            DispProg.Translate(0, ref X, ref Y);
 
             if (!TaskDisp.TaskMoveGZZ2Up()) return;
 
             if (!TaskGantry.SetMotionParamGXY()) return;
             if (!TaskGantry.MoveAbsGXY(X, Y)) return;
         }
-
-        //private void lblX1_Click(object sender, EventArgs e)
-        //{
-        //    double X = Math.Round(CmdLine.X[1], 3);
-        //    UC.AdjustExec(CmdName + ", X2", ref X, -1000, 1000);
-        //    CmdLine.X[1] = X;
-        //    UpdateDisplay();
-        //}
-        //private void lblY1_Click(object sender, EventArgs e)
-        //{
-        //    double Y = Math.Round(CmdLine.Y[1], 3);
-        //    UC.AdjustExec(CmdName + ", Y2", ref Y, -1000, 1000);
-        //    CmdLine.Y[1] = Y;
-        //    UpdateDisplay();
-        //}
-        //private void btnEditXY1_Click(object sender, EventArgs e)
-        //{
-        //    frm_DispCore_EditXY frm = new frm_DispCore_EditXY();
-        //    frm.ParamName = LineNo.ToString() + " Start XY";
-        //    frm.ValueX = CmdLine.X[1];
-        //    frm.ValueY = CmdLine.Y[1];
-
-        //    if (frm.ShowDialog() == DialogResult.OK)
-        //    {
-        //        CmdLine.X[1] = frm.ValueX;
-        //        CmdLine.Y[1] = frm.ValueY;
-        //    }
-
-        //    UpdateDisplay();
-        //}
-        //private void btnSetXY1_Click(object sender, EventArgs e)
-        //{
-        //    NSW.Net.Point2D Old = new NSW.Net.Point2D(CmdLine.X[0], CmdLine.Y[0]);
-
-        //    double X = TaskGantry.GXPos();
-        //    double Y = TaskGantry.GYPos();
-        //    DispProg.RealTimeOffset(DispProg.ERealTimeOp.Minus, ref X, ref Y);
-
-        //    CmdLine.X[1] = X - (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X);
-        //    CmdLine.Y[1] = Y - (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y);
-
-        //    Log.OnSet(CmdName + ", Set Start XY", Old, new NSW.Net.Point2D(CmdLine.X[1], CmdLine.Y[1]));
-
-        //    UpdateDisplay();
-        //}
-        //private void btnGotoXY1_Click(object sender, EventArgs e)
-        //{
-        //    double X = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + CmdLine.X[1];
-        //    double Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.Y[1];
-
-        //    DispProg.RealTimeOffset(DispProg.ERealTimeOp.Add, ref X, ref Y);
-
-        //    if (!TaskDisp.TaskMoveGZZ2Up()) return;
-
-        //    if (!TaskGantry.SetMotionParamGXY()) return;
-        //    if (!TaskGantry.MoveAbsGXY(X, Y)) return;
-        //}
 
         private void lblStartLength_Click(object sender, EventArgs e)
         {
@@ -495,38 +467,6 @@ namespace NDispWin
         private void lblSpeedAdjust_Click(object sender, EventArgs e)
         {
             UC.AdjustExec(CmdName + ", SpeedAdjust", ref CmdLine.DPara[4], -75, 75);
-            UpdateDisplay();
-        }
-
-        private void lblXY1_Click(object sender, EventArgs e)
-        {
-            frm_DispCore_EditXY frm = new frm_DispCore_EditXY();
-            frm.ParamName = LineNo.ToString() + " First Line Start XY";
-            frm.ValueX = CmdLine.X[1];
-            frm.ValueY = CmdLine.Y[1];
-
-            if (frm.ShowDialog() == DialogResult.OK)
-            {
-                CmdLine.X[1] = frm.ValueX;
-                CmdLine.Y[1] = frm.ValueY;
-            }
-
-            UpdateDisplay();
-        }
-
-        private void lblXY2_Click(object sender, EventArgs e)
-        {
-            frm_DispCore_EditXY frm = new frm_DispCore_EditXY();
-            frm.ParamName = LineNo.ToString() + " Last Line Start XY";
-            frm.ValueX = CmdLine.X[2];
-            frm.ValueY = CmdLine.Y[2];
-
-            if (frm.ShowDialog() == DialogResult.OK)
-            {
-                CmdLine.X[2] = frm.ValueX;
-                CmdLine.Y[2] = frm.ValueY;
-            }
-
             UpdateDisplay();
         }
     }

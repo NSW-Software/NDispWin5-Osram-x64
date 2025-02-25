@@ -47,6 +47,7 @@
             this.cbox_Enabled = new System.Windows.Forms.CheckBox();
             this.label19 = new System.Windows.Forms.Label();
             this.lbl_FocusNo = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.gbox_Pos1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -80,15 +81,16 @@
             this.gbox_Pos1.AccessibleDescription = "Position";
             this.gbox_Pos1.AutoSize = true;
             this.gbox_Pos1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.gbox_Pos1.Controls.Add(this.lbl_X1Y1);
-            this.gbox_Pos1.Controls.Add(this.btn_GotoXY);
-            this.gbox_Pos1.Controls.Add(this.btn_SetPt1Pos);
             this.gbox_Pos1.Controls.Add(this.label1);
+            this.gbox_Pos1.Controls.Add(this.label3);
+            this.gbox_Pos1.Controls.Add(this.btn_GotoXY);
+            this.gbox_Pos1.Controls.Add(this.lbl_X1Y1);
+            this.gbox_Pos1.Controls.Add(this.btn_SetPt1Pos);
             this.gbox_Pos1.Location = new System.Drawing.Point(4, 61);
             this.gbox_Pos1.Margin = new System.Windows.Forms.Padding(2);
             this.gbox_Pos1.Name = "gbox_Pos1";
             this.gbox_Pos1.Padding = new System.Windows.Forms.Padding(5, 5, 5, 0);
-            this.gbox_Pos1.Size = new System.Drawing.Size(401, 73);
+            this.gbox_Pos1.Size = new System.Drawing.Size(401, 69);
             this.gbox_Pos1.TabIndex = 20;
             this.gbox_Pos1.TabStop = false;
             this.gbox_Pos1.Text = "Position";
@@ -96,10 +98,10 @@
             // lbl_X1Y1
             // 
             this.lbl_X1Y1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_X1Y1.Location = new System.Drawing.Point(140, 26);
+            this.lbl_X1Y1.Location = new System.Drawing.Point(110, 26);
             this.lbl_X1Y1.Margin = new System.Windows.Forms.Padding(2);
             this.lbl_X1Y1.Name = "lbl_X1Y1";
-            this.lbl_X1Y1.Size = new System.Drawing.Size(175, 23);
+            this.lbl_X1Y1.Size = new System.Drawing.Size(136, 23);
             this.lbl_X1Y1.TabIndex = 5;
             this.lbl_X1Y1.Text = "lbl_X1Y1";
             this.lbl_X1Y1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -107,10 +109,10 @@
             // btn_GotoXY
             // 
             this.btn_GotoXY.AccessibleDescription = "Pox XY";
-            this.btn_GotoXY.Location = new System.Drawing.Point(7, 22);
+            this.btn_GotoXY.Location = new System.Drawing.Point(324, 22);
             this.btn_GotoXY.Margin = new System.Windows.Forms.Padding(2);
             this.btn_GotoXY.Name = "btn_GotoXY";
-            this.btn_GotoXY.Size = new System.Drawing.Size(75, 30);
+            this.btn_GotoXY.Size = new System.Drawing.Size(70, 30);
             this.btn_GotoXY.TabIndex = 4;
             this.btn_GotoXY.Text = "Pos XY";
             this.btn_GotoXY.UseVisualStyleBackColor = true;
@@ -119,10 +121,10 @@
             // btn_SetPt1Pos
             // 
             this.btn_SetPt1Pos.AccessibleDescription = "Set";
-            this.btn_SetPt1Pos.Location = new System.Drawing.Point(319, 22);
+            this.btn_SetPt1Pos.Location = new System.Drawing.Point(250, 22);
             this.btn_SetPt1Pos.Margin = new System.Windows.Forms.Padding(2);
             this.btn_SetPt1Pos.Name = "btn_SetPt1Pos";
-            this.btn_SetPt1Pos.Size = new System.Drawing.Size(75, 30);
+            this.btn_SetPt1Pos.Size = new System.Drawing.Size(70, 30);
             this.btn_SetPt1Pos.TabIndex = 3;
             this.btn_SetPt1Pos.Text = "Set";
             this.btn_SetPt1Pos.UseVisualStyleBackColor = true;
@@ -131,10 +133,10 @@
             // label1
             // 
             this.label1.AccessibleDescription = "(mm)";
-            this.label1.Location = new System.Drawing.Point(86, 26);
+            this.label1.Location = new System.Drawing.Point(66, 26);
             this.label1.Margin = new System.Windows.Forms.Padding(2);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(50, 23);
+            this.label1.Size = new System.Drawing.Size(40, 23);
             this.label1.TabIndex = 2;
             this.label1.Text = "(mm)";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -252,7 +254,7 @@
             this.cbox_Enabled.AutoSize = true;
             this.cbox_Enabled.Location = new System.Drawing.Point(168, 7);
             this.cbox_Enabled.Name = "cbox_Enabled";
-            this.cbox_Enabled.Size = new System.Drawing.Size(72, 22);
+            this.cbox_Enabled.Size = new System.Drawing.Size(62, 18);
             this.cbox_Enabled.TabIndex = 220;
             this.cbox_Enabled.Text = "Enable";
             this.cbox_Enabled.UseVisualStyleBackColor = true;
@@ -281,6 +283,17 @@
             this.lbl_FocusNo.Text = "0";
             this.lbl_FocusNo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lbl_FocusNo.Click += new System.EventHandler(this.lbl_FocusNo_Click);
+            // 
+            // label3
+            // 
+            this.label3.AccessibleDescription = "Position";
+            this.label3.Location = new System.Drawing.Point(7, 26);
+            this.label3.Margin = new System.Windows.Forms.Padding(2);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(75, 23);
+            this.label3.TabIndex = 25;
+            this.label3.Text = "Position";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // frm_DispCore_DispProg_ReadID
             // 
@@ -338,5 +351,6 @@
         private System.Windows.Forms.CheckBox cbox_Enabled;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Label lbl_FocusNo;
+        private System.Windows.Forms.Label label3;
     }
 }

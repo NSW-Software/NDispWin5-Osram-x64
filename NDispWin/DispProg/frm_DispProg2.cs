@@ -443,7 +443,6 @@ namespace NDispWin
                             Cmd = Indent + Enum.GetName(typeof(DispProg.ECmd), CmdLine.Line[i].Cmd);
                             Para = "[" + CmdLine.Line[i].ID.ToString() + "] ";
                             Para = Para + (CmdLine.Line[i].IPara[0] > 0 ? "" : "[Disabled] ");
-                            Para = Para + GDefine.IDReader_Type.ToString() + " ";
                             break;
                         }
                     #endregion
@@ -559,29 +558,7 @@ namespace NDispWin
                         }
                         break;
                     #endregion
-                    case DispProg.ECmd.FILL_PAT:
-                        #region
-                        Cmd = Indent + Enum.GetName(typeof(DispProg.ECmd), CmdLine.Line[i].Cmd);
-                        if (CmdLine.Line[i].IPara[2] > 0) Cmd = Cmd + "*";
 
-                        ID = "H" + CmdLine.Line[i].ID.ToString() + "";
-                        Para = ID + " M" + CmdLine.Line[i].IPara[0].ToString() + " ";
-                        Para = Para + Enum.GetName(typeof(DispProg.EFillPatType), CmdLine.Line[i].IPara[1]) + " ";
-                        Para = Para + "Section " + CmdLine.Line[i].IPara[4].ToString() + ", " + CmdLine.Line[i].DPara[4].ToString();
-                        break;
-                    #endregion
-                    case DispProg.ECmd.SPIRAL_FILL:
-                        #region
-                        Cmd = Indent + Enum.GetName(typeof(DispProg.ECmd), CmdLine.Line[i].Cmd);
-                        if (CmdLine.Line[i].IPara[2] > 0) Cmd = Cmd + "*";
-
-                        ID = "H" + CmdLine.Line[i].ID.ToString() + "";
-                        Para = ID + " Dia, Sweep, Pitch " +
-                            CmdLine.Line[i].DPara[6].ToString() + "," +
-                            CmdLine.Line[i].DPara[7].ToString() + "," +
-                            CmdLine.Line[i].DPara[8].ToString();
-                        break;
-                    #endregion
                     case DispProg.ECmd.GROUP_DISP:
                         #region
                         Cmd = Indent + Enum.GetName(typeof(DispProg.ECmd), CmdLine.Line[i].Cmd);
@@ -1272,8 +1249,12 @@ namespace NDispWin
                         double x = DispProg.OriginBase[(int)DispProg.rt_StationNo].X;
                         double y = DispProg.OriginBase[(int)DispProg.rt_StationNo].Y;
 
-                        DispProg.OriginBase[(int)DispProg.rt_StationNo].X = TaskGantry.GXPos();
-                        DispProg.OriginBase[(int)DispProg.rt_StationNo].Y = TaskGantry.GYPos();
+                        double X = TaskGantry.GXPos();
+                        double Y = TaskGantry.GYPos();
+                        DispProg.Translate(0, ref X, ref Y);
+
+                        DispProg.OriginBase[(int)DispProg.rt_StationNo].X = X;// TaskGantry.GXPos();
+                        DispProg.OriginBase[(int)DispProg.rt_StationNo].Y = Y;// TaskGantry.GYPos();
 
                         Log.OnSet("Origin", new NSW.Net.Point2D(x, y), new NSW.Net.Point2D(DispProg.OriginBase[(int)DispProg.rt_StationNo].X, DispProg.OriginBase[(int)DispProg.rt_StationNo].Y));
                     }
@@ -1295,6 +1276,8 @@ namespace NDispWin
                 if (!TaskGantry.SetMotionParamGXYX2Y2()) return;
 
                 TPos2 GXY = new TPos2(DispProg.Origin(DispProg.rt_StationNo).X, DispProg.Origin(DispProg.rt_StationNo).Y);
+                DispProg.Translate(0, ref GXY.X, ref GXY.Y);
+
                 TPos2 GX2Y2 = new TPos2(TaskDisp.Head2_DefPos.X, TaskDisp.Head2_DefPos.Y);
                 GX2Y2.X = GX2Y2.X - TaskDisp.Head2_DefDistX + TaskDisp.Head2_DefDistX;
 
@@ -1338,16 +1321,20 @@ namespace NDispWin
             UpdateDisplay();
         }
 
-        private void tsbtn_MasterAlign_Click(object sender, EventArgs e)
+        private async void tsbtn_MasterAlign_Click(object sender, EventArgs e)
         {
             try
             {
-                DispProg.MasterAlign();
+                await Task.Run(() => DispProg.MasterAlign());
             }
             catch (Exception Ex)
             {
                 MessageBox.Show(Ex.Message.ToString());
             }
+        }
+        private void tsbtnMasterAlignClear_Click(object sender, EventArgs e)
+        {
+            DispProg.ClearRTDispData();
         }
         #endregion
 
@@ -1996,22 +1983,22 @@ namespace NDispWin
                                         break;
                                     }
                                 #endregion
-                                case DispProg.ECmd.DOT_ARRAY:
-                                    #region
-                                    {
-                                        frm_DispCore_DispProg_DotAngArr frm = new frm_DispCore_DispProg_DotAngArr();
-                                        frm.TopLevel = false;
-                                        frm.Parent = this;
-                                        frm.ProgNo = SelProg;
-                                        frm.LineNo = ProgLine;
-                                        frm.SubOrigin = SubOfst;
-                                        frm.BringToFront();
-                                        Dirty = true;
-                                        Done = false;
-                                        frm.Show();
-                                        break;
-                                    }
-                                #endregion
+                                //case DispProg.ECmd.DOT_ARRAY:
+                                //    #region
+                                //    {
+                                //        frm_DispCore_DispProg_DotAngArr frm = new frm_DispCore_DispProg_DotAngArr();
+                                //        frm.TopLevel = false;
+                                //        frm.Parent = this;
+                                //        frm.ProgNo = SelProg;
+                                //        frm.LineNo = ProgLine;
+                                //        frm.SubOrigin = SubOfst;
+                                //        frm.BringToFront();
+                                //        Dirty = true;
+                                //        Done = false;
+                                //        frm.Show();
+                                //        break;
+                                //    }
+                                //#endregion
                                 case DispProg.ECmd.DOT_MULTI:
                                     #region
                                     {
@@ -2160,37 +2147,37 @@ namespace NDispWin
                                     }
                                 #endregion
 
-                                case DispProg.ECmd.FILL_PAT:
-                                    #region
-                                    {
-                                        frm_DispCore_DispProg_FillPat frm = new frm_DispCore_DispProg_FillPat();
-                                        frm.TopLevel = false;
-                                        frm.Parent = this;
-                                        frm.ProgNo = SelProg;
-                                        frm.LineNo = ProgLine;
-                                        frm.SubOrigin = SubOfst;
-                                        frm.BringToFront();
-                                        Dirty = true;
-                                        Done = false;
-                                        frm.Show();
-                                        break;
-                                    }
-                                #endregion
-                                case DispProg.ECmd.SPIRAL_FILL:
-                                    #region
-                                    {
-                                        frm_DispCore_DispProg_SpiralFill frm = new frm_DispCore_DispProg_SpiralFill();
-                                        frm.TopLevel = false;
-                                        frm.Parent = this;
-                                        frm.ProgNo = SelProg;
-                                        frm.LineNo = ProgLine;
-                                        frm.SubOrigin = SubOfst;
-                                        frm.BringToFront();
-                                        Dirty = true;
-                                        Done = false;
-                                        frm.Show();
-                                        break;
-                                    }
+                                //case DispProg.ECmd.FILL_PAT:
+                                //    #region
+                                //    {
+                                //        frm_DispCore_DispProg_FillPat frm = new frm_DispCore_DispProg_FillPat();
+                                //        frm.TopLevel = false;
+                                //        frm.Parent = this;
+                                //        frm.ProgNo = SelProg;
+                                //        frm.LineNo = ProgLine;
+                                //        frm.SubOrigin = SubOfst;
+                                //        frm.BringToFront();
+                                //        Dirty = true;
+                                //        Done = false;
+                                //        frm.Show();
+                                //        break;
+                                //    }
+                                //#endregion
+                                //case DispProg.ECmd.SPIRAL_FILL:
+                                //    #region
+                                //    {
+                                //        frm_DispCore_DispProg_SpiralFill frm = new frm_DispCore_DispProg_SpiralFill();
+                                //        frm.TopLevel = false;
+                                //        frm.Parent = this;
+                                //        frm.ProgNo = SelProg;
+                                //        frm.LineNo = ProgLine;
+                                //        frm.SubOrigin = SubOfst;
+                                //        frm.BringToFront();
+                                //        Dirty = true;
+                                //        Done = false;
+                                //        frm.Show();
+                                //        break;
+                                //    }
                                 #endregion
                                 case DispProg.ECmd.GROUP_DISP:
                                     #region
@@ -2766,7 +2753,7 @@ namespace NDispWin
             RefreshProgramList();
             lv_Program.Items[ProgLine].Selected = true;
         }
-        #endregion
+        //#endregion
 
         #region Program Execution
         private void tmr_Run_Tick(object sender, EventArgs e)

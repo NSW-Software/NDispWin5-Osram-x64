@@ -515,7 +515,7 @@ namespace NDispWin
             try
             {
                 W.WriteLine("Type,Red,Yellow,Green,Buzzer");
-                W.WriteLine("Assign: 0=Off, 1=On, 2=Blinking");
+                W.WriteLine("Assign: 0=Off, 1=On, 2=Blinking, 3=Retain");
                 foreach (string s in list)
                 {
                     W.WriteLine(s);
@@ -634,10 +634,10 @@ namespace NDispWin
 
             try
             {
-                TFTowerLight.Red = (status.Red > 0 && status.Red < 3);
-                TFTowerLight.Yellow = (status.Yel > 0 && status.Yel < 3);
-                TFTowerLight.Green = (status.Grn > 0 && status.Grn < 3);
-                TFTowerLight.Buzzer = (status.Buz > 0 && status.Buz < 3);
+                if (status.Red < 3) TFTowerLight.Red = status.Red > 0;
+                if (status.Yel < 3) TFTowerLight.Yellow = status.Yel > 0;
+                if (status.Grn < 3) TFTowerLight.Green = status.Grn > 0;
+                if (status.Buz < 3) TFTowerLight.Buzzer = status.Buz > 0;
             }
             catch
             {

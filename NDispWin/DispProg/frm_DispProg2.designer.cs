@@ -66,6 +66,7 @@
             this.tslbl_Status = new System.Windows.Forms.ToolStripLabel();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbtn_MasterAlign = new System.Windows.Forms.ToolStripButton();
+            this.tsbtnMasterAlignClear = new System.Windows.Forms.ToolStripButton();
             this.ts_File = new System.Windows.Forms.ToolStrip();
             this.ts_ProgNew = new System.Windows.Forms.ToolStripButton();
             this.ts_ProgOpen = new System.Windows.Forms.ToolStripButton();
@@ -144,7 +145,7 @@
             this.lv_Program.Margin = new System.Windows.Forms.Padding(2);
             this.lv_Program.MultiSelect = false;
             this.lv_Program.Name = "lv_Program";
-            this.lv_Program.Size = new System.Drawing.Size(500, 529);
+            this.lv_Program.Size = new System.Drawing.Size(500, 539);
             this.lv_Program.TabIndex = 0;
             this.lv_Program.UseCompatibleStateImageBehavior = false;
             this.lv_Program.View = System.Windows.Forms.View.Details;
@@ -167,33 +168,33 @@
             this.cmsCopyGroup,
             this.cmsPasteGroup});
             this.cms_CopyPaste.Name = "cms_CopyPaste";
-            this.cms_CopyPaste.Size = new System.Drawing.Size(175, 100);
+            this.cms_CopyPaste.Size = new System.Drawing.Size(154, 92);
             // 
             // cmsCopyPosition
             // 
             this.cmsCopyPosition.Name = "cmsCopyPosition";
-            this.cmsCopyPosition.Size = new System.Drawing.Size(174, 24);
+            this.cmsCopyPosition.Size = new System.Drawing.Size(153, 22);
             this.cmsCopyPosition.Text = "Copy Positions";
             this.cmsCopyPosition.Click += new System.EventHandler(this.tsmi_CopyPosition_Click);
             // 
             // cmsPastePosition
             // 
             this.cmsPastePosition.Name = "cmsPastePosition";
-            this.cmsPastePosition.Size = new System.Drawing.Size(174, 24);
+            this.cmsPastePosition.Size = new System.Drawing.Size(153, 22);
             this.cmsPastePosition.Text = "Paste Positions";
             this.cmsPastePosition.Click += new System.EventHandler(this.tsmi_PastePosition_Click);
             // 
             // cmsCopyGroup
             // 
             this.cmsCopyGroup.Name = "cmsCopyGroup";
-            this.cmsCopyGroup.Size = new System.Drawing.Size(174, 24);
+            this.cmsCopyGroup.Size = new System.Drawing.Size(153, 22);
             this.cmsCopyGroup.Text = "Copy Group";
             this.cmsCopyGroup.Click += new System.EventHandler(this.cmsCopyGroup_Click);
             // 
             // cmsPasteGroup
             // 
             this.cmsPasteGroup.Name = "cmsPasteGroup";
-            this.cmsPasteGroup.Size = new System.Drawing.Size(174, 24);
+            this.cmsPasteGroup.Size = new System.Drawing.Size(153, 22);
             this.cmsPasteGroup.Text = "Paste Group";
             this.cmsPasteGroup.Click += new System.EventHandler(this.cmsPasteGroup_Click);
             // 
@@ -221,9 +222,9 @@
             this.tslbl_ChuckVac,
             this.tsslbl_RecipeType});
             this.statusStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
-            this.statusStrip1.Location = new System.Drawing.Point(0, 529);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 539);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(500, 56);
+            this.statusStrip1.Size = new System.Drawing.Size(500, 46);
             this.statusStrip1.SizingGrip = false;
             this.statusStrip1.TabIndex = 75;
             this.statusStrip1.Text = "statusStrip1";
@@ -232,14 +233,14 @@
             // 
             this.tsslbl_PumpType.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
             this.tsslbl_PumpType.Name = "tsslbl_PumpType";
-            this.tsslbl_PumpType.Size = new System.Drawing.Size(122, 22);
+            this.tsslbl_PumpType.Size = new System.Drawing.Size(103, 18);
             this.tsslbl_PumpType.Text = "tsslbl_PumpType";
             // 
             // tsslbl_HeadOp
             // 
             this.tsslbl_HeadOp.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
             this.tsslbl_HeadOp.Name = "tsslbl_HeadOp";
-            this.tsslbl_HeadOp.Size = new System.Drawing.Size(104, 22);
+            this.tsslbl_HeadOp.Size = new System.Drawing.Size(88, 18);
             this.tsslbl_HeadOp.Text = "tsslbl_HeadOp";
             // 
             // tsslbl_DispATrig
@@ -262,14 +263,14 @@
             // 
             this.tsslbl_TargetWeight.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
             this.tsslbl_TargetWeight.Name = "tsslbl_TargetWeight";
-            this.tsslbl_TargetWeight.Size = new System.Drawing.Size(137, 22);
+            this.tsslbl_TargetWeight.Size = new System.Drawing.Size(118, 18);
             this.tsslbl_TargetWeight.Text = "Weight (mg) 3.000";
             // 
             // tsslbl_Flowrate
             // 
             this.tsslbl_Flowrate.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
             this.tsslbl_Flowrate.Name = "tsslbl_Flowrate";
-            this.tsslbl_Flowrate.Size = new System.Drawing.Size(193, 22);
+            this.tsslbl_Flowrate.Size = new System.Drawing.Size(165, 18);
             this.tsslbl_Flowrate.Text = "Flowrate (mg) 2.900, 3.100";
             // 
             // tslbl_ChuckVac
@@ -308,7 +309,8 @@
             this.toolStripSeparator2,
             this.tslbl_Status,
             this.toolStripSeparator8,
-            this.tsbtn_MasterAlign});
+            this.tsbtn_MasterAlign,
+            this.tsbtnMasterAlignClear});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(500, 39);
@@ -494,6 +496,16 @@
             this.tsbtn_MasterAlign.Text = "Master Align";
             this.tsbtn_MasterAlign.Click += new System.EventHandler(this.tsbtn_MasterAlign_Click);
             // 
+            // tsbtnMasterAlignClear
+            // 
+            this.tsbtnMasterAlignClear.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbtnMasterAlignClear.Image = ((System.Drawing.Image)(resources.GetObject("tsbtnMasterAlignClear.Image")));
+            this.tsbtnMasterAlignClear.ImageTransparentColor = System.Drawing.Color.White;
+            this.tsbtnMasterAlignClear.Name = "tsbtnMasterAlignClear";
+            this.tsbtnMasterAlignClear.Size = new System.Drawing.Size(34, 36);
+            this.tsbtnMasterAlignClear.Text = "Reset Align";
+            this.tsbtnMasterAlignClear.Click += new System.EventHandler(this.tsbtnMasterAlignClear_Click);
+            // 
             // ts_File
             // 
             this.ts_File.Font = new System.Drawing.Font("Tahoma", 9F);
@@ -669,7 +681,7 @@
             "Script: SUB2",
             "Script: SUB3"});
             this.tscombox_Script.Name = "tscombox_Script";
-            this.tscombox_Script.Size = new System.Drawing.Size(120, 28);
+            this.tscombox_Script.Size = new System.Drawing.Size(120, 23);
             this.tscombox_Script.DropDownClosed += new System.EventHandler(this.tscombox_Script_DropDownClosed);
             this.tscombox_Script.Click += new System.EventHandler(this.tscombox_Script_Click);
             // 
@@ -789,7 +801,7 @@
             this.tsmi_RunMode_Camera.Image = ((System.Drawing.Image)(resources.GetObject("tsmi_RunMode_Camera.Image")));
             this.tsmi_RunMode_Camera.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsmi_RunMode_Camera.Name = "tsmi_RunMode_Camera";
-            this.tsmi_RunMode_Camera.Size = new System.Drawing.Size(151, 36);
+            this.tsmi_RunMode_Camera.Size = new System.Drawing.Size(128, 36);
             this.tsmi_RunMode_Camera.Text = "Camera";
             this.tsmi_RunMode_Camera.Click += new System.EventHandler(this.tsmi_RunMode_Camera_Click);
             // 
@@ -799,7 +811,7 @@
             this.tsmi_RunMode_Normal.Image = ((System.Drawing.Image)(resources.GetObject("tsmi_RunMode_Normal.Image")));
             this.tsmi_RunMode_Normal.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsmi_RunMode_Normal.Name = "tsmi_RunMode_Normal";
-            this.tsmi_RunMode_Normal.Size = new System.Drawing.Size(151, 36);
+            this.tsmi_RunMode_Normal.Size = new System.Drawing.Size(128, 36);
             this.tsmi_RunMode_Normal.Text = "Normal";
             this.tsmi_RunMode_Normal.Click += new System.EventHandler(this.tsmi_RunMode_Normal_Click);
             // 
@@ -809,7 +821,7 @@
             this.tsmi_RunMode_Dry.Image = ((System.Drawing.Image)(resources.GetObject("tsmi_RunMode_Dry.Image")));
             this.tsmi_RunMode_Dry.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsmi_RunMode_Dry.Name = "tsmi_RunMode_Dry";
-            this.tsmi_RunMode_Dry.Size = new System.Drawing.Size(151, 36);
+            this.tsmi_RunMode_Dry.Size = new System.Drawing.Size(128, 36);
             this.tsmi_RunMode_Dry.Text = "Dry";
             this.tsmi_RunMode_Dry.Click += new System.EventHandler(this.tsmi_RunMode_Dry_Click);
             // 
@@ -841,7 +853,7 @@
             this.tsddbtn_ForceSingle.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsddbtn_ForceSingle.ImageTransparentColor = System.Drawing.Color.White;
             this.tsddbtn_ForceSingle.Name = "tsddbtn_ForceSingle";
-            this.tsddbtn_ForceSingle.Size = new System.Drawing.Size(44, 36);
+            this.tsddbtn_ForceSingle.Size = new System.Drawing.Size(43, 36);
             this.tsddbtn_ForceSingle.Text = "toolStripDropDownButton1";
             // 
             // tsmi_ForceSingle
@@ -850,7 +862,7 @@
             this.tsmi_ForceSingle.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsmi_ForceSingle.ImageTransparentColor = System.Drawing.Color.White;
             this.tsmi_ForceSingle.Name = "tsmi_ForceSingle";
-            this.tsmi_ForceSingle.Size = new System.Drawing.Size(177, 36);
+            this.tsmi_ForceSingle.Size = new System.Drawing.Size(154, 36);
             this.tsmi_ForceSingle.Text = "Force Single";
             this.tsmi_ForceSingle.Click += new System.EventHandler(this.tsmi_ForceSingle_Click);
             // 
@@ -860,7 +872,7 @@
             this.tsmi_Dual.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsmi_Dual.ImageTransparentColor = System.Drawing.Color.White;
             this.tsmi_Dual.Name = "tsmi_Dual";
-            this.tsmi_Dual.Size = new System.Drawing.Size(177, 36);
+            this.tsmi_Dual.Size = new System.Drawing.Size(154, 36);
             this.tsmi_Dual.Text = "Dual";
             this.tsmi_Dual.Click += new System.EventHandler(this.tsmi_Dual_Click);
             // 
@@ -1005,7 +1017,7 @@
             this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(29, 50);
+            this.toolStripButton1.Size = new System.Drawing.Size(24, 50);
             this.toolStripButton1.Text = "toolStripButton1";
             // 
             // panel3
@@ -1183,6 +1195,7 @@
         private System.Windows.Forms.ToolStripMenuItem cmsCopyGroup;
         private System.Windows.Forms.ToolStripMenuItem cmsPasteGroup;
         private System.Windows.Forms.Timer tmr15s;
+        private System.Windows.Forms.ToolStripButton tsbtnMasterAlignClear;
     }
 }
 

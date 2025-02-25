@@ -248,8 +248,7 @@ namespace NDispWin
         {
             double X = TaskGantry.GXPos();
             double Y = TaskGantry.GYPos();
-
-            DispProg.RealTimeOffset(DispProg.ERealTimeOp.Minus, ref X, ref Y);
+            DispProg.InvTranslate(0, ref X, ref Y);
 
             NSW.Net.Point2D Old = new NSW.Net.Point2D(CmdLine.X[0], CmdLine.Y[0]); 
             CmdLine.X[0] = X - (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X);
@@ -264,8 +263,7 @@ namespace NDispWin
         {
             double X = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + CmdLine.X[0];
             double Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.Y[0];
-
-            DispProg.RealTimeOffset(DispProg.ERealTimeOp.Add, ref X, ref Y);
+            DispProg.Translate(0, ref X, ref Y);
 
             if (!TaskDisp.TaskMoveGZZ2Up()) return;
             int t = GDefine.GetTickCount();
@@ -306,8 +304,7 @@ namespace NDispWin
         {
             double X = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + StartPt.X;
             double Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + StartPt.Y;
-
-            DispProg.RealTimeOffset(DispProg.ERealTimeOp.Add, ref X, ref Y);
+            DispProg.Translate(0, ref X, ref Y);
 
             if (!TaskDisp.TaskMoveGZZ2Up()) return;
 
@@ -475,7 +472,7 @@ namespace NDispWin
 
             double X = TaskGantry.GXPos();
             double Y = TaskGantry.GYPos();
-            DispProg.RealTimeOffset(DispProg.ERealTimeOp.Minus, ref X, ref Y);
+            DispProg.Translate(0, ref X, ref Y);
 
             CmdLine.X[0] = X - (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X);
             CmdLine.Y[0] = Y - (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y);

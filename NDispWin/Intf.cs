@@ -184,7 +184,6 @@ namespace NDispWin
             AppLanguage.Func2.WriteLangFile(new frm_DispCore_DispProg_DoHeight());
             AppLanguage.Func2.WriteLangFile(new frm_DispCore_DispProg_DoRef());
             AppLanguage.Func2.WriteLangFile(new frm_DispCore_DispProg_Dot());
-            AppLanguage.Func2.WriteLangFile(new frm_DispCore_DispProg_DotAngArr());
             AppLanguage.Func2.WriteLangFile(new frm_DispCore_DispProg_DotMulti());
             AppLanguage.Func2.WriteLangFile(new frm_DispCore_DispProg_DoUnitMark());
             AppLanguage.Func2.WriteLangFile(new frm_DispCore_DispProg_DoVision());

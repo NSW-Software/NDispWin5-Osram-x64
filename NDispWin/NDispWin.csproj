@@ -528,12 +528,6 @@
     <Compile Include="Settings\frmDeviceIOConfigEditor.Designer.cs">
       <DependentUpon>frmDeviceIOConfigEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="DispProg\frmDispProg_DotAngArr.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DispProg\frmDispProg_DotAngArr.designer.cs">
-      <DependentUpon>frmDispProg_DotAngArr.cs</DependentUpon>
-    </Compile>
     <Compile Include="DispProg\frmDispProg_DoVision.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -746,12 +740,6 @@
       <DependentUpon>frmDispProg_ReadID.cs</DependentUpon>
     </Compile>
     <Compile Include="External_Intf.cs" />
-    <Compile Include="DispProg\frmDispProg_FillPat.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DispProg\frmDispProg_FillPat.designer.cs">
-      <DependentUpon>frmDispProg_FillPat.cs</DependentUpon>
-    </Compile>
     <Compile Include="DispProg\frmDispProg_ExtVis.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -775,12 +763,6 @@
     </Compile>
     <Compile Include="DispProg\frmDispProg_Repeat.Designer.cs">
       <DependentUpon>frmDispProg_Repeat.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DispProg\frmDispProg_SpiralFill.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DispProg\frmDispProg_SpiralFill.designer.cs">
-      <DependentUpon>frmDispProg_SpiralFill.cs</DependentUpon>
     </Compile>
     <Compile Include="frmMap.cs">
       <SubType>Form</SubType>
@@ -1227,10 +1209,6 @@
       <DependentUpon>frmDeviceIOConfigEditor.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="DispProg\frmDispProg_DotAngArr.resx">
-      <DependentUpon>frmDispProg_DotAngArr.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="DispProg\frmDispProg_DoVision.resx">
       <DependentUpon>frmDispProg_DoVision.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -1415,10 +1393,6 @@
       <DependentUpon>frmDispProg_ReadID.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="DispProg\frmDispProg_FillPat.resx">
-      <DependentUpon>frmDispProg_FillPat.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="DispProg\frmDispProg_ExtVis.resx">
       <DependentUpon>frmDispProg_ExtVis.cs</DependentUpon>
     </EmbeddedResource>
@@ -1428,9 +1402,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DispProg\frmDispProg_Repeat.resx">
       <DependentUpon>frmDispProg_Repeat.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DispProg\frmDispProg_SpiralFill.resx">
-      <DependentUpon>frmDispProg_SpiralFill.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmAppInfo.resx">
       <DependentUpon>frmAppInfo.cs</DependentUpon>
@@ -1744,7 +1715,7 @@
   <ItemGroup>
     <Content Include="AtomizerIOAssign.txt" />
     <Content Include="NSWIcon.ico" />
-    <Content Include="Revision_DispCore.txt" />
+    <Content Include="Revision.txt" />
     <None Include="App.config" />
     <None Include="app.manifest" />
     <None Include="icon\RunModeDry.bmp" />

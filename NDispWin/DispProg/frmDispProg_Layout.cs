@@ -336,6 +336,7 @@ namespace NDispWin
         {
             double X = TaskGantry.GXPos();
             double Y = TaskGantry.GYPos();
+            DispProg.InvTranslate(0, ref X, ref Y);
 
             NSW.Net.Point2D Old = new NSW.Net.Point2D(CmdLine.DPara[0], CmdLine.DPara[1]);
             CmdLine.DPara[0] = X - (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X);
@@ -353,6 +354,7 @@ namespace NDispWin
 
             double X = TaskGantry.GXPos();
             double Y = TaskGantry.GYPos();
+            DispProg.InvTranslate(0, ref X, ref Y);
 
             X = X - (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X);
             Y = Y - (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y);
@@ -378,6 +380,7 @@ namespace NDispWin
 
             double X = TaskGantry.GXPos();
             double Y = TaskGantry.GYPos();
+            DispProg.InvTranslate(0, ref X, ref Y);
 
             X = X - (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X);
             Y = Y - (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y);
@@ -403,6 +406,7 @@ namespace NDispWin
 
             double X = TaskGantry.GXPos();
             double Y = TaskGantry.GYPos();
+            DispProg.InvTranslate(0, ref X, ref Y);
 
             X = X - (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X);
             Y = Y - (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y);
@@ -423,6 +427,7 @@ namespace NDispWin
 
             double X = TaskGantry.GXPos();
             double Y = TaskGantry.GYPos();
+            DispProg.InvTranslate(0, ref X, ref Y);
 
             X = X - (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X);
             Y = Y - (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y);
@@ -443,6 +448,7 @@ namespace NDispWin
 
             double X = TaskGantry.GXPos();
             double Y = TaskGantry.GYPos();
+            DispProg.InvTranslate(0, ref X, ref Y);
 
             X = X - (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X);
             Y = Y - (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y);
@@ -463,6 +469,7 @@ namespace NDispWin
 
             double X = TaskGantry.GXPos();
             double Y = TaskGantry.GYPos();
+            DispProg.InvTranslate(0, ref X, ref Y);
 
             X = X - (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X);
             Y = Y - (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y);
@@ -494,6 +501,7 @@ namespace NDispWin
         {
             double X = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + LocalLayout.StartX;// CmdLine.DPara[0];
             double Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + LocalLayout.StartY;// CmdLine.DPara[1];
+            DispProg.Translate(0, ref X, ref Y);
 
             if (!TaskDisp.TaskMoveGZZ2Up()) return;
 
@@ -624,6 +632,7 @@ namespace NDispWin
                 X = X + (CmdLine.DPara[2] * (CmdLine.Index[2] - 2));
                 Y = Y + (CmdLine.DPara[3] * (CmdLine.Index[2] - 2));
             }
+            DispProg.Translate(0, ref X, ref Y);
 
             if (!TaskDisp.TaskMoveGZZ2Up()) return;
 
@@ -647,6 +656,7 @@ namespace NDispWin
                 X = X + (CmdLine.DPara[4] * (CmdLine.Index[4] - 2));
                 Y = Y + (CmdLine.DPara[5] * (CmdLine.Index[4] - 2));
             }
+            DispProg.Translate(0, ref X, ref Y);
 
             if (!TaskDisp.TaskMoveGZZ2Up()) return;
 
@@ -665,6 +675,7 @@ namespace NDispWin
             double Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.Y[0];
             X = X + CmdLine.X[UnitNo];
             Y = Y + CmdLine.Y[UnitNo];
+            DispProg.Translate(0, ref X, ref Y);
 
             if (!TaskDisp.TaskMoveGZZ2Up()) return;
 
@@ -720,6 +731,7 @@ namespace NDispWin
 
             double X = TaskGantry.GXPos();
             double Y = TaskGantry.GYPos();
+            DispProg.InvTranslate(0, ref X, ref Y);
 
             X = X - (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X);
             Y = Y - (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y);
@@ -825,6 +837,7 @@ namespace NDispWin
                 double Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.DPara[1];
                 X = X + (CmdLine.DPara[6] * (CmdLine.Index[6] - 1));
                 Y = Y + (CmdLine.DPara[7] * (CmdLine.Index[6] - 1));
+                DispProg.Translate(0, ref X, ref Y);
 
                 if (!TaskDisp.TaskMoveGZZ2Up()) return;
 
@@ -859,6 +872,7 @@ namespace NDispWin
                 double Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.DPara[1];
                 X = X + (CmdLine.DPara[8] * (CmdLine.Index[8] - 1));
                 Y = Y + (CmdLine.DPara[9] * (CmdLine.Index[8] - 1));
+                DispProg.Translate(0, ref X, ref Y);
 
                 if (!TaskDisp.TaskMoveGZZ2Up()) return;
 
@@ -925,6 +939,7 @@ namespace NDispWin
             double Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.DPara[1];
             X = X + CmdLine.A[CColNo];
             Y = Y + CmdLine.B[CColNo];
+            DispProg.Translate(0, ref X, ref Y);
 
             if (!TaskDisp.TaskMoveGZZ2Up()) return;
 
@@ -937,6 +952,7 @@ namespace NDispWin
             double Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.DPara[1];
             X = X + CmdLine.C[CRowNo];
             Y = Y + CmdLine.D[CRowNo];
+            DispProg.Translate(0, ref X, ref Y);
 
             if (!TaskDisp.TaskMoveGZZ2Up()) return;
 
@@ -1711,6 +1727,7 @@ namespace NDispWin
         {
             double X = TaskGantry.GXPos();
             double Y = TaskGantry.GYPos();
+            DispProg.InvTranslate(0, ref X, ref Y);
 
             //NSW.Net.Point2D Old = new NSW.Net.Point2D(CmdLine.DPara[12], CmdLine.DPara[13]);
             NSW.Net.Point2D Old = new NSW.Net.Point2D(CmdLine.DPara[0], CmdLine.DPara[1]);
@@ -1727,6 +1744,7 @@ namespace NDispWin
         {
             double X = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + CmdLine.DPara[0];
             double Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.DPara[1];
+            DispProg.Translate(0, ref X, ref Y);
 
             if (!TaskDisp.TaskMoveGZZ2Up()) return;
 
@@ -1740,6 +1758,8 @@ namespace NDispWin
 
             double X = TaskGantry.GXPos();
             double Y = TaskGantry.GYPos();
+            DispProg.InvTranslate(0, ref X, ref Y);
+
             double dX = X - (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) - CmdLine.DPara[0];
             double dY = Y - (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) - CmdLine.DPara[1];
 
@@ -1766,6 +1786,7 @@ namespace NDispWin
             CmdLine.DPara[2] * (CmdLine.IPara[14] - CmdLine.IPara[12]);
             double Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.DPara[1] +
             CmdLine.DPara[3] * (CmdLine.IPara[14] - CmdLine.IPara[12]);
+            DispProg.Translate(0, ref X, ref Y);
 
             if (!TaskDisp.TaskMoveGZZ2Up()) return;
 
@@ -1778,6 +1799,8 @@ namespace NDispWin
 
             double X = TaskGantry.GXPos();
             double Y = TaskGantry.GYPos();
+            DispProg.InvTranslate(0, ref X, ref Y);
+
             double dX = X - (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) - CmdLine.DPara[0];
             double dY = Y - (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) - CmdLine.DPara[1];
 
@@ -1804,6 +1827,7 @@ namespace NDispWin
             CmdLine.DPara[4] * (CmdLine.IPara[17] - CmdLine.IPara[13]);
             double Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.DPara[1] +
             CmdLine.DPara[5] * (CmdLine.IPara[17] - CmdLine.IPara[13]);
+            DispProg.Translate(0, ref X, ref Y);
 
             if (!TaskDisp.TaskMoveGZZ2Up()) return;
 
@@ -1819,6 +1843,7 @@ namespace NDispWin
             double Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.DPara[1] +
             CmdLine.DPara[3] * (CmdLine.IPara[14] - CmdLine.IPara[12]) +
             CmdLine.DPara[5] * (CmdLine.IPara[17] - CmdLine.IPara[13]);
+            DispProg.Translate(0, ref X, ref Y);
 
             if (!TaskDisp.TaskMoveGZZ2Up()) return;
 
@@ -1850,6 +1875,8 @@ namespace NDispWin
 
             double x = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + CmdLine.DPara[0];
             double y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.DPara[1];
+            DispProg.Translate(0, ref x, ref y);
+
             if (!TaskDisp.TaskMoveGZZ2Up()) return;
             if (!TaskGantry.SetMotionParamGXY()) return;
             if (!TaskGantry.MoveAbsGXY(x, y)) return;

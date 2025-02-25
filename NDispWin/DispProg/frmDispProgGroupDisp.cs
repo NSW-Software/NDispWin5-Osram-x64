@@ -179,7 +179,8 @@ namespace NDispWin
                     }
 
                     if (!TaskDisp.TaskMoveGZZ2Up()) return;
-                    DispProg.RealTimeOffset(DispProg.ERealTimeOp.Add, ref X, ref Y);
+                    DispProg.Translate(0, ref X, ref Y);
+
                     if (!TaskGantry.SetMotionParamGXY()) return;
                     if (!TaskGantry.MoveAbsGXY(X, Y)) return;
                 }
@@ -187,7 +188,7 @@ namespace NDispWin
                 {
                     double Xs = TaskGantry.GXPos();
                     double Ys = TaskGantry.GYPos();
-                    DispProg.RealTimeOffset(DispProg.ERealTimeOp.Minus, ref Xs, ref Ys);
+                    DispProg.InvTranslate(0, ref Xs, ref Ys);
 
                     if (selCmdNo == 0)
                     {
@@ -402,17 +403,8 @@ namespace NDispWin
 
         private void btnEditModel_Click(object sender, EventArgs e)
         {
-            if (GDefine.CameraType[0] == GDefine.ECameraType.Spinnaker)
-            {
-                //TaskVision.frmGenImageView.TopMost = false;
-            }
             frm_DispCore_DispProg_ModelList frmModelList = new frm_DispCore_DispProg_ModelList();
             frmModelList.ShowDialog();
-
-            if (GDefine.CameraType[0] == GDefine.ECameraType.Spinnaker)
-            {
-                //TaskVision.frmGenImageView.TopMost = true;
-            }
         }
     }
 }

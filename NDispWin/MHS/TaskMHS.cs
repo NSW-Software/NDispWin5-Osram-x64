@@ -570,7 +570,7 @@ namespace NDispWin
             catch { };
         }
 
-        public static void SaveRecipe(string Filename)
+        public static void SaveRecipe(string Filename) 
         {
             NUtils.IniFile IniFile = new NUtils.IniFile(GDefine.MHSRecipePath + "\\" + Filename);
 

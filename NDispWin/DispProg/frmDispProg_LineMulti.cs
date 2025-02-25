@@ -148,6 +148,7 @@ namespace NDispWin
         {
             double X = TaskGantry.GXPos();
             double Y = TaskGantry.GYPos();
+            DispProg.InvTranslate(0, ref X, ref Y);
 
             NSW.Net.Point2D Old = new NSW.Net.Point2D(CmdLine.X[SelectLineNo], CmdLine.Y[SelectLineNo]);
             CmdLine.X[SelectLineNo] = X - (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X);
@@ -161,6 +162,7 @@ namespace NDispWin
         {
             double X = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + CmdLine.X[SelectLineNo];
             double Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.Y[SelectLineNo];
+            DispProg.Translate(0, ref X, ref Y);
 
             UpdateDisplay();
 
@@ -193,6 +195,7 @@ namespace NDispWin
 
             double X = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + CmdLine.X[SelectLineNo];
             double Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.Y[SelectLineNo];
+            DispProg.Translate(0, ref X, ref Y);
 
             UpdateDisplay();
 
@@ -209,6 +212,7 @@ namespace NDispWin
 
             double X = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + CmdLine.X[SelectLineNo];
             double Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.Y[SelectLineNo];
+            DispProg.Translate(0, ref X, ref Y);
 
             UpdateDisplay();
 

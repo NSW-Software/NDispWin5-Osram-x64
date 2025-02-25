@@ -426,7 +426,7 @@ namespace NDispWin
             HEIGHT_SET = 370,//perfrom height at next command location, single head only
 
             DOT = 400,
-            DOT_ARRAY = 401,
+            //DOT_ARRAY = 401, remove support v6.1.3.2
             DOT_MULTI = 402,
             DOTLINE_MULTI = 403,
             DOT_P = 405,
@@ -445,8 +445,8 @@ namespace NDispWin
             WAIT_START = 445,
 
             //RECT_FILL = 450, never complete develop, discontinue support
-            FILL_PAT = 451,
-            SPIRAL_FILL = 452,
+            //FILL_PAT = 451, remove support v6.1.3.2
+            //SPIRAL_FILL = 452, remove support v6.1.3.2
 
             GROUP_DISP = 460,
 
@@ -3010,7 +3010,7 @@ namespace NDispWin
 
         public static bool rt_SyncHead2 = false;//in SyncHead2 mode
 
-        static TRefDatas[] rt_RefDatas = new TRefDatas[MAX_IDS];
+        public static TRefDatas[] rt_RefDatas = new TRefDatas[MAX_IDS];
         public static TRefData rt_Head1RefData = new TRefData();
         public static TRefData rt_Head2RefData = new TRefData();
 
@@ -3105,6 +3105,41 @@ namespace NDispWin
         }
 
         static bool[] b_NeedleShort = new bool[] { false, false };
+
+        public static void Translate(int UIndex, ref double X, ref double Y)
+        {
+            if (TaskDisp.Option_EnableRealTimeFineTune)
+            {
+                TRefData refData = DispProg.rt_RefDatas[0].Data[UIndex];
+
+                X += DispProg.rt_LayoutRelPos[UIndex].X;
+                Y += DispProg.rt_LayoutRelPos[UIndex].Y;
+
+                NSW.Net.Point2D oPt = new NSW.Net.Point2D(X, Y);
+                NSW.Net.Point2D nPt = oPt.Translate(new NSW.Net.Point2D(refData.DatumX, refData.DatumY), new NSW.Net.Point2D(refData.NewDatumX, refData.NewDatumY));
+                nPt = nPt.Rotate(new NSW.Net.Point2D(refData.NewDatumX, refData.NewDatumY), refData.Angle);
+
+                X = nPt.X;
+                Y = nPt.Y;
+            }
+        }
+        public static void InvTranslate(int UIndex, ref double X, ref double Y)
+        {
+            if (TaskDisp.Option_EnableRealTimeFineTune)
+            {
+                TRefData refData = DispProg.rt_RefDatas[0].Data[UIndex];
+
+                NSW.Net.Point2D oPt = new NSW.Net.Point2D(X, Y);
+                NSW.Net.Point2D nPt = oPt.Rotate(new NSW.Net.Point2D(refData.NewDatumX, refData.NewDatumY), -refData.Angle);
+                nPt = nPt.Translate(new NSW.Net.Point2D(refData.NewDatumX, refData.NewDatumY), new NSW.Net.Point2D(refData.DatumX, refData.DatumY));
+
+                X = nPt.X;
+                Y = nPt.Y;
+
+                X -= DispProg.rt_LayoutRelPos[UIndex].X;
+                Y -= DispProg.rt_LayoutRelPos[UIndex].Y;
+            }
+        }
 
         public class TScript
         {
@@ -4026,9 +4061,7 @@ namespace NDispWin
 
                         CmdList.Line[i].Cmd == ECmd.DWELL ||
                         CmdList.Line[i].Cmd == ECmd.WAIT ||
-                        CmdList.Line[i].Cmd == ECmd.PURGE_DOT
-                        || CmdList.Line[i].Cmd == ECmd.DOT_ARRAY
-                        || CmdList.Line[i].Cmd == ECmd.DOT_MULTI
+                        CmdList.Line[i].Cmd == ECmd.PURGE_DOT || CmdList.Line[i].Cmd == ECmd.DOT_MULTI
                         )
                     {
                         if (CmdList.Line[i].ID == 0) CmdList.Line[i].ID = 1;
@@ -4551,9 +4584,21 @@ namespace NDispWin
                         }
                     }
                 }
-                #endregion
+                if (Material.EnablePanelCounter && RunMode == ERunMode.Normal)
+                {
+                    if (Material.Panel.Count > Material.Panel.Limit)
+                    {
+                        Msg MsgBox = new Msg();
+                        EMsgRes MsgRes = MsgBox.Show(Messages.MATERIAL_PANEL_RUN_EXCEEDED, msgBtn: EMsgBtn.smbOK_Stop);
+                        if (MsgRes == EMsgRes.smrStop)
+                        {
+                            goto _Pause;
+                        }
+                    }
+                }
+                    #endregion
 
-                if (TaskDisp.Option_EnableChuckVac)
+                    if (TaskDisp.Option_EnableChuckVac)
                 {
                     TaskGantry.ChuckVac = true;
                     Thread.Sleep(250);
@@ -5741,7 +5786,6 @@ namespace NDispWin
                                         double v_oy2 = 0;
                                         double v_s2 = 0;
                                         Emgu.CV.Image<Emgu.CV.Structure.Gray, byte> gray_FoundDoRef2 = null;
-                                        //if (!DoVision(ActiveLine, dx2, dy2, RefID, (int)EVisionRef.No2, out v_ox2, out v_oy2, out v_s2, ref FoundDoRef2)) goto _Error;
                                         if (!DoRef(ActiveLine, dx2, dy2, RefID, (int)EVisionRef.No2, out v_ox2, out v_oy2, out v_s2, ref gray_FoundDoRef2)) goto _Error;
                                         v_ox2 = v_ox2 * TaskVision.DistPerPixelX[ActiveLine.IPara[1]];
                                         v_oy2 = v_oy2 * TaskVision.DistPerPixelY[ActiveLine.IPara[1]];
@@ -8937,13 +8981,10 @@ namespace NDispWin
                                     bool bNextCmdIsValid =
                                         (
                                         CmdList.Line[nextLine].Cmd == ECmd.DOT ||
-                                        CmdList.Line[nextLine].Cmd == ECmd.DOT_ARRAY ||
                                         CmdList.Line[nextLine].Cmd == ECmd.DOT_MULTI ||
                                         CmdList.Line[nextLine].Cmd == ECmd.DOTLINE_MULTI ||
                                         CmdList.Line[nextLine].Cmd == ECmd.DOT_P ||
                                         CmdList.Line[nextLine].Cmd == ECmd.MOVE ||
-                                        CmdList.Line[nextLine].Cmd == ECmd.FILL_PAT ||
-                                        CmdList.Line[nextLine].Cmd == ECmd.SPIRAL_FILL ||
                                         CmdList.Line[nextLine].Cmd == ECmd.GROUP_DISP
                                         );
                                     if (!bNextCmdIsValid) throw new Exception("Invalid command after HEIGHT_SET");
@@ -8992,109 +9033,6 @@ namespace NDispWin
                                 }
                             #endregion
 
-                            case ECmd.DOT_ARRAY:
-                                #region
-                                {
-                                    if (!b_InLoop && !Running) goto _Pause;
-                                    LicenseValidation();
-
-                                    EMsg = Msg + " DOT_AARR";
-                                    if (b_SecondHalf || b_IsNeedle2) break;
-
-                                    switch (RunMode)
-                                    {
-                                        case ERunMode.Dry:
-                                        case ERunMode.Normal:
-                                            TaskVision.LightingOff();
-                                            break;
-                                        case ERunMode.Camera:
-                                            TaskVision.LightingOn(TaskVision.DefLightRGB);
-                                            break;
-                                    }
-
-                                    //#region assign and translate position
-                                    int Points = ActiveLine.IPara[5];
-                                    double fx = f_origin_x + rt_Layout_Rel_X + CmdList.Line[Line].X[0];
-                                    double fy = f_origin_y + rt_Layout_Rel_Y + CmdList.Line[Line].Y[0];
-                                    double cx = f_origin_x + rt_Layout_Rel_X + CmdList.Line[Line].X[1];
-                                    double cy = f_origin_y + rt_Layout_Rel_Y + CmdList.Line[Line].Y[1];
-                                    double dz = f_origin_z;
-
-                                    for (int i = 0; i < Points; i++)
-                                    {
-                                        double dx = 0;
-                                        double dy = 0;
-                                        double dx2 = 0;
-                                        double dy2 = 0;
-
-                                        NSW.Net.Point2D Pt = new Point2D(fx, fy);
-                                        NSW.Net.Point2D Pt_C = new Point2D(cx, cy);
-
-                                        NSW.Net.Point2D nPt = Pt.Translate(new NSW.Net.Point2D(rt_Head1RefData.DatumX, rt_Head1RefData.DatumY), new NSW.Net.Point2D(rt_Head1RefData.NewDatumX, rt_Head1RefData.NewDatumY));
-                                        NSW.Net.Point2D nPt_C = Pt_C.Translate(new NSW.Net.Point2D(rt_Head1RefData.DatumX, rt_Head1RefData.DatumY), new NSW.Net.Point2D(rt_Head1RefData.NewDatumX, rt_Head1RefData.NewDatumY));
-
-                                        double Angle = ActiveLine.DPara[5] * Math.PI / 180;
-                                        NSW.Net.Point2D aPt = nPt.Rotate(new NSW.Net.Point2D(nPt_C.X, nPt_C.Y), (Angle * i) + rt_Head1RefData.Angle);
-
-                                        dx = aPt.X;
-                                        dy = aPt.Y;
-
-                                        dx2 = aPt.X + (rt_Layout_Rel_X - rt_Layout_Rel_X2);
-                                        dy2 = aPt.Y;
-
-                                        dz = dz + TaskDisp.Head_Ofst[0].Z;
-                                        double ZDiff = (TaskDisp.Head_ZSensor_RefPosZ[1] + TaskDisp.Head_Ofst[1].Z - (TaskDisp.Head_ZSensor_RefPosZ[0] + TaskDisp.Head_Ofst[0].Z));
-                                        double dz2 = dz + ZDiff;
-
-                                        EHeadNo HeadNo = (EHeadNo)CmdList.Line[Line].ID;
-                                        switch (TaskDisp.Head_Operation)
-                                        {
-                                            case TaskDisp.EHeadOperation.Single:
-                                                HeadNo = EHeadNo.Head1;
-                                                break;
-                                            case TaskDisp.EHeadOperation.Sync:
-                                                if (!b_Head2UnitIsValid) HeadNo = HeadNo & EHeadNo.Head1;
-                                                break;
-                                        }
-                                        #region Force Head Operation
-                                        if (b_ForceHead1)
-                                        {
-                                            if (HeadNo == EHeadNo.Head2)
-                                            {
-                                                Msg MsgBox = new Msg();
-                                                MsgBox.Show(Messages.PROGRAM_HEAD_ERROR);
-                                                goto _Error;
-                                            }
-                                            HeadNo = EHeadNo.Head1;
-                                        }
-                                        if (b_ForceHead2)
-                                        {
-                                            if (GDefine.HeadConfig != GDefine.EHeadConfig.Dual || DispProg.Head_Operation == TaskDisp.EHeadOperation.Single)
-                                            {
-                                                Msg MsgBox = new Msg();
-                                                MsgBox.Show(Messages.PROGRAM_HEAD_ERROR);
-                                                goto _Error;
-                                            }
-                                            HeadNo = EHeadNo.Head2;
-                                        }
-                                        #endregion
-
-                                        b_MovePanelGap = MovePanelGap(Line) && (i == Points - 1);
-
-                                        if (GDefine.CameraType[(int)TaskVision.SelectedCam] == GDefine.ECameraType.PtGrey)
-                                        {
-                                            if (RunMode == ERunMode.Camera)
-                                                TaskVision.PtGrey_CamLive(0);
-                                        }
-
-                                        if (!DoDot(ActiveLine, HeadNo, rt_SyncHead2, b_Head2UnitIsValid, RunMode, dx, dy, dz, dx2, dy2, dz2))
-                                        {
-                                            Running = false;
-                                        }
-                                    }
-                                    break;
-                                }
-                            #endregion
                             case ECmd.DOT_MULTI:
                                 #region
                                 {
@@ -9978,36 +9916,7 @@ namespace NDispWin
                                     break;
                                 }
                             #endregion
-                            case ECmd.FILL_PAT:
-                                #region
-                                {
-                                    if (!b_InLoop && !Running) goto _Pause;
-                                    LicenseValidation();
 
-                                    EMsg = Msg + " " + CmdList.Line[Line].Cmd.ToString();
-                                    if (b_SecondHalf || b_IsNeedle2) break;
-                                    //TaskVision.LightingOn(TaskVision.DefLightRGB);
-                                    switch (RunMode)
-                                    {
-                                        case ERunMode.Dry:
-                                        case ERunMode.Normal:
-                                            TaskVision.LightingOff();
-                                            break;
-                                        case ERunMode.Camera:
-                                            TaskVision.LightingOn(TaskVision.DefLightRGB);
-                                            break;
-                                    }
-
-                                    if (GDefine.CameraType[(int)TaskVision.SelectedCam] == GDefine.ECameraType.PtGrey)
-                                    {
-                                        if (RunMode == ERunMode.Camera)
-                                            TaskVision.PtGrey_CamLive(0);
-                                    }
-
-                                    if (!DoFillPat(ActiveLine, RunMode, f_origin_x, f_origin_y, f_origin_z)) Running = false;
-                                    break;
-                                }
-                            #endregion;
                             case ECmd.GROUP_DISP:
                                 {
                                     EMsg = Msg + " " + CmdList.Line[Line].Cmd.ToString();
@@ -10047,9 +9956,6 @@ namespace NDispWin
                                     int ColNo = 0;
                                     int RowNo = 0;
                                     rt_Layouts[rt_LayoutID].UnitNoGetRC(RunTime.UIndex, ref ColNo, ref RowNo);
-                                    //int CColNo = 0;
-                                    //int CRowNo = 0;
-                                    //rt_Layouts[rt_LayoutID].UnitNoGetRC(RunTime.UIndex, ref ColNo, ref RowNo, ref CColNo, ref CRowNo);
 
                                     EVHType vhType = EVHType.Hort;//0=Horizontal, 1=Vertical
                                     try { vhType = (EVHType)ActiveLine.IPara[3]; } catch { };
@@ -11678,10 +11584,12 @@ namespace NDispWin
                         {
                             case ERunRegion.All:
                                 Stats.BoardCount++;
+                                Material.Panel.Count++;
                                 break;
                             case ERunRegion.H1:
                             case ERunRegion.H2:
                                 Stats.BoardCount++;
+                                Material.Panel.Count++;
                                 break;
                         }
 
@@ -12043,7 +11951,6 @@ namespace NDispWin
                     NextCmd == ECmd.DOT_P ||
                     NextCmd == ECmd.DOT_MULTI ||
                     NextCmd == ECmd.DOTLINE_MULTI ||
-                    NextCmd == ECmd.DOT_ARRAY ||
                     NextCmd == ECmd.MOVE ||
                     NextCmd == ECmd.LINE ||
                     NextCmd == ECmd.ARC ||
@@ -18519,6 +18426,15 @@ namespace NDispWin
             newX = (double)NewPt.X;
             newY = (double)NewPt.Y;
         }
+        public static void InverseTranslatePos(double x, double y, TRefData RefData, ref double newX, ref double newY)
+        {
+            Point2D OriPt = new Point2D(x, y);
+            Point2D NewPt = new Point2D(0, 0);
+            NewPt = NewPt.Rotate(new Point2D(RefData.NewDatumX, RefData.NewDatumY), -RefData.Angle);
+            NewPt = OriPt.Translate(new Point2D(RefData.NewDatumX, RefData.NewDatumY), new Point2D(RefData.DatumX, RefData.DatumY));
+            newX = (double)NewPt.X;
+            newY = (double)NewPt.Y;
+        }
 
         public static double[] rt_MapX = new double[TLayout.MAX_UNITS];
         public static double[] rt_MapY = new double[TLayout.MAX_UNITS];
@@ -24556,23 +24472,23 @@ namespace NDispWin
         }
 
         public enum ERealTimeOp { Add, Minus };
-        public static void RealTimeOffset(ERealTimeOp Op, ref double X, ref double Y)
-        {
-            if (TaskDisp.Option_EnableRealTimeFineTune)
-            {
-                int UIndex = DispProg.RunTime.UIndex;
-                if (Op == ERealTimeOp.Add)
-                {
-                    X += DispProg.rt_LayoutRelPos[UIndex].X;
-                    Y += DispProg.rt_LayoutRelPos[UIndex].Y;
-                }
-                else
-                {
-                    X -= DispProg.rt_LayoutRelPos[UIndex].X;
-                    Y -= DispProg.rt_LayoutRelPos[UIndex].Y;
-                }
-            }
-        }
+        //public static void RealTimeOffset(ERealTimeOp Op, ref double X, ref double Y)
+        //{
+        //    if (TaskDisp.Option_EnableRealTimeFineTune)
+        //    {
+        //        int UIndex = DispProg.RunTime.UIndex;
+        //        if (Op == ERealTimeOp.Add)
+        //        {
+        //            X += DispProg.rt_LayoutRelPos[UIndex].X;
+        //            Y += DispProg.rt_LayoutRelPos[UIndex].Y;
+        //        }
+        //        else
+        //        {
+        //            X -= DispProg.rt_LayoutRelPos[UIndex].X;
+        //            Y -= DispProg.rt_LayoutRelPos[UIndex].Y;
+        //        }
+        //    }
+        //}
         public static void MasterAlign()
         {
             TLine CmdLine = new TLine();
@@ -24601,7 +24517,6 @@ namespace NDispWin
             RunTime.UIndex2 = 0;
             rt_Layouts[rt_LayoutID].ComputePos(ref rt_LayoutRelPos);
 
-
             CmdLine.Cmd = ECmd.NONE;
 
             //identify DoRef command
@@ -24621,33 +24536,79 @@ namespace NDispWin
 
             //return if not DoRef command
             if (CmdLine.Cmd == ECmd.NONE) return;
+            //return if not Board align
+            if (CmdLine.IPara[2] != (int)EAlignType.Board) return;
 
-            double dx1 = Origin(rt_StationNo).X + /*d_Ref_Rel_X + */CmdLine.X[0];
-            double dy1 = Origin(rt_StationNo).Y + /*d_Ref_Rel_Y + */CmdLine.Y[0];
+            double dx1 = Origin(rt_StationNo).X + CmdLine.X[0];
+            double dy1 = Origin(rt_StationNo).Y + CmdLine.Y[0];
 
-            double tdx1 = dx1;
-            double tdy1 = dy1;
+            double dx2 = Origin(rt_StationNo).X + CmdLine.X[1];
+            double dy2 = Origin(rt_StationNo).Y + CmdLine.Y[1];
 
-            double v_ox1 = 0;
-            double v_oy1 = 0;
-            double v_s1 = 0;
+            TRefData refData = new TRefData();
 
             if (CmdLine.Cmd == ECmd.DO_REF)
             {
+                double v_ox1 = 0;
+                double v_oy1 = 0;
+                double v_s1 = 0;
                 Emgu.CV.Image<Emgu.CV.Structure.Gray, byte> gray_FoundDoRef1 = null;
+
                 if (!DoRef(CmdLine, dx1, dy1, CmdLine.ID, (int)EVisionRef.No1, out v_ox1, out v_oy1, out v_s1, ref gray_FoundDoRef1)) return;
                 v_ox1 = v_ox1 * TaskVision.DistPerPixelX[CmdLine.IPara[1]];
                 v_oy1 = v_oy1 * TaskVision.DistPerPixelY[CmdLine.IPara[1]];
                 bool OK1 = (Math.Abs(v_ox1) <= CmdLine.DPara[1]) && (Math.Abs(v_oy1) <= CmdLine.DPara[1]) && (Math.Abs(v_s1) >= CmdLine.DPara[0]);
 
-                FoundDoRef1 = gray_FoundDoRef1.Convert<Emgu.CV.Structure.Bgr, byte>();
-                FoundDoRef1_X = v_ox1;
-                FoundDoRef1_Y = v_oy1;
-                FoundDoRef1_S = v_s1;
-                FoundDoRef1_OK = OK1;
+                if (!OK1) goto _RefEnd;
 
                 double ndx1 = dx1 + v_ox1;
                 double ndy1 = dy1 + v_oy1;
+
+                refData.DatumX = dx1;
+                refData.DatumY = dy1;
+                refData.NewDatumX = ndx1;
+                refData.NewDatumY = ndy1;
+                refData.Angle = 0;
+                refData.OK = OK1;
+
+                if (CmdLine.IPara[0] == 2)
+                {
+                    double v_ox2 = 0;
+                    double v_oy2 = 0;
+                    double v_s2 = 0;
+                    Emgu.CV.Image<Emgu.CV.Structure.Gray, byte> gray_FoundDoRef2 = null;
+
+                    if (!DoRef(CmdLine, dx2, dy2, CmdLine.ID, (int)EVisionRef.No2, out v_ox2, out v_oy2, out v_s2, ref gray_FoundDoRef2)) return;
+                    v_ox2 = v_ox2 * TaskVision.DistPerPixelX[CmdLine.IPara[1]];
+                    v_oy2 = v_oy2 * TaskVision.DistPerPixelY[CmdLine.IPara[1]];
+                    bool OK2 = (Math.Abs(v_ox2) <= CmdLine.DPara[1]) && (Math.Abs(v_oy2) <= CmdLine.DPara[1]) && (Math.Abs(v_s2) >= CmdLine.DPara[0]);
+
+                    double ndx2 = dx2 + v_ox2;
+                    double ndy2 = dy2 + v_oy2;
+
+                    #region compute pt1 and pt2 angle
+                    Point2D OriPt1 = new Point2D(dx1, dy1);
+                    Point2D OriPt2 = new Point2D(dx2, dy2);
+                    Point2D NewPt1 = new Point2D(ndx1, ndy1);
+                    Point2D NewPt2 = new Point2D(ndx2, ndy2);
+                    double Angle_Rad = (double)NewPt2.Angle(NewPt1, OriPt1, OriPt2);
+                    if (Angle_Rad > Math.PI) Angle_Rad = Angle_Rad - (Math.PI * 2);
+                    double Angle_Deg = (Angle_Rad * 180) / Math.PI;
+                    bool OKA = (Math.Abs(Angle_Rad) <= CmdLine.DPara[2]);
+                    OK2 = OK2 && OKA;
+                    #endregion
+
+                    refData.Angle = Angle_Rad;
+                    refData.OK = OK1 && OK2;
+
+                    for (int ID = rt_LayoutID; ID < rt_LayoutCount; ID++)
+                    {
+                        for (int i = 0; i < rt_Layouts[ID].TUCount; i++)
+                        {
+                            rt_RefDatas[CmdLine.ID].Data[i].Copy(refData);
+                        }
+                    }
+                }
             }
 
             if (CmdLine.Cmd == ECmd.DO_VISION)
@@ -24657,27 +24618,36 @@ namespace NDispWin
 
                 Emgu.CV.Image<Emgu.CV.Structure.Gray, byte> Image = null;
                 string data = "";
+                double v_ox1 = 0;
+                double v_oy1 = 0;
+                double v_s1 = 0;
                 TaskVision.ExecVision((int)EVisionRef.No1, CmdLine.ID, ref v_ox1, ref v_oy1, ref v_oa, ref v_s1, ref v_OK, ref data, ref Image);
 
-                try
-                {
-                    if (GDefine.CameraType[CmdLine.ID] == GDefine.ECameraType.PtGrey)
-                    {
-                        TaskVision.PtGrey_CamLive(CmdLine.ID);
-                    }
-                }
-                catch { }
+                double ndx1 = dx1 + v_ox1;
+                double ndy1 = dy1 + v_oy1;
+
+                refData.DatumX = dx1;
+                refData.DatumY = dy1;
+                refData.NewDatumX = ndx1;
+                refData.NewDatumY = ndy1;
+                refData.Angle = 0;
+                refData.OK = v_OK;
             }
 
-            DispProg.OriginBase[(int)DispProg.rt_StationNo].X += v_ox1;
-            DispProg.OriginBase[(int)DispProg.rt_StationNo].Y += v_oy1;
-
             if (!TaskGantry.SetMotionParamGXYX2Y2()) return;
-            TPos2 GXY = new TPos2(DispProg.Origin(DispProg.rt_StationNo).X, DispProg.Origin(DispProg.rt_StationNo).Y);
+
+            double x = DispProg.Origin(DispProg.rt_StationNo).X;
+            double y = DispProg.Origin(DispProg.rt_StationNo).Y;
+
+            Translate(0, ref x, ref y);
+
+            TPos2 GXY = new TPos2(x, y);
             TPos2 GX2Y2 = new TPos2(TaskDisp.Head2_DefPos.X, TaskDisp.Head2_DefPos.Y);
             GX2Y2.X = GX2Y2.X - TaskDisp.Head2_DefDistX + TaskDisp.Head2_DefDistX;
 
             if (!TaskDisp.GotoXYPos(GXY, GX2Y2)) return;
+
+            _RefEnd:;
         }
 
         public static List<int> ExecutedLines = new List<int>();

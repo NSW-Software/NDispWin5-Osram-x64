@@ -9196,109 +9196,86 @@ namespace NDispWin
         public static bool IDReader_Enabled = true;
         public static bool IDReader_Read(bool ShowImg, ref string ReadData)
         {
-            switch (GDefine.IDReader_Type)
+            Emgu.CV.Image<Emgu.CV.Structure.Gray, byte> Image = null;
+
+        _Retry:
+            switch (GDefine.CameraType[0])
             {
-                case GDefine.EIDReader.None:
-                    throw new Exception("IDReader Type not defined.");
-                case GDefine.EIDReader.DataMatrix:
+                case GDefine.ECameraType.Basler:
                     {
-                        Emgu.CV.Image<Emgu.CV.Structure.Gray, byte> Image = null;
-
-                        _Retry:
-                        switch (GDefine.CameraType[0])
-                        {
-                            case GDefine.ECameraType.Basler:
-                                {
-                                    TaskVision.GrabN(0, ref Image);
-                                    break;
-                                }
-                            case GDefine.ECameraType.PtGrey:
-                                {
-                                    TaskVision.PtGrey_CamStop();
-                                    TaskVision.PtGrey_CamArm(0);
-                                    TaskVision.PtGrey_CamTrig(0);
-                                    TaskVision.PtGrey_CamImage(0, ref Image);
-                                    TaskVision.PtGrey_CamLive(0);
-                                    break;
-                                }
-                            case GDefine.ECameraType.Spinnaker:
-                                {
-                                    TaskVision.GrabN(0, ref Image);
-                                    break;
-                                }
-                            case GDefine.ECameraType.Spinnaker2:
-                                {
-                                    if (!TaskVision.flirCamera2[0].Snap()) return false;
-                                    Image = TaskVision.flirCamera2[0].m_ImageEmgu.m_Image.Clone();
-                                    TaskVision.flirCamera2[0].GrabCont();
-                                    break;
-                                }
-                            case GDefine.ECameraType.MVSGenTL:
-                                {
-                                    TaskVision.genTLCamera[0].GrabOneImage();
-                                    Image = TaskVision.genTLCamera[0].mImage.Clone();
-                                    if (TaskVision.frmMVCGenTLCamera.Visible) TaskVision.genTLCamera[0].StartGrab();
-                                    break;
-                                }
-                            default:
-                                throw new Exception("Camera Type not Supported.");
-                        }
-
-                        if (DispProg.frm_CamView.Visible) DispProg.frm_CamView.Image = Image.ToBitmap();
-
-
-                        //Msg MsgBox = new Msg();
-                        ////EMsgRes Resp = MsgBox.Show("Test Read DataMatrix Error.", "", "", EMcState.Error, EMsgBtn.smbRetry_Cancel, true);
-                        ////switch (Resp)
-                        ////{
-                        ////    case EMsgRes.smrRetry: goto _Retry;
-                        ////    case EMsgRes.smrCancel: return false;
-                        ////}
-
-
-                        //Euresys.Open_eVision_2_5.EImageBW8 m_Source = new Euresys.Open_eVision_2_5.EImageBW8();
-                        //Euresys.Open_eVision_2_5.EMatrixCode m_MatrixCode = new Euresys.Open_eVision_2_5.EMatrixCode();
-                        //Euresys.Open_eVision_2_5.EMatrixCodeReader m_MatrixCodeReader = new Euresys.Open_eVision_2_5.EMatrixCodeReader();
-                        EImageBW8 m_Source = new EImageBW8();
-                        EMatrixCode m_MatrixCode = new EMatrixCode();
-                        EMatrixCodeReader m_MatrixCodeReader = new EMatrixCodeReader();
-                        try
-                        {
-                            using (Image)
-                            {
-                                Bitmap bmp = Image.ToBitmap();
-
-                                string s_tempfile = @"c:\temp.bmp";
-                                bmp.Save(s_tempfile);
-
-                                m_Source.Load(s_tempfile);
-                                m_MatrixCode = m_MatrixCodeReader.Read(m_Source);
-
-                                ReadData = m_MatrixCode.DecodedString;
-                                if (ReadData.Length > 0) return true;
-                                return false;
-                            }
-                        }
-                        catch (Exception Ex)
-                        {
-                            Msg MsgBox = new Msg();
-                            EMsgRes Resp = MsgBox.Show("IDReader_Read DataMatrix Error.", Ex.Message.ToString(), TEMessage.EType.Error, EMsgBtn.smbRetry_Cancel);
-                            switch (Resp)
-                            {
-                                case EMsgRes.smrRetry: goto _Retry;
-                            }
-
-                            return false;
-                        }
-                        finally
-                        {
-                            m_Source.Dispose();
-                            m_MatrixCode.Dispose();
-                            m_MatrixCodeReader.Dispose();
-                        }
+                        TaskVision.GrabN(0, ref Image);
+                        break;
+                    }
+                case GDefine.ECameraType.PtGrey:
+                    {
+                        TaskVision.PtGrey_CamStop();
+                        TaskVision.PtGrey_CamArm(0);
+                        TaskVision.PtGrey_CamTrig(0);
+                        TaskVision.PtGrey_CamImage(0, ref Image);
+                        TaskVision.PtGrey_CamLive(0);
+                        break;
+                    }
+                case GDefine.ECameraType.Spinnaker:
+                    {
+                        TaskVision.GrabN(0, ref Image);
+                        break;
+                    }
+                case GDefine.ECameraType.Spinnaker2:
+                    {
+                        if (!TaskVision.flirCamera2[0].Snap()) return false;
+                        Image = TaskVision.flirCamera2[0].m_ImageEmgu.m_Image.Clone();
+                        TaskVision.flirCamera2[0].GrabCont();
+                        break;
+                    }
+                case GDefine.ECameraType.MVSGenTL:
+                    {
+                        TaskVision.genTLCamera[0].GrabOneImage();
+                        Image = TaskVision.genTLCamera[0].mImage.Clone();
+                        if (TaskVision.frmMVCGenTLCamera.Visible) TaskVision.genTLCamera[0].StartGrab();
+                        break;
                     }
                 default:
-                    throw new Exception("IDReader Type not supported.");
+                    throw new Exception("Camera Type not Supported.");
+            }
+
+            if (DispProg.frm_CamView.Visible) DispProg.frm_CamView.Image = Image.ToBitmap();
+
+            EImageBW8 m_Source = new EImageBW8();
+            EMatrixCode m_MatrixCode = new EMatrixCode();
+            EMatrixCodeReader m_MatrixCodeReader = new EMatrixCodeReader();
+            try
+            {
+                using (Image)
+                {
+                    Bitmap bmp = Image.ToBitmap();
+
+                    string s_tempfile = @"c:\temp.bmp";
+                    bmp.Save(s_tempfile);
+
+                    m_Source.Load(s_tempfile);
+                    m_MatrixCode = m_MatrixCodeReader.Read(m_Source);
+
+                    ReadData = m_MatrixCode.DecodedString;
+                    if (ReadData.Length > 0) return true;
+                    return false;
+                }
+            }
+            catch (Exception Ex)
+            {
+                Msg MsgBox = new Msg();
+                EMsgRes Resp = MsgBox.Show("IDReader_Read DataMatrix Error.", Ex.Message.ToString(), TEMessage.EType.Error, EMsgBtn.smbRetry_Cancel);
+                switch (Resp)
+                {
+                    case EMsgRes.smrRetry: goto _Retry;
+                }
+
+                return false;
+            }
+            finally
+            {
+                m_Source.Dispose();
+                m_MatrixCode.Dispose();
+                m_MatrixCodeReader.Dispose();
             }
         }
 
@@ -9395,37 +9372,9 @@ namespace NDispWin
 
                 if (Idle_PostVacTime > 0)
                 {
-                    //#region On Vac
-                    //try
-                    //{
-                    //    TaskGantry.SvCleanVac(TaskGantry.TOutputState.On);
-                    //}
-                    //catch (Exception Ex)
-                    //{
-                    //    EMsg = EMsg + (char)13 + Ex.Message.ToString();
-                    //    Msg MsgBox = new Msg();
-                    //    MsgBox.Show((int)EErrCode.UNKNOWN_EX_ERR, EMsg, true);
-                    //    return false;
-                    //}
-                    //#endregion
                     TaskGantry.SvCleanVac = true;
-
                     int t = GDefine.GetTickCount() + Idle_PostVacTime;
                     while (GDefine.GetTickCount() <= t) { Thread.Sleep(1); }
-
-                    //#region Off Vac
-                    //try
-                    //{
-                    //    TaskGantry.SvCleanVac(TaskGantry.TOutputState.Off);
-                    //}
-                    //catch (Exception Ex)
-                    //{
-                    //    EMsg = EMsg + (char)13 + Ex.Message.ToString();
-                    //    Msg MsgBox = new Msg();
-                    //    MsgBox.Show((int)EErrCode.UNKNOWN_EX_ERR, EMsg, true);
-                    //    return false;
-                    //}
-                    //#endregion                    
                     TaskGantry.SvCleanVac = false;
                 }
 
@@ -10342,6 +10291,12 @@ namespace NDispWin
         {
             public static int[] Count = new int[2] { 0, 0 };
             public static int[] Limit = new int[2] { 0, 0 };
+        }
+        public static bool EnablePanelCounter = false;
+        public class Panel
+        {
+            public static int Count = 0;
+            public static int Limit = 0;
         }
     }
 

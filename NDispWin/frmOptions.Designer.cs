@@ -62,7 +62,12 @@
             this.label2 = new System.Windows.Forms.Label();
             this.cbxLanguage = new System.Windows.Forms.ComboBox();
             this.tpProcess = new System.Windows.Forms.TabPage();
+            this.cbEnableNeedleShort = new System.Windows.Forms.CheckBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.lblMaterialPanelCounterLimit = new System.Windows.Forms.Label();
+            this.lblMaterialPanelCounterReset = new System.Windows.Forms.Button();
+            this.label19 = new System.Windows.Forms.Label();
+            this.cbEnableMaterialPanelCounter = new System.Windows.Forms.CheckBox();
             this.label18 = new System.Windows.Forms.Label();
             this.lblDensityRange = new System.Windows.Forms.Label();
             this.cbEnableValveExpiry = new System.Windows.Forms.CheckBox();
@@ -121,7 +126,6 @@
             this.btnAccessConfig = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnJog = new System.Windows.Forms.Button();
-            this.cbEnableNeedleShort = new System.Windows.Forms.CheckBox();
             this.tcOptions.SuspendLayout();
             this.tpPreference.SuspendLayout();
             this.groupBox11.SuspendLayout();
@@ -253,7 +257,7 @@
             this.cbAutoPageShowImage.AutoSize = true;
             this.cbAutoPageShowImage.Location = new System.Drawing.Point(187, 21);
             this.cbAutoPageShowImage.Name = "cbAutoPageShowImage";
-            this.cbAutoPageShowImage.Size = new System.Drawing.Size(184, 22);
+            this.cbAutoPageShowImage.Size = new System.Drawing.Size(157, 18);
             this.cbAutoPageShowImage.TabIndex = 4;
             this.cbAutoPageShowImage.Text = "Auto Page Show Image";
             this.cbAutoPageShowImage.UseVisualStyleBackColor = true;
@@ -263,7 +267,7 @@
             this.cboxEnableMapEditLock.AutoSize = true;
             this.cboxEnableMapEditLock.Location = new System.Drawing.Point(6, 21);
             this.cboxEnableMapEditLock.Name = "cboxEnableMapEditLock";
-            this.cboxEnableMapEditLock.Size = new System.Drawing.Size(167, 22);
+            this.cboxEnableMapEditLock.Size = new System.Drawing.Size(142, 18);
             this.cboxEnableMapEditLock.TabIndex = 3;
             this.cboxEnableMapEditLock.Text = "Enable Map Edit Lock";
             this.cboxEnableMapEditLock.UseVisualStyleBackColor = true;
@@ -297,7 +301,7 @@
             // 
             this.tboxCustomPath.Location = new System.Drawing.Point(94, 48);
             this.tboxCustomPath.Name = "tboxCustomPath";
-            this.tboxCustomPath.Size = new System.Drawing.Size(318, 26);
+            this.tboxCustomPath.Size = new System.Drawing.Size(318, 22);
             this.tboxCustomPath.TabIndex = 232;
             this.tboxCustomPath.Leave += new System.EventHandler(this.tboxCustomPath_Leave);
             // 
@@ -373,7 +377,7 @@
             this.cbEnableDoorSensor.AutoSize = true;
             this.cbEnableDoorSensor.Location = new System.Drawing.Point(6, 21);
             this.cbEnableDoorSensor.Name = "cbEnableDoorSensor";
-            this.cbEnableDoorSensor.Size = new System.Drawing.Size(220, 22);
+            this.cbEnableDoorSensor.Size = new System.Drawing.Size(185, 18);
             this.cbEnableDoorSensor.TabIndex = 3;
             this.cbEnableDoorSensor.Text = "Enable Dispense Door Sensor";
             this.cbEnableDoorSensor.UseVisualStyleBackColor = true;
@@ -384,7 +388,7 @@
             this.cbEnableDoorLock.AutoSize = true;
             this.cbEnableDoorLock.Location = new System.Drawing.Point(6, 45);
             this.cbEnableDoorLock.Name = "cbEnableDoorLock";
-            this.cbEnableDoorLock.Size = new System.Drawing.Size(205, 22);
+            this.cbEnableDoorLock.Size = new System.Drawing.Size(173, 18);
             this.cbEnableDoorLock.TabIndex = 2;
             this.cbEnableDoorLock.Text = "Enable Dispense Door Lock";
             this.cbEnableDoorLock.UseVisualStyleBackColor = true;
@@ -408,7 +412,7 @@
             this.cbEnableBuzzer.AutoSize = true;
             this.cbEnableBuzzer.Location = new System.Drawing.Point(187, 45);
             this.cbEnableBuzzer.Name = "cbEnableBuzzer";
-            this.cbEnableBuzzer.Size = new System.Drawing.Size(121, 22);
+            this.cbEnableBuzzer.Size = new System.Drawing.Size(101, 18);
             this.cbEnableBuzzer.TabIndex = 4;
             this.cbEnableBuzzer.Text = "Enable Buzzer";
             this.cbEnableBuzzer.UseVisualStyleBackColor = true;
@@ -418,7 +422,7 @@
             this.cbEnableLowPressure.AutoSize = true;
             this.cbEnableLowPressure.Location = new System.Drawing.Point(187, 21);
             this.cbEnableLowPressure.Name = "cbEnableLowPressure";
-            this.cbEnableLowPressure.Size = new System.Drawing.Size(163, 22);
+            this.cbEnableLowPressure.Size = new System.Drawing.Size(139, 18);
             this.cbEnableLowPressure.TabIndex = 3;
             this.cbEnableLowPressure.Text = "Enable Low Pressure";
             this.cbEnableLowPressure.UseVisualStyleBackColor = true;
@@ -428,7 +432,7 @@
             this.cbEnableResetButton.AutoSize = true;
             this.cbEnableResetButton.Location = new System.Drawing.Point(6, 69);
             this.cbEnableResetButton.Name = "cbEnableResetButton";
-            this.cbEnableResetButton.Size = new System.Drawing.Size(162, 22);
+            this.cbEnableResetButton.Size = new System.Drawing.Size(139, 18);
             this.cbEnableResetButton.TabIndex = 2;
             this.cbEnableResetButton.Text = "Enable Reset Button";
             this.cbEnableResetButton.UseVisualStyleBackColor = true;
@@ -438,7 +442,7 @@
             this.cbEnableStopButton.AutoSize = true;
             this.cbEnableStopButton.Location = new System.Drawing.Point(6, 45);
             this.cbEnableStopButton.Name = "cbEnableStopButton";
-            this.cbEnableStopButton.Size = new System.Drawing.Size(154, 22);
+            this.cbEnableStopButton.Size = new System.Drawing.Size(134, 18);
             this.cbEnableStopButton.TabIndex = 1;
             this.cbEnableStopButton.Text = "Enable Stop Button";
             this.cbEnableStopButton.UseVisualStyleBackColor = true;
@@ -448,7 +452,7 @@
             this.cbEnableStartButton.AutoSize = true;
             this.cbEnableStartButton.Location = new System.Drawing.Point(6, 21);
             this.cbEnableStartButton.Name = "cbEnableStartButton";
-            this.cbEnableStartButton.Size = new System.Drawing.Size(156, 22);
+            this.cbEnableStartButton.Size = new System.Drawing.Size(135, 18);
             this.cbEnableStartButton.TabIndex = 0;
             this.cbEnableStartButton.Text = "Enable Start Button";
             this.cbEnableStartButton.UseVisualStyleBackColor = true;
@@ -463,7 +467,7 @@
             this.groupBox1.Controls.Add(this.cbxLanguage);
             this.groupBox1.Location = new System.Drawing.Point(6, 104);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(453, 110);
+            this.groupBox1.Size = new System.Drawing.Size(453, 103);
             this.groupBox1.TabIndex = 91;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Language";
@@ -486,7 +490,7 @@
             this.cbxLanguage2.FormattingEnabled = true;
             this.cbxLanguage2.Location = new System.Drawing.Point(187, 59);
             this.cbxLanguage2.Name = "cbxLanguage2";
-            this.cbxLanguage2.Size = new System.Drawing.Size(260, 26);
+            this.cbxLanguage2.Size = new System.Drawing.Size(260, 22);
             this.cbxLanguage2.TabIndex = 87;
             // 
             // label2
@@ -507,7 +511,7 @@
             this.cbxLanguage.FormattingEnabled = true;
             this.cbxLanguage.Location = new System.Drawing.Point(187, 25);
             this.cbxLanguage.Name = "cbxLanguage";
-            this.cbxLanguage.Size = new System.Drawing.Size(260, 26);
+            this.cbxLanguage.Size = new System.Drawing.Size(260, 22);
             this.cbxLanguage.TabIndex = 15;
             // 
             // tpProcess
@@ -523,9 +527,25 @@
             this.tpProcess.TabIndex = 1;
             this.tpProcess.Text = "Process";
             // 
+            // cbEnableNeedleShort
+            // 
+            this.cbEnableNeedleShort.AccessibleDescription = "Enable Needle Short";
+            this.cbEnableNeedleShort.AutoSize = true;
+            this.cbEnableNeedleShort.Location = new System.Drawing.Point(12, 471);
+            this.cbEnableNeedleShort.Name = "cbEnableNeedleShort";
+            this.cbEnableNeedleShort.Size = new System.Drawing.Size(138, 18);
+            this.cbEnableNeedleShort.TabIndex = 196;
+            this.cbEnableNeedleShort.Text = "Enable Needle Short";
+            this.cbEnableNeedleShort.UseVisualStyleBackColor = true;
+            this.cbEnableNeedleShort.Click += new System.EventHandler(this.cbEnableNeedleShort_Click);
+            // 
             // groupBox7
             // 
             this.groupBox7.AutoSize = true;
+            this.groupBox7.Controls.Add(this.lblMaterialPanelCounterLimit);
+            this.groupBox7.Controls.Add(this.lblMaterialPanelCounterReset);
+            this.groupBox7.Controls.Add(this.label19);
+            this.groupBox7.Controls.Add(this.cbEnableMaterialPanelCounter);
             this.groupBox7.Controls.Add(this.label18);
             this.groupBox7.Controls.Add(this.lblDensityRange);
             this.groupBox7.Controls.Add(this.cbEnableValveExpiry);
@@ -549,15 +569,63 @@
             this.groupBox7.Controls.Add(this.cbEnableMaterialCounter);
             this.groupBox7.Location = new System.Drawing.Point(6, 109);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(741, 294);
+            this.groupBox7.Size = new System.Drawing.Size(741, 356);
             this.groupBox7.TabIndex = 1;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Material";
             // 
+            // lblMaterialPanelCounterLimit
+            // 
+            this.lblMaterialPanelCounterLimit.BackColor = System.Drawing.Color.White;
+            this.lblMaterialPanelCounterLimit.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblMaterialPanelCounterLimit.Location = new System.Drawing.Point(486, 177);
+            this.lblMaterialPanelCounterLimit.Margin = new System.Windows.Forms.Padding(2);
+            this.lblMaterialPanelCounterLimit.Name = "lblMaterialPanelCounterLimit";
+            this.lblMaterialPanelCounterLimit.Size = new System.Drawing.Size(155, 23);
+            this.lblMaterialPanelCounterLimit.TabIndex = 207;
+            this.lblMaterialPanelCounterLimit.Text = "99999 / 99999";
+            this.lblMaterialPanelCounterLimit.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblMaterialPanelCounterLimit.Click += new System.EventHandler(this.lblMaterialPanelCounterLimit_Click);
+            // 
+            // lblMaterialPanelCounterReset
+            // 
+            this.lblMaterialPanelCounterReset.AccessibleDescription = "Reset";
+            this.lblMaterialPanelCounterReset.Location = new System.Drawing.Point(645, 177);
+            this.lblMaterialPanelCounterReset.Margin = new System.Windows.Forms.Padding(2);
+            this.lblMaterialPanelCounterReset.Name = "lblMaterialPanelCounterReset";
+            this.lblMaterialPanelCounterReset.Size = new System.Drawing.Size(75, 23);
+            this.lblMaterialPanelCounterReset.TabIndex = 206;
+            this.lblMaterialPanelCounterReset.Text = "Reset";
+            this.lblMaterialPanelCounterReset.UseVisualStyleBackColor = true;
+            this.lblMaterialPanelCounterReset.Click += new System.EventHandler(this.lblMaterialPanelCounterReset_Click);
+            // 
+            // label19
+            // 
+            this.label19.AccessibleDescription = "Panel Counter";
+            this.label19.Location = new System.Drawing.Point(393, 177);
+            this.label19.Margin = new System.Windows.Forms.Padding(2);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(138, 23);
+            this.label19.TabIndex = 205;
+            this.label19.Text = "Panel Counter";
+            this.label19.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // cbEnableMaterialPanelCounter
+            // 
+            this.cbEnableMaterialPanelCounter.AccessibleDescription = "Enable Material Panel Counter";
+            this.cbEnableMaterialPanelCounter.AutoSize = true;
+            this.cbEnableMaterialPanelCounter.Location = new System.Drawing.Point(375, 154);
+            this.cbEnableMaterialPanelCounter.Name = "cbEnableMaterialPanelCounter";
+            this.cbEnableMaterialPanelCounter.Size = new System.Drawing.Size(181, 18);
+            this.cbEnableMaterialPanelCounter.TabIndex = 204;
+            this.cbEnableMaterialPanelCounter.Text = "Enable Material Unit Counter";
+            this.cbEnableMaterialPanelCounter.UseVisualStyleBackColor = true;
+            this.cbEnableMaterialPanelCounter.Click += new System.EventHandler(this.cbEnablePanelCounter_Click);
+            // 
             // label18
             // 
             this.label18.AccessibleDescription = "Density/Flowrate Range  (2 Pumps)";
-            this.label18.Location = new System.Drawing.Point(6, 247);
+            this.label18.Location = new System.Drawing.Point(3, 303);
             this.label18.Margin = new System.Windows.Forms.Padding(2);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(272, 23);
@@ -569,7 +637,7 @@
             // 
             this.lblDensityRange.BackColor = System.Drawing.SystemColors.Window;
             this.lblDensityRange.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblDensityRange.Location = new System.Drawing.Point(285, 247);
+            this.lblDensityRange.Location = new System.Drawing.Point(282, 303);
             this.lblDensityRange.Margin = new System.Windows.Forms.Padding(2);
             this.lblDensityRange.Name = "lblDensityRange";
             this.lblDensityRange.Size = new System.Drawing.Size(75, 23);
@@ -584,7 +652,7 @@
             this.cbEnableValveExpiry.AutoSize = true;
             this.cbEnableValveExpiry.Location = new System.Drawing.Point(183, 62);
             this.cbEnableValveExpiry.Name = "cbEnableValveExpiry";
-            this.cbEnableValveExpiry.Size = new System.Drawing.Size(156, 22);
+            this.cbEnableValveExpiry.Size = new System.Drawing.Size(131, 18);
             this.cbEnableValveExpiry.TabIndex = 200;
             this.cbEnableValveExpiry.Text = "Enable Valve Expiry";
             this.cbEnableValveExpiry.UseVisualStyleBackColor = true;
@@ -630,7 +698,7 @@
             this.cbMaterialExpiryForbidContinue.AutoSize = true;
             this.cbMaterialExpiryForbidContinue.Location = new System.Drawing.Point(375, 62);
             this.cbMaterialExpiryForbidContinue.Name = "cbMaterialExpiryForbidContinue";
-            this.cbMaterialExpiryForbidContinue.Size = new System.Drawing.Size(229, 22);
+            this.cbMaterialExpiryForbidContinue.Size = new System.Drawing.Size(193, 18);
             this.cbMaterialExpiryForbidContinue.TabIndex = 195;
             this.cbMaterialExpiryForbidContinue.Text = "Material Expiry Forbid Continue";
             this.cbMaterialExpiryForbidContinue.UseVisualStyleBackColor = true;
@@ -642,7 +710,7 @@
             this.cbMaterialLowForbidContinue.AutoSize = true;
             this.cbMaterialLowForbidContinue.Location = new System.Drawing.Point(375, 21);
             this.cbMaterialLowForbidContinue.Name = "cbMaterialLowForbidContinue";
-            this.cbMaterialLowForbidContinue.Size = new System.Drawing.Size(215, 22);
+            this.cbMaterialLowForbidContinue.Size = new System.Drawing.Size(184, 18);
             this.cbMaterialLowForbidContinue.TabIndex = 194;
             this.cbMaterialLowForbidContinue.Text = "Material Low Forbid Continue";
             this.cbMaterialLowForbidContinue.UseVisualStyleBackColor = true;
@@ -688,7 +756,7 @@
             this.cbEnableMaterialExpiry.AutoSize = true;
             this.cbEnableMaterialExpiry.Location = new System.Drawing.Point(6, 62);
             this.cbEnableMaterialExpiry.Name = "cbEnableMaterialExpiry";
-            this.cbEnableMaterialExpiry.Size = new System.Drawing.Size(171, 22);
+            this.cbEnableMaterialExpiry.Size = new System.Drawing.Size(143, 18);
             this.cbEnableMaterialExpiry.TabIndex = 190;
             this.cbEnableMaterialExpiry.Text = "Enable Material Expiry";
             this.cbEnableMaterialExpiry.UseVisualStyleBackColor = true;
@@ -700,7 +768,7 @@
             this.cbEnableDualMaterial.AutoSize = true;
             this.cbEnableDualMaterial.Location = new System.Drawing.Point(187, 21);
             this.cbEnableDualMaterial.Name = "cbEnableDualMaterial";
-            this.cbEnableDualMaterial.Size = new System.Drawing.Size(160, 22);
+            this.cbEnableDualMaterial.Size = new System.Drawing.Size(134, 18);
             this.cbEnableDualMaterial.TabIndex = 189;
             this.cbEnableDualMaterial.Text = "Enable Dual Material";
             this.cbEnableDualMaterial.UseVisualStyleBackColor = true;
@@ -712,7 +780,7 @@
             this.cbEnableMaterialLow.AutoSize = true;
             this.cbEnableMaterialLow.Location = new System.Drawing.Point(6, 21);
             this.cbEnableMaterialLow.Name = "cbEnableMaterialLow";
-            this.cbEnableMaterialLow.Size = new System.Drawing.Size(157, 22);
+            this.cbEnableMaterialLow.Size = new System.Drawing.Size(134, 18);
             this.cbEnableMaterialLow.TabIndex = 188;
             this.cbEnableMaterialLow.Text = "Enable Material Low";
             this.cbEnableMaterialLow.UseVisualStyleBackColor = true;
@@ -722,7 +790,7 @@
             // 
             this.lblMaterialUnitCounterBLimit.BackColor = System.Drawing.Color.White;
             this.lblMaterialUnitCounterBLimit.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblMaterialUnitCounterBLimit.Location = new System.Drawing.Point(166, 204);
+            this.lblMaterialUnitCounterBLimit.Location = new System.Drawing.Point(120, 204);
             this.lblMaterialUnitCounterBLimit.Margin = new System.Windows.Forms.Padding(2);
             this.lblMaterialUnitCounterBLimit.Name = "lblMaterialUnitCounterBLimit";
             this.lblMaterialUnitCounterBLimit.Size = new System.Drawing.Size(155, 23);
@@ -734,7 +802,7 @@
             // lblMaterialUnitCounterBReset
             // 
             this.lblMaterialUnitCounterBReset.AccessibleDescription = "Reset";
-            this.lblMaterialUnitCounterBReset.Location = new System.Drawing.Point(325, 204);
+            this.lblMaterialUnitCounterBReset.Location = new System.Drawing.Point(279, 204);
             this.lblMaterialUnitCounterBReset.Margin = new System.Windows.Forms.Padding(2);
             this.lblMaterialUnitCounterBReset.Name = "lblMaterialUnitCounterBReset";
             this.lblMaterialUnitCounterBReset.Size = new System.Drawing.Size(75, 23);
@@ -745,20 +813,20 @@
             // 
             // label10
             // 
-            this.label10.AccessibleDescription = "Material Life Counter B";
+            this.label10.AccessibleDescription = "Unit Counter B";
             this.label10.Location = new System.Drawing.Point(24, 204);
             this.label10.Margin = new System.Windows.Forms.Padding(2);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(138, 23);
             this.label10.TabIndex = 185;
-            this.label10.Text = "Material Life Counter B";
+            this.label10.Text = "Unit Counter B";
             this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblMaterialUnitCounterALimit
             // 
             this.lblMaterialUnitCounterALimit.BackColor = System.Drawing.Color.White;
             this.lblMaterialUnitCounterALimit.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblMaterialUnitCounterALimit.Location = new System.Drawing.Point(166, 177);
+            this.lblMaterialUnitCounterALimit.Location = new System.Drawing.Point(120, 177);
             this.lblMaterialUnitCounterALimit.Margin = new System.Windows.Forms.Padding(2);
             this.lblMaterialUnitCounterALimit.Name = "lblMaterialUnitCounterALimit";
             this.lblMaterialUnitCounterALimit.Size = new System.Drawing.Size(155, 23);
@@ -770,7 +838,7 @@
             // lblMaterialUnitCounterAReset
             // 
             this.lblMaterialUnitCounterAReset.AccessibleDescription = "Reset";
-            this.lblMaterialUnitCounterAReset.Location = new System.Drawing.Point(325, 177);
+            this.lblMaterialUnitCounterAReset.Location = new System.Drawing.Point(279, 177);
             this.lblMaterialUnitCounterAReset.Margin = new System.Windows.Forms.Padding(2);
             this.lblMaterialUnitCounterAReset.Name = "lblMaterialUnitCounterAReset";
             this.lblMaterialUnitCounterAReset.Size = new System.Drawing.Size(75, 23);
@@ -781,13 +849,13 @@
             // 
             // label9
             // 
-            this.label9.AccessibleDescription = "Material Life Counter A";
+            this.label9.AccessibleDescription = "Unit Counter A";
             this.label9.Location = new System.Drawing.Point(24, 177);
             this.label9.Margin = new System.Windows.Forms.Padding(2);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(138, 23);
             this.label9.TabIndex = 181;
-            this.label9.Text = "Material Life Counter A";
+            this.label9.Text = "Unit Counter A";
             this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // cbEnableMaterialCounter
@@ -796,7 +864,7 @@
             this.cbEnableMaterialCounter.AutoSize = true;
             this.cbEnableMaterialCounter.Location = new System.Drawing.Point(6, 154);
             this.cbEnableMaterialCounter.Name = "cbEnableMaterialCounter";
-            this.cbEnableMaterialCounter.Size = new System.Drawing.Size(213, 22);
+            this.cbEnableMaterialCounter.Size = new System.Drawing.Size(181, 18);
             this.cbEnableMaterialCounter.TabIndex = 178;
             this.cbEnableMaterialCounter.Text = "Enable Material Unit Counter";
             this.cbEnableMaterialCounter.UseVisualStyleBackColor = true;
@@ -813,7 +881,7 @@
             this.groupBox2.Controls.Add(this.cbEnableLotEntry);
             this.groupBox2.Location = new System.Drawing.Point(6, 6);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(477, 104);
+            this.groupBox2.Size = new System.Drawing.Size(477, 97);
             this.groupBox2.TabIndex = 0;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Lot Settings";
@@ -824,7 +892,7 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(303, 56);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(80, 18);
+            this.label4.Size = new System.Drawing.Size(66, 14);
             this.label4.TabIndex = 95;
             this.label4.Text = "Data Table";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -835,7 +903,7 @@
             this.cbxCustomerList.FormattingEnabled = true;
             this.cbxCustomerList.Location = new System.Drawing.Point(96, 53);
             this.cbxCustomerList.Name = "cbxCustomerList";
-            this.cbxCustomerList.Size = new System.Drawing.Size(189, 26);
+            this.cbxCustomerList.Size = new System.Drawing.Size(189, 22);
             this.cbxCustomerList.TabIndex = 94;
             this.cbxCustomerList.SelectionChangeCommitted += new System.EventHandler(this.cbox_CustomerList_SelectionChangeCommitted);
             // 
@@ -845,7 +913,7 @@
             this.lbl_CustomerCaption.AutoSize = true;
             this.lbl_CustomerCaption.Location = new System.Drawing.Point(24, 56);
             this.lbl_CustomerCaption.Name = "lbl_CustomerCaption";
-            this.lbl_CustomerCaption.Size = new System.Drawing.Size(71, 18);
+            this.lbl_CustomerCaption.Size = new System.Drawing.Size(59, 14);
             this.lbl_CustomerCaption.TabIndex = 93;
             this.lbl_CustomerCaption.Text = "Customer";
             this.lbl_CustomerCaption.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -866,7 +934,7 @@
             this.cbEnableLotEntry.AutoSize = true;
             this.cbEnableLotEntry.Location = new System.Drawing.Point(6, 21);
             this.cbEnableLotEntry.Name = "cbEnableLotEntry";
-            this.cbEnableLotEntry.Size = new System.Drawing.Size(136, 22);
+            this.cbEnableLotEntry.Size = new System.Drawing.Size(117, 18);
             this.cbEnableLotEntry.TabIndex = 0;
             this.cbEnableLotEntry.Text = "Enable Lot Entry";
             this.cbEnableLotEntry.UseVisualStyleBackColor = true;
@@ -960,7 +1028,7 @@
             this.rbLoadLastDevice.AutoSize = true;
             this.rbLoadLastDevice.Location = new System.Drawing.Point(6, 25);
             this.rbLoadLastDevice.Name = "rbLoadLastDevice";
-            this.rbLoadLastDevice.Size = new System.Drawing.Size(140, 22);
+            this.rbLoadLastDevice.Size = new System.Drawing.Size(117, 18);
             this.rbLoadLastDevice.TabIndex = 238;
             this.rbLoadLastDevice.TabStop = true;
             this.rbLoadLastDevice.Text = "Load Last Device";
@@ -972,7 +1040,7 @@
             this.rbLoadLastRecipe.AutoSize = true;
             this.rbLoadLastRecipe.Location = new System.Drawing.Point(6, 53);
             this.rbLoadLastRecipe.Name = "rbLoadLastRecipe";
-            this.rbLoadLastRecipe.Size = new System.Drawing.Size(139, 22);
+            this.rbLoadLastRecipe.Size = new System.Drawing.Size(117, 18);
             this.rbLoadLastRecipe.TabIndex = 239;
             this.rbLoadLastRecipe.TabStop = true;
             this.rbLoadLastRecipe.Text = "Load Last Recipe";
@@ -984,7 +1052,7 @@
             this.cbSkipIfExists.AutoSize = true;
             this.cbSkipIfExists.Location = new System.Drawing.Point(259, 48);
             this.cbSkipIfExists.Name = "cbSkipIfExists";
-            this.cbSkipIfExists.Size = new System.Drawing.Size(160, 22);
+            this.cbSkipIfExists.Size = new System.Drawing.Size(134, 18);
             this.cbSkipIfExists.TabIndex = 236;
             this.cbSkipIfExists.Text = "Skip If Recipe Exists";
             this.cbSkipIfExists.UseVisualStyleBackColor = true;
@@ -1173,7 +1241,7 @@
             this.cbEnableEventDebugLog.AutoSize = true;
             this.cbEnableEventDebugLog.Location = new System.Drawing.Point(6, 25);
             this.cbEnableEventDebugLog.Name = "cbEnableEventDebugLog";
-            this.cbEnableEventDebugLog.Size = new System.Drawing.Size(189, 22);
+            this.cbEnableEventDebugLog.Size = new System.Drawing.Size(162, 18);
             this.cbEnableEventDebugLog.TabIndex = 6;
             this.cbEnableEventDebugLog.Text = "Enable Event Debug Log";
             this.cbEnableEventDebugLog.UseVisualStyleBackColor = true;
@@ -1228,18 +1296,6 @@
             this.btnJog.Text = "Jog";
             this.btnJog.UseVisualStyleBackColor = true;
             this.btnJog.Click += new System.EventHandler(this.btnJog_Click);
-            // 
-            // cbEnableNeedleShort
-            // 
-            this.cbEnableNeedleShort.AccessibleDescription = "Enable Needle Short";
-            this.cbEnableNeedleShort.AutoSize = true;
-            this.cbEnableNeedleShort.Location = new System.Drawing.Point(15, 409);
-            this.cbEnableNeedleShort.Name = "cbEnableNeedleShort";
-            this.cbEnableNeedleShort.Size = new System.Drawing.Size(160, 22);
-            this.cbEnableNeedleShort.TabIndex = 196;
-            this.cbEnableNeedleShort.Text = "Enable Needle Short";
-            this.cbEnableNeedleShort.UseVisualStyleBackColor = true;
-            this.cbEnableNeedleShort.Click += new System.EventHandler(this.cbEnableNeedleShort_Click);
             // 
             // frmOptions
             // 
@@ -1391,5 +1447,9 @@
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Label lblDensityRange;
         private System.Windows.Forms.CheckBox cbEnableNeedleShort;
+        private System.Windows.Forms.Label lblMaterialPanelCounterLimit;
+        private System.Windows.Forms.Button lblMaterialPanelCounterReset;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.CheckBox cbEnableMaterialPanelCounter;
     }
 }

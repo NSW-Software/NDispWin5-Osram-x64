@@ -206,7 +206,7 @@ namespace NDispWin
         {
             double X = TaskGantry.GXPos();
             double Y = TaskGantry.GYPos();
-            DispProg.RealTimeOffset(DispProg.ERealTimeOp.Minus, ref X, ref Y);
+            DispProg.InvTranslate(0, ref X, ref Y);
 
             //if (NUtils.UserAcc.Active.GroupID < iEngrLevel && CmdLine.DPara[0] > 0)
             if (CmdLine.DPara[0] > 0 || TaskDisp.Preference == TaskDisp.EPreference.Unisem)
@@ -259,7 +259,7 @@ namespace NDispWin
         {
             double X = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + CmdLine.X[SelectDotNo];
             double Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.Y[SelectDotNo];
-            DispProg.RealTimeOffset(DispProg.ERealTimeOp.Add, ref X, ref Y);
+            DispProg.Translate(0, ref X, ref Y);
 
             UpdateDisplay();
 
@@ -322,7 +322,7 @@ namespace NDispWin
 
             double X = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + CmdLine.X[SelectDotNo];
             double Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.Y[SelectDotNo];
-            DispProg.RealTimeOffset(DispProg.ERealTimeOp.Add, ref X, ref Y);
+            DispProg.Translate(0, ref X, ref Y);
 
             UpdateDisplay();
 
@@ -339,7 +339,7 @@ namespace NDispWin
 
             double X = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + CmdLine.X[SelectDotNo];
             double Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.Y[SelectDotNo];
-            DispProg.RealTimeOffset(DispProg.ERealTimeOp.Add, ref X, ref Y);
+            DispProg.Translate(0, ref X, ref Y);
 
             UpdateDisplay();
 
@@ -619,7 +619,7 @@ namespace NDispWin
 
             double X = TaskGantry.GXPos();
             double Y = TaskGantry.GYPos();
-            DispProg.RealTimeOffset(DispProg.ERealTimeOp.Minus, ref X, ref Y);
+            DispProg.InvTranslate(0, ref X, ref Y);
 
             NSW.Net.Point2D Old = new NSW.Net.Point2D(CmdLine.X[SelectDotNo], CmdLine.Y[SelectDotNo]);
             CmdLine.X[SelectDotNo] = X - (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X);

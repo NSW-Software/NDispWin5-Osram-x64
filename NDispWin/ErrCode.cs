@@ -137,6 +137,7 @@ namespace NDispWin
         public static TEMessage UNIT_COUNT_EXCEED_LIMIT = new TEMessage(2831, "Unit Count Exceed Limit.@OK - Continue.@Stop - Stop Operation.", "Replace Pump Consumables.", TEMessage.EType.Notification, false);
         public static TEMessage MATERIAL1_UNIT_RUN_EXCEEDED = new TEMessage(2832, "Material 1 Unit Run Exceeded Limit.@OK - Continue Dispense.@Stop - Stop Operation.", "Replace Material.", TEMessage.EType.Notification, false);
         public static TEMessage MATERIAL2_UNIT_RUN_EXCEEDED = new TEMessage(2833, "Material 2 Unit Run Exceeded Limit.@OK - Continue Dispense.@Stop - Stop Operation.", "Replace Material.", TEMessage.EType.Notification, false);
+        public static TEMessage MATERIAL_PANEL_RUN_EXCEEDED = new TEMessage(2834, "Material Panel Run Exceeded Limit.@OK - Continue Dispense.@Stop - Stop Operation.", "Replace Material.", TEMessage.EType.Notification, false);
         public static TEMessage CALIBRATE_SPEED_TO_TIME_CANCELLED = new TEMessage(2850, "Calibrate Speed To Time Cancelled.", "", TEMessage.EType.Notification, false);
         public static TEMessage CALIBRATE_SPEED_TO_TIME_ERR = new TEMessage(2851, "Calibrate Speed To Time Error.", "1. Check parameter.@2. Check ExMessage for details.", TEMessage.EType.Error, false);
         public static TEMessage CALIBRATE_SPEED_TO_TIME_INVALID_PARA = new TEMessage(2852, "Calibrate Speed To Time Invalid Para.", "1. Check parameter.@2. Check ExMessage for details.", TEMessage.EType.Notification, false);

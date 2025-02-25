@@ -199,6 +199,7 @@ namespace NDispWin
         {
             double X = TaskGantry.GXPos();
             double Y = TaskGantry.GYPos();
+            DispProg.InvTranslate(0, ref X, ref Y);
 
             NSW.Net.Point2D Old = new NSW.Net.Point2D(CmdLine.X[0], CmdLine.Y[0]);
             CmdLine.X[0] = X - (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X);
@@ -212,6 +213,7 @@ namespace NDispWin
         {
             double X = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + CmdLine.X[0];
             double Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.Y[0];
+            DispProg.Translate(0, ref X, ref Y);
 
             if (!TaskDisp.TaskMoveGZZ2Up()) return;
 
@@ -223,6 +225,7 @@ namespace NDispWin
         {
             double X = TaskGantry.GXPos();
             double Y = TaskGantry.GYPos();
+            DispProg.InvTranslate(0, ref X, ref Y);
 
             NSW.Net.Point2D Old = new NSW.Net.Point2D(CmdLine.X[1], CmdLine.Y[1]);
             CmdLine.X[1] = X - (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X);
@@ -236,6 +239,7 @@ namespace NDispWin
         {
             double X = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + CmdLine.X[1];
             double Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.Y[1];
+            DispProg.Translate(0, ref X, ref Y);
 
             if (!TaskDisp.TaskMoveGZZ2Up()) return;
 
@@ -247,6 +251,7 @@ namespace NDispWin
         {
             double X = TaskGantry.GXPos();
             double Y = TaskGantry.GYPos();
+            DispProg.InvTranslate(0, ref X, ref Y);
 
             NSW.Net.Point2D Old = new NSW.Net.Point2D(CmdLine.X[2], CmdLine.Y[2]);
             CmdLine.X[2] = X - (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X);
@@ -260,6 +265,7 @@ namespace NDispWin
         {
             double X = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + CmdLine.X[2];
             double Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.Y[2];
+            DispProg.Translate(0, ref X, ref Y);
 
             if (!TaskDisp.TaskMoveGZZ2Up()) return;
 
@@ -289,6 +295,7 @@ namespace NDispWin
 
                         double X = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + CmdLine.X[i_PointNo];
                         double Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.Y[i_PointNo];
+                        DispProg.Translate(0, ref X, ref Y);
 
                         if (!TaskGantry.MoveGX2Y2DefPos(true)) return;
                         if (!TaskGantry.SetMotionParamGXY()) return;
@@ -308,6 +315,7 @@ namespace NDispWin
 
             double X = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + CmdLine.X[i_PointNo];
             double Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.Y[i_PointNo];
+            DispProg.Translate(0, ref X, ref Y);
 
             if (!TaskGantry.SetMotionParamGXY()) return;
             if (!TaskGantry.MoveAbsGXY(X, Y)) return;
@@ -322,6 +330,7 @@ namespace NDispWin
 
             double X = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + CmdLine.X[i_PointNo];
             double Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.Y[i_PointNo];
+            DispProg.Translate(0, ref X, ref Y);
 
             if (!TaskGantry.SetMotionParamGXY()) return;
             if (!TaskGantry.MoveAbsGXY(X, Y)) return;
@@ -331,6 +340,7 @@ namespace NDispWin
         {
             double X = TaskGantry.GXPos();
             double Y = TaskGantry.GYPos();
+            DispProg.InvTranslate(0, ref X, ref Y);
 
             NSW.Net.Point2D Old = new NSW.Net.Point2D(CmdLine.X[i_PointNo], CmdLine.Y[i_PointNo]);
             CmdLine.X[i_PointNo] = X - (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X);
@@ -339,26 +349,6 @@ namespace NDispWin
             Log.OnSet(CmdName + ", Point " + i_PointNo.ToString() + " XY", Old, New);
 
             UpdateDisplay();
-        }
-        private void btn_SetSecX1Y1_Click(object sender, EventArgs e)
-        {
-            double X = TaskGantry.GXPos();
-            double Y = TaskGantry.GYPos();
-
-            CmdLine.X[MAX_POINTS] = X - (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X);
-            CmdLine.Y[MAX_POINTS] = Y - (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y);
-
-            UpdateDisplay();
-        }
-        private void btn_GotoSecXY_Click(object sender, EventArgs e)
-        {
-            if (!TaskDisp.TaskMoveGZZ2Up()) return;
-
-            double X = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + CmdLine.X[MAX_POINTS];
-            double Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.Y[MAX_POINTS];
-
-            if (!TaskGantry.SetMotionParamGXY()) return;
-            if (!TaskGantry.MoveAbsGXY(X, Y)) return;
         }
 
         private void btnTest_Click(object sender, EventArgs e)
@@ -581,13 +571,10 @@ namespace NDispWin
                                 bool bNextCmdIsValid =
                                     (
                                     DispProg.Script[ProgNo].CmdList.Line[nextLine].Cmd == DispProg.ECmd.DOT ||
-                                    DispProg.Script[ProgNo].CmdList.Line[nextLine].Cmd == DispProg.ECmd.DOT_ARRAY ||
                                     DispProg.Script[ProgNo].CmdList.Line[nextLine].Cmd == DispProg.ECmd.DOT_MULTI ||
                                     DispProg.Script[ProgNo].CmdList.Line[nextLine].Cmd == DispProg.ECmd.DOTLINE_MULTI ||
                                     DispProg.Script[ProgNo].CmdList.Line[nextLine].Cmd == DispProg.ECmd.DOT_P ||
                                     DispProg.Script[ProgNo].CmdList.Line[nextLine].Cmd == DispProg.ECmd.MOVE ||
-                                    DispProg.Script[ProgNo].CmdList.Line[nextLine].Cmd == DispProg.ECmd.FILL_PAT ||
-                                    DispProg.Script[ProgNo].CmdList.Line[nextLine].Cmd == DispProg.ECmd.SPIRAL_FILL ||
                                     DispProg.Script[ProgNo].CmdList.Line[nextLine].Cmd == DispProg.ECmd.GROUP_DISP
                                     );
                                 if (!bNextCmdIsValid) throw new Exception("Invalid command after HEIGHT_SET");
@@ -782,13 +769,10 @@ namespace NDispWin
                                 bool bNextCmdIsValid =
                                     (
                                     DispProg.Script[ProgNo].CmdList.Line[nextLine].Cmd == DispProg.ECmd.DOT ||
-                                    DispProg.Script[ProgNo].CmdList.Line[nextLine].Cmd == DispProg.ECmd.DOT_ARRAY ||
                                     DispProg.Script[ProgNo].CmdList.Line[nextLine].Cmd == DispProg.ECmd.DOT_MULTI ||
                                     DispProg.Script[ProgNo].CmdList.Line[nextLine].Cmd == DispProg.ECmd.DOTLINE_MULTI ||
                                     DispProg.Script[ProgNo].CmdList.Line[nextLine].Cmd == DispProg.ECmd.DOT_P ||
                                     DispProg.Script[ProgNo].CmdList.Line[nextLine].Cmd == DispProg.ECmd.MOVE ||
-                                    DispProg.Script[ProgNo].CmdList.Line[nextLine].Cmd == DispProg.ECmd.FILL_PAT ||
-                                    DispProg.Script[ProgNo].CmdList.Line[nextLine].Cmd == DispProg.ECmd.SPIRAL_FILL ||
                                     DispProg.Script[ProgNo].CmdList.Line[nextLine].Cmd == DispProg.ECmd.GROUP_DISP
                                     );
                                 if (!bNextCmdIsValid) throw new Exception("Invalid command after HEIGHT_SET");

@@ -54,20 +54,26 @@ namespace NDispWin
 
             btnEditDataTable.Enabled = LotInfo2.Customer != LotInfo2.ECustomer.LUMDisp || LotInfo2.Customer != LotInfo2.ECustomer.LUMConfocal;
 
-            cbEnableMaterialCounter.Checked = Material.EnableUnitCounter;
-            lblMaterialUnitCounterALimit.Text = UI_Utils.GetKK(Material.Unit.Count[0]) + " / " + UI_Utils.GetKK(Material.Unit.Limit[0]);
-            lblMaterialUnitCounterBLimit.Text = UI_Utils.GetKK(Material.Unit.Count[1]) + " / " + UI_Utils.GetKK(Material.Unit.Limit[1]);
-
+            #region Process
             cbEnableMaterialLow.Checked = TaskDisp.Option_EnableMaterialLow;
             cbEnableDualMaterial.Checked = TaskDisp.Option_EnableDualMaterial;
             cbMaterialLowForbidContinue.Checked = TaskDisp.MaterialLowForbidContinue;
 
             cbEnableMaterialExpiry.Checked = TaskDisp.Material_EnableTimer;
-            cbMaterialExpiryForbidContinue.Checked = TaskDisp.MaterialExpiryForbidContinue;
             lblMaterialLifeTimeMultipler.Text = TaskDisp.Material_Life_Multiplier.ToString();
             lblMaterialExpiryPreAlertTime.Text = TaskDisp.Material_ExpiryPreAlertTime.ToString();
             cbEnableValveExpiry.Checked = TaskDisp.Valve_EnableTimer;
+            cbMaterialExpiryForbidContinue.Checked = TaskDisp.MaterialExpiryForbidContinue;
+
+            cbEnableMaterialCounter.Checked = Material.EnableUnitCounter;
+            lblMaterialUnitCounterALimit.Text = UI_Utils.GetKK(Material.Unit.Count[0]) + " / " + UI_Utils.GetKK(Material.Unit.Limit[0]);
+            lblMaterialUnitCounterBLimit.Text = UI_Utils.GetKK(Material.Unit.Count[1]) + " / " + UI_Utils.GetKK(Material.Unit.Limit[1]);
+            cbEnableMaterialPanelCounter.Checked = Material.EnablePanelCounter;
+            lblMaterialPanelCounterLimit.Text = UI_Utils.GetKK(Material.Panel.Count) + " / " + UI_Utils.GetKK(Material.Panel.Limit);
+
             lblDensityRange.Text = $"{TaskDisp.Option_DensityRange:f3}";
+            cbEnableNeedleShort.Checked = TaskDisp.Option_EnableNeedleShort;
+            #endregion
 
             lblDefZPos.Text = TaskDisp.ZDefPos.ToString("f3");
             lblDefLaserValue.Text = TaskDisp.Laser_CalValue.ToString("f3");
@@ -85,8 +91,6 @@ namespace NDispWin
             cbEnableDoorSensor.Checked = GDefineN.EnableDoorSens;
             cbEnableDoorLock.Checked = GDefineN.EnableDoorLock;
             lblDTEnable.Text = DateTime.Now < DefineSafety.dtEnable ? "Disabled Until: " + DefineSafety.dtEnable.ToString("yyyy-MM-dd HH:mm:ss"): "-";
-
-            cbEnableNeedleShort.Checked = TaskDisp.Option_EnableNeedleShort;
 
             if (TaskDisp.Preference == TaskDisp.EPreference.Lumileds)
             {
@@ -342,19 +346,20 @@ namespace NDispWin
 
         private void cbEnableMaterialCounter_Click(object sender, EventArgs e)
         {
-            UC.AdjustExec("Material, EnableUnitCounter", ref Material.EnableUnitCounter);
+            Material.EnableUnitCounter = !Material.EnableUnitCounter;
+            Log.OnSet("Material, EnableUnitCounter", !Material.EnableUnitCounter, Material.EnableUnitCounter);
             UpdateDisplay();
         }
         private void lblMaterialUnitCounterALimit_Click(object sender, EventArgs e)
         {
-            UC.AdjustExec("Material Unit Counter A Limit", ref Material.Unit.Limit[0], 0, 1000000000);
+            UC.AdjustExec("Material, Unit Counter A Limit", ref Material.Unit.Limit[0], 0, 1000000000);
             UpdateDisplay();
         }
         private void lblMaterialUnitCounterAReset_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show("Reset Material Unit Counter A", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                Log.OnSet("Reset Material Unit Counter A", Material.Unit.Count[0], 0);
+                Log.OnSet("Material, Unit Counter A Reset", Material.Unit.Count[0], 0);
                 Material.Unit.Count[0] = 0;
                 GDefine.SaveDefault();
             }
@@ -362,23 +367,53 @@ namespace NDispWin
         }
         private void lblMaterialUnitCounterBLimit_Click(object sender, EventArgs e)
         {
-            UC.AdjustExec("Material Unit Counter B Limit", ref Material.Unit.Limit[1], 0, 1000000000);
+            UC.AdjustExec("Material, Unit Counter B Limit", ref Material.Unit.Limit[1], 0, 1000000000);
             UpdateDisplay();
         }
         private void lblMaterialUnitCounterBReset_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show("Reset Material Unit Counter B", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                Log.OnSet("Reset Material Unit Counter B", Material.Unit.Count[1], 0);
+                Log.OnSet("Material, Unit Counter B Reset", Material.Unit.Count[1], 0);
                 Material.Unit.Count[1] = 0;
                 GDefine.SaveDefault();
             }
             UpdateDisplay();
         }
 
+        private void cbEnablePanelCounter_Click(object sender, EventArgs e)
+        {
+            Material.EnablePanelCounter = !Material.EnablePanelCounter;
+            Log.OnSet("Material, Panel Counter Enable", !Material.EnablePanelCounter, Material.EnablePanelCounter);
+
+            UpdateDisplay();
+        }
+        private void lblMaterialPanelCounterReset_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Reset Material Panel Counter", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                Log.OnSet("Material, Panel Counter Reset", Material.Panel.Count, 0);
+                Material.Panel.Count = 0;
+                GDefine.SaveDefault();
+            }
+            UpdateDisplay();
+        }
+        private void lblMaterialPanelCounterLimit_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec("Material, Panel Counter Limit", ref Material.Panel.Limit, 0, 1000000000);
+            UpdateDisplay();
+        }
+
         private void lblDensityRange_Click(object sender, EventArgs e)
         {
             UC.AdjustExec("Material, Density Range", ref TaskDisp.Option_DensityRange, 0, 1);
+            UpdateDisplay();
+        }
+
+        private void cbEnableNeedleShort_Click(object sender, EventArgs e)
+        {
+            TaskDisp.Option_EnableNeedleShort = !TaskDisp.Option_EnableNeedleShort;
+            Log.OnSet("Option_EnableNeedleShort", !TaskDisp.Option_EnableNeedleShort, TaskDisp.Option_EnableNeedleShort);
             UpdateDisplay();
         }
         #endregion
@@ -549,11 +584,6 @@ namespace NDispWin
             if (TCTwrLight.LoadStatus()) MessageBox.Show($"{GDefine.TLStatusFile} was loaded.");
         }
 
-        private void cbEnableNeedleShort_Click(object sender, EventArgs e)
-        {
-            TaskDisp.Option_EnableNeedleShort = !TaskDisp.Option_EnableNeedleShort;
-            Log.OnSet("Option_EnableNeedleShort", !TaskDisp.Option_EnableNeedleShort, TaskDisp.Option_EnableNeedleShort);
-            UpdateDisplay();
-        }
+
     }
 }
