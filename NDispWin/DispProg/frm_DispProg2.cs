@@ -2211,6 +2211,22 @@ namespace NDispWin
                                         break;
                                     }
                                 #endregion
+                                case DispProg.ECmd.Z_PATH:
+                                    #region
+                                    {
+                                        frmDispProg_ZPath frm = new frmDispProg_ZPath();
+                                        frm.TopLevel = false;
+                                        frm.Parent = this;
+                                        frm.ProgNo = SelProg;
+                                        frm.LineNo = ProgLine;
+                                        frm.SubOrigin = SubOfst;
+                                        frm.BringToFront();
+                                        Dirty = true;
+                                        Done = false;
+                                        frm.Show();
+                                        break;
+                                    }
+                                #endregion
                                 case DispProg.ECmd.DO_BDCAPTURE:
                                     #region
                                     {

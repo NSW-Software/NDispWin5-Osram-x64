@@ -461,6 +461,7 @@ namespace NDispWin
             X[0..99]        [XStart, XFirstStart, XLastStart, ..]
             Y[0..99]        [YStart, YFirstStart, YLastStart, ..]
             */
+            Z_PATH = 462,
 
             VOL_SET_DOTS = 480,//distribute volume to total number of dots.
 

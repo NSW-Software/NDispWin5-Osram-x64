@@ -9,6 +9,10 @@ Todo
 - Improve Reticle Window Adjust
 - PurgeStage Dry Mode do not dispsense
 
+
+Ver 6.1.4.0 - KN - 20250304 - Internal - Gitted
+  [Feature] Added command ZPath
+  [BugFix] Fix OpenLaser().CL3 infinite loop. Break after retry.
 Ver 6.1.3.2 - KN - 20250225 - Released to OsKul, Shafiq
   [Bugfix] Corrected tower light SetStatus to ingore and retain previous status
   [Bugfix] Added RealTimeUpdate to frm_DispCore_DispProg_MeasL_H, frm_DispCore_DispProg_Arc, frm_DispCore_DispProg_BdOrient,frm_DispCore_DispProg_DotMulti, frmDispProg_DoUnitMark, frm_DispCore_DispProg_DoVision, frm_DispCore_DispProg_LineMulti

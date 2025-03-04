@@ -153,7 +153,7 @@ namespace NDispWin
             CmdLine.IPara[2] = CmdLine.IPara[2] > 0 ? 0 : 1;
 
             bool enabled = CmdLine.IPara[2] > 0;
-            Log.OnSet(CmdName + ", Enable Weight", !enabled, enabled);
+            Log.OnSet(CmdName + ", Disp", !enabled, enabled);
 
             UpdateDisplay();
         }

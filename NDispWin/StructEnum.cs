@@ -1241,12 +1241,37 @@ namespace NDispWin
     }
     internal class TModelPara
     {
+        int modelNo = 0;
+
         public double DnStartV = 0;
         public double DnSpeed = 0;
         public double DnAccel = 0;
-        public double DispGap = 0;
+        //public double DispGap = 0;
+        public double DispGap
+        {
+            get
+            {
+                return DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.DispGap];
+            }
+            set
+            {
+                DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.DispGap] = value;
+            }
+        }
 
-        public int DnWait = 0;
+        //public int DnWait = 0;
+        public int DnWait
+        {
+            get
+            {
+                return (int)DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.DnWait];
+            }
+            set
+            {
+                DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.DnWait] = value;
+            }
+        }
+
         public double StartDelay = 0;
 
         public double DispVol = 0;
@@ -1264,7 +1289,18 @@ namespace NDispWin
         public double FPressB = 0;
 
         public double EndDelay = 0;
-        public int PostWait = 0;
+        //public int PostWait = 0;
+        public int PostWait
+        {
+            get
+            {
+                return (int)DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.PostWait];
+            }
+            set
+            {
+                DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.PostWait] = value;
+            }
+        }
 
         public double RetStartV = 0;
         public double RetSpeed = 0;
