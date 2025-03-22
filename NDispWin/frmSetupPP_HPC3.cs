@@ -193,7 +193,6 @@ namespace NDispWin
 
                 await Task.Run(() =>
                 {
-                    bool isFilling = false;
                     TFPump.PP4.CheckStrokeThenFill(pumpSelect);
                     TFPump.PP4.SingleShot(pumpSelect);
                 });
@@ -439,6 +438,11 @@ namespace NDispWin
             pumpSelect[0] = true;
             pumpSelect[1] = true;
             UpdateDisplay();
+        }
+
+        private void gbxAmount_Enter(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -29,17 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.lbl_DataPath = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
             this.lbl_VolumeOfstProtocol = new System.Windows.Forms.Label();
             this.tmr_Display = new System.Windows.Forms.Timer(this.components);
-            this.label3 = new System.Windows.Forms.Label();
-            this.lbl_EquipmentID = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.lbl_LocalPath = new System.Windows.Forms.Label();
-            this.lbl_DataPath2 = new System.Windows.Forms.Label();
-            this.btn_CheckVolumeOfstDataPath = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -71,52 +62,37 @@
             this.label7 = new System.Windows.Forms.Label();
             this.lbl_InputMap_Protocol = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.pnl_VolumeOffsetPath = new System.Windows.Forms.Panel();
+            this.pnlOsramICC = new System.Windows.Forms.Panel();
+            this.tbxOsramICCOutputPath = new System.Windows.Forms.TextBox();
+            this.tbxOsramICCInputPath = new System.Windows.Forms.TextBox();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.btnInputFileLoad = new System.Windows.Forms.Button();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.btnOutputFileTileLookUp = new System.Windows.Forms.Button();
+            this.tbxLookUpTileID = new System.Windows.Forms.TextBox();
+            this.btnOutputFileLoad = new System.Windows.Forms.Button();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.btnLocalListEditPass2 = new System.Windows.Forms.Button();
+            this.btnLocalListSave = new System.Windows.Forms.Button();
+            this.btnLocalListEditPass1 = new System.Windows.Forms.Button();
+            this.btnLocalListLoad = new System.Windows.Forms.Button();
+            this.label18 = new System.Windows.Forms.Label();
+            this.btnCheckOsramICCPath = new System.Windows.Forms.Button();
+            this.label21 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btn_EditVolumeOfst = new System.Windows.Forms.Button();
+            this.btnOsramICCTest = new System.Windows.Forms.Button();
             this.panel3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.pnl_InputMapPaths_Lmd_EMap.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.pnl_VolumeOffsetPath.SuspendLayout();
+            this.pnlOsramICC.SuspendLayout();
+            this.groupBox5.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // lbl_DataPath
-            // 
-            this.lbl_DataPath.BackColor = System.Drawing.Color.White;
-            this.lbl_DataPath.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_DataPath.Location = new System.Drawing.Point(150, 59);
-            this.lbl_DataPath.Margin = new System.Windows.Forms.Padding(2);
-            this.lbl_DataPath.Name = "lbl_DataPath";
-            this.lbl_DataPath.Size = new System.Drawing.Size(440, 23);
-            this.lbl_DataPath.TabIndex = 169;
-            this.lbl_DataPath.Text = "-100";
-            this.lbl_DataPath.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lbl_DataPath.Click += new System.EventHandler(this.lbl_DataPath_Click);
-            // 
-            // label4
-            // 
-            this.label4.AccessibleDescription = "Data Path";
-            this.label4.Location = new System.Drawing.Point(2, 59);
-            this.label4.Margin = new System.Windows.Forms.Padding(2);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(144, 23);
-            this.label4.TabIndex = 162;
-            this.label4.Text = "Data Path";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label6
-            // 
-            this.label6.AccessibleDescription = "Data Path2";
-            this.label6.Location = new System.Drawing.Point(2, 86);
-            this.label6.Margin = new System.Windows.Forms.Padding(2);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(144, 23);
-            this.label6.TabIndex = 160;
-            this.label6.Text = "Data Path2";
-            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lbl_VolumeOfstProtocol
             // 
@@ -134,78 +110,6 @@
             // tmr_Display
             // 
             this.tmr_Display.Tick += new System.EventHandler(this.tmr_Display_Tick);
-            // 
-            // label3
-            // 
-            this.label3.AccessibleDescription = "Equipment ID";
-            this.label3.Location = new System.Drawing.Point(2, 5);
-            this.label3.Margin = new System.Windows.Forms.Padding(2);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(144, 23);
-            this.label3.TabIndex = 205;
-            this.label3.Text = "Equipment ID";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lbl_EquipmentID
-            // 
-            this.lbl_EquipmentID.BackColor = System.Drawing.Color.White;
-            this.lbl_EquipmentID.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_EquipmentID.Location = new System.Drawing.Point(150, 5);
-            this.lbl_EquipmentID.Margin = new System.Windows.Forms.Padding(2);
-            this.lbl_EquipmentID.Name = "lbl_EquipmentID";
-            this.lbl_EquipmentID.Size = new System.Drawing.Size(440, 23);
-            this.lbl_EquipmentID.TabIndex = 206;
-            this.lbl_EquipmentID.Text = "-100";
-            this.lbl_EquipmentID.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lbl_EquipmentID.Click += new System.EventHandler(this.lbl_EquipmentID_Click);
-            // 
-            // label1
-            // 
-            this.label1.AccessibleDescription = "Local Path";
-            this.label1.Location = new System.Drawing.Point(2, 32);
-            this.label1.Margin = new System.Windows.Forms.Padding(2);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(144, 23);
-            this.label1.TabIndex = 203;
-            this.label1.Text = "Local Path";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lbl_LocalPath
-            // 
-            this.lbl_LocalPath.BackColor = System.Drawing.Color.White;
-            this.lbl_LocalPath.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_LocalPath.Location = new System.Drawing.Point(150, 32);
-            this.lbl_LocalPath.Margin = new System.Windows.Forms.Padding(2);
-            this.lbl_LocalPath.Name = "lbl_LocalPath";
-            this.lbl_LocalPath.Size = new System.Drawing.Size(440, 23);
-            this.lbl_LocalPath.TabIndex = 204;
-            this.lbl_LocalPath.Text = "-100";
-            this.lbl_LocalPath.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lbl_LocalPath.Click += new System.EventHandler(this.lbl_LocalPath_Click);
-            // 
-            // lbl_DataPath2
-            // 
-            this.lbl_DataPath2.BackColor = System.Drawing.Color.White;
-            this.lbl_DataPath2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_DataPath2.Location = new System.Drawing.Point(150, 86);
-            this.lbl_DataPath2.Margin = new System.Windows.Forms.Padding(2);
-            this.lbl_DataPath2.Name = "lbl_DataPath2";
-            this.lbl_DataPath2.Size = new System.Drawing.Size(440, 23);
-            this.lbl_DataPath2.TabIndex = 199;
-            this.lbl_DataPath2.Text = "-100";
-            this.lbl_DataPath2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lbl_DataPath2.Click += new System.EventHandler(this.lbl_DataPath2_Click);
-            // 
-            // btn_CheckVolumeOfstDataPath
-            // 
-            this.btn_CheckVolumeOfstDataPath.AccessibleDescription = "Check";
-            this.btn_CheckVolumeOfstDataPath.Location = new System.Drawing.Point(520, 114);
-            this.btn_CheckVolumeOfstDataPath.Name = "btn_CheckVolumeOfstDataPath";
-            this.btn_CheckVolumeOfstDataPath.Size = new System.Drawing.Size(70, 30);
-            this.btn_CheckVolumeOfstDataPath.TabIndex = 199;
-            this.btn_CheckVolumeOfstDataPath.Text = "Check";
-            this.btn_CheckVolumeOfstDataPath.UseVisualStyleBackColor = true;
-            this.btn_CheckVolumeOfstDataPath.Click += new System.EventHandler(this.btn_CheckDataPath_Click);
             // 
             // label2
             // 
@@ -230,7 +134,6 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(607, 677);
             this.panel3.TabIndex = 200;
-            this.panel3.Paint += new System.Windows.Forms.PaintEventHandler(this.panel3_Paint);
             // 
             // groupBox2
             // 
@@ -239,10 +142,10 @@
             this.groupBox2.Controls.Add(this.pnl_InputMapPaths_Lmd_EMap);
             this.groupBox2.Controls.Add(this.panel1);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox2.Location = new System.Drawing.Point(0, 205);
+            this.groupBox2.Location = new System.Drawing.Point(0, 233);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(5);
-            this.groupBox2.Size = new System.Drawing.Size(605, 262);
+            this.groupBox2.Size = new System.Drawing.Size(605, 258);
             this.groupBox2.TabIndex = 204;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Input Map";
@@ -274,7 +177,7 @@
             this.pnl_InputMapPaths_Lmd_EMap.Controls.Add(this.btn_InputMap_CheckDataPath);
             this.pnl_InputMapPaths_Lmd_EMap.Controls.Add(this.label11);
             this.pnl_InputMapPaths_Lmd_EMap.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnl_InputMapPaths_Lmd_EMap.Location = new System.Drawing.Point(5, 52);
+            this.pnl_InputMapPaths_Lmd_EMap.Location = new System.Drawing.Point(5, 48);
             this.pnl_InputMapPaths_Lmd_EMap.Name = "pnl_InputMapPaths_Lmd_EMap";
             this.pnl_InputMapPaths_Lmd_EMap.Size = new System.Drawing.Size(595, 205);
             this.pnl_InputMapPaths_Lmd_EMap.TabIndex = 215;
@@ -305,7 +208,7 @@
             // 
             this.tbox_Prefix3.Location = new System.Drawing.Point(150, 144);
             this.tbox_Prefix3.Name = "tbox_Prefix3";
-            this.tbox_Prefix3.Size = new System.Drawing.Size(100, 26);
+            this.tbox_Prefix3.Size = new System.Drawing.Size(100, 22);
             this.tbox_Prefix3.TabIndex = 230;
             // 
             // label12
@@ -323,7 +226,7 @@
             // 
             this.tbox_Suffix3.Location = new System.Drawing.Point(336, 145);
             this.tbox_Suffix3.Name = "tbox_Suffix3";
-            this.tbox_Suffix3.Size = new System.Drawing.Size(100, 26);
+            this.tbox_Suffix3.Size = new System.Drawing.Size(100, 22);
             this.tbox_Suffix3.TabIndex = 228;
             // 
             // label15
@@ -364,7 +267,7 @@
             // 
             this.tbox_Prefix2.Location = new System.Drawing.Point(150, 88);
             this.tbox_Prefix2.Name = "tbox_Prefix2";
-            this.tbox_Prefix2.Size = new System.Drawing.Size(100, 26);
+            this.tbox_Prefix2.Size = new System.Drawing.Size(100, 22);
             this.tbox_Prefix2.TabIndex = 224;
             // 
             // label9
@@ -382,7 +285,7 @@
             // 
             this.tbox_Suffix2.Location = new System.Drawing.Point(336, 89);
             this.tbox_Suffix2.Name = "tbox_Suffix2";
-            this.tbox_Suffix2.Size = new System.Drawing.Size(100, 26);
+            this.tbox_Suffix2.Size = new System.Drawing.Size(100, 22);
             this.tbox_Suffix2.TabIndex = 222;
             // 
             // label10
@@ -423,7 +326,7 @@
             // 
             this.tbox_Prefix.Location = new System.Drawing.Point(150, 33);
             this.tbox_Prefix.Name = "tbox_Prefix";
-            this.tbox_Prefix.Size = new System.Drawing.Size(100, 26);
+            this.tbox_Prefix.Size = new System.Drawing.Size(100, 22);
             this.tbox_Prefix.TabIndex = 218;
             // 
             // label5
@@ -441,9 +344,8 @@
             // 
             this.tbox_Suffix.Location = new System.Drawing.Point(336, 34);
             this.tbox_Suffix.Name = "tbox_Suffix";
-            this.tbox_Suffix.Size = new System.Drawing.Size(100, 26);
+            this.tbox_Suffix.Size = new System.Drawing.Size(100, 22);
             this.tbox_Suffix.TabIndex = 216;
-            this.tbox_Suffix.TextChanged += new System.EventHandler(this.tbox_Suffix_TextChanged);
             // 
             // btn_Update
             // 
@@ -509,7 +411,7 @@
             this.panel1.Controls.Add(this.label7);
             this.panel1.Controls.Add(this.lbl_InputMap_Protocol);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(5, 24);
+            this.panel1.Location = new System.Drawing.Point(5, 20);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(595, 28);
             this.panel1.TabIndex = 216;
@@ -552,34 +454,207 @@
             // 
             this.groupBox1.AccessibleDescription = "Volume Offset";
             this.groupBox1.AutoSize = true;
-            this.groupBox1.Controls.Add(this.pnl_VolumeOffsetPath);
+            this.groupBox1.Controls.Add(this.pnlOsramICC);
             this.groupBox1.Controls.Add(this.panel2);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(5);
-            this.groupBox1.Size = new System.Drawing.Size(605, 205);
+            this.groupBox1.Size = new System.Drawing.Size(605, 233);
             this.groupBox1.TabIndex = 203;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Volume Offset";
             // 
-            // pnl_VolumeOffsetPath
+            // pnlOsramICC
             // 
-            this.pnl_VolumeOffsetPath.AutoSize = true;
-            this.pnl_VolumeOffsetPath.Controls.Add(this.label3);
-            this.pnl_VolumeOffsetPath.Controls.Add(this.label4);
-            this.pnl_VolumeOffsetPath.Controls.Add(this.btn_CheckVolumeOfstDataPath);
-            this.pnl_VolumeOffsetPath.Controls.Add(this.lbl_EquipmentID);
-            this.pnl_VolumeOffsetPath.Controls.Add(this.label6);
-            this.pnl_VolumeOffsetPath.Controls.Add(this.label1);
-            this.pnl_VolumeOffsetPath.Controls.Add(this.lbl_DataPath);
-            this.pnl_VolumeOffsetPath.Controls.Add(this.lbl_LocalPath);
-            this.pnl_VolumeOffsetPath.Controls.Add(this.lbl_DataPath2);
-            this.pnl_VolumeOffsetPath.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnl_VolumeOffsetPath.Location = new System.Drawing.Point(5, 53);
-            this.pnl_VolumeOffsetPath.Name = "pnl_VolumeOffsetPath";
-            this.pnl_VolumeOffsetPath.Size = new System.Drawing.Size(595, 147);
-            this.pnl_VolumeOffsetPath.TabIndex = 208;
+            this.pnlOsramICC.AutoSize = true;
+            this.pnlOsramICC.Controls.Add(this.btnOsramICCTest);
+            this.pnlOsramICC.Controls.Add(this.tbxOsramICCOutputPath);
+            this.pnlOsramICC.Controls.Add(this.tbxOsramICCInputPath);
+            this.pnlOsramICC.Controls.Add(this.groupBox5);
+            this.pnlOsramICC.Controls.Add(this.groupBox4);
+            this.pnlOsramICC.Controls.Add(this.groupBox3);
+            this.pnlOsramICC.Controls.Add(this.label18);
+            this.pnlOsramICC.Controls.Add(this.btnCheckOsramICCPath);
+            this.pnlOsramICC.Controls.Add(this.label21);
+            this.pnlOsramICC.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlOsramICC.Location = new System.Drawing.Point(5, 49);
+            this.pnlOsramICC.Name = "pnlOsramICC";
+            this.pnlOsramICC.Size = new System.Drawing.Size(595, 179);
+            this.pnlOsramICC.TabIndex = 209;
+            // 
+            // tbxOsramICCOutputPath
+            // 
+            this.tbxOsramICCOutputPath.Location = new System.Drawing.Point(150, 33);
+            this.tbxOsramICCOutputPath.Name = "tbxOsramICCOutputPath";
+            this.tbxOsramICCOutputPath.Size = new System.Drawing.Size(440, 22);
+            this.tbxOsramICCOutputPath.TabIndex = 214;
+            // 
+            // tbxOsramICCInputPath
+            // 
+            this.tbxOsramICCInputPath.Location = new System.Drawing.Point(150, 6);
+            this.tbxOsramICCInputPath.Name = "tbxOsramICCInputPath";
+            this.tbxOsramICCInputPath.Size = new System.Drawing.Size(440, 22);
+            this.tbxOsramICCInputPath.TabIndex = 213;
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.AutoSize = true;
+            this.groupBox5.Controls.Add(this.btnInputFileLoad);
+            this.groupBox5.Location = new System.Drawing.Point(5, 68);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Padding = new System.Windows.Forms.Padding(3, 6, 3, 0);
+            this.groupBox5.Size = new System.Drawing.Size(82, 108);
+            this.groupBox5.TabIndex = 211;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Input File";
+            // 
+            // btnInputFileLoad
+            // 
+            this.btnInputFileLoad.AccessibleDescription = "Load";
+            this.btnInputFileLoad.Location = new System.Drawing.Point(6, 24);
+            this.btnInputFileLoad.Name = "btnInputFileLoad";
+            this.btnInputFileLoad.Size = new System.Drawing.Size(70, 30);
+            this.btnInputFileLoad.TabIndex = 205;
+            this.btnInputFileLoad.Text = "Load";
+            this.btnInputFileLoad.UseVisualStyleBackColor = true;
+            this.btnInputFileLoad.Click += new System.EventHandler(this.btnInputFileLoad_Click);
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.AutoSize = true;
+            this.groupBox4.Controls.Add(this.btnOutputFileTileLookUp);
+            this.groupBox4.Controls.Add(this.tbxLookUpTileID);
+            this.groupBox4.Controls.Add(this.btnOutputFileLoad);
+            this.groupBox4.Location = new System.Drawing.Point(93, 68);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Padding = new System.Windows.Forms.Padding(3, 6, 3, 0);
+            this.groupBox4.Size = new System.Drawing.Size(158, 108);
+            this.groupBox4.TabIndex = 210;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Output File";
+            // 
+            // btnOutputFileTileLookUp
+            // 
+            this.btnOutputFileTileLookUp.AccessibleDescription = "LookUp";
+            this.btnOutputFileTileLookUp.Location = new System.Drawing.Point(82, 60);
+            this.btnOutputFileTileLookUp.Name = "btnOutputFileTileLookUp";
+            this.btnOutputFileTileLookUp.Size = new System.Drawing.Size(70, 30);
+            this.btnOutputFileTileLookUp.TabIndex = 209;
+            this.btnOutputFileTileLookUp.Text = "LookUp";
+            this.btnOutputFileTileLookUp.UseVisualStyleBackColor = true;
+            this.btnOutputFileTileLookUp.Click += new System.EventHandler(this.btnOutputFileTileLookUp_Click);
+            // 
+            // tbxLookUpTileID
+            // 
+            this.tbxLookUpTileID.Location = new System.Drawing.Point(6, 65);
+            this.tbxLookUpTileID.Name = "tbxLookUpTileID";
+            this.tbxLookUpTileID.Size = new System.Drawing.Size(70, 22);
+            this.tbxLookUpTileID.TabIndex = 212;
+            // 
+            // btnOutputFileLoad
+            // 
+            this.btnOutputFileLoad.AccessibleDescription = "Load";
+            this.btnOutputFileLoad.Location = new System.Drawing.Point(82, 24);
+            this.btnOutputFileLoad.Name = "btnOutputFileLoad";
+            this.btnOutputFileLoad.Size = new System.Drawing.Size(70, 30);
+            this.btnOutputFileLoad.TabIndex = 205;
+            this.btnOutputFileLoad.Text = "Load";
+            this.btnOutputFileLoad.UseVisualStyleBackColor = true;
+            this.btnOutputFileLoad.Click += new System.EventHandler(this.btnOutputFileLoad_Click);
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.AutoSize = true;
+            this.groupBox3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox3.Controls.Add(this.btnLocalListEditPass2);
+            this.groupBox3.Controls.Add(this.btnLocalListSave);
+            this.groupBox3.Controls.Add(this.btnLocalListEditPass1);
+            this.groupBox3.Controls.Add(this.btnLocalListLoad);
+            this.groupBox3.Location = new System.Drawing.Point(257, 68);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(3, 6, 3, 0);
+            this.groupBox3.Size = new System.Drawing.Size(158, 108);
+            this.groupBox3.TabIndex = 209;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Local PanelID List";
+            // 
+            // btnLocalListEditPass2
+            // 
+            this.btnLocalListEditPass2.AccessibleDescription = "Edit Pass2";
+            this.btnLocalListEditPass2.Location = new System.Drawing.Point(82, 60);
+            this.btnLocalListEditPass2.Name = "btnLocalListEditPass2";
+            this.btnLocalListEditPass2.Size = new System.Drawing.Size(70, 30);
+            this.btnLocalListEditPass2.TabIndex = 210;
+            this.btnLocalListEditPass2.Text = "Edit Pass2";
+            this.btnLocalListEditPass2.UseVisualStyleBackColor = true;
+            this.btnLocalListEditPass2.Click += new System.EventHandler(this.btnEditPass2_Click);
+            // 
+            // btnLocalListSave
+            // 
+            this.btnLocalListSave.AccessibleDescription = "Save";
+            this.btnLocalListSave.Location = new System.Drawing.Point(6, 60);
+            this.btnLocalListSave.Name = "btnLocalListSave";
+            this.btnLocalListSave.Size = new System.Drawing.Size(70, 30);
+            this.btnLocalListSave.TabIndex = 207;
+            this.btnLocalListSave.Text = "Save";
+            this.btnLocalListSave.UseVisualStyleBackColor = true;
+            this.btnLocalListSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
+            // btnLocalListEditPass1
+            // 
+            this.btnLocalListEditPass1.AccessibleDescription = "Edit Pass1";
+            this.btnLocalListEditPass1.Location = new System.Drawing.Point(82, 24);
+            this.btnLocalListEditPass1.Name = "btnLocalListEditPass1";
+            this.btnLocalListEditPass1.Size = new System.Drawing.Size(70, 30);
+            this.btnLocalListEditPass1.TabIndex = 209;
+            this.btnLocalListEditPass1.Text = "Edit Pass1";
+            this.btnLocalListEditPass1.UseVisualStyleBackColor = true;
+            this.btnLocalListEditPass1.Click += new System.EventHandler(this.btnEditPass1_Click);
+            // 
+            // btnLocalListLoad
+            // 
+            this.btnLocalListLoad.AccessibleDescription = "Load";
+            this.btnLocalListLoad.Location = new System.Drawing.Point(6, 24);
+            this.btnLocalListLoad.Name = "btnLocalListLoad";
+            this.btnLocalListLoad.Size = new System.Drawing.Size(70, 30);
+            this.btnLocalListLoad.TabIndex = 205;
+            this.btnLocalListLoad.Text = "Load";
+            this.btnLocalListLoad.UseVisualStyleBackColor = true;
+            this.btnLocalListLoad.Click += new System.EventHandler(this.btnLoad_Click);
+            // 
+            // label18
+            // 
+            this.label18.AccessibleDescription = "Output Path";
+            this.label18.Location = new System.Drawing.Point(2, 32);
+            this.label18.Margin = new System.Windows.Forms.Padding(2);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(144, 23);
+            this.label18.TabIndex = 162;
+            this.label18.Text = "Output Path";
+            this.label18.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // btnCheckOsramICCPath
+            // 
+            this.btnCheckOsramICCPath.AccessibleDescription = "Check";
+            this.btnCheckOsramICCPath.Location = new System.Drawing.Point(520, 60);
+            this.btnCheckOsramICCPath.Name = "btnCheckOsramICCPath";
+            this.btnCheckOsramICCPath.Size = new System.Drawing.Size(70, 30);
+            this.btnCheckOsramICCPath.TabIndex = 199;
+            this.btnCheckOsramICCPath.Text = "Check";
+            this.btnCheckOsramICCPath.UseVisualStyleBackColor = true;
+            this.btnCheckOsramICCPath.Click += new System.EventHandler(this.btnCheckOsramICCPath_Click);
+            // 
+            // label21
+            // 
+            this.label21.AccessibleDescription = "Input Path";
+            this.label21.Location = new System.Drawing.Point(2, 5);
+            this.label21.Margin = new System.Windows.Forms.Padding(2);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(144, 23);
+            this.label21.TabIndex = 203;
+            this.label21.Text = "Input Path";
+            this.label21.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // panel2
             // 
@@ -588,7 +663,7 @@
             this.panel2.Controls.Add(this.lbl_VolumeOfstProtocol);
             this.panel2.Controls.Add(this.btn_EditVolumeOfst);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel2.Location = new System.Drawing.Point(5, 24);
+            this.panel2.Location = new System.Drawing.Point(5, 20);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(595, 29);
             this.panel2.TabIndex = 207;
@@ -602,6 +677,17 @@
             this.btn_EditVolumeOfst.Text = "Edit";
             this.btn_EditVolumeOfst.UseVisualStyleBackColor = true;
             this.btn_EditVolumeOfst.Click += new System.EventHandler(this.btn_Edit_Click);
+            // 
+            // btnOsramICCTest
+            // 
+            this.btnOsramICCTest.AccessibleDescription = "Test";
+            this.btnOsramICCTest.Location = new System.Drawing.Point(421, 128);
+            this.btnOsramICCTest.Name = "btnOsramICCTest";
+            this.btnOsramICCTest.Size = new System.Drawing.Size(70, 30);
+            this.btnOsramICCTest.TabIndex = 215;
+            this.btnOsramICCTest.Text = "Test";
+            this.btnOsramICCTest.UseVisualStyleBackColor = true;
+            this.btnOsramICCTest.Click += new System.EventHandler(this.btnOsramICCTest_Click);
             // 
             // frm_DispCore_DispSetup_Custom
             // 
@@ -626,27 +712,22 @@
             this.panel1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.pnl_VolumeOffsetPath.ResumeLayout(false);
+            this.pnlOsramICC.ResumeLayout(false);
+            this.pnlOsramICC.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label lbl_VolumeOfstProtocol;
         private System.Windows.Forms.Timer tmr_Display;
-        private System.Windows.Forms.Label lbl_DataPath;
         private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Label lbl_DataPath2;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button btn_CheckVolumeOfstDataPath;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label lbl_LocalPath;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label lbl_EquipmentID;
         private System.Windows.Forms.Button btn_EditVolumeOfst;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
@@ -674,10 +755,27 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label lbl_InputMap_DataPath2;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Panel pnl_VolumeOffsetPath;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Button btnInputMapSetup;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Button btnClearAll;
+        private System.Windows.Forms.Panel pnlOsramICC;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Button btnCheckOsramICCPath;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Button btnLocalListSave;
+        private System.Windows.Forms.Button btnLocalListLoad;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Button btnLocalListEditPass2;
+        private System.Windows.Forms.Button btnLocalListEditPass1;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.Button btnInputFileLoad;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.Button btnOutputFileTileLookUp;
+        private System.Windows.Forms.Button btnOutputFileLoad;
+        private System.Windows.Forms.TextBox tbxOsramICCOutputPath;
+        private System.Windows.Forms.TextBox tbxOsramICCInputPath;
+        private System.Windows.Forms.TextBox tbxLookUpTileID;
+        private System.Windows.Forms.Button btnOsramICCTest;
     }
 }

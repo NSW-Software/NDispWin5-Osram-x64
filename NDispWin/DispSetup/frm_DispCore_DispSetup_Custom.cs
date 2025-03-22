@@ -8,6 +8,9 @@ using System.Text;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 
 namespace NDispWin
 {
@@ -18,7 +21,7 @@ namespace NDispWin
             InitializeComponent();
             GControl.LogForm(this);
         }
-               
+
         private void frm_DispCore_DispSetup_HeadCal_Load(object sender, EventArgs e)
         {
             GControl.UpdateFormControl(this);
@@ -34,16 +37,11 @@ namespace NDispWin
         {
             btn_EditVolumeOfst.Visible = TaskDisp.VolumeOfst_Protocol == TaskDisp.EVolumeOfstProtocol.OSRAM_SCC;
 
-            pnl_VolumeOffsetPath.Visible =
-            (TaskDisp.VolumeOfst_Protocol == TaskDisp.EVolumeOfstProtocol.AOT_FrontTestCloseLoop ||
-             TaskDisp.VolumeOfst_Protocol == TaskDisp.EVolumeOfstProtocol.AOT_HeightCloseLoop
-             );
-
             lbl_VolumeOfstProtocol.Text = ((int)TaskDisp.VolumeOfst_Protocol).ToString() + " : " + TaskDisp.VolumeOfst_Protocol.ToString();
-            lbl_EquipmentID.Text = TaskDisp.VolumeOfst_EqID;
-            lbl_LocalPath.Text = TaskDisp.VolumeOfst_LocalPath;
-            lbl_DataPath.Text = TaskDisp.VolumeOfst_DataPath;
-            lbl_DataPath2.Text = TaskDisp.VolumeOfst_DataPath2;
+
+            pnlOsramICC.Visible = TaskDisp.VolumeOfst_Protocol == TaskDisp.EVolumeOfstProtocol.OSRAM_ICC;
+            tbxOsramICCInputPath.Text = TaskDisp.OsramICC_InputPath;
+            tbxOsramICCOutputPath.Text = TaskDisp.OsramICC_OutputPath;
 
             lbl_InputMap_Protocol.Text = ((int)TaskDisp.InputMap_Protocol).ToString() + " : " + TaskDisp.InputMap_Protocol.ToString();
             btnInputMapSetup.Visible = TaskDisp.InputMap_Protocol == TaskDisp.EInputMapProtocol.OSRAM_eMos;
@@ -77,70 +75,6 @@ namespace NDispWin
             {
                 TaskDisp.OsramSCC.LoadSetup();
             }
-            UpdateDisplay();
-        }
-
-        private void lbl_LocalPath_Click(object sender, EventArgs e)
-        {
-            FolderBrowserDialog fbd = new FolderBrowserDialog();
-            fbd.SelectedPath = TaskDisp.VolumeOfst_LocalPath;
-            DialogResult dr = fbd.ShowDialog();
-
-            if (dr == DialogResult.OK)
-                TaskDisp.VolumeOfst_LocalPath = fbd.SelectedPath;
-
-            UpdateDisplay();
-        }
-        private void lbl_DataPath_Click(object sender, EventArgs e)
-        {
-            FolderBrowserDialog fbd = new FolderBrowserDialog();
-            fbd.SelectedPath = TaskDisp.VolumeOfst_DataPath;
-            DialogResult dr = fbd.ShowDialog();
-
-            if (dr == DialogResult.OK)
-                TaskDisp.VolumeOfst_DataPath = fbd.SelectedPath;
-
-            UpdateDisplay();
-        }
-        private void lbl_DataPath2_Click(object sender, EventArgs e)
-        {
-            FolderBrowserDialog fbd = new FolderBrowserDialog();
-            fbd.SelectedPath = TaskDisp.VolumeOfst_DataPath2;
-            DialogResult dr = fbd.ShowDialog();
-
-            if (dr == DialogResult.OK)
-                TaskDisp.VolumeOfst_DataPath2 = fbd.SelectedPath;
-
-            UpdateDisplay();
-        }
-        private void btn_CheckDataPath_Click(object sender, EventArgs e)
-        {
-            Color C = Color.Lime;
-            if (!Directory.Exists(TaskDisp.VolumeOfst_LocalPath))
-                C = Color.Red;
-            lbl_LocalPath.BackColor = C;
-
-            C = Color.Lime;
-            if (!Directory.Exists(TaskDisp.VolumeOfst_DataPath))
-                C = Color.Red;
-            lbl_DataPath.BackColor = C;
-
-            C = Color.Lime;
-            if (!Directory.Exists(TaskDisp.VolumeOfst_DataPath2))
-                C = Color.Red;
-            lbl_DataPath2.BackColor = C;
-
-            System.Threading.Thread.Sleep(1000);
-
-            lbl_LocalPath.BackColor = this.BackColor;
-            lbl_DataPath.BackColor = this.BackColor;
-            lbl_DataPath2.BackColor = this.BackColor;
-        }
-
-        private void lbl_EquipmentID_Click(object sender, EventArgs e)
-        {
-            UC.EntryExec("DispSetup, VolumeOfst Protocol EqID", ref TaskDisp.VolumeOfst_EqID, false);
-
             UpdateDisplay();
         }
 
@@ -222,7 +156,7 @@ namespace NDispWin
         {
             lbl_InputMap_DataPath.BackColor = Directory.Exists(Task_InputMap.Lumileds_SS_EMap.MapPath[0]) ? Color.Lime : Color.Red;
 
-           if (Task_InputMap.Lumileds_SS_EMap.MapPath[1].Length > 0)
+            if (Task_InputMap.Lumileds_SS_EMap.MapPath[1].Length > 0)
                 lbl_InputMap_DataPath2.BackColor = Directory.Exists(Task_InputMap.Lumileds_SS_EMap.MapPath[1]) ? Color.Lime : Color.Red;
 
             if (Task_InputMap.Lumileds_SS_EMap.MapPath[2].Length > 0)
@@ -270,11 +204,6 @@ namespace NDispWin
             }
         }
 
-        private void panel3_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
         private void btnClearAll_Click(object sender, EventArgs e)
         {
             for (int i = 0; i < 3; i++)
@@ -286,9 +215,158 @@ namespace NDispWin
             UpdateDisplay();
         }
 
-        private void tbox_Suffix_TextChanged(object sender, EventArgs e)
+        private void btnCheckOsramICCPath_Click(object sender, EventArgs e)
         {
+            Task.Run(() =>
+            {
+                Color inputColor = Directory.Exists(TaskDisp.OsramICC_InputPath) ? Color.Lime : Color.Red;
+                Color outputColor = Directory.Exists(TaskDisp.OsramICC_OutputPath) ? Color.Lime : Color.Red;
 
+                tbxOsramICCInputPath.Invoke(new Action(() =>
+                {
+                    tbxOsramICCInputPath.BackColor = inputColor;
+                }));
+
+                tbxOsramICCOutputPath.Invoke(new Action(() =>
+                {
+                    tbxOsramICCOutputPath.BackColor = outputColor;
+                }));
+
+                System.Threading.Thread.Sleep(500);
+
+                tbxOsramICCInputPath.Invoke(new Action(() =>
+                {
+                    tbxOsramICCInputPath.BackColor = Color.White;
+                }));
+
+                tbxOsramICCOutputPath.Invoke(new Action(() =>
+                {
+                    tbxOsramICCOutputPath.BackColor = Color.White;
+                }));
+            });
+        }
+
+        private void btnInputFileLoad_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog
+            {
+                InitialDirectory = TaskDisp.OsramICC_InputPath,
+                Title = "Select a Input File",
+                Filter = "XML Files (*.xml)|*.xml|All Files (*.*)|*.*"
+            };
+
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                string fileName = ofd.FileName;
+
+                double d = 0;
+                OsramICC.ReadInputFile(fileName, ref d);
+
+                MessageBox.Show($"Input File InitialDispenserSetting: {d:f4}.");
+            }
+        }
+
+        private void btnOutputFileLoad_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog
+            {
+                InitialDirectory = TaskDisp.OsramICC_OutputPath,
+                Title = "Select a Output File",
+                Filter = "Text Files (*.txt)|*.txt| All Files (*.*)|*.*"
+            };
+
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                string fileName = ofd.FileName;
+
+                if (OsramICC.ReadOutputFile(fileName))
+                   MessageBox.Show($"Output File load success.");
+                else
+                    MessageBox.Show($"Output File load fail.");
+            }
+        }
+        private void btnOutputFileTileLookUp_Click(object sender, EventArgs e)
+        {
+            double[] d = new double[2] { 0, 0 };
+
+            if (OsramICC.PanelLookup(tbxLookUpTileID.Text, ref d))
+            {
+                MessageBox.Show($"{tbxLookUpTileID.Text},{d[0]:f3},{d[1]:f4}");
+            }
+            else
+            {
+                MessageBox.Show($"{tbxLookUpTileID.Text} lookup fail.");
+            }
+        }
+
+        private void btnLoad_Click(object sender, EventArgs e)
+        {
+            OsramICC.Pass1.ReadFile();
+            OsramICC.Pass2.ReadFile();
+        }
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            OsramICC.Pass1.WriteFile();
+            OsramICC.Pass2.WriteFile();
+        }
+        private void btnEditPass1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ProcessStartInfo psi = new ProcessStartInfo
+                {
+                    FileName = "notepad.exe",
+                    Arguments = OsramICC.Pass1PanelListFile,
+                    Verb = "runas", // this is the key to run as admin
+                    UseShellExecute = false
+                };
+
+                try
+                {
+                    Process.Start(psi);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Failed to open file as admin: " + ex.Message);
+                }
+            }
+            catch { MessageBox.Show("Pass 1 PanelList File not found."); }
+        }
+        private void btnEditPass2_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ProcessStartInfo psi = new ProcessStartInfo
+                {
+                    FileName = "notepad.exe",
+                    Arguments = OsramICC.Pass2PanelListFile,
+                    Verb = "runas", // this is the key to run as admin
+                    UseShellExecute = false
+                };
+
+                try
+                {
+                    Process.Start(psi);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Failed to open file as admin: " + ex.Message);
+                }
+            }
+            catch { MessageBox.Show("Pass 2 PanelList File not found."); }
+        }
+
+        private void btnOsramICCTest_Click(object sender, EventArgs e)
+        {
+            double[] d = new double[2] { 0, 0 };
+            if (OsramICC.Execute(tbxLookUpTileID.Text, LotInfo2.LotNumber, LotInfo2.Osram.ElevenSeries, LotInfo2.Osram.DAStartNumber, ref d))
+            {
+                MessageBox.Show($"{tbxLookUpTileID.Text},{d[0]:f3},{d[1]:f4}");
+            }
+            else
+            {
+                MessageBox.Show($"{tbxLookUpTileID.Text} test fail.");
+            }
         }
     }
 }

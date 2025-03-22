@@ -52,7 +52,6 @@ namespace NDispWin
         {
             tboxCustomPath.Text = TaskDisp.CustomPath;
 
-            btnEditDataTable.Enabled = LotInfo2.Customer != LotInfo2.ECustomer.LUMDisp || LotInfo2.Customer != LotInfo2.ECustomer.LUMConfocal;
 
             #region Process
             cbEnableMaterialLow.Checked = TaskDisp.Option_EnableMaterialLow;

@@ -52,7 +52,7 @@ namespace NDispWin
             this.lblLastLineWeight = new System.Windows.Forms.Label();
             this.cbEnableWeight = new System.Windows.Forms.CheckBox();
             this.gbox_Pos = new System.Windows.Forms.GroupBox();
-            this.label24 = new System.Windows.Forms.Label();
+            this.lblUnit = new System.Windows.Forms.Label();
             this.btnSetXY2 = new System.Windows.Forms.Button();
             this.btnGotoXY2 = new System.Windows.Forms.Button();
             this.btnSetXY1 = new System.Windows.Forms.Button();
@@ -87,6 +87,8 @@ namespace NDispWin
             this.label13 = new System.Windows.Forms.Label();
             this.lblSpeedAdjust = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
+            this.lblAmount = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.gbox_Pos.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -368,13 +370,14 @@ namespace NDispWin
             // cbEnableWeight
             // 
             this.cbEnableWeight.AutoSize = true;
-            this.cbEnableWeight.Location = new System.Drawing.Point(290, 61);
+            this.cbEnableWeight.Location = new System.Drawing.Point(340, 32);
             this.cbEnableWeight.Name = "cbEnableWeight";
             this.cbEnableWeight.Padding = new System.Windows.Forms.Padding(3);
             this.cbEnableWeight.Size = new System.Drawing.Size(96, 24);
             this.cbEnableWeight.TabIndex = 149;
             this.cbEnableWeight.Text = "Use Weight";
             this.cbEnableWeight.UseVisualStyleBackColor = true;
+            this.cbEnableWeight.Visible = false;
             this.cbEnableWeight.Click += new System.EventHandler(this.cbEnableWeight_Click);
             // 
             // gbox_Pos
@@ -382,7 +385,7 @@ namespace NDispWin
             this.gbox_Pos.AccessibleDescription = "Position";
             this.gbox_Pos.AutoSize = true;
             this.gbox_Pos.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.gbox_Pos.Controls.Add(this.label24);
+            this.gbox_Pos.Controls.Add(this.lblUnit);
             this.gbox_Pos.Controls.Add(this.lblLineWeight);
             this.gbox_Pos.Controls.Add(this.lblFirstLineWeight);
             this.gbox_Pos.Controls.Add(this.lblLastLineWeight);
@@ -408,16 +411,16 @@ namespace NDispWin
             this.gbox_Pos.TabStop = false;
             this.gbox_Pos.Text = "Position";
             // 
-            // label24
+            // lblUnit
             // 
-            this.label24.AccessibleDescription = "";
-            this.label24.Location = new System.Drawing.Point(303, 12);
-            this.label24.Margin = new System.Windows.Forms.Padding(2);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(120, 23);
-            this.label24.TabIndex = 161;
-            this.label24.Text = "Line Weight (mg)";
-            this.label24.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblUnit.AccessibleDescription = "";
+            this.lblUnit.Location = new System.Drawing.Point(303, 12);
+            this.lblUnit.Margin = new System.Windows.Forms.Padding(2);
+            this.lblUnit.Name = "lblUnit";
+            this.lblUnit.Size = new System.Drawing.Size(120, 23);
+            this.lblUnit.TabIndex = 161;
+            this.lblUnit.Text = "Line Weight (mg)";
+            this.lblUnit.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // btnSetXY2
             // 
@@ -591,7 +594,7 @@ namespace NDispWin
             // cbReverse
             // 
             this.cbReverse.AutoSize = true;
-            this.cbReverse.Location = new System.Drawing.Point(211, 61);
+            this.cbReverse.Location = new System.Drawing.Point(197, 62);
             this.cbReverse.Name = "cbReverse";
             this.cbReverse.Padding = new System.Windows.Forms.Padding(3);
             this.cbReverse.Size = new System.Drawing.Size(75, 24);
@@ -846,11 +849,39 @@ namespace NDispWin
             this.label9.Text = "Speed Adjust (%)";
             this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // lblAmount
+            // 
+            this.lblAmount.BackColor = System.Drawing.SystemColors.Window;
+            this.lblAmount.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblAmount.Location = new System.Drawing.Point(356, 61);
+            this.lblAmount.Margin = new System.Windows.Forms.Padding(2);
+            this.lblAmount.Name = "lblAmount";
+            this.lblAmount.Padding = new System.Windows.Forms.Padding(3);
+            this.lblAmount.Size = new System.Drawing.Size(75, 23);
+            this.lblAmount.TabIndex = 163;
+            this.lblAmount.Text = "label2";
+            this.lblAmount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblAmount.Click += new System.EventHandler(this.lblAmount_Click);
+            // 
+            // label5
+            // 
+            this.label5.AccessibleDescription = "";
+            this.label5.Location = new System.Drawing.Point(314, 61);
+            this.label5.Margin = new System.Windows.Forms.Padding(2);
+            this.label5.Name = "label5";
+            this.label5.Padding = new System.Windows.Forms.Padding(3);
+            this.label5.Size = new System.Drawing.Size(38, 23);
+            this.label5.TabIndex = 164;
+            this.label5.Text = "Unit";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // frmDispProg_ParallelLines
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(449, 572);
             this.ControlBox = false;
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.lblAmount);
             this.Controls.Add(this.gbox_Pos);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.cbDispense);
@@ -939,11 +970,13 @@ namespace NDispWin
         private System.Windows.Forms.CheckBox cbFirstLine;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label lblXY1;
-        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Label lblUnit;
         private System.Windows.Forms.Button btnSetXY2;
         private System.Windows.Forms.Button btnGotoXY2;
         private System.Windows.Forms.Button btnSetXY1;
         private System.Windows.Forms.Button btnGotoXY1;
         private System.Windows.Forms.Label lblXY2;
+        private System.Windows.Forms.Label lblAmount;
+        private System.Windows.Forms.Label label5;
     }
 }

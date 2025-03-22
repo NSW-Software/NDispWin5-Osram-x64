@@ -918,16 +918,6 @@ namespace NDispWin
                         Para = ID;
                         break;
                     #endregion
-                    case DispProg.ECmd.VOLUME_OFST:
-                        #region
-                        {
-                            Cmd = Indent + Enum.GetName(typeof(DispProg.ECmd), CmdLine.Line[i].Cmd);
-                            ID = "";
-                            string Mode = Enum.GetName(typeof(EVolumeOfstMode), CmdLine.Line[i].IPara[0]);
-                            Para = ID + "" + Mode + " (" + CmdLine.Line[i].String + ")";
-                            break;
-                        }
-                    #endregion
                     case DispProg.ECmd.MEAS_MENISCUS:
                     case DispProg.ECmd.CHECK_MENISCUS:
                         #region
@@ -2507,21 +2497,6 @@ namespace NDispWin
                                     #region
                                     {
                                         frm_DispCore_DispProg_VolumeMap frm = new frm_DispCore_DispProg_VolumeMap();
-                                        frm.TopLevel = false;
-                                        frm.Parent = this;
-                                        frm.ProgNo = SelProg;
-                                        frm.LineNo = ProgLine;
-                                        frm.BringToFront();
-                                        Dirty = true;
-                                        Done = false;
-                                        frm.Show();
-                                        break;
-                                    }
-                                #endregion
-                                case DispProg.ECmd.VOLUME_OFST:
-                                    #region
-                                    {
-                                        frm_DispCore_DispProg_VolumeOfst frm = new frm_DispCore_DispProg_VolumeOfst();
                                         frm.TopLevel = false;
                                         frm.Parent = this;
                                         frm.ProgNo = SelProg;

@@ -32,8 +32,17 @@ namespace NDispWin
             string s = Enum.GetName(typeof(EVHType), CmdLine.IPara[3]);
             lblLineDirection.Text = $"{CmdLine.IPara[3]}-" + s;
             cbReverse.Checked = CmdLine.IPara[5] > 0;
-            cbEnableWeight.Checked = CmdLine.IPara[4] > 0;
+            //cbEnableWeight.Checked = CmdLine.IPara[4] > 0;
+            s = Enum.GetName(typeof(EAmount), CmdLine.IPara[4]);
+            lblAmount.Text = Text = $"{CmdLine.IPara[4]}-" + s;
             cbDispense.Checked = CmdLine.IPara[2] > 0;
+
+            switch (CmdLine.IPara[4])
+            {
+                case 0: lblUnit.Text = "Not used"; break;
+                case 1: lblUnit.Text = "Weight (mg)"; break;
+                case 2: lblUnit.Text = "Volume (ul)"; break;
+            }
 
             lblStartLength.Text = $"{CmdLine.DPara[0]:f3}";
             llEndLength.Text = $"{CmdLine.DPara[1]:f3}";
@@ -467,6 +476,13 @@ namespace NDispWin
         private void lblSpeedAdjust_Click(object sender, EventArgs e)
         {
             UC.AdjustExec(CmdName + ", SpeedAdjust", ref CmdLine.DPara[4], -75, 75);
+            UpdateDisplay();
+        }
+
+        enum EAmount { None, Weight, Volume};
+        private void lblAmount_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec(CmdName + ", Amount", ref CmdLine.IPara[4], EAmount.None);
             UpdateDisplay();
         }
     }

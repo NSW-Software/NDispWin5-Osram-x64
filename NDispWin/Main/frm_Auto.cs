@@ -677,30 +677,16 @@ namespace NDispWin
         {
             switch (LotInfo2.Customer)
             {
-                case LotInfo2.ECustomer.LUMDisp:
-                case LotInfo2.ECustomer.LUMConfocal:
-                    {
-                        break;
-                    }
                 case LotInfo2.ECustomer.OsramEMos:
                     {
                         frm_LotEntryOsramEMos frm = new frm_LotEntryOsramEMos();
                         frm.ShowDialog();
                         break;
                     }
-                case LotInfo2.ECustomer.Analog:
+                case LotInfo2.ECustomer.OsramICC:
                     {
-                        frmLotEntryAnalog frm = new frmLotEntryAnalog();
+                        frm_LotEntryOsramICC frm = new frm_LotEntryOsramICC();
                         frm.ShowDialog();
-
-                        if (LotInfo2.LotStatus == LotInfo2.ELotStatus.Activated)
-                        {
-                            btn_LotInfo.ForeColor = Color.Green;
-                        }
-                        else
-                        {
-                            btn_LotInfo.ForeColor = Color.Red;
-                        }
                         break;
                     }
                 default:

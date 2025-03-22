@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<SteeringSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.osram-os.com/steering/config" ProductName="Demon Poseidon BREE 3000K">
+  <LogFileLocation>\\int.osram-light.com\Net-klm\!Apps\Casting\OSLONSquare\LLC_LogFiles\</LogFileLocation>
+  <PanelSize RowMax="28" ColMax="28" />
+  <TargetSettings InitialDispenserSetting="0.8" ColorSpace="CIE2DegreeCxCy" TargetCxCyDistance="0.4" TargetPathAngle="22">
+  </TargetSettings>
+  <ControllerSettings ControllerModule="ComixBasedController" PathLengthOffset="0.01" FloatingLength="2">
+    <Converters>
+        <Converter Name="QL905" InitialWeightPercent="3" Group="1" AllowVariation="true" />
+		<Converter Name="QL904" InitialWeightPercent="3" Group="1" AllowVariation="true" />
+        <Converter Name="L167" InitialWeightPercent="3" Group="2" AllowVariation="true" />
+    </Converters>
+  </ControllerSettings>
+</SteeringSettings>

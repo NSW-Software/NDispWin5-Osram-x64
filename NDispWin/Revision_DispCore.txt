@@ -10,42 +10,8 @@ Todo
 - PurgeStage Dry Mode do not dispsense
 
 
-Ver 6.1.4.3 - KN - 2025032
-  [Featute] Added OSRAM_ICC support.
-  [HseKeep] Remove VOLUME_OFST, AOT_HeightCloseLoop, AOT_FrontTestCloseLoop dependencies.
-  [Feature] Update ZPathDot
-  [BugFix] Update local TModel.modelNo to reflect correct model instance.
-  [HseKeep] Removed frm_LotEntryAnalog and dependencies
-Ver 6.1.4.1 - KN - 20250306 - Internal
-  [Feature] Added PAR_LINES selection for Weight or Volume
-  [BugFix] Fix IdlePurge for HPC3
-  [Changes] Update Messages to tidy error descriptions.
-  [Changes] Added RMCD class, to enable retrieval of list, usage not implemented.
-  [Features] Added TEVID, Support list of SVID, DVID and ECID.
-  [Features] Added feature to generate ID List and RMCD.
-Ver 6.1.4.0 - KN - 20250304 - Internal - Gitted
-  [Feature] Added command ZPath
-  [BugFix] Fix OpenLaser().CL3 infinite loop. Break after retry.
-Ver 6.1.3.2 - KN - 20250225 - Released to OsKul, Shafiq
-  [Bugfix] Corrected tower light SetStatus to ingore and retain previous status
-  [Bugfix] Added RealTimeUpdate to frm_DispCore_DispProg_MeasL_H, frm_DispCore_DispProg_Arc, frm_DispCore_DispProg_BdOrient,frm_DispCore_DispProg_DotMulti, frmDispProg_DoUnitMark, frm_DispCore_DispProg_DoVision, frm_DispCore_DispProg_LineMulti
-        frm_DispCore_DispProg_MeasL_WH, frm_DispCore_DispProg_MoveLine, frmDispProg_SpiralFill, frm_DispCore_DispProg_SmCircle, frmDispProgGroupDisp, frmDispProg_ExtVis
-  [Chagnes] Removed frmDispProg_DotAngArr, frmDispProg_FillPat not used and not maintained
-Ver 6.1.3.1 - KN - 20250122 - Released to OsPen, Afif
-  [Bugfix] Added RealTimeUpdate to LAYOUT
-Ver 6.1.3.0 - KN - 20250122 - Released to OsPen, Afif
-  [Bugfix] Fixed ReaderType to DataMatrix, removed dependent variables
-  [Bugfix] Corected MotorDiag setting for PA and PB
-  [Feature] Added ClearAlign data
-  [Changes] Use PP4.DispSpeed as Start Volume.
-Ver 6.1.2.0 - KN - 20250122 - Released to OsPen, Afif
-  [Feature] Added EventLog for AutoRun TaskStatus
-  [Feature] Added Material Panel Counter
-  [Feature] Added RealTimeUpdate to Origin, DOT, PAR_LINES, DO_REF, DO_HEIGHT
-Ver 6.1.0.9 - KN - 20241220 - Released to OsWx, TZ - Gitted
-  [Changes] TaskWeight.Weight_DownWeightUp add delay time for PP from 100 to 500ms, HPC3 from 100 to 250ms. Prevent longer backsuck overlap.
 Ver 6.1.0.8 - KN - 20241122 - Released to OsPg, Afif - Gitted
-  [Feature] PAR_LINES added IndFirstLine and IndLastLine
+[Feature] PAR_LINES added IndFirstLine and IndLastLine
 [Feature] Improve frmEditXY to allow value editing.
 Ver 6.1.0.7 - KN - 20241118 - Released to Syafiq for OsPg - Gitted
 [Feature] Added OnStart.PurgeStageCount, CleanCount, PurgeCount ease setting. Removed PurgeStage.OnStartCount

@@ -21,13 +21,69 @@ namespace NDispWin
         {
             InitializeComponent();
             GControl.LogForm(this);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             AutoSize = true;
+
+            pbZPathLines.Size = pbZPathDot.Size;
+            pbZPathLines.Location = pbZPathDot.Location;
+            cbxType.DataSource = Enum.GetNames(typeof(EZPathType));
         }
 
         private void UpdateDisplay()
         {
+            int modelNo = CmdLine.IPara[0];
+            TModelPara Model = new TModelPara(DispProg.ModelList, modelNo);
+
+            if (CmdLine.IPara[3] == 0) pbZPathDot.BringToFront();
+            if (CmdLine.IPara[3] == 1) pbZPathLines.BringToFront();
+
             lblHeadNo.Text = CmdLine.ID.ToString();
             lblModelNo.Text = CmdLine.IPara[0].ToString();
+
+            cbDispense.Checked = CmdLine.IPara[2] > 0;
+
+            lblPointTL.Text = $"{CmdLine.X[0]:f3},{CmdLine.Y[0]:f3}";
+            lblPointBR.Text = $"{CmdLine.X[1]:f3},{CmdLine.Y[1]:f3}";
+
+            cbxType.SelectedIndex = CmdLine.IPara[3];
+            lbkStartLength.Visible = CmdLine.IPara[3] == 1;
+            lblStartLength.Visible = CmdLine.IPara[3] == 1;
+            lbkEndLength.Visible = CmdLine.IPara[3] == 1;
+            lblEndLength.Visible = CmdLine.IPara[3] == 1;
+            lbkStartGap.Visible = CmdLine.IPara[3] == 1;
+            lblStartGap.Visible = CmdLine.IPara[3] == 1;
+
+            lblStartLength.Text = $"{CmdLine.DPara[0]}";
+            lblEndLength.Text = $"{CmdLine.DPara[1]}";
+            lblStartGap.Text = $"{CmdLine.DPara[2]}";
+            lblDispGap.Text = $"{Model.DispGap}";
+            lblEndGap.Text = $"{CmdLine.DPara[3]}";
+            lblRetGap.Text = $"{Model.RetGap}";
+
+            lblAD.Text = $"{Model.LineAccel:f1}";
+            lblInitialSpeed.Text = $"{Model.LineStartV:f1}";
+            lblSpeed1.Text = $"{Model.LineSpeed:f1}";
+            lblSpeedF.Text = $"{Model.LineSpeed2:f1}";
+
+            lblDownWait.Text = $"{Model.DnWait}";
+            lblPostWait.Text = $"{Model.PostWait}";
+
+            lblHead1DefVolume.Text = $"{CmdLine.DPara[18]:f3}";
+            lblHead2DefVolume.Text = $"{CmdLine.DPara[19]:f3}";
+            lblHead1Volume.Text = $"{TFPump.PP4.DispAmounts[0]:f3}";
+            lblHead2Volume.Text = $"{TFPump.PP4.DispAmounts[1]:f3}";
+
+            if (CmdLine.DPara[10] + CmdLine.DPara[11] + CmdLine.DPara[11] + CmdLine.DPara[12] == 0)
+            {
+                CmdLine.DPara[10] = 25;
+                CmdLine.DPara[11] = 25;
+                CmdLine.DPara[12] = 25;
+                CmdLine.DPara[13] = 25;
+            }
+            lblDot1Pc.Text = $"{CmdLine.DPara[10]}";
+            lblDot2Pc.Text = $"{CmdLine.DPara[11]}";
+            lblDot3Pc.Text = $"{CmdLine.DPara[12]}";
+            lblDot4Pc.Text = $"{CmdLine.DPara[13]}";
         }
         private string CmdName
         {
@@ -187,17 +243,17 @@ namespace NDispWin
 
         private void lblStartLength_Click(object sender, EventArgs e)
         {
-            UC.AdjustExec(CmdName + ", StartLength", ref CmdLine.DPara[0], 0, 10);
+            UC.AdjustExec(CmdName + ", StartLength", ref CmdLine.DPara[0], 0, 5);
             UpdateDisplay();
         }
         private void lblEndLength_Click(object sender, EventArgs e)
         {
-            UC.AdjustExec(CmdName + ", EndLength", ref CmdLine.DPara[1], 0, 10);
+            UC.AdjustExec(CmdName + ", EndLength", ref CmdLine.DPara[1], 0, 5);
             UpdateDisplay();
         }
         private void lblStartGap_Click(object sender, EventArgs e)
         {
-            UC.AdjustExec(CmdName + ", StartGap", ref CmdLine.DPara[2], 0, 1);
+            UC.AdjustExec(CmdName + ", StartGap", ref CmdLine.DPara[2], 0, 5);
             UpdateDisplay();
         }
         private void lblDispGap_Click(object sender, EventArgs e)
@@ -206,38 +262,69 @@ namespace NDispWin
             TModelPara Model = new TModelPara(DispProg.ModelList, modelNo);
             
             double dispGap = Model.DispGap;
-            UC.AdjustExec(CmdName + ", DispGap", ref dispGap, 0, 1);
+            UC.AdjustExec(CmdName + ", DispGap", ref dispGap, 0, 5);
             Model.DispGap = dispGap;
 
             UpdateDisplay();
         }
         private void lblEndGap_Click(object sender, EventArgs e)
         {
-            UC.AdjustExec(CmdName + ", EndGap", ref CmdLine.DPara[3], 0, 1);
+            UC.AdjustExec(CmdName + ", EndGap", ref CmdLine.DPara[3], 0, 5);
+            UpdateDisplay();
+        }
+        private void lblRetGap_Click(object sender, EventArgs e)
+        {
+            int modelNo = CmdLine.IPara[0];
+            TModelPara Model = new TModelPara(DispProg.ModelList, modelNo);
+
+            double retGap = Model.RetGap;
+            UC.AdjustExec(CmdName + ", RetGap", ref retGap, 0, 15);
+            Model.RetGap = retGap;
+
             UpdateDisplay();
         }
 
         private void lblAD_Click(object sender, EventArgs e)
         {
-            UC.AdjustExec(CmdName + ", AccelDecel", ref CmdLine.DPara[30], 0, 5000);
+            int modelNo = CmdLine.IPara[0];
+            TModelPara Model = new TModelPara(DispProg.ModelList, modelNo);
+
+            double lineAccel = Model.LineAccel;
+            UC.AdjustExec(CmdName + ", LineAccel", ref lineAccel, 0, 5000);
+            Model.LineAccel = lineAccel;
+
             UpdateDisplay();
         }
         private void lblInitialSpeed_Click(object sender, EventArgs e)
         {
-            UC.AdjustExec(CmdName + ", Initial Speed", ref CmdLine.DPara[31], 0, 5000);
+            int modelNo = CmdLine.IPara[0];
+            TModelPara Model = new TModelPara(DispProg.ModelList, modelNo);
+
+            double lineStartV = Model.LineStartV;
+            UC.AdjustExec(CmdName + ", LineStartV", ref lineStartV, 0, 50);
+            Model.LineStartV = lineStartV;
             UpdateDisplay();
         }
         private void lblSpeed_Click(object sender, EventArgs e)
         {
-            UC.AdjustExec(CmdName + ", Speed", ref CmdLine.DPara[32], 0, 5000);
+            int modelNo = CmdLine.IPara[0];
+            TModelPara Model = new TModelPara(DispProg.ModelList, modelNo);
+
+            double lineSpeed = Model.LineSpeed;
+            UC.AdjustExec(CmdName + ", LineSpeed", ref lineSpeed, 0, 100);
+            Model.LineSpeed = lineSpeed;
+
             UpdateDisplay();
-        }
-        private void lblSpeed2_Click(object sender, EventArgs e)
-        {
         }
         private void lblSpeedF_Click(object sender, EventArgs e)
         {
-            UC.AdjustExec(CmdName + ", SpeedF", ref CmdLine.DPara[33], 0, 5000);
+            int modelNo = CmdLine.IPara[0];
+            TModelPara Model = new TModelPara(DispProg.ModelList, modelNo);
+
+            double lineSpeed2 = Model.LineSpeed2;
+            UC.AdjustExec(CmdName + ", LineSpeed2", ref lineSpeed2, 0, 500);
+            Model.LineSpeed2 = lineSpeed2;
+
             UpdateDisplay();
         }
 
@@ -246,8 +333,8 @@ namespace NDispWin
             int modelNo = CmdLine.IPara[0];
             TModelPara Model = new TModelPara(DispProg.ModelList, modelNo);
 
-            double dnWait = Model.DnWait;
-            UC.AdjustExec(CmdName + ", DownWait", ref dnWait, 0, 1);
+            int dnWait = Model.DnWait;
+            UC.AdjustExec(CmdName + ", DownWait", ref dnWait, 0, 50000);
             Model.DnWait = dnWait;
 
             UpdateDisplay();
@@ -258,24 +345,94 @@ namespace NDispWin
             int modelNo = CmdLine.IPara[0];
             TModelPara Model = new TModelPara(DispProg.ModelList, modelNo);
 
-            double postWait = Model.DnWait;
-            UC.AdjustExec(CmdName + ", PostWait", ref postWait, 0, 1);
-            Model.DnWait = postWait;
+            int postWait = Model.PostWait;
+            UC.AdjustExec(CmdName + ", PostWait", ref postWait, 0, 50000);
+            Model.PostWait = postWait;
 
+            UpdateDisplay();
+        }
+
+        private void checkBox1_Click(object sender, EventArgs e)
+        {
+            if (CmdLine.IPara[9] > 0)
+                CmdLine.IPara[9] = 0;
+            else
+                CmdLine.IPara[9] = 1;
+
+            UpdateDisplay();
+        }
+
+        private void cbxType_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            int old = CmdLine.IPara[3];
+            CmdLine.IPara[3] = cbxType.SelectedIndex;
+            Log.OnSet(CmdName + ", Type", old, CmdLine.IPara[3]);
+            UpdateDisplay();
+        }
+
+        private void lblDot1Pc_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec(CmdName + ", Dot1Pc", ref CmdLine.DPara[10], 0, 100);
+            CmdLine.DPara[11] = 100 - CmdLine.DPara[10] - CmdLine.DPara[12] - CmdLine.DPara[13];
+            UpdateDisplay();
+        }
+
+        private void lblDot2Pc_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec(CmdName + ", Dot2Pc", ref CmdLine.DPara[11], 0, 100);
+            CmdLine.DPara[12] = 100 - CmdLine.DPara[10] - CmdLine.DPara[11] - CmdLine.DPara[13];
+            UpdateDisplay();
+        }
+
+        private void lblDot3Pc_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec(CmdName + ", Dot3Pc", ref CmdLine.DPara[12], 0, 100);
+            CmdLine.DPara[13] = 100 - CmdLine.DPara[10] - CmdLine.DPara[11] - CmdLine.DPara[12];
+            UpdateDisplay();
+        }
+
+        private void lblDot4Pc_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec(CmdName + ", Dot4Pc", ref CmdLine.DPara[13], 0, 100);
+            CmdLine.DPara[10] = 100 - CmdLine.DPara[11] - CmdLine.DPara[12] - CmdLine.DPara[13];
+            UpdateDisplay();
+        }
+
+
+        private void lblHead1DefVolume_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec(CmdName + ", Head1DefVolume", ref CmdLine.DPara[18], 0, 100);
+            UpdateDisplay();
+        }
+
+        private void lblHead2DefVolume_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec(CmdName + ", Head2DefVolume", ref CmdLine.DPara[19], 0, 100);
+            UpdateDisplay();
+        }
+        private void lblHead2Volume_Click(object sender, EventArgs e)
+        {
+            double d = TFPump.PP4.DispAmounts[1];
+            if (UC.AdjustExec("PP PA Disp Amount", ref d, 0.001, 1300))
+                TFPump.PP4.DispAmounts = new double[] { TFPump.PP4.DispAmounts[0], d };
+            UpdateDisplay();
+        }
+
+        private void lblHead1Volume_Click(object sender, EventArgs e)
+        {
+            double d = TFPump.PP4.DispAmounts[0];
+            if (UC.AdjustExec("PP PA Disp Amount", ref d, 0.001, 1300))
+                TFPump.PP4.DispAmounts = new double[] { d, TFPump.PP4.DispAmounts[1] };
             UpdateDisplay();
         }
 
         //PAR_LINES = 461,
         /* Parameters
         ID              nil
-        IPara[0..9]     [ModelNo, .1., Disp, VHType, UseWeight, Reverse, EndDisp, .7., .8., .9.]
-        IPara[10..19]   [.10., IndFirstLine, IndLastLine, .13., .14., .15., .16., .17., .18., .19.]
-
-        DPara[0..9]     [StartLen, EndLen, StartGap, EndGap, .4., .5., .6., .7., .8., .9.]
-
-        DPara[10..19]   [CutTailLength, Speed, Height, Type, ..]
-        DPara[20..29]   [FirstLineMass, LineMass, LastLineMass, ..]
-        DPara[30..39]   [AD, InitialSpeed, Speed, SpeedF, ..]
+        IPara[0..9]     [ModelNo, .1., Disp, Type, .4., .5., .6., .7., .8., .9.]
+        IPara[10..19]   [.10., .11., .12., .13., .14., .15., .16., .17., .18., .19.]
+        DPara[0..9]     [StartLen, EndLen, .3., EndGap, .4., .5., .6., .7., .8., .9.]
+        DPara[10..19]   [Dot1Pc, Dot2Pc, Dot3Pc, Dot4Pc, .14., .15., .16., .17., H1DefVolume, H2DefVolume]
         X[0..99]        [PointTL, ..]
         Y[0..99]        [PointBR, ..]
         */

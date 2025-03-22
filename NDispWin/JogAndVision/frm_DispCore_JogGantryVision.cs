@@ -59,9 +59,6 @@ namespace NDispWin
             splitContainer1.BringToFront();
             splitContainer1.SplitterDistance = this.ClientSize.Width - frmJogControl.Width;
 
-            //TaskVisionfrmMVCGenTLCamera.Reticles = new TReticles(Reticles);
-            //TaskVisionfrmMVCGenTLCamera.ShowReticles = ShowReticles;
-
             lbl_Inst.Text = Inst;
 
             SelectCamera(0);

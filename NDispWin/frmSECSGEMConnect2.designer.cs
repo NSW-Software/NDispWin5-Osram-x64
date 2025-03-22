@@ -43,6 +43,7 @@
             this.lbxLog = new System.Windows.Forms.ListBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpManual = new System.Windows.Forms.TabPage();
+            this.btnGenerateIDList = new System.Windows.Forms.Button();
             this.rtbxRecipeFilename = new System.Windows.Forms.RichTextBox();
             this.btnSelectRecipe = new System.Windows.Forms.Button();
             this.btnAlarmReset = new System.Windows.Forms.Button();
@@ -217,6 +218,7 @@
             // 
             // tpManual
             // 
+            this.tpManual.Controls.Add(this.btnGenerateIDList);
             this.tpManual.Controls.Add(this.rtbxRecipeFilename);
             this.tpManual.Controls.Add(this.btnSelectRecipe);
             this.tpManual.Controls.Add(this.btnAlarmReset);
@@ -234,6 +236,16 @@
             this.tpManual.Size = new System.Drawing.Size(899, 375);
             this.tpManual.TabIndex = 2;
             this.tpManual.Text = "Manual";
+            // 
+            // btnGenerateIDList
+            // 
+            this.btnGenerateIDList.Location = new System.Drawing.Point(796, 35);
+            this.btnGenerateIDList.Name = "btnGenerateIDList";
+            this.btnGenerateIDList.Size = new System.Drawing.Size(75, 39);
+            this.btnGenerateIDList.TabIndex = 67;
+            this.btnGenerateIDList.Text = "Generate ID and RCMD List";
+            this.btnGenerateIDList.UseVisualStyleBackColor = true;
+            this.btnGenerateIDList.Click += new System.EventHandler(this.btnGenerateIDList_Click);
             // 
             // rtbxRecipeFilename
             // 
@@ -693,5 +705,6 @@
         private System.Windows.Forms.CheckBox cbUseFreshMap;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox tbxTimeOut;
+        private System.Windows.Forms.Button btnGenerateIDList;
     }
 }

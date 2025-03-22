@@ -417,7 +417,11 @@ namespace NDispWin
                 var bsuckDist2 = LengthConversion(BSuckAmounts[1]);
 
                 if (pumpSelect[0] || pumpSelect[1]) TaskGantry.SetMotionParamEx(TaskGantry.PAAxis, VelL, DispSpeed, DispAD);
-                if (pumpSelect[0] || pumpSelect[1]) TaskGantry.MoveLineRel(TaskGantry.PAAxis, TaskGantry.PBAxis, pumpSelect[0] ? - dispDist1: 0, pumpSelect[1] ? -dispDist2 : 0);
+
+                if (pumpSelect[0] || pumpSelect[1])
+                {
+                    TaskGantry.MoveLineRel(TaskGantry.PAAxis, TaskGantry.PBAxis, pumpSelect[0] ? -dispDist1 : 0, pumpSelect[1] ? -dispDist2 : 0);
+                }
 
                 if (pumpSelect[0]) TaskGantry.AxisWait(TaskGantry.PAAxis);
                 if (pumpSelect[1]) TaskGantry.AxisWait(TaskGantry.PBAxis);

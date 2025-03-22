@@ -69,7 +69,7 @@
             this.btn_Stop.BackColor = System.Drawing.SystemColors.Control;
             this.btn_Stop.Dock = System.Windows.Forms.DockStyle.Right;
             this.btn_Stop.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.btn_Stop.Location = new System.Drawing.Point(634, 3);
+            this.btn_Stop.Location = new System.Drawing.Point(630, 3);
             this.btn_Stop.Name = "btn_Stop";
             this.btn_Stop.Size = new System.Drawing.Size(100, 41);
             this.btn_Stop.TabIndex = 17;
@@ -83,7 +83,7 @@
             this.btn_Cancel.BackColor = System.Drawing.SystemColors.Control;
             this.btn_Cancel.Dock = System.Windows.Forms.DockStyle.Right;
             this.btn_Cancel.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.btn_Cancel.Location = new System.Drawing.Point(834, 3);
+            this.btn_Cancel.Location = new System.Drawing.Point(830, 3);
             this.btn_Cancel.Name = "btn_Cancel";
             this.btn_Cancel.Size = new System.Drawing.Size(100, 41);
             this.btn_Cancel.TabIndex = 6;
@@ -97,7 +97,7 @@
             this.btn_OK.BackColor = System.Drawing.SystemColors.Control;
             this.btn_OK.Dock = System.Windows.Forms.DockStyle.Right;
             this.btn_OK.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.btn_OK.Location = new System.Drawing.Point(334, 3);
+            this.btn_OK.Location = new System.Drawing.Point(330, 3);
             this.btn_OK.Name = "btn_OK";
             this.btn_OK.Size = new System.Drawing.Size(100, 41);
             this.btn_OK.TabIndex = 4;
@@ -111,7 +111,7 @@
             this.btn_Retry.BackColor = System.Drawing.SystemColors.Control;
             this.btn_Retry.Dock = System.Windows.Forms.DockStyle.Right;
             this.btn_Retry.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.btn_Retry.Location = new System.Drawing.Point(734, 3);
+            this.btn_Retry.Location = new System.Drawing.Point(730, 3);
             this.btn_Retry.Name = "btn_Retry";
             this.btn_Retry.Size = new System.Drawing.Size(100, 41);
             this.btn_Retry.TabIndex = 3;
@@ -275,10 +275,10 @@
             this.panel2.Controls.Add(this.btn_AlmClr);
             this.panel2.Controls.Add(this.btn_Cancel);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(5, 426);
+            this.panel2.Location = new System.Drawing.Point(5, 422);
             this.panel2.Name = "panel2";
             this.panel2.Padding = new System.Windows.Forms.Padding(3);
-            this.panel2.Size = new System.Drawing.Size(937, 47);
+            this.panel2.Size = new System.Drawing.Size(933, 47);
             this.panel2.TabIndex = 30;
             // 
             // btnYes
@@ -287,7 +287,7 @@
             this.btnYes.BackColor = System.Drawing.SystemColors.Control;
             this.btnYes.Dock = System.Windows.Forms.DockStyle.Right;
             this.btnYes.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.btnYes.Location = new System.Drawing.Point(434, 3);
+            this.btnYes.Location = new System.Drawing.Point(430, 3);
             this.btnYes.Name = "btnYes";
             this.btnYes.Size = new System.Drawing.Size(100, 41);
             this.btnYes.TabIndex = 18;
@@ -301,7 +301,7 @@
             this.btnNo.BackColor = System.Drawing.SystemColors.Control;
             this.btnNo.Dock = System.Windows.Forms.DockStyle.Right;
             this.btnNo.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.btnNo.Location = new System.Drawing.Point(534, 3);
+            this.btnNo.Location = new System.Drawing.Point(530, 3);
             this.btnNo.Name = "btnNo";
             this.btnNo.Size = new System.Drawing.Size(100, 41);
             this.btnNo.TabIndex = 19;
@@ -317,9 +317,9 @@
             this.tsslVersion,
             this.tsslType,
             this.tsslDateTime});
-            this.statusStrip1.Location = new System.Drawing.Point(5, 473);
+            this.statusStrip1.Location = new System.Drawing.Point(5, 469);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(937, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(933, 22);
             this.statusStrip1.TabIndex = 31;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -332,13 +332,13 @@
             // tsslType
             // 
             this.tsslType.Name = "tsslType";
-            this.tsslType.Size = new System.Drawing.Size(48, 17);
+            this.tsslType.Size = new System.Drawing.Size(49, 17);
             this.tsslType.Text = "tsslType";
             // 
             // tsslDateTime
             // 
             this.tsslDateTime.Name = "tsslDateTime";
-            this.tsslDateTime.Size = new System.Drawing.Size(74, 17);
+            this.tsslDateTime.Size = new System.Drawing.Size(75, 17);
             this.tsslDateTime.Text = "tsslDateTime";
             // 
             // frm_MsgBox
@@ -347,7 +347,7 @@
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.Navy;
-            this.ClientSize = new System.Drawing.Size(947, 500);
+            this.ClientSize = new System.Drawing.Size(943, 496);
             this.ControlBox = false;
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.pnl_Msg);

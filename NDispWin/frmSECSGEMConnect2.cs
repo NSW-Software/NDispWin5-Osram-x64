@@ -285,6 +285,62 @@ namespace NDispWin
             int.TryParse(tbxTimeOut.Text, out i);
             sgc2.TimeOut = i;
         }
+
+        private void btnGenerateIDList_Click(object sender, EventArgs e)
+        {
+            string fileName = GDefine.RootDir.FullName + $"ID_List_{Application.ProductName}_v{Application.ProductVersion}_{DateTime.Now:yyyyMMddHHmmss}.txt";
+
+            FileStream F = new FileStream(fileName, FileMode.Create, FileAccess.Write, FileShare.Write);
+            StreamWriter W = new StreamWriter(F);
+
+            List<string> list = null;
+            try
+            {
+                list = TEVID.List();
+                W.WriteLine("***SVID/DVID/ECID, Desc***");
+                W.WriteLine("***SVID 10000~19999, DVID 20000~29999, ECID 30000~39999***");
+                foreach (string s in list)
+                {
+                    W.WriteLine(s);
+                }
+                W.WriteLine("");
+
+                list = TEEvent.ALID_List();
+                W.WriteLine("***ALID,Desc***");
+                foreach (string s in list)
+                {
+                    W.WriteLine(s);
+                }
+                W.WriteLine("");
+
+                list = TEEvent.CEID_List();
+                W.WriteLine("***CEID,Desc***");
+                foreach (string s in list)
+                {
+                    W.WriteLine(s);
+                }
+                W.WriteLine("");
+
+                list = RMCD.List();
+                W.WriteLine("***RMCD***");
+                foreach (string s in list)
+                {
+                    W.WriteLine(s);
+                }
+                W.WriteLine("");
+
+                W.WriteLine("***End of list***");
+            }
+            catch
+            {
+            }
+            finally
+            {
+                W.Close();
+            }
+
+            MessageBox.Show($"{fileName} was created.");
+        }
     }
     public class TClient
     {
@@ -585,13 +641,6 @@ namespace NDispWin
                 string data0 = data[0].ToUpper();
                 switch (data0)
                 {
-                    case "DOWNLOAD":
-                        if (!EnableStripMapE142) break;
-                        if (data.Length == 1) AddLog("Download data incomplete.");
-                        string content = rxData;
-                        content = content.Remove(0, content.IndexOf("<?"));
-                        UpdateXMLtoLocal(content);
-                        break;
                     case "PPSELECT":
                         if (!EnableRMS) break;
                         if (data.Length == 1) AddLog("PPSELECT data incomplete.");
@@ -600,12 +649,20 @@ namespace NDispWin
                     case "START":
                         if (!EnableEvent) break;
                         Define_Run.TR_StartRun();
-                        //if (Define_Run.BetaAutoRun) AutoRun();
                         break;
                     case "STOP":
                         if (!EnableEvent) break;
                         Define_Run.TR_StopRun();
                         break;
+
+                    case "DOWNLOAD":
+                        if (!EnableStripMapE142) break;
+                        if (data.Length == 1) AddLog("Download data incomplete.");
+                        string content = rxData;
+                        content = content.Remove(0, content.IndexOf("<?"));
+                        UpdateXMLtoLocal(content);
+                        break;
+
                     case "SERVER_DISCONNECTED":
                         Msg MsgBox = new Msg();
                         EMsgRes res = MsgBox.Show("Server Disconnected. Pls check Gemtaro status.", "", TEMessage.EType.Notification, EMsgBtn.smbOK);
@@ -709,7 +766,7 @@ namespace NDispWin
                 return false;
             }
 
-            Event.PPSELECT.Set("FileName", fileName);
+            Event.PP_SELECTED.Set("FileName", fileName);
             AddLog("Load recipe success.");
 
             Msg MsgBox = new Msg();

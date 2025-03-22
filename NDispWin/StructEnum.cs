@@ -1271,24 +1271,91 @@ namespace NDispWin
                 DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.DnWait] = value;
             }
         }
-
-        public double StartDelay = 0;
+        //public double StartDelay = 0;
+        public int StartDelay
+        {
+            get
+            {
+                return (int)DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.StartDelay];
+            }
+            set
+            {
+                DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.StartDelay] = value;
+            }
+        }
 
         public double DispVol = 0;
         public double BSuckVol = 0;
 
-        public double LineStartV = 0;
-        public double LineSpeed = 0;
-        public double LineSpeed2 = 0;
+        //public double LineStartV = 0;
+        public double LineStartV
+        {
+            get
+            {
+                return (int)DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.LineStartV];
+            }
+            set
+            {
+                DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.LineStartV] = value;
+            }
+        }
+        //public double LineSpeed = 0;
+        public double LineSpeed
+        {
+            get
+            {
+                return (int)DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.LineSpeed];
+            }
+            set
+            {
+                DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.LineSpeed] = value;
+            }
+        }
+
+        //public double LineSpeed2 = 0;
+        public double LineSpeed2
+        {
+            get
+            {
+                return (int)DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.LineSpd2];
+            }
+            set
+            {
+                DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.LineSpd2] = value;
+            }
+        }
         public double LineSpeedAct = 0;
-        public double LineAccel = 0;
+        //public double LineAccel = 0;
+        public double LineAccel
+        {
+            get
+            {
+                return (int)DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.LineAccel];
+            }
+            set
+            {
+                DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.LineAccel] = value;
+            }
+        }
+
         public double PumpSpeed = 0;
         public double Pump2Speed = 0;
 
         public double FPressA = 0;
         public double FPressB = 0;
 
-        public double EndDelay = 0;
+        //public double EndDelay = 0;
+        public int EndDelay
+        {
+            get
+            {
+                return (int)DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.EndDelay];
+            }
+            set
+            {
+                DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.EndDelay] = value;
+            }
+        }
         //public int PostWait = 0;
         public int PostWait
         {
@@ -1305,13 +1372,35 @@ namespace NDispWin
         public double RetStartV = 0;
         public double RetSpeed = 0;
         public double RetAccel = 0;
-        public double RetGap = 0;
+        //public double RetGap = 0;
+        public double RetGap
+        {
+            get
+            {
+                return DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.RetGap];
+            }
+            set
+            {
+                DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.RetGap] = value;
+            }
+        }
         public int RetWait = 0;
 
         public double UpStartV = 0;
         public double UpSpeed = 0;
         public double UpAccel = 0;
-        public double UpGap = 0;
+        //public double UpGap = 0;
+        public double UpGap
+        {
+            get
+            {
+                return DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.UpGap];
+            }
+            set
+            {
+                DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.UpGap] = value;
+            }
+        }
         public int UpWait = 0;
 
         public double LiftDist = 0;
@@ -1321,6 +1410,7 @@ namespace NDispWin
 
         public TModelPara(TModelList ModelList, int ModelNo)
         {
+            modelNo = ModelNo;
             try
             {
                 if (ModelList.Model[ModelNo].Para[(int)TModelList.EModel.DnStartV] == 0)

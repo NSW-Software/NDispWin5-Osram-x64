@@ -90,10 +90,8 @@
             this.label9 = new System.Windows.Forms.Label();
             this.cbEnableMaterialCounter = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label4 = new System.Windows.Forms.Label();
             this.cbxCustomerList = new System.Windows.Forms.ComboBox();
             this.lbl_CustomerCaption = new System.Windows.Forms.Label();
-            this.btnEditDataTable = new System.Windows.Forms.Button();
             this.cbEnableLotEntry = new System.Windows.Forms.CheckBox();
             this.tpConnectivity = new System.Windows.Forms.TabPage();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
@@ -873,35 +871,21 @@
             // groupBox2
             // 
             this.groupBox2.AutoSize = true;
-            this.groupBox2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.cbxCustomerList);
             this.groupBox2.Controls.Add(this.lbl_CustomerCaption);
-            this.groupBox2.Controls.Add(this.btnEditDataTable);
             this.groupBox2.Controls.Add(this.cbEnableLotEntry);
             this.groupBox2.Location = new System.Drawing.Point(6, 6);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(477, 97);
+            this.groupBox2.Size = new System.Drawing.Size(741, 62);
             this.groupBox2.TabIndex = 0;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Lot Settings";
-            // 
-            // label4
-            // 
-            this.label4.AccessibleDescription = "Customer";
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(303, 56);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(66, 14);
-            this.label4.TabIndex = 95;
-            this.label4.Text = "Data Table";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // cbxCustomerList
             // 
             this.cbxCustomerList.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.cbxCustomerList.FormattingEnabled = true;
-            this.cbxCustomerList.Location = new System.Drawing.Point(96, 53);
+            this.cbxCustomerList.Location = new System.Drawing.Point(209, 19);
             this.cbxCustomerList.Name = "cbxCustomerList";
             this.cbxCustomerList.Size = new System.Drawing.Size(189, 22);
             this.cbxCustomerList.TabIndex = 94;
@@ -909,25 +893,14 @@
             // 
             // lbl_CustomerCaption
             // 
-            this.lbl_CustomerCaption.AccessibleDescription = "Customer";
+            this.lbl_CustomerCaption.AccessibleDescription = "Type";
             this.lbl_CustomerCaption.AutoSize = true;
-            this.lbl_CustomerCaption.Location = new System.Drawing.Point(24, 56);
+            this.lbl_CustomerCaption.Location = new System.Drawing.Point(168, 22);
             this.lbl_CustomerCaption.Name = "lbl_CustomerCaption";
-            this.lbl_CustomerCaption.Size = new System.Drawing.Size(59, 14);
+            this.lbl_CustomerCaption.Size = new System.Drawing.Size(35, 14);
             this.lbl_CustomerCaption.TabIndex = 93;
-            this.lbl_CustomerCaption.Text = "Customer";
+            this.lbl_CustomerCaption.Text = "Type";
             this.lbl_CustomerCaption.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // btnEditDataTable
-            // 
-            this.btnEditDataTable.Location = new System.Drawing.Point(375, 50);
-            this.btnEditDataTable.Name = "btnEditDataTable";
-            this.btnEditDataTable.Size = new System.Drawing.Size(96, 26);
-            this.btnEditDataTable.TabIndex = 90;
-            this.btnEditDataTable.Text = "Edit";
-            this.btnEditDataTable.UseVisualStyleBackColor = true;
-            this.btnEditDataTable.Visible = false;
-            this.btnEditDataTable.Click += new System.EventHandler(this.btnEditDataTable_Click);
             // 
             // cbEnableLotEntry
             // 
@@ -1363,10 +1336,8 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.CheckBox cbEnableLotEntry;
-        private System.Windows.Forms.Button btnEditDataTable;
         private System.Windows.Forms.Label lbl_CustomerCaption;
         private System.Windows.Forms.ComboBox cbxCustomerList;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.CheckBox cbEnableLowPressure;
         private System.Windows.Forms.CheckBox cbEnableResetButton;

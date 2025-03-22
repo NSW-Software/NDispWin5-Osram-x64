@@ -2299,8 +2299,10 @@ namespace NDispWin
                 if (!ClearAxisError(GXAxis)) goto _End;
                 if (!ClearAxisError(GYAxis)) goto _End;
                 if (!ClearAxisError(GZAxis)) goto _End;
-                if (!ClearAxisError(GUAxis)) goto _End;
                 CommonControl.P1245.MotorAlarmEnable(GUAxis, false);
+                if (!ClearAxisError(GUAxis)) goto _End;
+                CommonControl.P1245.MotorAlarmEnable(PBAxis, false);
+                if (!ClearAxisError(PBAxis)) goto _End;
 
                 if (!UpdateAxis(GXAxis)) goto _Error;
                 if (!UpdateAxis(GYAxis)) goto _Error;
@@ -2387,6 +2389,11 @@ namespace NDispWin
                 if (!UpdateAxis(GXAxis)) goto _Error;
                 if (!UpdateAxis(GYAxis)) goto _Error;
                 if (!UpdateAxis(GZAxis)) goto _Error;
+
+                CommonControl.P1245.MotorAlarmEnable(GUAxis, false);
+                if (!ClearAxisError(GUAxis)) goto _End;
+                CommonControl.P1245.MotorAlarmEnable(PBAxis, false);
+                if (!ClearAxisError(PBAxis)) goto _End;
 
                 if (GDefine.GantryConfig == GDefine.EGantryConfig.XY_ZX2Y2_Z2)
                 {

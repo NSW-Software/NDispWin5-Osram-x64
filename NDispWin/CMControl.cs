@@ -1373,6 +1373,8 @@ namespace NDispWin
             uint Res = 0;
             try
             {
+                Res = Motion.mAcm_SetProperty(p_GroupHandle[Axis[0].Device.ID, Axis[0].Mask], (uint)PropertyID.CFG_GpSFEnable, ref Value, 0);
+
                 if (Axis.Count() == 0)
                 {
                 }
@@ -3384,7 +3386,7 @@ namespace NDispWin
                         return;
                     }
                 }
-
+         
                 Res = Motion.mAcm_GpAddPath(GrpHnd, (ushort)MoveCmd, (ushort)Blending, FH_Delay, FL, EndPt, CenterPt, ref AxisNum);
                 if (Res != (int)ErrorCode.SUCCESS)
                 {

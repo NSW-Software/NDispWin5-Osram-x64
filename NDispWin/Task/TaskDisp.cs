@@ -906,15 +906,17 @@ namespace NDispWin
 
         public static double FlowRateOld = 18;
 
-        public enum EVolumeOfstProtocol { None, AOT_HeightCloseLoop, AOT_FrontTestCloseLoop, OSRAM_SCC, DoNotUse_4, DoNotUse_5, DoNotUse_6 };
+        public enum EVolumeOfstProtocol { None, Reserved_1, Reserved_2, OSRAM_SCC, Reserved_4, Reserved_5, Reserved_6, OSRAM_ICC };
         public static EVolumeOfstProtocol VolumeOfst_Protocol = EVolumeOfstProtocol.None;
         
-        public static string VolumeOfst_EqID = "EqID";
-        public static string VolumeOfst_LocalPath = "";
-        public static string VolumeOfst_DataPath = "";
-        public static string VolumeOfst_DataPath2 = "";
-
+        //public static string VolumeOfst_EqID = "EqID";
+        //public static string VolumeOfst_LocalPath = "";
+        //public static string VolumeOfst_DataPath = "";
+        //public static string VolumeOfst_DataPath2 = "";
         public static Osram_SCC OsramSCC = new Osram_SCC();
+
+        public static string OsramICC_InputPath = "";
+        public static string OsramICC_OutputPath = "";
 
         public enum EInputMapProtocol { None, Lumileds_EMap, TD_COB, OSRAM_eMos };
         public static EInputMapProtocol InputMap_Protocol = EInputMapProtocol.None;
@@ -1354,10 +1356,9 @@ namespace NDispWin
             LogServerPath = IniFile.ReadString("Log", "ServerPath", LogServerPath);
 
             VolumeOfst_Protocol = (TaskDisp.EVolumeOfstProtocol)IniFile.ReadInteger("VolumeOfst", "Protocol", 0);
-            VolumeOfst_EqID = IniFile.ReadString("VolumeOfst", "EqID", "EqID");
-            VolumeOfst_LocalPath = IniFile.ReadString("VolumeOfst", "LocalPath", "c:\\VolumeOfst");
-            VolumeOfst_DataPath = IniFile.ReadString("VolumeOfst", "DataPath", "c:\\VolumeOfst\\DataPath");
-            VolumeOfst_DataPath2 = IniFile.ReadString("VolumeOfst", "DataPath2", "c:\\VolumeOfst\\DataPath2");
+            
+            OsramICC_InputPath = IniFile.ReadString("OsramICC", "InputPath", "c:\\OsramICC");
+            OsramICC_OutputPath = IniFile.ReadString("OsramICC", "OutputPath", "c:\\OsramICC");
 
             InputMap_Protocol = (EInputMapProtocol)IniFile.ReadInteger("InputMap", "Protocol", 0);
 
@@ -1661,10 +1662,9 @@ namespace NDispWin
             IniFile.WriteString("Log", "ServerPath", LogServerPath);
 
             IniFile.WriteInteger("VolumeOfst", "Protocol", (int)VolumeOfst_Protocol);
-            IniFile.WriteString("VolumeOfst", "EqID", VolumeOfst_EqID);
-            IniFile.WriteString("VolumeOfst", "LocalPath", VolumeOfst_LocalPath);
-            IniFile.WriteString("VolumeOfst", "DataPath", VolumeOfst_DataPath);
-            IniFile.WriteString("VolumeOfst", "DataPath2", VolumeOfst_DataPath2);
+
+            IniFile.WriteString("OsramICC", "InputPath", OsramICC_InputPath);
+            IniFile.WriteString("OsramICC", "OutputPath", OsramICC_OutputPath);
 
             IniFile.WriteInteger("InputMap", "Protocol", (int)InputMap_Protocol);
             //IniFile.WriteBool("InputMap", "Enable", InputMap_Enabled);
@@ -9345,7 +9345,18 @@ namespace NDispWin
                         break;
                 }
 
-                if (DispA || DispB)
+                switch (GDefine.DispCtrlType[0])
+                {
+                    case GDefine.EDispCtrlType.HPC3:
+                        TFPump.PP4.CheckStrokeThenFill(new bool[2] { DispA, DispB });
+                        TFPump.PP4.ShotStart(new bool[2] { DispA, DispB });
+                        int t = GDefine.GetTickCount() + TaskDisp.Idle_PurgeDuration;
+                        while (GDefine.GetTickCount() <= t) { Thread.Sleep(1); }
+                        TFPump.PP4.ShotStop(new bool[2] { DispA, DispB });
+                        break;
+                }
+
+                        if (DispA || DispB)
                 {
                     if (!TaskDisp.CtrlWaitReady(DispA, DispB)) goto _Stop;
                     if (!TaskDisp.TrigOn(DispA, DispB)) goto _Stop;

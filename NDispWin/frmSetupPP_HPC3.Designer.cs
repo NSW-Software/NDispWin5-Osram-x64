@@ -58,6 +58,8 @@ namespace NDispWin
             this.label22 = new System.Windows.Forms.Label();
             this.lblHADispAmount = new System.Windows.Forms.Label();
             this.tpParameters = new System.Windows.Forms.TabPage();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
             this.lblPBFPress = new System.Windows.Forms.Label();
             this.label57 = new System.Windows.Forms.Label();
             this.lblRemoveAirPress = new System.Windows.Forms.Label();
@@ -119,8 +121,6 @@ namespace NDispWin
             this.btnPBSvVac = new System.Windows.Forms.Button();
             this.btnPASvVac = new System.Windows.Forms.Button();
             this.tmr100ms = new System.Windows.Forms.Timer(this.components);
-            this.label10 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tpOperation.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -363,6 +363,7 @@ namespace NDispWin
             this.gbxAmount.TabIndex = 98;
             this.gbxAmount.TabStop = false;
             this.gbxAmount.Text = "Pump A / Pump B";
+            this.gbxAmount.Enter += new System.EventHandler(this.gbxAmount_Enter);
             // 
             // label1
             // 
@@ -384,6 +385,7 @@ namespace NDispWin
             this.lblHBBSuckAmount.Size = new System.Drawing.Size(75, 23);
             this.lblHBBSuckAmount.TabIndex = 100;
             this.lblHBBSuckAmount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblHBBSuckAmount.Click += new System.EventHandler(this.lblHBBSuckAmount_Click);
             // 
             // label3
             // 
@@ -405,6 +407,7 @@ namespace NDispWin
             this.lblHBDispAmount.Size = new System.Drawing.Size(75, 23);
             this.lblHBDispAmount.TabIndex = 99;
             this.lblHBDispAmount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblHBDispAmount.Click += new System.EventHandler(this.lblHBDispAmount_Click);
             // 
             // label30
             // 
@@ -506,6 +509,28 @@ namespace NDispWin
             this.tpParameters.TabIndex = 1;
             this.tpParameters.Text = "Parameters";
             this.tpParameters.UseVisualStyleBackColor = true;
+            // 
+            // label14
+            // 
+            this.label14.AccessibleDescription = "Pump B";
+            this.label14.Location = new System.Drawing.Point(191, 313);
+            this.label14.Margin = new System.Windows.Forms.Padding(3);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(72, 19);
+            this.label14.TabIndex = 154;
+            this.label14.Text = "Pump B";
+            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label10
+            // 
+            this.label10.AccessibleDescription = "Pump A";
+            this.label10.Location = new System.Drawing.Point(112, 313);
+            this.label10.Margin = new System.Windows.Forms.Padding(3);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(72, 19);
+            this.label10.TabIndex = 153;
+            this.label10.Text = "Pump A";
+            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblPBFPress
             // 
@@ -1198,28 +1223,6 @@ namespace NDispWin
             // 
             this.tmr100ms.Enabled = true;
             this.tmr100ms.Tick += new System.EventHandler(this.tmr100ms_Tick);
-            // 
-            // label10
-            // 
-            this.label10.AccessibleDescription = "Pump A";
-            this.label10.Location = new System.Drawing.Point(112, 313);
-            this.label10.Margin = new System.Windows.Forms.Padding(3);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(72, 19);
-            this.label10.TabIndex = 153;
-            this.label10.Text = "Pump A";
-            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label14
-            // 
-            this.label14.AccessibleDescription = "Pump B";
-            this.label14.Location = new System.Drawing.Point(191, 313);
-            this.label14.Margin = new System.Windows.Forms.Padding(3);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(72, 19);
-            this.label14.TabIndex = 154;
-            this.label14.Text = "Pump B";
-            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // frmSetupPP_HPC3
             // 

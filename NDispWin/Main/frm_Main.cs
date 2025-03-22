@@ -92,8 +92,6 @@ namespace NDispWin
                 SetDllDirectory(@"C:\Program Files\FLIR Systems\Spinnaker\bin\vs2015");
             }
 
-
-
             GDefine.CreateDirs();
 
             AppLanguage.Func2.WriteLangFile(this);
@@ -206,6 +204,8 @@ namespace NDispWin
             {
                 MessageBox.Show(Ex.Message + "");
             }
+
+            LotInfo2.Osram.LoadSetup();
 
             if (TaskDisp.LoadLastRecipe)
                 LoadLastWrite();

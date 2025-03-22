@@ -176,7 +176,6 @@
     <Reference Include="System.Data.DataSetExtensions">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="ZEC300_x64">
@@ -674,6 +673,12 @@
     <Compile Include="DispProg\frmDispProg_VolumeMap.Designer.cs">
       <DependentUpon>frmDispProg_VolumeMap.cs</DependentUpon>
     </Compile>
+    <Compile Include="DispProg\frmDispProg_VolumeOfst.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DispProg\frmDispProg_VolumeOfst.Designer.cs">
+      <DependentUpon>frmDispProg_VolumeOfst.cs</DependentUpon>
+    </Compile>
     <Compile Include="DispProg\frmDispProg_CntrAction.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -776,6 +781,12 @@
     </Compile>
     <Compile Include="DispSetup\frm_DispCore_DispSetup_HM.Designer.cs">
       <DependentUpon>frm_DispCore_DispSetup_HM.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Custom_VolumeAdjust\frm_AOT_TestCloseLoop.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Custom_VolumeAdjust\frm_AOT_TestCloseLoop.Designer.cs">
+      <DependentUpon>frm_AOT_TestCloseLoop.cs</DependentUpon>
     </Compile>
     <Compile Include="JogAndVision\frmReticleSetup2.cs">
       <SubType>Form</SubType>
@@ -1338,6 +1349,10 @@
       <DependentUpon>frmDispProg_VolumeMap.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="DispProg\frmDispProg_VolumeOfst.resx">
+      <DependentUpon>frmDispProg_VolumeOfst.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="DispProg\frmDispProg_CntrAction.resx">
       <DependentUpon>frmDispProg_CntrAction.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -1360,6 +1375,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DispProg\frmDispProg_GoPos.resx">
       <DependentUpon>frmDispProg_GoPos.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Custom_VolumeAdjust\frm_AOT_TestCloseLoop.resx">
+      <DependentUpon>frm_AOT_TestCloseLoop.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="DispProg\frmDispProg_ReadID_ManualEntry.resx">
@@ -1686,8 +1705,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AtomizerIOAssign.txt" />
-    <None Include="Bmp\ZPath.png" />
-    <None Include="Bmp\ZPathDot.png" />
     <Content Include="NSWIcon.ico" />
     <None Include="Resources\ZPath.png" />
     <None Include="Resources\ZPath1.png" />

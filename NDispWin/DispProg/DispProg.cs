@@ -16,6 +16,7 @@ namespace NDispWin
     enum ECutTailType { None, Fwd, Bwd, SqFwd, SqBwd, Rev, SqRev };
     enum EVHType { Hort, Vert };
     enum ELineType { Cont, Dash };
+    enum EZPathType { ZPathDot, ZPathLines };
 
     internal class DispProg
     {
@@ -406,6 +407,7 @@ namespace NDispWin
 
             SINGULATED_ID = 239,
             READ_ID = 240,
+            OSRAM_ICC= 241,
 
             USE_REF = 250,
             USE_VISION = 251,
@@ -548,7 +550,7 @@ namespace NDispWin
             IMAGE_SNAP = 795,
 
             VOLUME_MAP = 850,
-            VOLUME_OFST = 861,
+            //VOLUME_OFST = 861,
         }
         #endregion
 
@@ -702,7 +704,6 @@ namespace NDispWin
         public static TaskWeight.EOutputResult OutputResult_Cal = TaskWeight.EOutputResult.Total;
         public static int DotsPerSample_Meas = 0;
         public static TaskWeight.EOutputResult OutputResult_Meas = TaskWeight.EOutputResult.Total;
-
 
         public class FlowRate
         {
@@ -3050,9 +3051,6 @@ namespace NDispWin
         public static double rt_Head1VolumeOfst = 0;
         public static double rt_Head2VolumeOfst = 0;
         public static TVolumeMap rt_VolumeMap = new TVolumeMap();
-        public static bool rt_VolumeOfst = false;//command exist in program
-        public static EVolumeOfstMode rt_VolumeOfst_Mode = EVolumeOfstMode.Manual;
-        public static string rt_VolumeOfst_Path = "";
         public static List<int> rt_VolComp = new List<int>();//***store LineNo that consist PP_VolComp
 
         public static bool b_ForceHead1 = false;
@@ -3679,18 +3677,6 @@ namespace NDispWin
                 DispProg.Script[0].Validate(0);
                 rt_LayoutChanged = true;
 
-                DispProg.ClearVolumeOffset();
-
-                for (int i = 0; i < CmdList.Count; i++)
-                {
-                    if (CmdList.Line[i].Cmd == ECmd.VOLUME_OFST)
-                    {
-                        //DispProg.DoVolumeOfst_Purge(CmdList.Line[i].String);
-                        DispProg.DoVolumeOfst_Purge();//CmdList.Line[i].String);
-                        break;
-                    }
-                }
-
                 if (TaskWeight.Cal_RequireOnLoadProgram) TaskWeight.Cal_Status = TaskWeight.EWeightCalStatus.Require;
 
                 return true;
@@ -3746,17 +3732,6 @@ namespace NDispWin
                 ClearRTDispData();
                 DispProg.Script[0].Validate(0);
                 rt_LayoutChanged = true;
-
-                DispProg.ClearVolumeOffset();
-
-                for (int i = 0; i < CmdList.Count; i++)
-                {
-                    if (CmdList.Line[i].Cmd == ECmd.VOLUME_OFST)
-                    {
-                        DispProg.DoVolumeOfst_Purge();
-                        break;
-                    }
-                }
 
                 if (TaskWeight.Cal_RequireOnLoadProgram) TaskWeight.Cal_Status = TaskWeight.EWeightCalStatus.Require;
 
@@ -3864,17 +3839,6 @@ namespace NDispWin
                 ClearRTDispData();
                 DispProg.Script[0].Validate(0);
                 rt_LayoutChanged = true;
-
-                DispProg.ClearVolumeOffset();
-
-                for (int i = 0; i < CmdList.Count; i++)
-                {
-                    if (CmdList.Line[i].Cmd == ECmd.VOLUME_OFST)
-                    {
-                        DispProg.DoVolumeOfst_Purge();
-                        break;
-                    }
-                }
 
                 if (TaskWeight.Cal_RequireOnLoadProgram) TaskWeight.Cal_Status = TaskWeight.EWeightCalStatus.Require;
             }
@@ -4138,16 +4102,9 @@ namespace NDispWin
                     }
                 }
 
-                rt_VolumeOfst = false;
                 rt_VolComp.Clear();
                 for (int i = 0; i < CmdList.Count; i++)
                 {
-                    if (CmdList.Line[i].Cmd == ECmd.VOLUME_OFST)
-                    {
-                        rt_VolumeOfst = true;
-                        rt_VolumeOfst_Path = CmdList.Line[i].String;
-                        rt_VolumeOfst_Mode = (EVolumeOfstMode)CmdList.Line[i].IPara[0];
-                    }
                     if (CmdList.Line[i].Cmd == ECmd.PP_VOL_COMP)
                     {
                         rt_VolComp.Add(i);
@@ -4870,7 +4827,6 @@ namespace NDispWin
 
                         switch (CmdList.Line[Line].Cmd)
                         {
-                            #region
                             case ECmd.LAYOUT:
                                 #region
                                 {
@@ -8236,6 +8192,33 @@ namespace NDispWin
                                     break;
                                 }
                             #endregion
+                            #region OSRAM_ICC
+                            case ECmd.OSRAM_ICC:
+                                {
+                                    EMsg = Msg + " " + ((ECmd)CmdList.Line[Line].Cmd).ToString();
+
+                                    b_Flag_ConsecutiveUnit = false;
+                                    if (LotInfo2.LotActive)
+                                    {
+                                        if (TaskDisp.VolumeOfst_Protocol == TaskDisp.EVolumeOfstProtocol.OSRAM_ICC)
+                                        {
+                                            string tileID = DispProg.rt_Read_IDs[0, 0];
+                                            double[] newVolume = new double[2] { 0, 0 };
+                                            if (!OsramICC.Execute(tileID, LotInfo2.LotNumber, LotInfo2.Osram.ElevenSeries, LotInfo2.Osram.DAStartNumber, ref newVolume)) goto _Pause;
+                                            TFPump.PP4.DispAmounts = new double[] { newVolume[0], newVolume[1] };
+                                            Event.OSRAMICC.Set($"{tileID} Set Volume", $"Pump1, Pump2: {newVolume[0]:f4},{newVolume[1]:f4}");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        double[] newVolume = new double[2] { ActiveLine.DPara[18], ActiveLine.DPara[19] };
+                                        TFPump.PP4.DispAmounts = new double[] { newVolume[0], newVolume[1] };
+                                        Event.OSRAMICC.Set($"No Lot - Set Volume", $"Pump1, Pump2: {newVolume[0]:f4},{newVolume[1]:f4}");
+                                    }
+                                //_End:
+                                    break;
+                                }
+                            #endregion
 
                             case ECmd.DO_HEIGHT:
                                 #region
@@ -9985,6 +9968,42 @@ namespace NDispWin
                                     if (!ParLines.Par_Lines(ActiveLine, RunMode, f_origin_x, f_origin_y, f_origin_z)) Running = false;
                                     break;
                                 }
+                            case ECmd.Z_PATH:
+                                {
+                                    EMsg = Msg + " " + CmdList.Line[Line].Cmd.ToString();
+
+                                    if (!b_InLoop && !Running) goto _Pause;
+                                    LicenseValidation();
+
+                                    int ColNo = 0;
+                                    int RowNo = 0;
+                                    rt_Layouts[rt_LayoutID].UnitNoGetRC(RunTime.UIndex, ref ColNo, ref RowNo);
+
+                                    if (b_SecondHalf || b_IsNeedle2) break;
+                                    switch (RunMode)
+                                    {
+                                        case ERunMode.Dry:
+                                        case ERunMode.Normal:
+                                            TaskVision.LightingOff();
+                                            break;
+                                        case ERunMode.Camera:
+                                            TaskVision.LightingOn(TaskVision.DefLightRGB);
+                                            break;
+                                    }
+
+                                    if (GDefine.CameraType[(int)TaskVision.SelectedCam] == GDefine.ECameraType.PtGrey)
+                                    {
+                                        if (RunMode == ERunMode.Camera)
+                                            TaskVision.PtGrey_CamLive(0);
+                                    }
+
+                                    if (!ZPath.Run(ActiveLine, RunMode, f_origin_x, f_origin_y, f_origin_z))
+                                    {
+                                        goto _Pause;
+                                        //Running = false;
+                                    }
+                                    break;
+                                }
                             case ECmd.VOL_SET_DOTS:
                                 #region
                                 {
@@ -10687,10 +10706,7 @@ namespace NDispWin
 
                                     bool lotStatus = LotInfo2.LotActive;
                                     string lotNo = LotInfo2.LotNumber;
-                                    if (LotInfo2.Customer == LotInfo2.ECustomer.LUMDisp) lotNo = LotInfo2.Lmds.sMesLot;
-                                    // LotNumber;// Reg.ReadKey("NSWAUTOMATION_LotInfo", "MES LOT", /*PRODUCT",*/ "Lot 0001");
 
-                                    //if (LotStatus != null && LotStatus.StartsWith("Activated"))
                                     if (lotStatus)
                                     {
                                         if (lotNo.Length == 0)
@@ -11130,10 +11146,7 @@ namespace NDispWin
 
                                         rt_MeniscusDatas.Add(rt_Data);
 
-                                        //NSW.Net.RegistryUtils Reg = new RegistryUtils();
-                                        //string LotNo = Reg.ReadKey("NSWAUTOMATION_LotInfo", "MES LOT", "");
                                         string LotNo = LotInfo2.LotNumber;
-                                        if (LotInfo2.Customer == LotInfo2.ECustomer.LUMDisp) LotNo = LotInfo2.Lmds.sMesLot;
 
                                         rt_Data.Save(LotNo, rt_Read_IDs[0, 0], "HeadA");
 
@@ -11198,11 +11211,7 @@ namespace NDispWin
 
                                         rt_MeniscusDatas.Add(rt_Data2);
 
-                                        //NSW.Net.RegistryUtils Reg = new RegistryUtils();
-                                        //string LotNo = Reg.ReadKey("NSWAUTOMATION_LotInfo", "MES LOT", "");
-                                        //string LotNo = LotInfo2.Lmds.sMesLot;
                                         string LotNo = LotInfo2.LotNumber;
-                                        if (LotInfo2.Customer == LotInfo2.ECustomer.LUMDisp) LotNo = LotInfo2.Lmds.sMesLot;
                                         rt_Data2.Save(LotNo, rt_Read_IDs[0, 0], "HeadB");
 
                                         if (d_MeniscusSpec != 0)
@@ -11436,30 +11445,6 @@ namespace NDispWin
                                     break;
                                 }
                             #endregion
-                            case ECmd.VOLUME_OFST:
-                                {
-                                    switch (TaskDisp.VolumeOfst_Protocol)
-                                    {
-                                        case TaskDisp.EVolumeOfstProtocol.AOT_FrontTestCloseLoop:
-                                        case TaskDisp.EVolumeOfstProtocol.AOT_HeightCloseLoop:
-                                            {
-                                                EMsg = Msg + " " + Enum.GetName(typeof(ECmd), ECmd.VOLUME_OFST);
-
-                                                if (CmdList.Line[Line].IPara[0] == (int)EVolumeOfstMode.Manual) break;
-
-                                                double Ofst1 = 0;
-                                                double Ofst2 = 0;
-
-                                                if (!DoVolumeOfst(ref Ofst1, ref Ofst2, false)) goto _Pause;
-                                                double HA_Vol = DispProg.PP_HeadA_DispBaseVol + DispProg.PP_HeadA_DispVol_Adj + DispProg.rt_Head1VolumeOfst;
-                                                double HB_Vol = DispProg.PP_HeadB_DispBaseVol + DispProg.PP_HeadB_DispVol_Adj + DispProg.rt_Head2VolumeOfst;
-                                                TaskDisp.SetDispVolume(true, true, HA_Vol, HB_Vol);
-                                            }
-                                            break;
-                                    }
-                                    break;
-                                }
-                                #endregion
                         }
 
                         if (TaskDisp.IsFilling() || (TFPump.PP4.FillState[0] > TFPump.PP4.EFillState.None || TFPump.PP4.FillState[1] > TFPump.PP4.EFillState.None))
@@ -11568,10 +11553,6 @@ namespace NDispWin
                         if (TaskDisp.Preference == TaskDisp.EPreference.Unisem)
                         {
                             if (!TInputMap.Upload(rt_Read_IDs[0, 0], ref Map.CurrMap[0])) goto _Pause;
-                        }
-                        if (TaskDisp.Preference == TaskDisp.EPreference.Lumileds)
-                        {
-                            if (rt_MeniscusDatas.Count > 0) rt_MeniscusDatas.SaveLmds(rt_Read_IDs[0, 0]);
                         }
                         if (TaskDisp.Preference == TaskDisp.EPreference.Osram)
                         {
@@ -22329,157 +22310,6 @@ namespace NDispWin
         {
             rt_Head1VolumeOfst = 0;
             rt_Head2VolumeOfst = 0;
-        }
-
-        public static int DoVolumeOfst_FileCount()
-        {
-            switch (TaskDisp.VolumeOfst_Protocol)
-            {
-                default:
-                    return -1;
-                case TaskDisp.EVolumeOfstProtocol.AOT_HeightCloseLoop:
-                    NDispWin.AOT_HeightCloseLoop.Path = TaskDisp.VolumeOfst_DataPath;
-                    return NDispWin.AOT_HeightCloseLoop.Count();
-                case TaskDisp.EVolumeOfstProtocol.AOT_FrontTestCloseLoop:
-                    NDispWin.AOT_FrontTestCloseLoop.EquipmentID = TaskDisp.VolumeOfst_EqID;
-                    NDispWin.AOT_FrontTestCloseLoop.LocalPath = TaskDisp.VolumeOfst_LocalPath;
-                    NDispWin.AOT_FrontTestCloseLoop.DataFilePath = TaskDisp.VolumeOfst_DataPath;
-                    NDispWin.AOT_FrontTestCloseLoop.CompFilePath = TaskDisp.VolumeOfst_DataPath2;
-                    return NDispWin.AOT_FrontTestCloseLoop.Count();
-            }
-        }
-        public static bool DoVolumeOfst(ref double Ofst1, ref double Ofst2, bool Prompt)
-        {
-            switch (TaskDisp.VolumeOfst_Protocol)
-            {
-                case TaskDisp.EVolumeOfstProtocol.AOT_HeightCloseLoop:
-                    #region
-                    {
-                        string Path = TaskDisp.VolumeOfst_DataPath;
-                        if (Path.Length == 0 || !System.IO.Directory.Exists(Path))
-                        {
-                            Msg MsgBox = new Msg();
-                            EMsgRes MsgRes = MsgBox.Show(Messages.VOLUME_OFST_PATH_NOT_FOUND, msgBtn: EMsgBtn.smbOK_Stop);
-                            if (MsgRes == EMsgRes.smrOK)
-                            {
-                                return true;
-                            }
-                            if (MsgRes == EMsgRes.smrStop)
-                            {
-                                return false;
-                            }
-                        }
-
-                        NDispWin.AOT_HeightCloseLoop.Path = Path;
-                        string FileTag = "";
-                        string Eq_ID = "";
-                        NDispWin.AOT_HeightCloseLoop.DecodeFile(ref FileTag, ref Eq_ID, ref Ofst1, ref Ofst2);
-
-                        if (Ofst1 != 0)
-                        {
-                            rt_Head1VolumeOfst = rt_Head1VolumeOfst + Ofst1;
-                            Ofst1 = 0;
-                        }
-                        if (Ofst2 != 0)
-                        {
-                            rt_Head2VolumeOfst = rt_Head2VolumeOfst + Ofst2;
-                            Ofst2 = 0;
-                        }
-
-                        NDispWin.AOT_HeightCloseLoop.DeleteFiles();
-                        break;
-                    }
-                #endregion
-                case TaskDisp.EVolumeOfstProtocol.AOT_FrontTestCloseLoop:
-                    #region
-                    {
-                        if (!System.IO.Directory.Exists(TaskDisp.VolumeOfst_LocalPath) ||
-                            !System.IO.Directory.Exists(TaskDisp.VolumeOfst_DataPath) ||
-                            !System.IO.Directory.Exists(TaskDisp.VolumeOfst_DataPath2)
-                            )
-                        {
-                            Msg MsgBox = new Msg();
-                            EMsgRes MsgRes = MsgBox.Show(Messages.VOLUME_OFST_PATH_NOT_FOUND, msgBtn: EMsgBtn.smbOK_Stop);
-                            if (MsgRes == EMsgRes.smrOK)
-                            {
-                                return true;
-                            }
-                            if (MsgRes == EMsgRes.smrStop)
-                            {
-                                return false;
-                            }
-                        }
-                        NDispWin.AOT_FrontTestCloseLoop.EquipmentID = TaskDisp.VolumeOfst_EqID;
-                        NDispWin.AOT_FrontTestCloseLoop.LocalPath = TaskDisp.VolumeOfst_LocalPath;
-                        NDispWin.AOT_FrontTestCloseLoop.DataFilePath = TaskDisp.VolumeOfst_DataPath;
-                        NDispWin.AOT_FrontTestCloseLoop.CompFilePath = TaskDisp.VolumeOfst_DataPath2;
-
-                        NDispWin.AOT_FrontTestCloseLoop.DecodeDataFile(ref Ofst1, ref Ofst2);
-
-                        if (Ofst1 != 0)
-                        {
-                            rt_Head1VolumeOfst = rt_Head1VolumeOfst + Ofst1;
-                            Ofst1 = 0;
-                        }
-                        if (Ofst2 != 0)
-                        {
-                            rt_Head2VolumeOfst = rt_Head2VolumeOfst + Ofst2;
-                            Ofst2 = 0;
-                        }
-                        break;
-                    }
-                #endregion
-            }
-            return true;
-        }
-        public static bool DoVolumeOfst(ref double Ofst1, ref double Ofst2)
-        {
-            return DoVolumeOfst(ref Ofst1, ref Ofst2, true);
-        }
-
-        public static void DoVolumeOfst_Purge()
-        {
-            try
-            {
-                switch (TaskDisp.VolumeOfst_Protocol)
-                {
-                    case TaskDisp.EVolumeOfstProtocol.AOT_HeightCloseLoop:
-                        NDispWin.AOT_HeightCloseLoop.Path = TaskDisp.VolumeOfst_DataPath;
-                        NDispWin.AOT_HeightCloseLoop.PurgeFiles();
-                        break;
-                    case TaskDisp.EVolumeOfstProtocol.AOT_FrontTestCloseLoop:
-                        {
-                            NDispWin.AOT_FrontTestCloseLoop.EquipmentID = TaskDisp.VolumeOfst_EqID;
-                            NDispWin.AOT_FrontTestCloseLoop.LocalPath = TaskDisp.VolumeOfst_LocalPath;
-                            NDispWin.AOT_FrontTestCloseLoop.DataFilePath = TaskDisp.VolumeOfst_DataPath;
-                            NDispWin.AOT_FrontTestCloseLoop.CompFilePath = TaskDisp.VolumeOfst_DataPath2;
-
-                            int Count = 0;
-                            NDispWin.AOT_FrontTestCloseLoop.PurgeDataFiles(ref Count);
-                            break;
-                        }
-                }
-            }
-            catch
-            {
-            }
-        }
-        public static void DoVolumeOfst_ShowInfo()
-        {
-            try
-            {
-                switch (TaskDisp.VolumeOfst_Protocol)
-                {
-                    case TaskDisp.EVolumeOfstProtocol.AOT_HeightCloseLoop:
-                        break;
-                    case TaskDisp.EVolumeOfstProtocol.AOT_FrontTestCloseLoop:
-                        NDispWin.AOT_FrontTestCloseLoop.ShowInfo();
-                        break;
-                }
-            }
-            catch
-            {
-            }
         }
 
         private static void GetNextPos(int indexC, int indexR, int LoopDir, ref int IndexX, ref int IndexY)

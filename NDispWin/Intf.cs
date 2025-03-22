@@ -215,7 +215,6 @@ namespace NDispWin
             AppLanguage.Func2.UpdateText(new frm_DispCore_DispProg_UseHeight());
             AppLanguage.Func2.UpdateText(new frm_DispCore_DispProg_UseRef());
             AppLanguage.Func2.UpdateText(new frm_DispCore_DispProg_VolumeMap());
-            AppLanguage.Func2.UpdateText(new frm_DispCore_DispProg_VolumeOfst());
             #endregion
 
             #region DispSetup
