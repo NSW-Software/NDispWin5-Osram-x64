@@ -247,6 +247,12 @@
     <Compile Include="frmDispProg_ZPath.Designer.cs">
       <DependentUpon>frmDispProg_ZPath.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmSecsGem.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSecsGem.Designer.cs">
+      <DependentUpon>frmSecsGem.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmSetupPP_HPC3.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -289,10 +295,10 @@
     <Compile Include="frmProcessing.designer.cs">
       <DependentUpon>frmProcessing.cs</DependentUpon>
     </Compile>
-    <Compile Include="Custom_VolumeAdjust\frm_Osram_eMos_Setup.cs">
+    <Compile Include="LotCtrl_Custom\frm_Osram_eMos_Setup.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Custom_VolumeAdjust\frm_Osram_eMos_Setup.designer.cs">
+    <Compile Include="LotCtrl_Custom\frm_Osram_eMos_Setup.designer.cs">
       <DependentUpon>frm_Osram_eMos_Setup.cs</DependentUpon>
     </Compile>
     <Compile Include="JogAndVision\frmJogGantry.cs">
@@ -302,10 +308,10 @@
       <DependentUpon>frmJogGantry.cs</DependentUpon>
     </Compile>
     <Compile Include="Camera\MVC_GenTL.cs" />
-    <Compile Include="LotCtrl\frm_LotEntryOsramICC.cs">
+    <Compile Include="LotCtrl_Custom\frm_LotEntryOsramICC.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LotCtrl\frm_LotEntryOsramICC.designer.cs">
+    <Compile Include="LotCtrl_Custom\frm_LotEntryOsramICC.designer.cs">
       <DependentUpon>frm_LotEntryOsramICC.cs</DependentUpon>
     </Compile>
     <Compile Include="MEDAQ.cs" />
@@ -339,6 +345,7 @@
     <Compile Include="TFMatrix.cs" />
     <Compile Include="TFMisc.cs" />
     <Compile Include="TFPump.cs" />
+    <Compile Include="TFSecsGem.cs" />
     <Compile Include="Vermes\frmVermesMDS3200.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -369,13 +376,13 @@
     <Compile Include="DispProg\frmDispProgGroupDisp.Designer.cs">
       <DependentUpon>frmDispProgGroupDisp.cs</DependentUpon>
     </Compile>
-    <Compile Include="LotCtrl\frm_LotEntryOsramEMos.cs">
+    <Compile Include="LotCtrl_Custom\frm_LotEntryOsramEMos.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LotCtrl\frm_LotEntryOsramEMos.designer.cs">
+    <Compile Include="LotCtrl_Custom\frm_LotEntryOsramEMos.designer.cs">
       <DependentUpon>frm_LotEntryOsramEMos.cs</DependentUpon>
     </Compile>
-    <Compile Include="LotCtrl\TELotInfo.cs" />
+    <Compile Include="LotCtrl_Custom\TELotInfo.cs" />
     <Compile Include="Vermes\TEVermesMDS3200.cs" />
     <Compile Include="Weight\frmWeightMeasure.cs">
       <SubType>Form</SubType>
@@ -933,16 +940,16 @@
     <Compile Include="Messages\frm_Message.Designer.cs">
       <DependentUpon>frm_Message.cs</DependentUpon>
     </Compile>
-    <Compile Include="Custom_VolumeAdjust\frm_OsramSCC_LotInfo.cs">
+    <Compile Include="LotCtrl_Custom\frm_OsramSCC_LotInfo.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Custom_VolumeAdjust\frm_OsramSCC_LotInfo.Designer.cs">
+    <Compile Include="LotCtrl_Custom\frm_OsramSCC_LotInfo.Designer.cs">
       <DependentUpon>frm_OsramSCC_LotInfo.cs</DependentUpon>
     </Compile>
-    <Compile Include="Custom_VolumeAdjust\frm_OsramSCC_Setup.cs">
+    <Compile Include="LotCtrl_Custom\frm_OsramSCC_Setup.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Custom_VolumeAdjust\frm_OsramSCC_Setup.designer.cs">
+    <Compile Include="LotCtrl_Custom\frm_OsramSCC_Setup.designer.cs">
       <DependentUpon>frm_OsramSCC_Setup.cs</DependentUpon>
     </Compile>
     <Compile Include="frm_DispCore_DispInfo.cs">
@@ -1017,7 +1024,7 @@
     <Compile Include="Messages\frmVisionFailMsg2.Designer.cs">
       <DependentUpon>frmVisionFailMsg2.cs</DependentUpon>
     </Compile>
-    <Compile Include="Custom_VolumeAdjust\TaskVolOfst_Custom.cs" />
+    <Compile Include="LotCtrl_Custom\TaskVolOfst_Custom.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1152,6 +1159,9 @@
     <EmbeddedResource Include="frmDispProg_ZPath.resx">
       <DependentUpon>frmDispProg_ZPath.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmSecsGem.resx">
+      <DependentUpon>frmSecsGem.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmSetupPP_HPC3.resx">
       <DependentUpon>frmSetupPP_HPC3.cs</DependentUpon>
     </EmbeddedResource>
@@ -1173,14 +1183,14 @@
     <EmbeddedResource Include="frmProcessing.resx">
       <DependentUpon>frmProcessing.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Custom_VolumeAdjust\frm_Osram_eMos_Setup.resx">
+    <EmbeddedResource Include="LotCtrl_Custom\frm_Osram_eMos_Setup.resx">
       <DependentUpon>frm_Osram_eMos_Setup.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="JogAndVision\frmJogGantry.resx">
       <DependentUpon>frmJogGantry.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="LotCtrl\frm_LotEntryOsramICC.resx">
+    <EmbeddedResource Include="LotCtrl_Custom\frm_LotEntryOsramICC.resx">
       <DependentUpon>frm_LotEntryOsramICC.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Settings\frmSettings.resx">
@@ -1425,7 +1435,7 @@
     <EmbeddedResource Include="DispProg\frmDispProgGroupDisp.resx">
       <DependentUpon>frmDispProgGroupDisp.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="LotCtrl\frm_LotEntryOsramEMos.resx">
+    <EmbeddedResource Include="LotCtrl_Custom\frm_LotEntryOsramEMos.resx">
       <DependentUpon>frm_LotEntryOsramEMos.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Weight\frmWeightMeasure.resx">
@@ -1630,11 +1640,11 @@
       <DependentUpon>frm_Message.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Custom_VolumeAdjust\frm_OsramSCC_LotInfo.resx">
+    <EmbeddedResource Include="LotCtrl_Custom\frm_OsramSCC_LotInfo.resx">
       <DependentUpon>frm_OsramSCC_LotInfo.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Custom_VolumeAdjust\frm_OsramSCC_Setup.resx">
+    <EmbeddedResource Include="LotCtrl_Custom\frm_OsramSCC_Setup.resx">
       <DependentUpon>frm_OsramSCC_Setup.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>

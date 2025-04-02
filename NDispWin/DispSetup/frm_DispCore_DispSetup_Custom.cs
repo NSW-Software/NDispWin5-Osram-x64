@@ -217,6 +217,9 @@ namespace NDispWin
 
         private void btnCheckOsramICCPath_Click(object sender, EventArgs e)
         {
+            TaskDisp.OsramICC_InputPath = tbxOsramICCInputPath.Text;
+            TaskDisp.OsramICC_OutputPath = tbxOsramICCOutputPath.Text;
+
             Task.Run(() =>
             {
                 Color inputColor = Directory.Exists(TaskDisp.OsramICC_InputPath) ? Color.Lime : Color.Red;
@@ -244,6 +247,11 @@ namespace NDispWin
                     tbxOsramICCOutputPath.BackColor = Color.White;
                 }));
             });
+        }
+        private void btnUpdateOsramICC_Click(object sender, EventArgs e)
+        {
+            TaskDisp.OsramICC_InputPath = tbxOsramICCInputPath.Text;
+            TaskDisp.OsramICC_OutputPath = tbxOsramICCOutputPath.Text;
         }
 
         private void btnInputFileLoad_Click(object sender, EventArgs e)
@@ -279,23 +287,18 @@ namespace NDispWin
             {
                 string fileName = ofd.FileName;
 
-                if (OsramICC.ReadOutputFile(fileName))
-                   MessageBox.Show($"Output File load success.");
-                else
+                if (!OsramICC.ReadOutputFile(fileName))
                     MessageBox.Show($"Output File load fail.");
             }
-        }
-        private void btnOutputFileTileLookUp_Click(object sender, EventArgs e)
-        {
-            double[] d = new double[2] { 0, 0 };
 
+            double[] d = new double[2] { 0, 0 };
             if (OsramICC.PanelLookup(tbxLookUpTileID.Text, ref d))
             {
-                MessageBox.Show($"{tbxLookUpTileID.Text},{d[0]:f3},{d[1]:f4}");
+                MessageBox.Show($"Output File load success. \nPanelID: {tbxLookUpTileID.Text},{d[0]:f3},{d[1]:f4}");
             }
             else
             {
-                MessageBox.Show($"{tbxLookUpTileID.Text} lookup fail.");
+                MessageBox.Show($"Output File load success. \nPanelID: {tbxLookUpTileID.Text} lookup fail.");
             }
         }
 
@@ -367,6 +370,11 @@ namespace NDispWin
             {
                 MessageBox.Show($"{tbxLookUpTileID.Text} test fail.");
             }
+        }
+
+        private void tbxOsramICCInputPath_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

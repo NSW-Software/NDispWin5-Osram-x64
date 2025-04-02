@@ -3885,49 +3885,74 @@ namespace NDispWin
 
             try
             {
-                switch (DispProg.Pump_Type)
+                #region Check Ready
+                switch (GDefine.DispCtrlType[0])
                 {
-                    case EPumpType.HM:
-                    case EPumpType.PP:
-                    case EPumpType.PP2D:
-                    case EPumpType.PPD:
-                        #region
-                        _RetryD1:
-                        if (!TaskGantry.DispAReady())
+                    case GDefine.EDispCtrlType.HPC3:
                         {
-                            Msg MsgBox = new Msg();
-                            EMsgRes MsgRes = MsgBox.Show(Messages.DISPCTRL_NOT_READY, "Pump 1", EMsgBtn.smbOK_Retry_Cancel);
-
-                            switch (MsgRes)
+                            if (!TFPump.PP4.Ready(new bool[] { true, false }))
                             {
-                                case EMsgRes.smrOK:
-                                    break;
-                                case EMsgRes.smrRetry:
-                                    goto _RetryD1;
-                                case EMsgRes.smrCancel:
-                                    return false;
+                                Msg MsgBox = new Msg();
+                                MsgBox.Show(Messages.PP4_PUMP_NOT_READY, "Pump 1");
+                                return false;
                             }
+                            if (GDefine.GantryConfig == GDefine.EGantryConfig.XY_ZX2Y2_Z2 &&
+                                            (DispProg.Head_Operation == EHeadOperation.Sync || DispProg.Head_Operation == EHeadOperation.Double))
+                            {
+                                Msg MsgBox = new Msg();
+                                MsgBox.Show(Messages.PP4_PUMP_NOT_READY, "Pump 2");
+                                return false;
+                            }
+                            break;
                         }
-                        _RetryD2:
-                        if (GDefine.GantryConfig == GDefine.EGantryConfig.XY_ZX2Y2_Z2 &&
-                            (DispProg.Head_Operation == EHeadOperation.Sync || DispProg.Head_Operation == EHeadOperation.Double) &&
-                            !TaskGantry.DispBReady())
+                    default:
                         {
-                            Msg MsgBox = new Msg();
-                            EMsgRes MsgRes = MsgBox.Show(Messages.DISPCTRL_NOT_READY, "Pump 2", EMsgBtn.smbOK_Retry_Cancel);
-
-                            switch (MsgRes)
+                            switch (DispProg.Pump_Type)
                             {
-                                case EMsgRes.smrOK:
+                                case EPumpType.HM:
+                                case EPumpType.PP:
+                                case EPumpType.PP2D:
+                                case EPumpType.PPD:
+                                #region
+                                _RetryD1:
+                                    if (!TaskGantry.DispAReady())
+                                    {
+                                        Msg MsgBox = new Msg();
+                                        EMsgRes MsgRes = MsgBox.Show(Messages.DISPCTRL_NOT_READY, "Pump 1", EMsgBtn.smbOK_Retry_Cancel);
+
+                                        switch (MsgRes)
+                                        {
+                                            case EMsgRes.smrOK:
+                                                break;
+                                            case EMsgRes.smrRetry:
+                                                goto _RetryD1;
+                                            case EMsgRes.smrCancel:
+                                                return false;
+                                        }
+                                    }
+                                _RetryD2:
+                                    if (GDefine.GantryConfig == GDefine.EGantryConfig.XY_ZX2Y2_Z2 &&
+                                        (DispProg.Head_Operation == EHeadOperation.Sync || DispProg.Head_Operation == EHeadOperation.Double) &&
+                                        !TaskGantry.DispBReady())
+                                    {
+                                        Msg MsgBox = new Msg();
+                                        EMsgRes MsgRes = MsgBox.Show(Messages.DISPCTRL_NOT_READY, "Pump 2", EMsgBtn.smbOK_Retry_Cancel);
+
+                                        switch (MsgRes)
+                                        {
+                                            case EMsgRes.smrOK:
+                                                break;
+                                            case EMsgRes.smrRetry:
+                                                goto _RetryD2;
+                                            case EMsgRes.smrCancel:
+                                                return false;
+                                        }
+                                    }
                                     break;
-                                case EMsgRes.smrRetry:
-                                    goto _RetryD2;
-                                case EMsgRes.smrCancel:
-                                    return false;
+                                    #endregion
                             }
+                            break;
                         }
-                        break;
-                        #endregion
                 }
 
                 TaskDisp.FPressOn(new bool[2] { true, true });
@@ -4046,57 +4071,74 @@ namespace NDispWin
                 #region Dot DispA
                 if (TeachNeedle_DotTime == 0) return false;
 
-                switch (DispProg.Pump_Type)
+                switch (GDefine.DispCtrlType[0])
                 {
-                    case TaskDisp.EPumpType.PP:
-                    case TaskDisp.EPumpType.PP2D:
-                    case TaskDisp.EPumpType.PPD:
-                    case TaskDisp.EPumpType.Vermes:
-                    case TaskDisp.EPumpType.Vermes1560:
-                        if (!TaskGantry.DispAReady()) return false;
-                        if (!TaskDisp.CtrlWaitReady(true, false)) return false;
-                        break;
-                }
-                switch (DispProg.Pump_Type)
-                {
-                    case TaskDisp.EPumpType.PP:
-                    case TaskDisp.EPumpType.PP2D:
-                    case TaskDisp.EPumpType.PPD:
-                        if (!TaskDisp.SetDispVolume(true, false, DispProg.PP_HeadA_BackSuckVol + TeachNeedle_DotVolume, DispProg.PP_HeadB_BackSuckVol + TeachNeedle_DotVolume)) return false;
-                        break;
-                    case TaskDisp.EPumpType.Vermes:
-                        if (TaskDisp.Vermes3200[0].IsOpen)
+                    case GDefine.EDispCtrlType.HPC3:
                         {
-                            TaskDisp.Vermes3200[0].Param.NP = 1;
-                            TaskDisp.Vermes3200[0].Set();
+                            if (!TFPump.PP4.Ready(new bool[] { true, false })) return false;
+                            if (!TFPump.PP4.CheckStrokeThenFill(new bool[] { true, false })) return false;
+                            TFPump.PP4.DispAmounts = new double[] { DispProg.PP_HeadA_BackSuckVol + TeachNeedle_DotVolume, DispProg.PP_HeadB_BackSuckVol + TeachNeedle_DotVolume };
+                            if (!TFPump.PP4.SingleShot(new bool[] { true, false })) return false;
+                            t = GDefine.GetTickCount() + TeachNeedle_DotTime;
+                            while (GDefine.GetTickCount() <= t) { }
+                            break;
                         }
-                        break;
-                    case TaskDisp.EPumpType.Vermes1560:
-                        if (TaskDisp.Vermes1560[0].IsOpen)
+                    default:
                         {
-                            TaskDisp.Vermes1560[0].NP[0] = 1;
-                            TaskDisp.Vermes1560[0].UpdateSetup();
+                            switch (DispProg.Pump_Type)
+                            {
+                                case TaskDisp.EPumpType.PP:
+                                case TaskDisp.EPumpType.PP2D:
+                                case TaskDisp.EPumpType.PPD:
+                                case TaskDisp.EPumpType.Vermes:
+                                case TaskDisp.EPumpType.Vermes1560:
+                                    if (!TaskGantry.DispAReady()) return false;
+                                    if (!TaskDisp.CtrlWaitReady(true, false)) return false;
+                                    break;
+                            }
+                            switch (DispProg.Pump_Type)
+                            {
+                                case TaskDisp.EPumpType.PP:
+                                case TaskDisp.EPumpType.PP2D:
+                                case TaskDisp.EPumpType.PPD:
+                                    if (!TaskDisp.SetDispVolume(true, false, DispProg.PP_HeadA_BackSuckVol + TeachNeedle_DotVolume, DispProg.PP_HeadB_BackSuckVol + TeachNeedle_DotVolume)) return false;
+                                    break;
+                                case TaskDisp.EPumpType.Vermes:
+                                    if (TaskDisp.Vermes3200[0].IsOpen)
+                                    {
+                                        TaskDisp.Vermes3200[0].Param.NP = 1;
+                                        TaskDisp.Vermes3200[0].Set();
+                                    }
+                                    break;
+                                case TaskDisp.EPumpType.Vermes1560:
+                                    if (TaskDisp.Vermes1560[0].IsOpen)
+                                    {
+                                        TaskDisp.Vermes1560[0].NP[0] = 1;
+                                        TaskDisp.Vermes1560[0].UpdateSetup();
+                                    }
+                                    break;
+                            }
+
+                            if (!TrigOn(true, false)) return false;
+
+                            t = GDefine.GetTickCount() + TeachNeedle_DotTime;
+                            while (GDefine.GetTickCount() <= t) { }
+
+                            if (!TrigOff(true, false)) return false;
+
+                            switch (DispProg.Pump_Type)
+                            {
+                                case TaskDisp.EPumpType.PP:
+                                case TaskDisp.EPumpType.PP2D:
+                                case TaskDisp.EPumpType.PPD:
+                                case TaskDisp.EPumpType.Vermes:
+                                case TaskDisp.EPumpType.Vermes1560:
+                                    if (!TaskDisp.CtrlWaitResponse(true, false)) return false;
+                                    if (!CtrlWaitComplete(true, false)) return false;
+                                    break;
+                            }
+                            break;
                         }
-                        break;
-                }
-
-                if (!TrigOn(true, false)) return false;
-
-                t = GDefine.GetTickCount() + TeachNeedle_DotTime;
-                while (GDefine.GetTickCount() <= t) { }
-
-                if (!TrigOff(true, false)) return false;
-
-                switch (DispProg.Pump_Type)
-                {
-                    case TaskDisp.EPumpType.PP:
-                    case TaskDisp.EPumpType.PP2D:
-                    case TaskDisp.EPumpType.PPD:
-                    case TaskDisp.EPumpType.Vermes:
-                    case TaskDisp.EPumpType.Vermes1560:
-                        if (!TaskDisp.CtrlWaitResponse(true, false)) return false;
-                        if (!CtrlWaitComplete(true, false)) return false;
-                        break;
                 }
                 #endregion
 
@@ -4197,61 +4239,77 @@ namespace NDispWin
                                 t = GDefine.GetTickCount() + 100;
                                 while (GDefine.GetTickCount() <= t) { Thread.Sleep(0); }
 
-                                #region Dot DispB
-                                if (TeachNeedle_DotTime == 0) return false;
-                                switch (DispProg.Pump_Type)
-                                {
-                                    case TaskDisp.EPumpType.PP:
-                                    case TaskDisp.EPumpType.PP2D:
-                                    case TaskDisp.EPumpType.PPD:
-                                    case TaskDisp.EPumpType.Vermes:
-                                    case TaskDisp.EPumpType.Vermes1560:
-                                        if (!TaskGantry.DispBReady()) return false;
-                                        if (!TaskDisp.CtrlWaitReady(false, true)) return false;
-                                        break;
-                                }
 
-                                switch (DispProg.Pump_Type)
+                                switch (GDefine.DispCtrlType[0])
                                 {
-                                    case TaskDisp.EPumpType.PP:
-                                    case TaskDisp.EPumpType.PP2D:
-                                    case TaskDisp.EPumpType.PPD:
-                                        if (!TaskDisp.SetDispVolume(false, true, DispProg.PP_HeadA_BackSuckVol + TeachNeedle_DotVolume, DispProg.PP_HeadB_BackSuckVol + TeachNeedle_DotVolume)) return false;
-                                        break;
-                                    case TaskDisp.EPumpType.Vermes:
-                                        if (TaskDisp.Vermes3200[1].IsOpen)
+                                    case GDefine.EDispCtrlType.HPC3:
                                         {
-                                            TaskDisp.Vermes3200[1].Param.NP = 1;
-                                            TaskDisp.Vermes3200[1].Set();
+                                            if (!TFPump.PP4.Ready(new bool[] { false, true })) return false;
+                                            if (!TFPump.PP4.CheckStrokeThenFill(new bool[] { false, true })) return false;
+                                            TFPump.PP4.DispAmounts = new double[] { DispProg.PP_HeadA_BackSuckVol + TeachNeedle_DotVolume, DispProg.PP_HeadB_BackSuckVol + TeachNeedle_DotVolume };
+                                            if (!TFPump.PP4.SingleShot(new bool[] { false, true })) return false;
+                                            t = GDefine.GetTickCount() + TeachNeedle_DotTime;
+                                            while (GDefine.GetTickCount() <= t) { }
+                                            break;
+                                        }
+                                    default:
+                                        #region Dot DispB
+                                        if (TeachNeedle_DotTime == 0) return false;
+                                        switch (DispProg.Pump_Type)
+                                        {
+                                            case TaskDisp.EPumpType.PP:
+                                            case TaskDisp.EPumpType.PP2D:
+                                            case TaskDisp.EPumpType.PPD:
+                                            case TaskDisp.EPumpType.Vermes:
+                                            case TaskDisp.EPumpType.Vermes1560:
+                                                if (!TaskGantry.DispBReady()) return false;
+                                                if (!TaskDisp.CtrlWaitReady(false, true)) return false;
+                                                break;
+                                        }
+
+                                        switch (DispProg.Pump_Type)
+                                        {
+                                            case TaskDisp.EPumpType.PP:
+                                            case TaskDisp.EPumpType.PP2D:
+                                            case TaskDisp.EPumpType.PPD:
+                                                if (!TaskDisp.SetDispVolume(false, true, DispProg.PP_HeadA_BackSuckVol + TeachNeedle_DotVolume, DispProg.PP_HeadB_BackSuckVol + TeachNeedle_DotVolume)) return false;
+                                                break;
+                                            case TaskDisp.EPumpType.Vermes:
+                                                if (TaskDisp.Vermes3200[1].IsOpen)
+                                                {
+                                                    TaskDisp.Vermes3200[1].Param.NP = 1;
+                                                    TaskDisp.Vermes3200[1].Set();
+                                                }
+                                                break;
+                                            case TaskDisp.EPumpType.Vermes1560:
+                                                if (TaskDisp.Vermes1560[1].IsOpen)
+                                                {
+                                                    TaskDisp.Vermes1560[1].NP[0] = 1;
+                                                    TaskDisp.Vermes1560[1].UpdateSetup();
+                                                }
+                                                break;
+                                        }
+
+                                        if (!TrigOn(false, true)) return false;
+
+                                        t = GDefine.GetTickCount() + TeachNeedle_DotTime;
+                                        while (GDefine.GetTickCount() <= t) { }
+
+                                        if (!TrigOff(false, true)) return false;
+                                        switch (DispProg.Pump_Type)
+                                        {
+                                            case TaskDisp.EPumpType.PP:
+                                            case TaskDisp.EPumpType.PP2D:
+                                            case TaskDisp.EPumpType.PPD:
+                                            case TaskDisp.EPumpType.Vermes:
+                                            case TaskDisp.EPumpType.Vermes1560:
+                                                if (!TaskDisp.CtrlWaitResponse(false, true)) return false;
+                                                if (!CtrlWaitComplete(false, true)) return false;
+                                                break;
                                         }
                                         break;
-                                    case TaskDisp.EPumpType.Vermes1560:
-                                        if (TaskDisp.Vermes1560[1].IsOpen)
-                                        {
-                                            TaskDisp.Vermes1560[1].NP[0] = 1;
-                                            TaskDisp.Vermes1560[1].UpdateSetup();
-                                        }
-                                        break;
+                                        #endregion
                                 }
-
-                                if (!TrigOn(false, true)) return false;
-
-                                t = GDefine.GetTickCount() + TeachNeedle_DotTime;
-                                while (GDefine.GetTickCount() <= t) { }
-
-                                if (!TrigOff(false, true)) return false;
-                                switch (DispProg.Pump_Type)
-                                {
-                                    case TaskDisp.EPumpType.PP:
-                                    case TaskDisp.EPumpType.PP2D:
-                                    case TaskDisp.EPumpType.PPD:
-                                    case TaskDisp.EPumpType.Vermes:
-                                    case TaskDisp.EPumpType.Vermes1560:
-                                        if (!TaskDisp.CtrlWaitResponse(false, true)) return false;
-                                        if (!CtrlWaitComplete(false, true)) return false;
-                                        break;
-                                }
-                                #endregion
 
                                 if (!TaskDisp.TaskMoveGZFocus(0)) return false;
 
@@ -10643,4 +10701,4 @@ namespace NDispWin
         }
     }
 }
-
+#endregion

@@ -83,8 +83,8 @@ namespace NDispWin
             this.ExMsg = exMsg;
             this.MsgBtn = msgBtn;
 
-            GDefine.sgc2.SendAlarmSet($"{msg.Code:d4},{msg.Desc}");
-
+            //GDefine.sgc2.SendAlarmSet($"{msg.Code:d4},{msg.Desc}");
+            TFSecsGem.SendAlarm_ARS(msg, true);
             NUtils.RegistryWR Reg = new NUtils.RegistryWR("SOFTWARE");
             Reg.WriteKey("NSWAUTOMATION_MSG", "DATETIME", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
             Reg.WriteKey("NSWAUTOMATION_MSG", "ERRCODE", $"{msg.Code:d4}");
@@ -186,7 +186,8 @@ namespace NDispWin
         }
         private void OK()
         {
-            GDefine.sgc2.SendAlarmClear($"{msg.Code:D4}");//ErrCode.ToString("0000"));
+            //GDefine.sgc2.SendAlarmClear($"{msg.Code:D4}");//ErrCode.ToString("0000"));
+            TFSecsGem.SendAlarm_ARS(msg, false);
             Log.AddToLog($"{msg.Code:D4}\tOK");//ErrCode.ToString("0000") + (char)9 + "OK");
             TCTwrLight.SetStatus(TwrLight.Idle);//IO.SetState(EMcState.Idle);
             MsgRes = EMsgRes.smrOK;
@@ -195,7 +196,8 @@ namespace NDispWin
         }
         private void Yes()
         {
-            GDefine.sgc2.SendAlarmClear($"{msg.Code:D4}");//(ErrCode.ToString("0000"));
+            //GDefine.sgc2.SendAlarmClear($"{msg.Code:D4}");//(ErrCode.ToString("0000"));
+            TFSecsGem.SendAlarm_ARS(msg, false);
             Log.AddToLog($"{msg.Code:D4}\tYes");//(ErrCode.ToString("0000") + (char)9 + "Yes");
             TCTwrLight.SetStatus(TwrLight.Idle);//IO.SetState(EMcState.Idle);
             MsgRes = EMsgRes.smrYes;
@@ -204,7 +206,8 @@ namespace NDispWin
         }
         private void No()
         {
-            GDefine.sgc2.SendAlarmClear($"{msg.Code:D4}");//(ErrCode.ToString("0000"));
+            //GDefine.sgc2.SendAlarmClear($"{msg.Code:D4}");//(ErrCode.ToString("0000"));
+            TFSecsGem.SendAlarm_ARS(msg, false);
             Log.AddToLog($"{msg.Code:D4}\tNo");//(ErrCode.ToString("0000") + (char)9 + "No");
             TCTwrLight.SetStatus(TwrLight.Idle);//IO.SetState(EMcState.Idle);
             MsgRes = EMsgRes.smrNo;
@@ -213,7 +216,8 @@ namespace NDispWin
         }
         private void Retry()
         {
-            GDefine.sgc2.SendAlarmClear($"{msg.Code:D4}");//(ErrCode.ToString("0000"));
+            //GDefine.sgc2.SendAlarmClear($"{msg.Code:D4}");//(ErrCode.ToString("0000"));
+            TFSecsGem.SendAlarm_ARS(msg, false);
             Log.AddToLog($"{msg.Code:D4}\tRetry");//(ErrCode.ToString("0000") + (char)9 + "Retry");
             TCTwrLight.SetStatus(TwrLight.Run);//IO.SetState(EMcState.Last);
             MsgRes = EMsgRes.smrRetry;
@@ -222,7 +226,8 @@ namespace NDispWin
         }
         private void Stop()
         {
-            GDefine.sgc2.SendAlarmClear($"{msg.Code:D4}");//(ErrCode.ToString("0000"));
+            //GDefine.sgc2.SendAlarmClear($"{msg.Code:D4}");//(ErrCode.ToString("0000"));
+            TFSecsGem.SendAlarm_ARS(msg, false);
             Log.AddToLog($"{msg.Code:D4}\tStop");//(ErrCode.ToString("0000") + (char)9 + "Stop");
             TCTwrLight.SetStatus(TwrLight.Idle);//IO.SetState(EMcState.Idle);
             MsgRes = EMsgRes.smrStop;
@@ -231,7 +236,8 @@ namespace NDispWin
         }
         private void Cancel()
         {
-            GDefine.sgc2.SendAlarmClear($"{msg.Code:D4}");//(ErrCode.ToString("0000"));
+            //GDefine.sgc2.SendAlarmClear($"{msg.Code:D4}");//(ErrCode.ToString("0000"));
+            TFSecsGem.SendAlarm_ARS(msg, false);
             Log.AddToLog($"{msg.Code:D4}\tCancel");//(ErrCode.ToString("0000") + (char)9 + "Cancel");
             TCTwrLight.SetStatus(TwrLight.Idle);//IO.SetState(EMcState.Idle);
             MsgRes = EMsgRes.smrCancel;

@@ -70,8 +70,8 @@ namespace NDispWin
 
             lblHead1DefVolume.Text = $"{CmdLine.DPara[18]:f3}";
             lblHead2DefVolume.Text = $"{CmdLine.DPara[19]:f3}";
-            lblHead1Volume.Text = $"{TFPump.PP4.DispAmounts[0]:f3}";
-            lblHead2Volume.Text = $"{TFPump.PP4.DispAmounts[1]:f3}";
+            lblHead1Volume.Text = $"{(TFPump.PP4.DispAmounts[0] - TFPump.PP4.BSuckAmounts[0]):f3}";
+            lblHead2Volume.Text = $"{(TFPump.PP4.DispAmounts[1] - TFPump.PP4.BSuckAmounts[1]):f3}";
 
             if (CmdLine.DPara[10] + CmdLine.DPara[11] + CmdLine.DPara[11] + CmdLine.DPara[12] == 0)
             {
@@ -401,28 +401,28 @@ namespace NDispWin
 
         private void lblHead1DefVolume_Click(object sender, EventArgs e)
         {
-            UC.AdjustExec(CmdName + ", Head1DefVolume", ref CmdLine.DPara[18], 0, 100);
+            UC.AdjustExec(CmdName + ", Head1DefNettVolume", ref CmdLine.DPara[18], 0, 100);
             UpdateDisplay();
         }
 
         private void lblHead2DefVolume_Click(object sender, EventArgs e)
         {
-            UC.AdjustExec(CmdName + ", Head2DefVolume", ref CmdLine.DPara[19], 0, 100);
+            UC.AdjustExec(CmdName + ", Head2DefNettVolume", ref CmdLine.DPara[19], 0, 100);
             UpdateDisplay();
         }
         private void lblHead2Volume_Click(object sender, EventArgs e)
         {
-            double d = TFPump.PP4.DispAmounts[1];
-            if (UC.AdjustExec("PP PA Disp Amount", ref d, 0.001, 1300))
-                TFPump.PP4.DispAmounts = new double[] { TFPump.PP4.DispAmounts[0], d };
+            double d = TFPump.PP4.DispAmounts[1] - TFPump.PP4.BSuckAmounts[1];
+            if (UC.AdjustExec("PP PA Net Disp Amount", ref d, 0.001, 1300))
+                TFPump.PP4.DispAmounts = new double[] { TFPump.PP4.DispAmounts[0], d + TFPump.PP4.BSuckAmounts[1] };
             UpdateDisplay();
         }
 
         private void lblHead1Volume_Click(object sender, EventArgs e)
         {
-            double d = TFPump.PP4.DispAmounts[0];
-            if (UC.AdjustExec("PP PA Disp Amount", ref d, 0.001, 1300))
-                TFPump.PP4.DispAmounts = new double[] { d, TFPump.PP4.DispAmounts[1] };
+            double d = TFPump.PP4.DispAmounts[0] - TFPump.PP4.BSuckAmounts[0];
+            if (UC.AdjustExec("PP PB Net Disp Amount", ref d, 0.001, 1300))
+                TFPump.PP4.DispAmounts = new double[] { d + TFPump.PP4.BSuckAmounts[0], TFPump.PP4.DispAmounts[1] };
             UpdateDisplay();
         }
 
@@ -432,7 +432,7 @@ namespace NDispWin
         IPara[0..9]     [ModelNo, .1., Disp, Type, .4., .5., .6., .7., .8., .9.]
         IPara[10..19]   [.10., .11., .12., .13., .14., .15., .16., .17., .18., .19.]
         DPara[0..9]     [StartLen, EndLen, .3., EndGap, .4., .5., .6., .7., .8., .9.]
-        DPara[10..19]   [Dot1Pc, Dot2Pc, Dot3Pc, Dot4Pc, .14., .15., .16., .17., H1DefVolume, H2DefVolume]
+        DPara[10..19]   [Dot1Pc, Dot2Pc, Dot3Pc, Dot4Pc, .14., .15., .16., .17., H1DefNettVolume, H2DefNettVolume]
         X[0..99]        [PointTL, ..]
         Y[0..99]        [PointBR, ..]
         */

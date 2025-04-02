@@ -690,44 +690,44 @@ namespace NDispWin
                 return frm.ShowDialog();
             }
         }
-        public static class DispProg
-        {
-            static frm_DispProg2 frm = new frm_DispProg2();
-            public static DialogResult ShowDialog()
-            {
-                if (GDefine.CameraType[0] == GDefine.ECameraType.Spinnaker2)
-                {
-                    frm_DispProg2 frm = new frm_DispProg2();
-                    return frm.ShowDialog();
-                }
-                else
-                                if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL)
-                {
-                    frm_DispProg2 frm = new frm_DispProg2();
-                    return frm.ShowDialog();
-                }
-                else
-                {
-                    if (frm == null) frm = new frm_DispProg2();
+        //public static class DispProg
+        //{
+        //    static frm_DispProg2 frm = new frm_DispProg2();
+        //    public static DialogResult ShowDialog()
+        //    {
+        //        if (GDefine.CameraType[0] == GDefine.ECameraType.Spinnaker2)
+        //        {
+        //            frm_DispProg2 frm = new frm_DispProg2();
+        //            return frm.ShowDialog();
+        //        }
+        //        else
+        //                        if (GDefine.CameraType[0] == GDefine.ECameraType.MVSGenTL)
+        //        {
+        //            frm_DispProg2 frm = new frm_DispProg2();
+        //            return frm.ShowDialog();
+        //        }
+        //        else
+        //        {
+        //            if (frm == null) frm = new frm_DispProg2();
 
-                    if (frm != null)
-                    {
-                        frm.Show();
-                        frm.BringToFront();
-                    }
-                    return DialogResult.OK;
-                }
-                //else
-                //{
-                //    frm_DispCore_DispProg frm = new frm_DispCore_DispProg();
+        //            if (frm != null)
+        //            {
+        //                frm.Show();
+        //                frm.BringToFront();
+        //            }
+        //            return DialogResult.OK;
+        //        }
+        //        //else
+        //        //{
+        //        //    frm_DispCore_DispProg frm = new frm_DispCore_DispProg();
 
-                //    DispCore.DispProg.frm_CamView.TopLevel = false;
-                //    DispCore.DispProg.frm_CamView.Parent = frm;
-                //    DispCore.DispProg.frm_CamView.TopMost = true;
+        //        //    DispCore.DispProg.frm_CamView.TopLevel = false;
+        //        //    DispCore.DispProg.frm_CamView.Parent = frm;
+        //        //    DispCore.DispProg.frm_CamView.TopMost = true;
 
-                //    return frm.ShowDialog();
-                //}
-            }
-        }
+        //        //    return frm.ShowDialog();
+        //        //}
+        //    }
+        //}
     }
 }

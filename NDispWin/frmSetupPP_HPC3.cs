@@ -151,16 +151,26 @@ namespace NDispWin
         private async void btn_CleanFill_Click(object sender, EventArgs e)
         {
             CleanFillCancel = false;
-
             GControl.UI_Disable(btnCleanFillCancel);
-
-            for (int i = 0; i < TFPump.PP4.CleanFillCount; i++)
+            try
             {
-                lblCleanFillCount.Text = $"({i + 1}/{TFPump.PP4.CleanFillCount})";
-                await Task.Run(() => { return TFPump.PP4.PCleanFill(pumpSelect); });
-                if (CleanFillCancel) break;
-            }
+                if (!TaskGantry.CheckDoorSw()) return;
 
+                if (!TaskDisp.TaskMoveGZZ2Up()) goto _End;
+                if (!TaskDisp.TaskGotoPMaint()) goto _End;
+
+                for (int i = 0; i < TFPump.PP4.CleanFillCount; i++)
+                {
+                    lblCleanFillCount.Text = $"({i + 1}/{TFPump.PP4.CleanFillCount})";
+                    await Task.Run(() => { return TFPump.PP4.PCleanFill(pumpSelect); });
+                    if (CleanFillCancel) break;
+                }
+            }
+            finally
+            {
+            }
+        _End:
+            TaskDisp.TaskMoveGZZ2Up();
             UpdateDisplay();
             GControl.UI_Enable();
         }

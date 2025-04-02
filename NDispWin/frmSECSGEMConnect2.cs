@@ -296,6 +296,14 @@ namespace NDispWin
             List<string> list = null;
             try
             {
+                list = TEStreamFunc.List();
+                W.WriteLine("***StreamFunc, Desc, VIDs***");
+                foreach (string s in list)
+                {
+                    W.WriteLine(s);
+                }
+                W.WriteLine("");
+
                 list = TEVID.List();
                 W.WriteLine("***SVID/DVID/ECID, Desc***");
                 W.WriteLine("***SVID 10000~19999, DVID 20000~29999, ECID 30000~39999***");
@@ -305,8 +313,8 @@ namespace NDispWin
                 }
                 W.WriteLine("");
 
-                list = TEEvent.ALID_List();
-                W.WriteLine("***ALID,Desc***");
+                list = TEMessage.ALID_List();
+                W.WriteLine("***ALID, Desc***");
                 foreach (string s in list)
                 {
                     W.WriteLine(s);
@@ -314,7 +322,7 @@ namespace NDispWin
                 W.WriteLine("");
 
                 list = TEEvent.CEID_List();
-                W.WriteLine("***CEID,Desc***");
+                W.WriteLine("***CEID, Desc, VIDs***");
                 foreach (string s in list)
                 {
                     W.WriteLine(s);
@@ -683,30 +691,30 @@ namespace NDispWin
 
         public void Connect(string ipAddress, int port)
         {
-            try
-            {
-                AddLog("Connecting to " + ipAddress + " : " + port.ToString());
-                client.Connect(ipAddress, port);
-            }
-            catch
-            {
-                AddLog("Connect fail.");
-            }
+            //try
+            //{
+            //    AddLog("Connecting to " + ipAddress + " : " + port.ToString());
+            //    client.Connect(ipAddress, port);
+            //}
+            //catch
+            //{
+            //    AddLog("Connect fail.");
+            //}
         }
         public void Connect()
         {
-            client.Connect(client.IPAddress, client.Port);
+            //client.Connect(client.IPAddress, client.Port);
         }
         public void Disconnect()
         {
-            try
-            {
-                client.Disconnect();
-            }
-            catch
-            {
-                AddLog("Disconnect fail.");
-            }
+            //try
+            //{
+            //    client.Disconnect();
+            //}
+            //catch
+            //{
+            //    AddLog("Disconnect fail.");
+            //}
         }
 
         public void Send(string outMsg)
@@ -718,11 +726,11 @@ namespace NDispWin
         }
         public void SendAlarmSet(string alarmInfo)
         {
-            if (EnableAlarm) Send("ALARM,SET," + alarmInfo);
+            //if (EnableAlarm) Send("ALARM,SET," + alarmInfo);
         }
         public void SendAlarmClear(string alarmInfo)
         {
-            if (EnableAlarm) Send("ALARM,CLEAR," + alarmInfo);
+            //if (EnableAlarm) Send("ALARM,CLEAR," + alarmInfo);
         }
         public void SendEvent(string eventInfo)
         {

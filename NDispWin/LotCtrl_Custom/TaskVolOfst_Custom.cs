@@ -1083,7 +1083,7 @@ namespace NDispWin
                 Event.OSRAMICC.Set($"TileID: {tileID}", "Run Pass1");
                 Pass1.PanelIDs.Insert(0, tileID);
                 Pass1.WriteFile();
-        DispProg.UsePreMap(1);
+                DispProg.UsePreMap(1);
                 DispProg.CurrMapMask(DispProg.Map.ActivePreMap.Bin);
 
                 Event.OSRAMICC.Set($"TileID: {tileID}", "Select Premap1");

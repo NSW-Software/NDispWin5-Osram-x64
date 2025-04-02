@@ -26,6 +26,7 @@ namespace NDispWin
         //Custom1
         //Custom2
         public EType Type = EType.Error;
+        public bool Enabled = false;//SECSGEM Enabled
 
         public bool Assist = true;
         public TEMessage(TEMessage msg)
@@ -52,6 +53,140 @@ namespace NDispWin
             CAct = cAct;
             Type = type;
             Assist = assist;
+        }
+
+        public static List<string> MessageList()
+        {
+            var msglist = typeof(Messages).GetFields(BindingFlags.Public | BindingFlags.Static)
+                .Where(x => x.FieldType == typeof(TEMessage))
+                .Select(x => (TEMessage)x.GetValue(null)).ToArray();
+
+            List<string> list = new List<string>();
+            foreach (var msg in msglist)
+            {
+                list.Add($"{msg.Code:d4},{(int)msg.Type},{Convert.ToInt32(msg.Assist)},{msg.Desc},{msg.CAct},{msg.DescAlt},{msg.CActAlt}");
+            }
+
+            return list;
+        }
+        public static bool SaveList()
+        {
+            List<string> list = MessageList();
+
+            FileStream F = new FileStream(GDefine.MsgFile, FileMode.Create, FileAccess.Write, FileShare.Write);
+            StreamWriter W = new StreamWriter(F);
+
+            try
+            {
+                W.WriteLine("Code,Type,Assist,Desc,CAct,DescAlt,CActAlt");
+                W.WriteLine("Type: Error = 0, Warning = 1, Fault = 2, Notification = 3, Confirmation = 4, Run = 5, Idle = 6, Custom1 = 8, Custom2 = 9");
+                foreach (string s in list)
+                {
+                    W.WriteLine(s);
+                }
+            }
+            catch
+            {
+                return false;
+            }
+            finally
+            {
+                W.Close();
+            }
+
+            return true;
+        }
+        public static bool LoadList()
+        {
+            var msglist = typeof(Messages).GetFields(BindingFlags.Public | BindingFlags.Static)
+                .Where(x => x.FieldType == typeof(TEMessage))
+                .Select(x => (TEMessage)x.GetValue(null)).ToArray();
+
+            if (!File.Exists(GDefine.MsgFile)) return true;
+
+            FileStream F = new FileStream(GDefine.MsgFile, FileMode.Open, FileAccess.ReadWrite, FileShare.Write);
+            StreamReader R = new StreamReader(F);
+
+            string FileLine = "";
+            try
+            {
+                FileLine = R.ReadToEnd();
+            }
+            catch
+            {
+                return false;
+            }
+            finally
+            {
+                R.Close();
+            }
+
+            string[] Lines = FileLine.Split(new char[] { (char)10 }, StringSplitOptions.RemoveEmptyEntries);
+
+            for (int Line = 1; Line < Lines.Count(); Line++)
+            {
+                string[] s = Lines[Line].Split(',');
+
+                //"{msg.Code:d4},{(int)msg.Type},{Assist},{msg.Desc},{msg.CAct},{msg.DescAlt},{msg.CActAlt}"
+                int code = 0;
+                try
+                {
+                    s[0] = s[0].Trim();
+                    code = Convert.ToInt16(s[0]);
+                }
+                catch { }
+
+                int type = 0;
+                try
+                {
+                    s[1] = s[1].Trim();
+                    type = Convert.ToInt16(s[1]);
+                }
+                catch { }
+
+                string descAlt = s[5].Trim();
+                string cActAlt = s[6].Trim();
+
+                foreach (var msg in msglist)
+                {
+                    if (msg.Code == code)
+                    {
+                        msg.Type = (TEMessage.EType)type;
+                        msg.DescAlt = descAlt;
+                        msg.CActAlt = cActAlt;
+                    }
+                }
+            }
+
+            return true;
+        }
+        public static string GetNameFromId(int code)
+        {
+            var fields = typeof(TEMessage).GetFields(BindingFlags.Public | BindingFlags.Static);
+            foreach (var field in fields)
+            {
+                var value = field.GetValue(null) as TEMessage;
+                if (value != null && value.Code == code)
+                {
+                    return field.Name;
+                }
+            }
+            return null;
+        }
+
+        public static List<string> ALID_List()
+        {
+            var msglist = typeof(Messages).GetFields(BindingFlags.Public | BindingFlags.Static)
+                .Where(x => x.FieldType == typeof(TEMessage))
+                .Select(x => (TEMessage)x.GetValue(null)).ToArray();
+
+            List<string> list = new List<string>();
+            foreach (var msg in msglist)
+            {
+                list.Add($"{msg.Code:d4},{msg.Desc}");
+            }
+
+            return list;
         }
     }
     public class Messages
@@ -341,110 +476,123 @@ namespace NDispWin
 
     public class TCMessages
     {
-        public static List<string> MessageList()
-        {
-            var msglist = typeof(Messages).GetFields(BindingFlags.Public | BindingFlags.Static)
-                .Where(x => x.FieldType == typeof(TEMessage))
-                .Select(x => (TEMessage)x.GetValue(null)).ToArray();
+        //public static List<string> MessageList()
+        //{
+        //    var msglist = typeof(Messages).GetFields(BindingFlags.Public | BindingFlags.Static)
+        //        .Where(x => x.FieldType == typeof(TEMessage))
+        //        .Select(x => (TEMessage)x.GetValue(null)).ToArray();
 
-            List<string> list = new List<string>();
-            foreach (var msg in msglist)
-            {
-                list.Add($"{msg.Code:d4},{(int)msg.Type},{Convert.ToInt32(msg.Assist)},{msg.Desc},{msg.CAct},{msg.DescAlt},{msg.CActAlt}");
-            }
+        //    List<string> list = new List<string>();
+        //    foreach (var msg in msglist)
+        //    {
+        //        list.Add($"{msg.Code:d4},{(int)msg.Type},{Convert.ToInt32(msg.Assist)},{msg.Desc},{msg.CAct},{msg.DescAlt},{msg.CActAlt}");
+        //    }
 
-            return list;
-        }
-        public static bool SaveList()
-        {
-            List<string> list = MessageList();
+        //    return list;
+        //}
+        //public static bool SaveList()
+        //{
+        //    List<string> list = MessageList();
 
-            FileStream F = new FileStream(GDefine.MsgFile, FileMode.Create, FileAccess.Write, FileShare.Write);
-            StreamWriter W = new StreamWriter(F);
+        //    FileStream F = new FileStream(GDefine.MsgFile, FileMode.Create, FileAccess.Write, FileShare.Write);
+        //    StreamWriter W = new StreamWriter(F);
 
-            try
-            {
-                W.WriteLine("Code,Type,Assist,Desc,CAct,DescAlt,CActAlt");
-                W.WriteLine("Type: Error = 0, Warning = 1, Fault = 2, Notification = 3, Confirmation = 4, Run = 5, Idle = 6, Custom1 = 8, Custom2 = 9");
-                foreach (string s in list)
-                {
-                    W.WriteLine(s);
-                }
-            }
-            catch
-            {
-                return false;
-            }
-            finally
-            {
-                W.Close();
-            }
+        //    try
+        //    {
+        //        W.WriteLine("Code,Type,Assist,Desc,CAct,DescAlt,CActAlt");
+        //        W.WriteLine("Type: Error = 0, Warning = 1, Fault = 2, Notification = 3, Confirmation = 4, Run = 5, Idle = 6, Custom1 = 8, Custom2 = 9");
+        //        foreach (string s in list)
+        //        {
+        //            W.WriteLine(s);
+        //        }
+        //    }
+        //    catch
+        //    {
+        //        return false;
+        //    }
+        //    finally
+        //    {
+        //        W.Close();
+        //    }
 
-            return true;
-        }
-        public static bool LoadList()
-        {
-            var msglist = typeof(Messages).GetFields(BindingFlags.Public | BindingFlags.Static)
-                .Where(x => x.FieldType == typeof(TEMessage))
-                .Select(x => (TEMessage)x.GetValue(null)).ToArray();
+        //    return true;
+        //}
+        //public static bool LoadList()
+        //{
+        //    var msglist = typeof(Messages).GetFields(BindingFlags.Public | BindingFlags.Static)
+        //        .Where(x => x.FieldType == typeof(TEMessage))
+        //        .Select(x => (TEMessage)x.GetValue(null)).ToArray();
 
-            if (!File.Exists(GDefine.MsgFile)) return true;
+        //    if (!File.Exists(GDefine.MsgFile)) return true;
 
-            FileStream F = new FileStream(GDefine.MsgFile, FileMode.Open, FileAccess.ReadWrite, FileShare.Write);
-            StreamReader R = new StreamReader(F);
+        //    FileStream F = new FileStream(GDefine.MsgFile, FileMode.Open, FileAccess.ReadWrite, FileShare.Write);
+        //    StreamReader R = new StreamReader(F);
 
-            string FileLine = "";
-            try
-            {
-                FileLine = R.ReadToEnd();
-            }
-            catch
-            {
-                return false;
-            }
-            finally
-            {
-                R.Close();
-            }
+        //    string FileLine = "";
+        //    try
+        //    {
+        //        FileLine = R.ReadToEnd();
+        //    }
+        //    catch
+        //    {
+        //        return false;
+        //    }
+        //    finally
+        //    {
+        //        R.Close();
+        //    }
 
-            string[] Lines = FileLine.Split(new char[] { (char)10 }, StringSplitOptions.RemoveEmptyEntries);
+        //    string[] Lines = FileLine.Split(new char[] { (char)10 }, StringSplitOptions.RemoveEmptyEntries);
 
-            for (int Line = 1; Line < Lines.Count(); Line++)
-            {
-                string[] s = Lines[Line].Split(',');
+        //    for (int Line = 1; Line < Lines.Count(); Line++)
+        //    {
+        //        string[] s = Lines[Line].Split(',');
 
-                //"{msg.Code:d4},{(int)msg.Type},{Assist},{msg.Desc},{msg.CAct},{msg.DescAlt},{msg.CActAlt}"
-                int code = 0;
-                try
-                {
-                    s[0] = s[0].Trim();
-                    code = Convert.ToInt16(s[0]);
-                }
-                catch { }
+        //        //"{msg.Code:d4},{(int)msg.Type},{Assist},{msg.Desc},{msg.CAct},{msg.DescAlt},{msg.CActAlt}"
+        //        int code = 0;
+        //        try
+        //        {
+        //            s[0] = s[0].Trim();
+        //            code = Convert.ToInt16(s[0]);
+        //        }
+        //        catch { }
 
-                int type = 0;
-                try
-                {
-                    s[1] = s[1].Trim();
-                    type = Convert.ToInt16(s[1]);
-                }
-                catch { }
+        //        int type = 0;
+        //        try
+        //        {
+        //            s[1] = s[1].Trim();
+        //            type = Convert.ToInt16(s[1]);
+        //        }
+        //        catch { }
 
-                string descAlt = s[5].Trim();
-                string cActAlt = s[6].Trim();
+        //        string descAlt = s[5].Trim();
+        //        string cActAlt = s[6].Trim();
 
-                foreach (var msg in msglist)
-                {
-                    if (msg.Code == code)
-                    {
-                        msg.Type = (TEMessage.EType)type;
-                        msg.DescAlt = descAlt;
-                        msg.CActAlt = cActAlt;
-                    }
-                }
-            }
+        //        foreach (var msg in msglist)
+        //        {
+        //            if (msg.Code == code)
+        //            {
+        //                msg.Type = (TEMessage.EType)type;
+        //                msg.DescAlt = descAlt;
+        //                msg.CActAlt = cActAlt;
+        //            }
+        //        }
+        //    }
 
-            return true;
-        }
+        //    return true;
+        //}
+        //public static string GetNameFromId(int code)
+        //{
+        //    var fields = typeof(TEMessage).GetFields(BindingFlags.Public | BindingFlags.Static);
+        //    foreach (var field in fields)
+        //    {
+        //        var value = field.GetValue(null) as TEMessage;
+        //        if (value != null && value.Code == code)
+        //        {
+        //            return field.Name;
+        //        }
+        //    }
+        //    return null;
+        //}
     }
 }

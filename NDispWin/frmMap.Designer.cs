@@ -89,9 +89,9 @@
             // lbl_ReadID
             // 
             this.lbl_ReadID.AutoSize = true;
-            this.lbl_ReadID.Location = new System.Drawing.Point(29, 9);
+            this.lbl_ReadID.Location = new System.Drawing.Point(12, 9);
             this.lbl_ReadID.Name = "lbl_ReadID";
-            this.lbl_ReadID.Size = new System.Drawing.Size(57, 18);
+            this.lbl_ReadID.Size = new System.Drawing.Size(46, 14);
             this.lbl_ReadID.TabIndex = 9;
             this.lbl_ReadID.Text = "ReadID";
             // 
@@ -101,9 +101,9 @@
             this.lblEditMap.Dock = System.Windows.Forms.DockStyle.Right;
             this.lblEditMap.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblEditMap.ForeColor = System.Drawing.Color.Navy;
-            this.lblEditMap.Location = new System.Drawing.Point(552, 0);
+            this.lblEditMap.Location = new System.Drawing.Point(669, 0);
             this.lblEditMap.Name = "lblEditMap";
-            this.lblEditMap.Size = new System.Drawing.Size(35, 18);
+            this.lblEditMap.Size = new System.Drawing.Size(35, 22);
             this.lblEditMap.TabIndex = 12;
             this.lblEditMap.Text = "Edit";
             this.lblEditMap.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -129,7 +129,7 @@
             this.lbl_MapCurr.Dock = System.Windows.Forms.DockStyle.Right;
             this.lbl_MapCurr.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_MapCurr.ForeColor = System.Drawing.Color.Navy;
-            this.lbl_MapCurr.Location = new System.Drawing.Point(499, 0);
+            this.lbl_MapCurr.Location = new System.Drawing.Point(599, 0);
             this.lbl_MapCurr.Name = "lbl_MapCurr";
             this.lbl_MapCurr.Size = new System.Drawing.Size(70, 22);
             this.lbl_MapCurr.TabIndex = 3;
@@ -143,7 +143,7 @@
             this.lbl_MapPrev.Dock = System.Windows.Forms.DockStyle.Right;
             this.lbl_MapPrev.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_MapPrev.ForeColor = System.Drawing.Color.Navy;
-            this.lbl_MapPrev.Location = new System.Drawing.Point(441, 0);
+            this.lbl_MapPrev.Location = new System.Drawing.Point(529, 0);
             this.lbl_MapPrev.Name = "lbl_MapPrev";
             this.lbl_MapPrev.Size = new System.Drawing.Size(70, 22);
             this.lbl_MapPrev.TabIndex = 2;
@@ -157,7 +157,7 @@
             this.lbl_ImgCurr.Dock = System.Windows.Forms.DockStyle.Right;
             this.lbl_ImgCurr.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_ImgCurr.ForeColor = System.Drawing.Color.Navy;
-            this.lbl_ImgCurr.Location = new System.Drawing.Point(391, 0);
+            this.lbl_ImgCurr.Location = new System.Drawing.Point(469, 0);
             this.lbl_ImgCurr.Name = "lbl_ImgCurr";
             this.lbl_ImgCurr.Size = new System.Drawing.Size(60, 22);
             this.lbl_ImgCurr.TabIndex = 0;
@@ -172,7 +172,7 @@
             this.lbl_ImgPrev.Dock = System.Windows.Forms.DockStyle.Right;
             this.lbl_ImgPrev.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_ImgPrev.ForeColor = System.Drawing.Color.Navy;
-            this.lbl_ImgPrev.Location = new System.Drawing.Point(341, 0);
+            this.lbl_ImgPrev.Location = new System.Drawing.Point(409, 0);
             this.lbl_ImgPrev.Name = "lbl_ImgPrev";
             this.lbl_ImgPrev.Size = new System.Drawing.Size(60, 22);
             this.lbl_ImgPrev.TabIndex = 10;
@@ -187,7 +187,7 @@
             this.lbl_Clear.Dock = System.Windows.Forms.DockStyle.Right;
             this.lbl_Clear.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_Clear.ForeColor = System.Drawing.Color.Navy;
-            this.lbl_Clear.Location = new System.Drawing.Point(291, 0);
+            this.lbl_Clear.Location = new System.Drawing.Point(349, 0);
             this.lbl_Clear.Name = "lbl_Clear";
             this.lbl_Clear.Size = new System.Drawing.Size(60, 22);
             this.lbl_Clear.TabIndex = 6;
@@ -201,7 +201,7 @@
             this.lbl_123.Dock = System.Windows.Forms.DockStyle.Right;
             this.lbl_123.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_123.ForeColor = System.Drawing.Color.Navy;
-            this.lbl_123.Location = new System.Drawing.Point(241, 0);
+            this.lbl_123.Location = new System.Drawing.Point(289, 0);
             this.lbl_123.Name = "lbl_123";
             this.lbl_123.Size = new System.Drawing.Size(60, 22);
             this.lbl_123.TabIndex = 5;
@@ -215,7 +215,7 @@
             this.lbl_LayoutNo.Dock = System.Windows.Forms.DockStyle.Right;
             this.lbl_LayoutNo.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_LayoutNo.ForeColor = System.Drawing.Color.Navy;
-            this.lbl_LayoutNo.Location = new System.Drawing.Point(191, 0);
+            this.lbl_LayoutNo.Location = new System.Drawing.Point(229, 0);
             this.lbl_LayoutNo.Name = "lbl_LayoutNo";
             this.lbl_LayoutNo.Size = new System.Drawing.Size(60, 22);
             this.lbl_LayoutNo.TabIndex = 11;
@@ -229,7 +229,7 @@
             this.lbl_MoveTo.Dock = System.Windows.Forms.DockStyle.Right;
             this.lbl_MoveTo.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_MoveTo.ForeColor = System.Drawing.Color.Navy;
-            this.lbl_MoveTo.Location = new System.Drawing.Point(141, 0);
+            this.lbl_MoveTo.Location = new System.Drawing.Point(169, 0);
             this.lbl_MoveTo.Name = "lbl_MoveTo";
             this.lbl_MoveTo.Size = new System.Drawing.Size(60, 22);
             this.lbl_MoveTo.TabIndex = 9;

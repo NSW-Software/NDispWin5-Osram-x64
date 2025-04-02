@@ -34,6 +34,8 @@ namespace NDispWin
             cbxCustomerList.DataSource = Enum.GetNames(typeof(LotInfo2.ECustomer));
                 try { cbxCustomerList.SelectedIndex = (int)LotInfo2.Customer; } catch { };
 
+            groupBox6.Visible = NUtils.UserAcc.Active.GroupID >= (int)ELevel.Admin;
+
             UpdateDisplay();
         }
 
@@ -51,7 +53,6 @@ namespace NDispWin
         private void UpdateDisplay()
         {
             tboxCustomPath.Text = TaskDisp.CustomPath;
-
 
             #region Process
             cbEnableMaterialLow.Checked = TaskDisp.Option_EnableMaterialLow;
@@ -552,16 +553,16 @@ namespace NDispWin
             {
                 if (MessageBox.Show($"{GDefine.MsgFile} exist. Overwrite existing file?", "", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    if (TCMessages.SaveList()) MessageBox.Show($"{GDefine.MsgFile} was saved.");
+                    if (TEMessage.SaveList()) MessageBox.Show($"{GDefine.MsgFile} was saved.");
                     return;
                 }
             }
-            if (TCMessages.SaveList()) MessageBox.Show($"{GDefine.MsgFile} was created.");
+            if (TEMessage.SaveList()) MessageBox.Show($"{GDefine.MsgFile} was created.");
         }
 
         private void btnLoadMgFile_Click(object sender, EventArgs e)
         {
-            if (TCMessages.LoadList()) MessageBox.Show($"{GDefine.MsgFile} was loaded.");
+            if (TEMessage.LoadList()) MessageBox.Show($"{GDefine.MsgFile} was loaded.");
         }
 
         private void btnSaveTwrLightStatusFile_Click(object sender, EventArgs e)
@@ -583,6 +584,10 @@ namespace NDispWin
             if (TCTwrLight.LoadStatus()) MessageBox.Show($"{GDefine.TLStatusFile} was loaded.");
         }
 
-
+        private void button1_Click(object sender, EventArgs e)
+        {
+            frmSecsGem frm = new frmSecsGem();
+            frm.ShowDialog();
+        }
     }
 }

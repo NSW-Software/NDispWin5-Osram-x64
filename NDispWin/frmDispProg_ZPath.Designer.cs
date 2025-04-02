@@ -720,7 +720,7 @@ namespace NDispWin
             this.groupBox1.Size = new System.Drawing.Size(478, 144);
             this.groupBox1.TabIndex = 199;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Volume";
+            this.groupBox1.Text = "Nett Volume";
             // 
             // lblHead2Volume
             // 
@@ -847,6 +847,7 @@ namespace NDispWin
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(492, 623);
+            this.ControlBox = false;
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cbxType);

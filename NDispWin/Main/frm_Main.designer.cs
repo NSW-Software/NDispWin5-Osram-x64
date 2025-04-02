@@ -32,6 +32,11 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frm_Main));
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tsslSECSGEMConnect2 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsdControlState = new System.Windows.Forms.ToolStripDropDownButton();
+            this.tsmiRemote = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiLocal = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiOffline = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tmr_EMO = new System.Windows.Forms.Timer(this.components);
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -71,10 +76,12 @@
             this.statusStrip1.Font = new System.Drawing.Font("Tahoma", 9F);
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsslSECSGEMConnect2});
+            this.tsslSECSGEMConnect2,
+            this.tsdControlState,
+            this.toolStripStatusLabel1});
             this.statusStrip1.Location = new System.Drawing.Point(0, 683);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(952, 30);
+            this.statusStrip1.Size = new System.Drawing.Size(1134, 30);
             this.statusStrip1.SizingGrip = false;
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "statusStrip1";
@@ -83,10 +90,49 @@
             // tsslSECSGEMConnect2
             // 
             this.tsslSECSGEMConnect2.Name = "tsslSECSGEMConnect2";
-            this.tsslSECSGEMConnect2.Size = new System.Drawing.Size(132, 24);
-            this.tsslSECSGEMConnect2.Text = "SECSGEMConnect2";
-            this.tsslSECSGEMConnect2.Visible = false;
-            this.tsslSECSGEMConnect2.Click += new System.EventHandler(this.tsslSECSGEMConnect2_Click);
+            this.tsslSECSGEMConnect2.Size = new System.Drawing.Size(59, 25);
+            this.tsslSECSGEMConnect2.Text = "SECSGEM";
+            this.tsslSECSGEMConnect2.Click += new System.EventHandler(this.tsslSECSGEMConnect_Click);
+            // 
+            // tsdControlState
+            // 
+            this.tsdControlState.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsdControlState.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiRemote,
+            this.tsmiLocal,
+            this.tsmiOffline});
+            this.tsdControlState.Image = ((System.Drawing.Image)(resources.GetObject("tsdControlState.Image")));
+            this.tsdControlState.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsdControlState.Name = "tsdControlState";
+            this.tsdControlState.Size = new System.Drawing.Size(55, 28);
+            this.tsdControlState.Text = "Offline";
+            // 
+            // tsmiRemote
+            // 
+            this.tsmiRemote.Name = "tsmiRemote";
+            this.tsmiRemote.Size = new System.Drawing.Size(180, 22);
+            this.tsmiRemote.Text = "Remote";
+            this.tsmiRemote.Click += new System.EventHandler(this.tsmiRemote_Click);
+            // 
+            // tsmiLocal
+            // 
+            this.tsmiLocal.Name = "tsmiLocal";
+            this.tsmiLocal.Size = new System.Drawing.Size(180, 22);
+            this.tsmiLocal.Text = "Local";
+            this.tsmiLocal.Click += new System.EventHandler(this.tsmiLocal_Click);
+            // 
+            // tsmiOffline
+            // 
+            this.tsmiOffline.Name = "tsmiOffline";
+            this.tsmiOffline.Size = new System.Drawing.Size(180, 22);
+            this.tsmiOffline.Text = "Offline";
+            this.tsmiOffline.Click += new System.EventHandler(this.tsmiOffline_Click);
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(12, 25);
+            this.toolStripStatusLabel1.Text = "|";
             // 
             // tmr_EMO
             // 
@@ -99,7 +145,7 @@
             this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
             this.pictureBox2.Location = new System.Drawing.Point(0, 0);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(952, 713);
+            this.pictureBox2.Size = new System.Drawing.Size(984, 683);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox2.TabIndex = 5;
             this.pictureBox2.TabStop = false;
@@ -109,7 +155,7 @@
             this.panel1.Controls.Add(this.toolStrip1);
             this.panel1.Controls.Add(this.lbl_Status);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel1.Location = new System.Drawing.Point(802, 0);
+            this.panel1.Location = new System.Drawing.Point(984, 0);
             this.panel1.Name = "panel1";
             this.panel1.Padding = new System.Windows.Forms.Padding(3);
             this.panel1.Size = new System.Drawing.Size(150, 683);
@@ -157,13 +203,13 @@
             // tslblUser
             // 
             this.tslblUser.Name = "tslblUser";
-            this.tslblUser.Size = new System.Drawing.Size(142, 18);
+            this.tslblUser.Size = new System.Drawing.Size(142, 14);
             this.tslblUser.Text = "[User]";
             // 
             // tslblDateTime
             // 
             this.tslblDateTime.Name = "tslblDateTime";
-            this.tslblDateTime.Size = new System.Drawing.Size(142, 18);
+            this.tslblDateTime.Size = new System.Drawing.Size(142, 14);
             this.tslblDateTime.Text = "DateTime";
             // 
             // toolStripSeparator2
@@ -403,10 +449,10 @@
             // frm_Main
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(952, 713);
+            this.ClientSize = new System.Drawing.Size(1134, 713);
+            this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.statusStrip1);
-            this.Controls.Add(this.pictureBox2);
             this.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ForeColor = System.Drawing.Color.Navy;
             this.Name = "frm_Main";
@@ -454,5 +500,10 @@
         private System.Windows.Forms.ToolStripButton tsbtnInitConveyor;
         private System.Windows.Forms.ToolStripButton tsbtnInitGantry;
         private System.Windows.Forms.ToolStripLabel tslblDateTime;
+        private System.Windows.Forms.ToolStripDropDownButton tsdControlState;
+        private System.Windows.Forms.ToolStripMenuItem tsmiOffline;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.ToolStripMenuItem tsmiRemote;
+        private System.Windows.Forms.ToolStripMenuItem tsmiLocal;
     }
 }

@@ -992,7 +992,6 @@ namespace NDispWin
             return true;
         }
 
-
         public static bool TR_StartRun()
         {
             if (TR_IsRunning) return true;
@@ -2794,6 +2793,7 @@ namespace NDispWin
         public static NUtils.LogFileW ExtVision = new NUtils.LogFileW(GDefine.DataPath + "\\ExtVision");
         public static NUtils.LogFileW Temp = new NUtils.LogFileW(GDefine.DataPath + "\\Temp");
         public static NUtils.LogFileW LmdsWebService = new NUtils.LogFileW(GDefine.DataPath + "\\LmdsWebService");
+        public static NUtils.LogFileW SecsGem = new NUtils.LogFileW(GDefine.DataPath + "\\SecsGem");
 
 
         public static void OnAction(string Action, string ParamName, bool Old, bool New)

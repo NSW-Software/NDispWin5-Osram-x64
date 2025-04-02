@@ -63,12 +63,12 @@
             this.lbl_InputMap_Protocol = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.pnlOsramICC = new System.Windows.Forms.Panel();
+            this.btnOsramICCTest = new System.Windows.Forms.Button();
             this.tbxOsramICCOutputPath = new System.Windows.Forms.TextBox();
             this.tbxOsramICCInputPath = new System.Windows.Forms.TextBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.btnInputFileLoad = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.btnOutputFileTileLookUp = new System.Windows.Forms.Button();
             this.tbxLookUpTileID = new System.Windows.Forms.TextBox();
             this.btnOutputFileLoad = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -81,7 +81,7 @@
             this.label21 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btn_EditVolumeOfst = new System.Windows.Forms.Button();
-            this.btnOsramICCTest = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.panel3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.pnl_InputMapPaths_Lmd_EMap.SuspendLayout();
@@ -483,6 +483,17 @@
             this.pnlOsramICC.Size = new System.Drawing.Size(595, 179);
             this.pnlOsramICC.TabIndex = 209;
             // 
+            // btnOsramICCTest
+            // 
+            this.btnOsramICCTest.AccessibleDescription = "Test";
+            this.btnOsramICCTest.Location = new System.Drawing.Point(416, 128);
+            this.btnOsramICCTest.Name = "btnOsramICCTest";
+            this.btnOsramICCTest.Size = new System.Drawing.Size(70, 30);
+            this.btnOsramICCTest.TabIndex = 215;
+            this.btnOsramICCTest.Text = "Test";
+            this.btnOsramICCTest.UseVisualStyleBackColor = true;
+            this.btnOsramICCTest.Click += new System.EventHandler(this.btnOsramICCTest_Click);
+            // 
             // tbxOsramICCOutputPath
             // 
             this.tbxOsramICCOutputPath.Location = new System.Drawing.Point(150, 33);
@@ -496,6 +507,7 @@
             this.tbxOsramICCInputPath.Name = "tbxOsramICCInputPath";
             this.tbxOsramICCInputPath.Size = new System.Drawing.Size(440, 22);
             this.tbxOsramICCInputPath.TabIndex = 213;
+            this.tbxOsramICCInputPath.TextChanged += new System.EventHandler(this.tbxOsramICCInputPath_TextChanged);
             // 
             // groupBox5
             // 
@@ -523,43 +535,32 @@
             // groupBox4
             // 
             this.groupBox4.AutoSize = true;
-            this.groupBox4.Controls.Add(this.btnOutputFileTileLookUp);
             this.groupBox4.Controls.Add(this.tbxLookUpTileID);
+            this.groupBox4.Controls.Add(this.label1);
             this.groupBox4.Controls.Add(this.btnOutputFileLoad);
             this.groupBox4.Location = new System.Drawing.Point(93, 68);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Padding = new System.Windows.Forms.Padding(3, 6, 3, 0);
-            this.groupBox4.Size = new System.Drawing.Size(158, 108);
+            this.groupBox4.Size = new System.Drawing.Size(153, 108);
             this.groupBox4.TabIndex = 210;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Output File";
             // 
-            // btnOutputFileTileLookUp
-            // 
-            this.btnOutputFileTileLookUp.AccessibleDescription = "LookUp";
-            this.btnOutputFileTileLookUp.Location = new System.Drawing.Point(82, 60);
-            this.btnOutputFileTileLookUp.Name = "btnOutputFileTileLookUp";
-            this.btnOutputFileTileLookUp.Size = new System.Drawing.Size(70, 30);
-            this.btnOutputFileTileLookUp.TabIndex = 209;
-            this.btnOutputFileTileLookUp.Text = "LookUp";
-            this.btnOutputFileTileLookUp.UseVisualStyleBackColor = true;
-            this.btnOutputFileTileLookUp.Click += new System.EventHandler(this.btnOutputFileTileLookUp_Click);
-            // 
             // tbxLookUpTileID
             // 
-            this.tbxLookUpTileID.Location = new System.Drawing.Point(6, 65);
+            this.tbxLookUpTileID.Location = new System.Drawing.Point(77, 24);
             this.tbxLookUpTileID.Name = "tbxLookUpTileID";
             this.tbxLookUpTileID.Size = new System.Drawing.Size(70, 22);
             this.tbxLookUpTileID.TabIndex = 212;
             // 
             // btnOutputFileLoad
             // 
-            this.btnOutputFileLoad.AccessibleDescription = "Load";
-            this.btnOutputFileLoad.Location = new System.Drawing.Point(82, 24);
+            this.btnOutputFileLoad.AccessibleDescription = "Load && LookUp";
+            this.btnOutputFileLoad.Location = new System.Drawing.Point(43, 52);
             this.btnOutputFileLoad.Name = "btnOutputFileLoad";
-            this.btnOutputFileLoad.Size = new System.Drawing.Size(70, 30);
+            this.btnOutputFileLoad.Size = new System.Drawing.Size(104, 30);
             this.btnOutputFileLoad.TabIndex = 205;
-            this.btnOutputFileLoad.Text = "Load";
+            this.btnOutputFileLoad.Text = "Load && LookUp";
             this.btnOutputFileLoad.UseVisualStyleBackColor = true;
             this.btnOutputFileLoad.Click += new System.EventHandler(this.btnOutputFileLoad_Click);
             // 
@@ -571,7 +572,7 @@
             this.groupBox3.Controls.Add(this.btnLocalListSave);
             this.groupBox3.Controls.Add(this.btnLocalListEditPass1);
             this.groupBox3.Controls.Add(this.btnLocalListLoad);
-            this.groupBox3.Location = new System.Drawing.Point(257, 68);
+            this.groupBox3.Location = new System.Drawing.Point(252, 68);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Padding = new System.Windows.Forms.Padding(3, 6, 3, 0);
             this.groupBox3.Size = new System.Drawing.Size(158, 108);
@@ -636,12 +637,12 @@
             // 
             // btnCheckOsramICCPath
             // 
-            this.btnCheckOsramICCPath.AccessibleDescription = "Check";
-            this.btnCheckOsramICCPath.Location = new System.Drawing.Point(520, 60);
+            this.btnCheckOsramICCPath.AccessibleDescription = "Update && Check";
+            this.btnCheckOsramICCPath.Location = new System.Drawing.Point(484, 60);
             this.btnCheckOsramICCPath.Name = "btnCheckOsramICCPath";
-            this.btnCheckOsramICCPath.Size = new System.Drawing.Size(70, 30);
+            this.btnCheckOsramICCPath.Size = new System.Drawing.Size(106, 30);
             this.btnCheckOsramICCPath.TabIndex = 199;
-            this.btnCheckOsramICCPath.Text = "Check";
+            this.btnCheckOsramICCPath.Text = "Update && Check";
             this.btnCheckOsramICCPath.UseVisualStyleBackColor = true;
             this.btnCheckOsramICCPath.Click += new System.EventHandler(this.btnCheckOsramICCPath_Click);
             // 
@@ -678,16 +679,16 @@
             this.btn_EditVolumeOfst.UseVisualStyleBackColor = true;
             this.btn_EditVolumeOfst.Click += new System.EventHandler(this.btn_Edit_Click);
             // 
-            // btnOsramICCTest
+            // label1
             // 
-            this.btnOsramICCTest.AccessibleDescription = "Test";
-            this.btnOsramICCTest.Location = new System.Drawing.Point(421, 128);
-            this.btnOsramICCTest.Name = "btnOsramICCTest";
-            this.btnOsramICCTest.Size = new System.Drawing.Size(70, 30);
-            this.btnOsramICCTest.TabIndex = 215;
-            this.btnOsramICCTest.Text = "Test";
-            this.btnOsramICCTest.UseVisualStyleBackColor = true;
-            this.btnOsramICCTest.Click += new System.EventHandler(this.btnOsramICCTest_Click);
+            this.label1.AccessibleDescription = "Input Path";
+            this.label1.Location = new System.Drawing.Point(5, 24);
+            this.label1.Margin = new System.Windows.Forms.Padding(2);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(67, 23);
+            this.label1.TabIndex = 213;
+            this.label1.Text = "Panel ID";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // frm_DispCore_DispSetup_Custom
             // 
@@ -771,11 +772,11 @@
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Button btnInputFileLoad;
         private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.Button btnOutputFileTileLookUp;
         private System.Windows.Forms.Button btnOutputFileLoad;
         private System.Windows.Forms.TextBox tbxOsramICCOutputPath;
         private System.Windows.Forms.TextBox tbxOsramICCInputPath;
         private System.Windows.Forms.TextBox tbxLookUpTileID;
         private System.Windows.Forms.Button btnOsramICCTest;
+        private System.Windows.Forms.Label label1;
     }
 }

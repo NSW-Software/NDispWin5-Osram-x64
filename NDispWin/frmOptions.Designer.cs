@@ -94,6 +94,7 @@
             this.lbl_CustomerCaption = new System.Windows.Forms.Label();
             this.cbEnableLotEntry = new System.Windows.Forms.CheckBox();
             this.tpConnectivity = new System.Windows.Forms.TabPage();
+            this.button1 = new System.Windows.Forms.Button();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.btnSetting = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
@@ -914,6 +915,7 @@
             // 
             // tpConnectivity
             // 
+            this.tpConnectivity.Controls.Add(this.button1);
             this.tpConnectivity.Controls.Add(this.groupBox6);
             this.tpConnectivity.Location = new System.Drawing.Point(4, 34);
             this.tpConnectivity.Name = "tpConnectivity";
@@ -921,6 +923,16 @@
             this.tpConnectivity.Size = new System.Drawing.Size(764, 511);
             this.tpConnectivity.TabIndex = 2;
             this.tpConnectivity.Text = "Connectivity";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(6, 83);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(126, 30);
+            this.button1.TabIndex = 223;
+            this.button1.Text = "SecsGem";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // groupBox6
             // 
@@ -1422,5 +1434,6 @@
         private System.Windows.Forms.Button lblMaterialPanelCounterReset;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.CheckBox cbEnableMaterialPanelCounter;
+        private System.Windows.Forms.Button button1;
     }
 }

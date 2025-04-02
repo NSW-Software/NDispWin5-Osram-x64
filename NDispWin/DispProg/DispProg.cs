@@ -463,7 +463,7 @@ namespace NDispWin
             X[0..99]        [XStart, XFirstStart, XLastStart, ..]
             Y[0..99]        [YStart, YFirstStart, YLastStart, ..]
             */
-            Z_PATH = 462,
+            DOTS_ZPATH = 462,
 
             VOL_SET_DOTS = 480,//distribute volume to total number of dots.
 
@@ -8205,17 +8205,26 @@ namespace NDispWin
                                             string tileID = DispProg.rt_Read_IDs[0, 0];
                                             double[] newVolume = new double[2] { 0, 0 };
                                             if (!OsramICC.Execute(tileID, LotInfo2.LotNumber, LotInfo2.Osram.ElevenSeries, LotInfo2.Osram.DAStartNumber, ref newVolume)) goto _Pause;
-                                            TFPump.PP4.DispAmounts = new double[] { newVolume[0], newVolume[1] };
-                                            Event.OSRAMICC.Set($"{tileID} Set Volume", $"Pump1, Pump2: {newVolume[0]:f4},{newVolume[1]:f4}");
+                                            TFPump.PP4.DispAmounts = new double[] { newVolume[0] + TFPump.PP4.BSuckAmounts[0], newVolume[1] + TFPump.PP4.BSuckAmounts[1] };
+                                            Event.OSRAMICC.Set($"Tile {tileID} Set Nett Volume", $"Pump1, Pump2: {newVolume[0]:f4},{newVolume[1]:f4}");
                                         }
                                     }
                                     else
                                     {
-                                        double[] newVolume = new double[2] { ActiveLine.DPara[18], ActiveLine.DPara[19] };
-                                        TFPump.PP4.DispAmounts = new double[] { newVolume[0], newVolume[1] };
-                                        Event.OSRAMICC.Set($"No Lot - Set Volume", $"Pump1, Pump2: {newVolume[0]:f4},{newVolume[1]:f4}");
+                                        double[] newVolume = new double[2] { 0, 0 };
+                                        for (int L = Line; L < CmdList.Count; L++)
+                                        {
+                                            if (CmdList.Line[L].Cmd == ECmd.DOTS_ZPATH)
+                                            {
+                                                newVolume = new double[2] { CmdList.Line[L].DPara[18], CmdList.Line[L].DPara[19] };
+                                                LastLine = L;
+                                                break;
+                                            }
+                                        }
+                                        TFPump.PP4.DispAmounts = new double[] { newVolume[0] + TFPump.PP4.BSuckAmounts[0], newVolume[1] + TFPump.PP4.BSuckAmounts[1] };
+                                        string tileID = DispProg.rt_Read_IDs[0, 0];
+                                        Event.OSRAMICC.Set($"Tile {tileID} Inactive Lot. Set Nett Volume", $"Pump1, Pump2: {newVolume[0]:f4},{newVolume[1]:f4}");
                                     }
-                                //_End:
                                     break;
                                 }
                             #endregion
@@ -9968,7 +9977,7 @@ namespace NDispWin
                                     if (!ParLines.Par_Lines(ActiveLine, RunMode, f_origin_x, f_origin_y, f_origin_z)) Running = false;
                                     break;
                                 }
-                            case ECmd.Z_PATH:
+                            case ECmd.DOTS_ZPATH:
                                 {
                                     EMsg = Msg + " " + CmdList.Line[Line].Cmd.ToString();
 
@@ -9997,7 +10006,7 @@ namespace NDispWin
                                             TaskVision.PtGrey_CamLive(0);
                                     }
 
-                                    if (!ZPath.Run(ActiveLine, RunMode, f_origin_x, f_origin_y, f_origin_z))
+                                    if (!DotsZPath.Run(ActiveLine, RunMode, f_origin_x, f_origin_y, f_origin_z))
                                     {
                                         goto _Pause;
                                         //Running = false;

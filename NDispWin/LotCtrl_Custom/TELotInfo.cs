@@ -68,6 +68,7 @@ namespace NDispWin
         {
             public static string ElevenSeries = "";//aka Material Nr
             public static string DAStartNumber = "";
+            public static string Operation = "";
 
             public static string F5Name = "";
             public static string F6Name = "";

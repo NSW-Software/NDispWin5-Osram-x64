@@ -558,7 +558,6 @@ namespace NDispWin
                         }
                         break;
                     #endregion
-
                     case DispProg.ECmd.GROUP_DISP:
                         #region
                         Cmd = Indent + Enum.GetName(typeof(DispProg.ECmd), CmdLine.Line[i].Cmd);
@@ -585,6 +584,18 @@ namespace NDispWin
                         }
                         break;
                     #endregion
+                    case DispProg.ECmd.DOTS_ZPATH:
+                        {
+                            Cmd = Indent + Enum.GetName(typeof(DispProg.ECmd), CmdLine.Line[i].Cmd);
+                            if (CmdLine.Line[i].IPara[2] > 0) Cmd = Cmd + "*";
+                            ID = "";
+                            Para = ID + " ";
+                            if (CmdLine.Line[i].IPara[4] > 0)
+                            {
+                                Para = Para + $"Def Vol1,2: {CmdLine.Line[i].DPara[18]:f3},{CmdLine.Line[i].DPara[19]:f3} ";
+                            }
+                            break;
+                        }
                     case DispProg.ECmd.MOVE:
                         #region
                         Cmd = Indent + Enum.GetName(typeof(DispProg.ECmd), CmdLine.Line[i].Cmd);
@@ -1342,6 +1353,7 @@ namespace NDispWin
                 {
                     DispProg.NewScript();
                     GDefine.ProgRecipeName = "new";
+                    Event.SECSGEM_PP_CREATE.Set();
                 });
             }
 
@@ -1426,6 +1438,7 @@ namespace NDispWin
                     await Task.Factory.StartNew(() =>
                     {
                         Save();
+                        Event.SECSGEM_PP_CHANGE.Set();
                     });
                 }
                 finally
@@ -1459,11 +1472,6 @@ namespace NDispWin
                 sfd.FileName = GDefine.ProgRecipeName;
 
             DialogResult dr = sfd.ShowDialog();
-
-            if (GDefine.CameraType[0] == GDefine.ECameraType.Spinnaker)
-            {
-                //TaskVision.frmGenImageView.TopMost = true;
-            }
             if (dr == DialogResult.Cancel) return;
 
             frm1 = new frm_ProgressReport();
@@ -1475,6 +1483,8 @@ namespace NDispWin
                 {
                     DispProg.Save(sfd.FileName);
                     frm1.Done = true;
+
+                    Event.SECSGEM_PP_CHANGE.Set();
                 });
             }
             finally
@@ -2201,7 +2211,7 @@ namespace NDispWin
                                         break;
                                     }
                                 #endregion
-                                case DispProg.ECmd.Z_PATH:
+                                case DispProg.ECmd.DOTS_ZPATH:
                                     #region
                                     {
                                         frmDispProg_ZPath frm = new frmDispProg_ZPath();

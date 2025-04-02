@@ -10,6 +10,16 @@ Todo
 - PurgeStage Dry Mode do not dispsense
 
 
+Ver 6.1.5.0 - KN - 20250401
+  [Feature] Added TFSecsGem and frmSecsGem, Removed frmSECSGEMConnect2 and dependencies
+Ver 6.1.4.5 - KN - 20250328
+  [BugFix] Fix frmVisionFailMsg btnManual to not Invoke Diaglog
+  [BugFix] OSRAM_ICC to extract DOT_ZPATH parameters
+  [BugFix] Fix OSRAM_ICC to extract DOT_ZPATH parameters
+  [BugFix] TeachNeedleOfst_Touch_Dot_Set() add HPC3 Support
+  [BugFix] DOT_ZPATH uses Nett Dispense Volumne
+  [BugFix] CleaFill move pump to PMaintPosition
+  [Feature] Added DOTS_ZPATH Backsuck support.
 Ver 6.1.4.3 - KN - 2025032
   [Featute] Added OSRAM_ICC support.
   [HseKeep] Remove VOLUME_OFST, AOT_HeightCloseLoop, AOT_FrontTestCloseLoop dependencies.

@@ -50,6 +50,9 @@ namespace NDispWin
         public frm_Main()
         {
             InitializeComponent();
+
+            IsMdiContainer = true;
+
             GControl.LogForm(this);
 
             this.WindowState = FormWindowState.Maximized;
@@ -157,7 +160,7 @@ namespace NDispWin
             this.Text = Application.ProductName + " v" + Application.ProductVersion;
             Event.APP_START.Set("AppVersion", this.Text);
             //MsgInfo.Init("NDisp3Win");
-            TCMessages.LoadList();
+            TEMessage.LoadList();
             TCTwrLight.LoadStatus();
 
             Intf.Config.Load();
@@ -233,6 +236,7 @@ namespace NDispWin
             try
             {
                 if (GDefine.sgc2.EnableSECSGEMConnect2) GDefine.sgc2.Connect();
+                TFSecsGem.Connect();
             }
             catch { }
         }
@@ -265,6 +269,8 @@ namespace NDispWin
                 Event.APP_CLOSE.Set("AppVersion", Application.ProductName + " v" + Application.ProductVersion);
                 return true;
             }
+
+            TFSecsGem.Disconnect();
 
             return false;
         }
@@ -365,28 +371,33 @@ namespace NDispWin
                 }
             }
 
-            tsslSECSGEMConnect2.Text = (int)TaskDisp.SECSGEMProtocol > 0 ? TaskDisp.SECSGEMProtocol.ToString() : "";
-            if (TaskDisp.SECSGEMProtocol == TaskDisp.ESECSGEMProtocol.SECSGEMConnect2)
-            {
-                if (GDefine.sgc2.EnableSECSGEMConnect2)
-                {
-                    if (GDefine.sgc2.client.IsConnected)
-                    {
-                        tsslSECSGEMConnect2.Text = "SECSGEMConnnect2 [Connected]";
-                        tsslSECSGEMConnect2.BackColor = Color.Lime;
-                    }
-                    else
-                    {
-                        tsslSECSGEMConnect2.Text = "SECSGEMConnnect2 [Diconnected]";
-                        tsslSECSGEMConnect2.BackColor = Color.Red;
-                    }
-                }
-                else
-                {
-                    tsslSECSGEMConnect2.Text = "SECSGEMConnnect2 [Disabled]";
-                    tsslSECSGEMConnect2.BackColor = Color.Orange;
-                }
-            }
+            //tsslSECSGEMConnect2.Text = (int)TaskDisp.SECSGEMProtocol > 0 ? TaskDisp.SECSGEMProtocol.ToString() : "";
+            //if (TaskDisp.SECSGEMProtocol == TaskDisp.ESECSGEMProtocol.SECSGEMConnect2)
+            //{
+            //    if (GDefine.sgc2.EnableSECSGEMConnect2)
+            //    {
+            //        if (GDefine.sgc2.client.IsConnected)
+            //        {
+            //            tsslSECSGEMConnect2.Text = "SECSGEMConnnect2 [Connected]";
+            //            tsslSECSGEMConnect2.BackColor = Color.Lime;
+            //        }
+            //        else
+            //        {
+            //            tsslSECSGEMConnect2.Text = "SECSGEMConnnect2 [Diconnected]";
+            //            tsslSECSGEMConnect2.BackColor = Color.Red;
+            //        }
+            //    }
+            //    else
+            //    {
+            //        tsslSECSGEMConnect2.Text = "SECSGEMConnnect2 [Disabled]";
+            //        tsslSECSGEMConnect2.BackColor = Color.Orange;
+            //    }
+            //}
+
+            tsslSECSGEMConnect2.BackColor = TFSecsGem.IsConnected? Color.Lime : Color.Red;
+
+            tsdControlState.Text = TFSecsGem.OnlineOffline == EOnlineOffline.Offline ? "Offline" : TFSecsGem.LocalRemote == ELocalRemote.Local ? "Local" : "Remote";
+            tsdControlState.BackColor = TFSecsGem.OnlineOffline == EOnlineOffline.Offline ? Color.Red : TFSecsGem.LocalRemote == ELocalRemote.Local ? Color.Yellow: Color.Lime;
         }
 
         private void tsbDevice_Click(object sender, EventArgs e)
@@ -402,35 +413,33 @@ namespace NDispWin
         }
         private void tsbtnProgram_Click(object sender, EventArgs e)
         {
-            switch (GDefine.CameraType[0])
-            {
-                case GDefine.ECameraType.Spinnaker2:
-                case GDefine.ECameraType.MVSGenTL:
+            //switch (GDefine.CameraType[0])
+            //{
+            //    case GDefine.ECameraType.Spinnaker2:
+            //    case GDefine.ECameraType.MVSGenTL:
                     try
                     {
                         frm_DispProg2 frm = new frm_DispProg2();
                         frm.ShowDialog();
                         frm.Dispose();
-
-                        GC.Collect();
                     }
                     catch (Exception Ex)
                     {
                         MessageBox.Show(Ex.Message);
                     }
-                    break;
-                default:
-                    try
-                    {
-                        NDispWin.frmLmdsWebServiceSetup.DispProg.ShowDialog();
-                        GC.Collect();
-                    }
-                    catch (Exception Ex)
-                    {
-                        MessageBox.Show(Ex.Message);
-                    }
-                    break;
-            }
+                    //break;
+                //default:
+                //    try
+                //    {
+                //        NDispWin.frmLmdsWebServiceSetup.DispProg.ShowDialog();
+                //        GC.Collect();
+                //    }
+                //    catch (Exception Ex)
+                //    {
+                //        MessageBox.Show(Ex.Message);
+                //    }
+                //    break;
+            //}
         }
         private void tsbtnMHS_Click(object sender, EventArgs e)
         {
@@ -491,22 +500,40 @@ namespace NDispWin
             Close();
         }
 
-        private void tsslSECSGEMConnect2_Click(object sender, EventArgs e)
+        private void tsslSECSGEMConnect_Click(object sender, EventArgs e)
         {
             try
             {
-                if (GDefine.sgc2.EnableSECSGEMConnect2)
-                {
-                    if (GDefine.sgc2.client.IsConnected)
-                        GDefine.sgc2.Disconnect();
-                    else
-                        GDefine.sgc2.Connect();
-                }
+                //if (GDefine.sgc2.EnableSECSGEMConnect2)
+                //{
+                //    if (GDefine.sgc2.client.IsConnected)
+                //        GDefine.sgc2.Disconnect();
+                //    else
+                //        GDefine.sgc2.Connect();
+                //}
+                if (!TFSecsGem.IsConnected)
+                    TFSecsGem.Connect();
+                else
+                    TFSecsGem.Disconnect();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message.ToString());
             }
+        }
+        private void tsmiOffline_Click(object sender, EventArgs e)
+        {
+            TFSecsGem.Eq.OnlineOffline = EOnlineOffline.Offline;
+        }
+        private void tsmiLocal_Click(object sender, EventArgs e)
+        {
+            TFSecsGem.Eq.OnlineOffline = EOnlineOffline.Online;
+            TFSecsGem.Eq.LocalRemote = ELocalRemote.Local;
+        }
+        private void tsmiRemote_Click(object sender, EventArgs e)
+        {
+            TFSecsGem.Eq.OnlineOffline = EOnlineOffline.Online;
+            TFSecsGem.Eq.LocalRemote = ELocalRemote.Remote;
         }
 
         private void statusStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -605,5 +632,6 @@ namespace NDispWin
                 tsbtnInitElevators.Visible = false;
             }
         }
+
     }
 }
