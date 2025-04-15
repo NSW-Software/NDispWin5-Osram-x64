@@ -339,9 +339,9 @@ namespace NDispWin
                     case nameof(VID.PREV_LOCAL_REMOTE):
                         return TFSecsGem.PrevLocalRemote.ToString();
                     case nameof(VID.PROCESS_STATE):
-                        return TFSecsGem.ProcessState.ToString();
+                        return (int)TFSecsGem.ProcessState;
                     case nameof(VID.PREV_PROCESS_STATE):
-                        return TFSecsGem.PrevProcessState.ToString();
+                        return (int)TFSecsGem.PrevProcessState;
                     case nameof(VID.PP_CHANGE_STATUS):
                         return TFSecsGem.PPChangeStatus.ToString();
                     case nameof(VID.PP_CHANGE_NAME):

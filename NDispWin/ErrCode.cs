@@ -183,7 +183,7 @@ namespace NDispWin
             List<string> list = new List<string>();
             foreach (var msg in msglist)
             {
-                list.Add($"{msg.Code:d4},{msg.Desc}");
+                list.Add($"{msg.Code},{msg.Desc}");
             }
 
             return list;
@@ -216,7 +216,7 @@ namespace NDispWin
         public static TEMessage S320_LOAD_PRODUCT = new TEMessage(400, "Load Product to Table", "", TEMessage.EType.Notification, false);
         public static TEMessage S320_UNLOAD_PRODUCT = new TEMessage(401, "Unload Product from Table", "", TEMessage.EType.Notification, false);
         public static TEMessage S320_NEW_DISPENSE = new TEMessage(402, "Clear current dispense status and start new dispense?", "", TEMessage.EType.Confirmation, false);
-        public static TEMessage LOTINFO_ISEMPTY = new TEMessage(400, "Lot Info Is Empty, Please Fill All Information in All Textbox.", "", TEMessage.EType.Notification, false);
+        public static TEMessage LOTINFO_ISEMPTY = new TEMessage(400, "Lot Info Is Empty. Please Fill All Information in All Textbox.", "", TEMessage.EType.Notification, false);
         public static TEMessage LOT_NOT_ACTIVATED = new TEMessage(401, "Please Start Lot Before Auto Run", "", TEMessage.EType.Notification, false);
         #endregion
         public static TEMessage ZSENSOR_NOT_CONFIG = new TEMessage(2200, "ZSensor is not configured.", "Check ZSensor configuration.", TEMessage.EType.Fault, false);

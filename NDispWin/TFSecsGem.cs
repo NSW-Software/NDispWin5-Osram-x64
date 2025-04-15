@@ -597,7 +597,7 @@ namespace NDispWin
 
                                 foreach (var msg in msglist)
                                 {
-                                    if (alid == $"{msg.Code:d5}")
+                                    if (alid == $"{msg.Code}")
                                     msg.Enabled = aled == "128" ? true : false;
                                 }
                             }
@@ -706,7 +706,7 @@ namespace NDispWin
                     case nameof(StreamFunc.VTN):
                         {
                             rxSplitData = rxSplitData.Concat(Enumerable.Repeat("", 1)).ToArray();//add 1 empty strings
-                            RxTerminalMessage = rxSplitData[1];
+                            RxTerminalMessage = rxSplitData[2];
                             Send($"{nameof(StreamFunc.VTA)}");
                             break;
                         }
@@ -964,7 +964,7 @@ namespace NDispWin
             List<string> list = new List<string>();
             foreach (var alm in almList)
             {
-                string info = $"{0},{alm.Code:d5},{alm.Desc}";//ALCD,ALID,ADTX
+                string info = $"{0},{alm.Code},{alm.Desc}";//ALCD,ALID,ADTX
                 if (requestList.Count == 0)
                 {
                     list.Add(info);
@@ -986,7 +986,7 @@ namespace NDispWin
             List<string> list = new List<string>();
             foreach (var alm in almList)
             {
-                string info = $"{0},{alm.Code:d5},{alm.Desc}";//ALCD,ALID,ADTX
+                string info = $"{0},{alm.Code},{alm.Desc}";//ALCD,ALID,ADTX
                 if (alm.Enabled) list.Add(info);
             }
             return list;
