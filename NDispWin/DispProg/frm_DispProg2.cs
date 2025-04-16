@@ -588,7 +588,7 @@ namespace NDispWin
                         {
                             Cmd = Indent + Enum.GetName(typeof(DispProg.ECmd), CmdLine.Line[i].Cmd);
                             if (CmdLine.Line[i].IPara[2] > 0) Cmd = Cmd + "*";
-                            ID = "";
+                            ID = "H" + CmdLine.Line[i].ID.ToString() + "";
                             Para = ID + " ";
                             if (CmdLine.Line[i].IPara[4] > 0)
                             {
@@ -1102,6 +1102,13 @@ namespace NDispWin
         }
         private void frmDispProg_FormClosing(object sender, FormClosingEventArgs e)
         {
+            Msg MsgBox = new Msg();
+            EMsgRes MsgRes = MsgBox.Show(Messages.SAVE_RECIPE, "Closing Program Window.", EMsgBtn.smbYes | EMsgBtn.smbNo);
+            if (MsgRes == EMsgRes.smrYes)
+            {
+                Save();
+            }
+
             frm_Layout.Close();
             frm_Layout.Dispose();
 
@@ -1318,6 +1325,8 @@ namespace NDispWin
         }
         private void tslbl_Status_DoubleClick(object sender, EventArgs e)
         {
+            if (GDefine.Status == EStatus.Unknown) return;
+
             GDefine.Status = EStatus.Ready;
             UpdateDisplay();
         }
@@ -1342,6 +1351,13 @@ namespace NDispWin
         #region Program Load/Save
         private async void ts_ProgNew_Click(object sender, EventArgs e)
         {
+            Msg MsgBox = new Msg();
+            EMsgRes MsgRes = MsgBox.Show(Messages.SAVE_RECIPE, "Creating new recipe.", EMsgBtn.smbYes | EMsgBtn.smbNo);
+            if (MsgRes == EMsgRes.smrYes)
+            {
+                Save();
+            }
+
             frm_ProgressReport frm = new frm_ProgressReport();
             frm.Message = "Create New Program?";
             if (frm.ShowDialog() == DialogResult.OK)
@@ -1364,10 +1380,13 @@ namespace NDispWin
         frm_ProgressReport frm1 = new frm_ProgressReport();
         private async void ts_ProgOpen_Click(object sender, EventArgs e)
         {
-            if (GDefine.CameraType[0] == GDefine.ECameraType.Spinnaker)
+            Msg MsgBox = new Msg();
+            EMsgRes MsgRes = MsgBox.Show(Messages.SAVE_RECIPE, "Open new recipe.", EMsgBtn.smbYes | EMsgBtn.smbNo);
+            if (MsgRes == EMsgRes.smrYes)
             {
-                //TaskVision.frmGenImageView.TopMost = false;
+                Save();
             }
+
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.InitialDirectory = GDefine.ProgPath;
             ofd.Filter = "Program|*." + GDefine.ProgExt;
@@ -3498,6 +3517,11 @@ namespace NDispWin
         private void tmr15s_Tick(object sender, EventArgs e)
         {
             Task.Run(() => { Task_InputMap.OsramEMos.PurgeETVFiles(); });
+        }
+
+        private void tslbl_Status_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

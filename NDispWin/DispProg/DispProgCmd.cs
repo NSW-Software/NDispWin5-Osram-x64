@@ -1874,11 +1874,6 @@ namespace NDispWin
                 TModelPara Model = new TModelPara(DispProg.ModelList, Line.IPara[0]);
                 bool disp = (Line.IPara[2] > 0);
 
-                EZPathType type = (EZPathType)Line.IPara[3];
-
-                double startLength = Line.DPara[0];
-                double endLength = Line.DPara[1];
-
                 double startGap = Line.DPara[2];
                 double dispGap = Model.DispGap;
                 double endGap = Line.DPara[3];
@@ -1942,26 +1937,6 @@ namespace NDispWin
 
                 TPos2 absPt1/*StartTL*/ = new TPos2(Line.X[0], Line.Y[0]);
                 PointD p = new PointD(Line.X[1] - Line.X[0], Line.Y[1] - Line.Y[0]);
-                TPos2 relPt2 = new TPos2(p.X, 0);
-                TPos2 relPt3 = new TPos2(-p.X, -p.Y);
-                TPos2 relPt4 = new TPos2(p.X, 0);
-
-                switch (type)
-                {
-                    case EZPathType.ZPathLines:
-                        break;
-                    case EZPathType.ZPathDot:
-                        startGap = 0;
-                        startLength = 0;
-                        endLength = 0;
-                        break;
-                }
-
-                double len = Math.Sqrt(Math.Pow(p.X, 2) + Math.Pow(p.Y, 2));
-                //TPos2 relStart = new TPos2(p.X * (startLength / len), p.Y * (startLength / len));
-                //if (chng)
-                TPos2 relStart = new TPos2(-startLength, 0);
-                TPos2 relEnd = new TPos2(-p.X * (endLength / len), -p.Y * (endLength / len));
 
                 #region Assign and xy translate start position
                 TPos2 absStart = new TPos2(f_origin_x + DispProg.rt_LayoutRelPos[DispProg.RunTime.UIndex].X + absPt1.X, f_origin_y + DispProg.rt_LayoutRelPos[DispProg.RunTime.UIndex].Y + absPt1.Y);
@@ -1981,7 +1956,7 @@ namespace NDispWin
 
                 #region Move abs Start Pos + start length, move head2 to position
                 if (!TaskGantry.SetMotionParamGXY()) goto _Error;
-                TPos2 GXY = new TPos2(absStart.X + relStart.X, absStart.Y + relStart.Y);
+                TPos2 GXY = new TPos2(absStart.X /*+ relStart.X*/, absStart.Y /*+ relStart.Y*/);
                 if (RunMode == ERunMode.Normal || RunMode == ERunMode.Dry)
                 {
                     GXY.X += TaskDisp.Head_Ofst[0].X;
@@ -2020,8 +1995,6 @@ namespace NDispWin
                         }
                 }
                 double[] GZ = new double[] { Math.Min(absZ[0] + Model.DispGap, TaskDisp.ZDefPos), Math.Min(absZ[1] + Model.DispGap + TaskDisp.Head2_ZOffset, TaskDisp.ZDefPos) };//include H2 ZOffset
-                if (startLength > 0)
-                    GZ = new double[] { Math.Min(absZ[0] + startGap, TaskDisp.ZDefPos), Math.Min(absZ[1] + TaskDisp.Head2_ZOffset + startGap, TaskDisp.ZDefPos) };//include H2 ZOffset
                 #endregion
 
                 #region Move to abs DispGap
@@ -2035,9 +2008,7 @@ namespace NDispWin
                             double dv = Model.DnSpeed;
                             double ac = Model.DnAccel;
                             if (!TaskGantry.SetMotionParamGZZ2(sv, dv, ac)) goto _Stop;
-                            //double[] relStartZ = new double[2] { startGap - dispGap, startGap - dispGap };
                             double[] relStartZ = new double[2] { 0, 0 };
-                            if (startLength > 0) relStartZ = new double[2] { startGap - dispGap, startGap - dispGap };
                             if (!DispProg.MoveZAbs(bHeadRun[0], bHeadRun[1], GZ[0] + relStartZ[0], GZ[1] + relStartZ[1])) return false;
 
                             break;
@@ -2083,85 +2054,62 @@ namespace NDispWin
                                     bsuckPulse = new double[2] { 0, 0 };
                                 }
 
-                                //if (bHeadRun[0] && !bHeadRun[1])
+                                //double[] relStartZ = new double[2] { startGap - dispGap, startGap - dispGap };
+                                double[] relEndZ = new double[2] { endGap - dispGap, endGap - dispGap };
+
+                                if (!bHeadRun[0])
                                 {
-                                    double[] relStartZ = new double[2] { startGap - dispGap, startGap - dispGap };
-                                    double[] relEndZ = new double[2] { endGap - dispGap, endGap - dispGap };
-
-                                    if (!bHeadRun[0])
-                                    {
-                                        relStartZ[0] = 0;
-                                        relEndZ[0] = 0;
-                                    }
-
-                                    if (!bHeadRun[1])
-                                    {
-                                        relStartZ[1] = 0;
-                                        relEndZ[1] = 0;
-                                    }
-
-                                    double[] ratio = new double[4] { Line.DPara[10] / 100, Line.DPara[11] / 100, Line.DPara[12] / 100, Line.DPara[13] / 100 };
-                                    switch (type)
-                                    {
-                                        //case EZPathType.ZPathLines:
-                                        //    CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, speed, new double[6] { -relStart.X, -relStart.Y, -relStartZ[0], -relStartZ[1], pp[0] * ratio[0], pp[1] * ratio[0] }, null);
-                                        //    CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, speed, new double[6] { p.X, 0, 0, 0, pp[0] * ratio[1], pp[1] * ratio[1] }, null);
-                                        //    CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speedF, speed, new double[6] { -p.X, p.Y, 0, 0, 0, 0 }, null);
-                                        //    CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, speed, new double[6] { p.X, 0, 0, 0, pp[0] * ratio[2], pp[1] * ratio[2] }, null);
-                                        //    CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, speed, new double[6] { relEnd.X, relEnd.Y, relEndZ[0], relEndZ[1], pp[0] * ratio[3], pp[1] * ratio[3] }, null);
-                                        //    break;
-                                        case EZPathType.ZPathDot:
-                                            CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.GPDELAY, false, 1, 0, null, null);
-                                            CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, TFPump.PP4.DispSpeed, 0, new double[6] { 0, 0, 0, 0, dispPulse[0] * ratio[0], dispPulse[1] * ratio[0] }, null);
-                                            CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, TFPump.PP4.BSuckSpeed, 0, new double[6] { 0, 0, 0, 0, bsuckPulse[0] * ratio[0], bsuckPulse[1] * ratio[0] }, null);
-                                            CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, 0, new double[6] { 0, 0, relEndZ[0], relEndZ[1], 0, 0 }, null);
-
-                                            CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, 0, new double[6] { p.X, 0, 0, 0, 0, 0 }, null);
-                                            CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, 0, new double[6] { 0, 0, -relEndZ[0], -relEndZ[1], 0, 0 }, null);
-                                            CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.GPDELAY, false, 1, 0, null, null);
-                                            CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, TFPump.PP4.DispSpeed, 0, new double[6] { 0, 0, 0, 0, dispPulse[0] * ratio[1], dispPulse[1] * ratio[1] }, null);
-                                            CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, TFPump.PP4.BSuckSpeed, 0, new double[6] { 0, 0, 0, 0, bsuckPulse[0] * ratio[1], bsuckPulse[1] * ratio[1] }, null);
-                                            CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, 0, new double[6] { 0, 0, relEndZ[0], relEndZ[1], 0, 0 }, null);
-
-                                            CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, 0, new double[6] { -p.X, p.Y, 0, 0, 0, 0 }, null);
-                                            CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, 0, new double[6] { 0, 0, -relEndZ[0], -relEndZ[1], 0, 0 }, null);
-                                            CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.GPDELAY, false, 1, 0, null, null);
-                                            CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, TFPump.PP4.DispSpeed, 0, new double[6] { 0, 0, 0, 0, dispPulse[0] * ratio[2], dispPulse[1] * ratio[2] }, null);
-                                            CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, TFPump.PP4.BSuckSpeed, 0, new double[6] { 0, 0, 0, 0, bsuckPulse[0] * ratio[2], bsuckPulse[1] * ratio[2] }, null);
-                                            CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, 0, new double[6] { 0, 0, relEndZ[0], relEndZ[1], 0, 0 }, null);
-
-                                            CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, 0, new double[6] { p.X, 0, 0, 0, 0, 0 }, null);
-                                            CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, 0, new double[6] { 0, 0, -relEndZ[0], -relEndZ[1], 0, 0 }, null);
-                                            CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.GPDELAY, false, 1, 0, null, null);
-                                            CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, TFPump.PP4.DispSpeed, 0, new double[6] { 0, 0, 0, 0, dispPulse[0] * ratio[3], dispPulse[1] * ratio[3] }, null);
-                                            CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, TFPump.PP4.BSuckSpeed, 0, new double[6] { 0, 0, 0, 0, bsuckPulse[0] * ratio[3], bsuckPulse[1] * ratio[3] }, null);
-                                            CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, 0, new double[6] { 0, 0, relEndZ[0], relEndZ[1], 0, 0 }, null);
-                                            break;
-                                    }
+                                    //relStartZ[0] = 0;
+                                    relEndZ[0] = 0;
+                                    dispPulse[0] = 0;
+                                    bsuckPulse[0] = 0;
                                 }
+
+                                if (!bHeadRun[1])
+                                {
+                                    //relStartZ[1] = 0;
+                                    relEndZ[1] = 0;
+                                    dispPulse[1] = 0;
+                                    bsuckPulse[1] = 0;
+                                }
+
+                                double[] ratio = new double[4] { Line.DPara[10] / 100, Line.DPara[11] / 100, Line.DPara[12] / 100, Line.DPara[13] / 100 };
+
+                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.GPDELAY, false, 1, 0, null, null);
+                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, TFPump.PP4.DispSpeed, 0, new double[6] { 0, 0, 0, 0, dispPulse[0] * ratio[0], dispPulse[1] * ratio[0] }, null);
+                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, TFPump.PP4.BSuckSpeed, 0, new double[6] { 0, 0, 0, 0, bsuckPulse[0] * ratio[0], bsuckPulse[1] * ratio[0] }, null);
+                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, 0, new double[6] { 0, 0, relEndZ[0], relEndZ[1], 0, 0 }, null);
+
+                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, 0, new double[6] { p.X, 0, 0, 0, 0, 0 }, null);
+                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, 0, new double[6] { 0, 0, -relEndZ[0], -relEndZ[1], 0, 0 }, null);
+                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.GPDELAY, false, 1, 0, null, null);
+                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, TFPump.PP4.DispSpeed, 0, new double[6] { 0, 0, 0, 0, dispPulse[0] * ratio[1], dispPulse[1] * ratio[1] }, null);
+                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, TFPump.PP4.BSuckSpeed, 0, new double[6] { 0, 0, 0, 0, bsuckPulse[0] * ratio[1], bsuckPulse[1] * ratio[1] }, null);
+                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, 0, new double[6] { 0, 0, relEndZ[0], relEndZ[1], 0, 0 }, null);
+
+                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, 0, new double[6] { -p.X, p.Y, 0, 0, 0, 0 }, null);
+                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, 0, new double[6] { 0, 0, -relEndZ[0], -relEndZ[1], 0, 0 }, null);
+                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.GPDELAY, false, 1, 0, null, null);
+                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, TFPump.PP4.DispSpeed, 0, new double[6] { 0, 0, 0, 0, dispPulse[0] * ratio[2], dispPulse[1] * ratio[2] }, null);
+                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, TFPump.PP4.BSuckSpeed, 0, new double[6] { 0, 0, 0, 0, bsuckPulse[0] * ratio[2], bsuckPulse[1] * ratio[2] }, null);
+                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, 0, new double[6] { 0, 0, relEndZ[0], relEndZ[1], 0, 0 }, null);
+
+                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, 0, new double[6] { p.X, 0, 0, 0, 0, 0 }, null);
+                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, 0, new double[6] { 0, 0, -relEndZ[0], -relEndZ[1], 0, 0 }, null);
+                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.GPDELAY, false, 1, 0, null, null);
+                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, TFPump.PP4.DispSpeed, 0, new double[6] { 0, 0, 0, 0, dispPulse[0] * ratio[3], dispPulse[1] * ratio[3] }, null);
+                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, TFPump.PP4.BSuckSpeed, 0, new double[6] { 0, 0, 0, 0, bsuckPulse[0] * ratio[3], bsuckPulse[1] * ratio[3] }, null);
+                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, 0, new double[6] { 0, 0, relEndZ[0], relEndZ[1], 0, 0 }, null);
                             }
                             else
                             {
-                                switch (type)
-                                {
-
-                                    //case EZPathType.ZPathLines:
-                                    //    CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, initialSpeed, new double[6] { -relStart.X, -relStart.Y, 0, 0, 0, 0 }, null);
-                                    //    CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, speed, new double[6] { p.X, 0, 0, 0, 0, 0 }, null);
-                                    //    CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speedF, speed, new double[6] { -p.X, p.Y, 0, 0, 0, 0 }, null);
-                                    //    CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, speed, new double[6] { p.X, 0, 0, 0, 0, 0 }, null);
-                                    //    CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, initialSpeed, new double[6] { relEnd.X, relEnd.Y, 0, 0, 0, 0 }, null);
-                                    //    break;
-                                    case EZPathType.ZPathDot:
-                                        CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.GPDELAY, true, Model.DnWait, 0, null, null);
-                                        CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, speed, new double[6] { p.X, 0, 0, 0, 0, 0 }, null);
-                                        CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.GPDELAY, true, Model.DnWait, 0, null, null);
-                                        CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speedF, speed, new double[6] { -p.X, p.Y, 0, 0, 0, 0 }, null);
-                                        CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.GPDELAY, true, Model.DnWait, 0, null, null);
-                                        CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, speed, new double[6] { p.X, 0, 0, 0, 0, 0 }, null);
-                                        CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.GPDELAY, true, Model.DnWait, 0, null, null);
-                                        break;
-                                }                                
+                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.GPDELAY, true, Model.DnWait, 0, null, null);
+                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, speed, new double[6] { p.X, 0, 0, 0, 0, 0 }, null);
+                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.GPDELAY, true, Model.DnWait, 0, null, null);
+                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speedF, speed, new double[6] { -p.X, p.Y, 0, 0, 0, 0 }, null);
+                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.GPDELAY, true, Model.DnWait, 0, null, null);
+                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, speed, new double[6] { p.X, 0, 0, 0, 0, 0 }, null);
+                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.GPDELAY, true, Model.DnWait, 0, null, null);
                             }
 
                             CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.GPDELAY, true, Model.PostWait, 0, null, null);

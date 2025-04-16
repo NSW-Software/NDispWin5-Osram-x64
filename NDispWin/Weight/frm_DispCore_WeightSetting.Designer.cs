@@ -108,6 +108,9 @@
             this.lbl_CleanOnStart = new System.Windows.Forms.Label();
             this.label38 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.lbl_CalAverageCount = new System.Windows.Forms.Label();
+            this.label54 = new System.Windows.Forms.Label();
+            this.label55 = new System.Windows.Forms.Label();
             this.lblCalSample = new System.Windows.Forms.Label();
             this.label50 = new System.Windows.Forms.Label();
             this.lbl_Cal_RequireOnLoadProgram = new System.Windows.Forms.Label();
@@ -130,12 +133,13 @@
             this.label40 = new System.Windows.Forms.Label();
             this.label51 = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.cbCleanIgnoreEveryInterval = new System.Windows.Forms.CheckBox();
+            this.label53 = new System.Windows.Forms.Label();
+            this.lblMeasureInterval = new System.Windows.Forms.Label();
+            this.label57 = new System.Windows.Forms.Label();
             this.lblMeasSample = new System.Windows.Forms.Label();
             this.label48 = new System.Windows.Forms.Label();
             this.lbl_Meas_RequireOnLotStart = new System.Windows.Forms.Label();
-            this.lbl_CalAverageCount = new System.Windows.Forms.Label();
-            this.label54 = new System.Windows.Forms.Label();
-            this.label55 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -1038,7 +1042,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 34);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(600, 301);
+            this.tabPage1.Size = new System.Drawing.Size(600, 412);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Position";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -1090,7 +1094,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 34);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(600, 301);
+            this.tabPage2.Size = new System.Drawing.Size(600, 412);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Common";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -1157,7 +1161,41 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Calibration";
             this.tabPage3.UseVisualStyleBackColor = true;
-            this.tabPage3.Click += new System.EventHandler(this.tabPage3_Click);
+            // 
+            // lbl_CalAverageCount
+            // 
+            this.lbl_CalAverageCount.BackColor = System.Drawing.SystemColors.Window;
+            this.lbl_CalAverageCount.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lbl_CalAverageCount.Location = new System.Drawing.Point(226, 140);
+            this.lbl_CalAverageCount.Margin = new System.Windows.Forms.Padding(2);
+            this.lbl_CalAverageCount.Name = "lbl_CalAverageCount";
+            this.lbl_CalAverageCount.Size = new System.Drawing.Size(70, 23);
+            this.lbl_CalAverageCount.TabIndex = 257;
+            this.lbl_CalAverageCount.Text = "10";
+            this.lbl_CalAverageCount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lbl_CalAverageCount.Click += new System.EventHandler(this.lbl_CalAverageCount_Click);
+            // 
+            // label54
+            // 
+            this.label54.AccessibleDescription = "Cal Average Count";
+            this.label54.Location = new System.Drawing.Point(5, 140);
+            this.label54.Margin = new System.Windows.Forms.Padding(2);
+            this.label54.Name = "label54";
+            this.label54.Size = new System.Drawing.Size(144, 23);
+            this.label54.TabIndex = 256;
+            this.label54.Text = "Cal Avarage Count";
+            this.label54.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label55
+            // 
+            this.label55.AccessibleDescription = "";
+            this.label55.Location = new System.Drawing.Point(168, 140);
+            this.label55.Margin = new System.Windows.Forms.Padding(2);
+            this.label55.Name = "label55";
+            this.label55.Size = new System.Drawing.Size(54, 23);
+            this.label55.TabIndex = 258;
+            this.label55.Text = "(count)";
+            this.label55.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblCalSample
             // 
@@ -1169,7 +1207,6 @@
             this.lblCalSample.TabIndex = 255;
             this.lblCalSample.Text = "-";
             this.lblCalSample.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblCalSample.Click += new System.EventHandler(this.label53_Click);
             // 
             // label50
             // 
@@ -1413,6 +1450,10 @@
             // 
             // tabPage4
             // 
+            this.tabPage4.Controls.Add(this.cbCleanIgnoreEveryInterval);
+            this.tabPage4.Controls.Add(this.label53);
+            this.tabPage4.Controls.Add(this.lblMeasureInterval);
+            this.tabPage4.Controls.Add(this.label57);
             this.tabPage4.Controls.Add(this.lblMeasSample);
             this.tabPage4.Controls.Add(this.label48);
             this.tabPage4.Controls.Add(this.lbl_Meas_RequireOnLotStart);
@@ -1429,11 +1470,56 @@
             this.tabPage4.Location = new System.Drawing.Point(4, 34);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(600, 301);
+            this.tabPage4.Size = new System.Drawing.Size(600, 412);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Measure";
             this.tabPage4.UseVisualStyleBackColor = true;
-            this.tabPage4.Click += new System.EventHandler(this.tabPage4_Click);
+            // 
+            // cbCleanIgnoreEveryInterval
+            // 
+            this.cbCleanIgnoreEveryInterval.AutoSize = true;
+            this.cbCleanIgnoreEveryInterval.Location = new System.Drawing.Point(8, 186);
+            this.cbCleanIgnoreEveryInterval.Name = "cbCleanIgnoreEveryInterval";
+            this.cbCleanIgnoreEveryInterval.Size = new System.Drawing.Size(172, 18);
+            this.cbCleanIgnoreEveryInterval.TabIndex = 258;
+            this.cbCleanIgnoreEveryInterval.Text = "Clean Ignore Every Sample";
+            this.cbCleanIgnoreEveryInterval.UseVisualStyleBackColor = true;
+            this.cbCleanIgnoreEveryInterval.Click += new System.EventHandler(this.cbCleanIgnoreEverySample_Click);
+            // 
+            // label53
+            // 
+            this.label53.AccessibleDescription = "Measure Interval";
+            this.label53.Location = new System.Drawing.Point(4, 158);
+            this.label53.Margin = new System.Windows.Forms.Padding(2);
+            this.label53.Name = "label53";
+            this.label53.Size = new System.Drawing.Size(144, 23);
+            this.label53.TabIndex = 255;
+            this.label53.Text = "Measure Interval";
+            this.label53.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblMeasureInterval
+            // 
+            this.lblMeasureInterval.BackColor = System.Drawing.SystemColors.Window;
+            this.lblMeasureInterval.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblMeasureInterval.Location = new System.Drawing.Point(226, 158);
+            this.lblMeasureInterval.Margin = new System.Windows.Forms.Padding(2);
+            this.lblMeasureInterval.Name = "lblMeasureInterval";
+            this.lblMeasureInterval.Size = new System.Drawing.Size(70, 23);
+            this.lblMeasureInterval.TabIndex = 256;
+            this.lblMeasureInterval.Text = "100";
+            this.lblMeasureInterval.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblMeasureInterval.Click += new System.EventHandler(this.lblMeasureInterval_Click);
+            // 
+            // label57
+            // 
+            this.label57.AccessibleDescription = "";
+            this.label57.Location = new System.Drawing.Point(152, 158);
+            this.label57.Margin = new System.Windows.Forms.Padding(2);
+            this.label57.Name = "label57";
+            this.label57.Size = new System.Drawing.Size(70, 23);
+            this.label57.TabIndex = 257;
+            this.label57.Text = "(s)";
+            this.label57.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblMeasSample
             // 
@@ -1470,41 +1556,6 @@
             this.lbl_Meas_RequireOnLotStart.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.lbl_Meas_RequireOnLotStart.Click += new System.EventHandler(this.lbl_Meas_RequireOnLotStart_Click);
             // 
-            // lbl_CalAverageCount
-            // 
-            this.lbl_CalAverageCount.BackColor = System.Drawing.SystemColors.Window;
-            this.lbl_CalAverageCount.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_CalAverageCount.Location = new System.Drawing.Point(226, 140);
-            this.lbl_CalAverageCount.Margin = new System.Windows.Forms.Padding(2);
-            this.lbl_CalAverageCount.Name = "lbl_CalAverageCount";
-            this.lbl_CalAverageCount.Size = new System.Drawing.Size(70, 23);
-            this.lbl_CalAverageCount.TabIndex = 257;
-            this.lbl_CalAverageCount.Text = "10";
-            this.lbl_CalAverageCount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.lbl_CalAverageCount.Click += new System.EventHandler(this.lbl_CalAverageCount_Click);
-            // 
-            // label54
-            // 
-            this.label54.AccessibleDescription = "Cal Average Count";
-            this.label54.Location = new System.Drawing.Point(5, 140);
-            this.label54.Margin = new System.Windows.Forms.Padding(2);
-            this.label54.Name = "label54";
-            this.label54.Size = new System.Drawing.Size(144, 23);
-            this.label54.TabIndex = 256;
-            this.label54.Text = "Cal Avarage Count";
-            this.label54.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label55
-            // 
-            this.label55.AccessibleDescription = "";
-            this.label55.Location = new System.Drawing.Point(168, 140);
-            this.label55.Margin = new System.Windows.Forms.Padding(2);
-            this.label55.Name = "label55";
-            this.label55.Size = new System.Drawing.Size(54, 23);
-            this.label55.TabIndex = 258;
-            this.label55.Text = "(count)";
-            this.label55.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
             // frm_DispCore_WeightSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
@@ -1534,6 +1585,7 @@
             this.tabPage3.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
+            this.tabPage4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1648,5 +1700,9 @@
         private System.Windows.Forms.Label lbl_CalAverageCount;
         private System.Windows.Forms.Label label54;
         private System.Windows.Forms.Label label55;
+        private System.Windows.Forms.CheckBox cbCleanIgnoreEveryInterval;
+        private System.Windows.Forms.Label label53;
+        private System.Windows.Forms.Label lblMeasureInterval;
+        private System.Windows.Forms.Label label57;
     }
 }

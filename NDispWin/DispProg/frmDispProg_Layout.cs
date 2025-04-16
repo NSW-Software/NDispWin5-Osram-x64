@@ -996,10 +996,9 @@ namespace NDispWin
         {
             double X = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + LocalLayout.StartX;//CmdLine.DPara[0];
             double Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + LocalLayout.StartY;//CmdLine.DPara[1];
-
-
             X = X + Pos[UnitNo].X;
             Y = Y + Pos[UnitNo].Y;
+            DispProg.Translate(0, ref X, ref Y);
 
             if (!TaskDisp.TaskMoveGZZ2Up()) return;
 

@@ -67,7 +67,7 @@ namespace NDispWin
         private void lbl_Delay_Click(object sender, EventArgs e)
         {
             int i = CmdLine.IPara[0];
-            UC.AdjustExec(CmdName + ", Delay (ms)", ref i, 0, 100000);
+            UC.AdjustExec(CmdName + ", Delay (ms)", ref i, 0, 3600000);
             CmdLine.IPara[0] = i;
             UpdateDisplay();
         }

@@ -479,6 +479,7 @@
             this.tslbl_Status.Name = "tslbl_Status";
             this.tslbl_Status.Size = new System.Drawing.Size(100, 36);
             this.tslbl_Status.Text = "Status: Ready";
+            this.tslbl_Status.Click += new System.EventHandler(this.tslbl_Status_Click);
             this.tslbl_Status.DoubleClick += new System.EventHandler(this.tslbl_Status_DoubleClick);
             // 
             // toolStripSeparator8

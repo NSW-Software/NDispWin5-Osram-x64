@@ -3897,7 +3897,8 @@ namespace NDispWin
                                 return false;
                             }
                             if (GDefine.GantryConfig == GDefine.EGantryConfig.XY_ZX2Y2_Z2 &&
-                                            (DispProg.Head_Operation == EHeadOperation.Sync || DispProg.Head_Operation == EHeadOperation.Double))
+                                (DispProg.Head_Operation == EHeadOperation.Sync || DispProg.Head_Operation == EHeadOperation.Double) &&
+                                !TFPump.PP4.Ready(new bool[] { false, true }))
                             {
                                 Msg MsgBox = new Msg();
                                 MsgBox.Show(Messages.PP4_PUMP_NOT_READY, "Pump 2");
