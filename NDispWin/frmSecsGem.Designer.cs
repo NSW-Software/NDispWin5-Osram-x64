@@ -47,9 +47,10 @@ namespace NDispWin
             this.btnAlarmClear = new System.Windows.Forms.Button();
             this.btnAlarmSet = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.rtbRxTerminal = new System.Windows.Forms.RichTextBox();
             this.rtbTxTerminal = new System.Windows.Forms.RichTextBox();
             this.btnSendTerminalMessage = new System.Windows.Forms.Button();
-            this.rtbRxTerminal = new System.Windows.Forms.RichTextBox();
+            this.btnGenerateIDList = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -81,7 +82,7 @@ namespace NDispWin
             this.btnLocalRemote.Name = "btnLocalRemote";
             this.btnLocalRemote.Size = new System.Drawing.Size(101, 32);
             this.btnLocalRemote.TabIndex = 64;
-            this.btnLocalRemote.Text = "Local";
+            this.btnLocalRemote.Text = "LocalRemote";
             this.btnLocalRemote.UseVisualStyleBackColor = true;
             this.btnLocalRemote.Click += new System.EventHandler(this.btnLocalRemote_Click);
             // 
@@ -97,7 +98,7 @@ namespace NDispWin
             this.btnOnlineOffline.Name = "btnOnlineOffline";
             this.btnOnlineOffline.Size = new System.Drawing.Size(101, 32);
             this.btnOnlineOffline.TabIndex = 65;
-            this.btnOnlineOffline.Text = "Local";
+            this.btnOnlineOffline.Text = "OnlineOffline";
             this.btnOnlineOffline.UseVisualStyleBackColor = true;
             this.btnOnlineOffline.Click += new System.EventHandler(this.btnOnlineOffline_Click);
             // 
@@ -223,6 +224,14 @@ namespace NDispWin
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Terminal Message";
             // 
+            // rtbRxTerminal
+            // 
+            this.rtbRxTerminal.Location = new System.Drawing.Point(6, 81);
+            this.rtbRxTerminal.Name = "rtbRxTerminal";
+            this.rtbRxTerminal.Size = new System.Drawing.Size(390, 54);
+            this.rtbRxTerminal.TabIndex = 73;
+            this.rtbRxTerminal.Text = "";
+            // 
             // rtbTxTerminal
             // 
             this.rtbTxTerminal.Location = new System.Drawing.Point(6, 21);
@@ -241,19 +250,22 @@ namespace NDispWin
             this.btnSendTerminalMessage.UseVisualStyleBackColor = true;
             this.btnSendTerminalMessage.Click += new System.EventHandler(this.btnSendTerminalMsg_Click);
             // 
-            // rtbRxTerminal
+            // btnGenerateIDList
             // 
-            this.rtbRxTerminal.Location = new System.Drawing.Point(6, 81);
-            this.rtbRxTerminal.Name = "rtbRxTerminal";
-            this.rtbRxTerminal.Size = new System.Drawing.Size(390, 54);
-            this.rtbRxTerminal.TabIndex = 73;
-            this.rtbRxTerminal.Text = "";
+            this.btnGenerateIDList.Location = new System.Drawing.Point(420, 85);
+            this.btnGenerateIDList.Name = "btnGenerateIDList";
+            this.btnGenerateIDList.Size = new System.Drawing.Size(101, 39);
+            this.btnGenerateIDList.TabIndex = 73;
+            this.btnGenerateIDList.Text = "Generate ID and RCMD List";
+            this.btnGenerateIDList.UseVisualStyleBackColor = true;
+            this.btnGenerateIDList.Click += new System.EventHandler(this.btnGenerateIDList_Click);
             // 
             // frmSecsGem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(535, 533);
+            this.Controls.Add(this.btnGenerateIDList);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -300,5 +312,6 @@ namespace NDispWin
         private System.Windows.Forms.RichTextBox rtbTxTerminal;
         private System.Windows.Forms.Button btnSendTerminalMessage;
         private System.Windows.Forms.RichTextBox rtbRxTerminal;
+        private System.Windows.Forms.Button btnGenerateIDList;
     }
 }

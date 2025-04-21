@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Reflection;
+using System.IO;
 
 namespace NDispWin
 {
@@ -128,6 +129,70 @@ namespace NDispWin
         private void btnSendTerminalMsg_Click(object sender, EventArgs e)
         {
             TFSecsGem.SendTerminalMsg_TRN(rtbTxTerminal.Text);
+        }
+
+        private void btnGenerateIDList_Click(object sender, EventArgs e)
+        {
+            string fileName = GDefine.RootDir.FullName + $"ID_List_{Application.ProductName}_v{Application.ProductVersion}_{DateTime.Now:yyyyMMddHHmmss}.txt";
+
+            FileStream F = new FileStream(fileName, FileMode.Create, FileAccess.Write, FileShare.Write);
+            StreamWriter W = new StreamWriter(F);
+
+            List<string> list = null;
+            try
+            {
+                list = TEStreamFunc.List();
+                W.WriteLine("***StreamFunc, Desc, VIDs***");
+                foreach (string s in list)
+                {
+                    W.WriteLine(s);
+                }
+                W.WriteLine("");
+
+                list = TEVID.List();
+                W.WriteLine("***SVID/DVID/ECID, Desc***");
+                W.WriteLine("***SVID 10000~19999, DVID 20000~29999, ECID 30000~39999***");
+                foreach (string s in list)
+                {
+                    W.WriteLine(s);
+                }
+                W.WriteLine("");
+
+                list = TEMessage.ALID_List();
+                W.WriteLine("***ALID, Desc***");
+                foreach (string s in list)
+                {
+                    W.WriteLine(s);
+                }
+                W.WriteLine("");
+
+                list = TEEvent.CEID_List();
+                W.WriteLine("***CEID, Desc, VIDs***");
+                foreach (string s in list)
+                {
+                    W.WriteLine(s);
+                }
+                W.WriteLine("");
+
+                list = RMCD.List();
+                W.WriteLine("***RMCD***");
+                foreach (string s in list)
+                {
+                    W.WriteLine(s);
+                }
+                W.WriteLine("");
+
+                W.WriteLine("***End of list***");
+            }
+            catch
+            {
+            }
+            finally
+            {
+                W.Close();
+            }
+
+            MessageBox.Show($"{fileName} was created.");
         }
     }
 }

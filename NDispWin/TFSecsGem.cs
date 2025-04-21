@@ -324,8 +324,11 @@ namespace NDispWin
         public static TEStreamFunc CENR = new TEStreamFunc("S1F23", "H<-E, Collection Event Namelist Request.");//tested
         public static TEStreamFunc CEN = new TEStreamFunc("S1F24", "H->E, Collection Event Namelist.");//tested
 
+        public static TEStreamFunc S2F0 = new TEStreamFunc("S2F0", "H<->E, Abort Transaction.");
         public static TEStreamFunc ECR = new TEStreamFunc("S2F13", "H->E, Equipment Constant Request.");//tested
         public static TEStreamFunc ECD = new TEStreamFunc("S2F14", "H<-E, Equipment Constant Data.");//tested
+        public static TEStreamFunc ECS = new TEStreamFunc("S2F15", "H->E, New Equipment Constant Send.");
+        public static TEStreamFunc ECA = new TEStreamFunc("S2F16", "H<-E, New Equipment Constant Acknowledge.");
         public static TEStreamFunc ECNR = new TEStreamFunc("S2F29", "H->E, Equipment Constant Namelist Request.");//tested
         public static TEStreamFunc ECN = new TEStreamFunc("S2F30", "H<-E, Equipment Constant Namelist.");//tested
 
@@ -572,6 +575,22 @@ namespace NDispWin
                             Send($"{nameof(StreamFunc.ECN)},{string.Join(",", responseList)}");
                             break;
                         }
+                    case nameof(StreamFunc.ECS):
+                        {
+                            try
+                            {
+                                for (int i = 1; i < rxSplitData.Length; i += 2)
+                                {
+                                    TEVID.GetFieldFromId(Convert.ToInt32(rxSplitData[i])).Value = rxSplitData[i + 1];
+                                }
+                                Send($"{nameof(StreamFunc.ECA)}");
+                            }
+                            catch
+                            {
+                                Send($"{nameof(StreamFunc.S2F0)}");
+                            }
+                            break;
+                        }
                     #endregion
                     #region S5
                     case nameof(StreamFunc.ARS):
@@ -731,6 +750,7 @@ namespace NDispWin
                         rxPPDData = rxSplitData.ToList();
                         break;
                     #endregion
+                    #region S10
                     case nameof(StreamFunc.VTN):
                         {
                             rxSplitData = rxSplitData.Concat(Enumerable.Repeat("", 1)).ToArray();//add 1 empty strings
@@ -738,6 +758,7 @@ namespace NDispWin
                             Send($"{nameof(StreamFunc.VTA)}");
                             break;
                         }
+                    #endregion
 
                     #region RMCD
                     case "PP-SELECT":
@@ -751,6 +772,7 @@ namespace NDispWin
                             if (!File.Exists(fileName))
                             {
                                 PPChangeStatus = "Recipe not found.";
+                                Send($"{data0},RECIPE NOT FOUND.");
                                 break;
                             }
 
@@ -758,12 +780,14 @@ namespace NDispWin
                             if (!rdy || DispProg.TR_IsBusy())
                             {
                                 PPChangeStatus = "Equipment is busy.";
+                                Send($"{data0},EQUIPMENT IS BUSY.");
                                 break;
                             }
 
                             if (!DispProg.loadXML2(fileName, true))
                             {
                                 PPChangeStatus = "Load fail.";
+                                Send($"{data0},LOAD FAIL.");
                                 break;
                             }
 
@@ -775,7 +799,7 @@ namespace NDispWin
 
                             PPChangeStatus = "Success";
                             Send(data0);
-                            Event.PP_SELECTED.Set("FileName", fileName);
+                            Event.SECSGEM_PP_SELECTED.Set("FileName", fileName);
                             break;
                         }
                     case "START":
@@ -797,22 +821,6 @@ namespace NDispWin
                         Send(data0);
                         break;
                         #endregion
-                        //    case "DOWNLOAD":
-                        //        if (!EnableStripMapE142) break;
-                        //        if (data.Length == 1) AddLog("Download data incomplete.");
-                        //        string content = rxData;
-                        //        content = content.Remove(0, content.IndexOf("<?"));
-                        //        UpdateXMLtoLocal(content);
-                        //        break;
-
-                        //    case "SERVER_DISCONNECTED":
-                        //        Msg MsgBox = new Msg();
-                        //        EMsgRes res = MsgBox.Show("Server Disconnected. Pls check Gemtaro status.", "", TEMessage.EType.Notification, EMsgBtn.smbOK);
-                        //        break;
-                        //    default:
-                        //        break;
-
-
                 }
             }
         }

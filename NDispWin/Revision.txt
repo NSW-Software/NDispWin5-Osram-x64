@@ -12,6 +12,9 @@ Todo
 
 DOT, CLINE
 
+Ver 6.1.5.7 - KN - 20250421 - Gitted
+  [Improve] SecsGem response PP-Select wiht error decsritption
+  [Feature] Added TFSecGem.ECS ECA
 Ver 6.1.5.6 - KN - 20250416 - Gitted
 [Enhance] frmDispProg do not allow double click set Ready if Unknowm
 [Features] Added MeasureInterval CleanPurgeEveryInterval.

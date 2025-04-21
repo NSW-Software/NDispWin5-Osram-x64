@@ -35,7 +35,8 @@ namespace NDispWin
             if (this.Name.Length == 0) this.Name = this.Name.ToString();
 
             Log.AddToEventLog(this.Code, this.Name, paraName + " " + paraValue);
-            GDefine.sgc2.SendEvent(this.Code + "," + this.Name + "," + paraName + "," + paraValue);
+            //GDefine.sgc2.SendEvent(this.Code + "," + this.Name + "," + paraName + "," + paraValue);
+            TFSecsGem.Send($"{nameof(StreamFunc.ERS)},{this.Code},{this.Name},{paraName},{paraValue}");
         }
         public void Set()
         {
@@ -46,7 +47,8 @@ namespace NDispWin
             if (this.Name.Length == 0) this.Name = this.Name.ToString();
 
             Log.AddToEventLog(this.Code, this.Name);
-            GDefine.sgc2.SendEvent(this.Code + "," + this.Name);
+            //GDefine.sgc2.SendEvent(this.Code + "," + this.Name);
+            TFSecsGem.Send($"{nameof(StreamFunc.ERS)},{this.Code}");
         }
 
         public static List<string> CEID_List()
@@ -276,8 +278,9 @@ namespace NDispWin
         public static TEEvent SECSGEM_EQ_PROCESS_CHANGE_STATE = new TEEvent(5010, "Process State Change.", new List<int> { 11010, 11011 });
 
         public static TEEvent SECSGEM_PP_CREATE = new TEEvent(5030, "PP Create.", new List<int> { 11051, 11052 });
-        public static TEEvent SECSGEM_PP_CHANGE = new TEEvent(5031, "PP Change.", new List<int> { 11050, 11051, 11052, 11053 });
-        public static TEEvent SECSGEM_PP_DELETE = new TEEvent(5031, "PP Delete.", new List<int> { 11051 });
+        public static TEEvent SECSGEM_PP_CHANGE = new TEEvent(5031, "PP Change.", new List<int> { 11050, 11051, 11052, 11053 });//edited
+        public static TEEvent SECSGEM_PP_DELETE = new TEEvent(5032, "PP Delete.", new List<int> { 11051 });
+        public static TEEvent SECSGEM_PP_SELECTED = new TEEvent(5033, "PP Selected.", new List<int> { 11051, 11052 });
     }
 
     public class TEVID//SV, DV, EC Represents real-time status variables of equipment.
@@ -319,6 +322,19 @@ namespace NDispWin
                 if (value != null && value.Code == code)
                 {
                     return field.Name; // Return the field name, e.g., "PPERROR"
+                }
+            }
+            return null;
+        }
+        public static TEVID GetFieldFromId(int code)
+        {
+            var fields = typeof(VID).GetFields(BindingFlags.Public | BindingFlags.Static);
+            foreach (var field in fields)
+            {
+                var value = field.GetValue(null) as TEVID;
+                if (value != null && value.Code == code)
+                {
+                    return value;
                 }
             }
             return null;
