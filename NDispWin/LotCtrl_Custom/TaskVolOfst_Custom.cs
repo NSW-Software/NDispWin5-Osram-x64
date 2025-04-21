@@ -999,7 +999,7 @@ namespace NDispWin
         public static TPassPanels Pass1 = new TPassPanels(Pass1PanelListFile);
         public static TPassPanels Pass2 = new TPassPanels(Pass2PanelListFile);
 
-        public static bool Execute(string tileID, string lotNo, string e11series, string dAStartNo, ref double[] volume)
+        public static bool Execute(string tileID, string lotNo, string e11series, string dAStartNo, ref string msg, ref double[] volume)
         {
             //Check TileID completed Pass 2 -> Prompt error
             if (!Pass2.ReadFile())
@@ -1048,7 +1048,7 @@ namespace NDispWin
                     EMsgRes Resp = MsgBox.Show($"TileID: {tileID} is not found in Output File: {lotNo}.txt.");
                     return false;
                 }
-
+                msg = $"RunPass2\nLotNumber: {lotNo}\nTileID: {tileID}\n";
                 Event.OSRAMICC.Set($"TileID: {tileID}", "Run Pass2");
                 Pass2.PanelIDs.Insert(0, tileID);
                 Pass2.WriteFile();
@@ -1080,6 +1080,7 @@ namespace NDispWin
                 }
                 volume = new double[2] { vol, vol };
 
+                msg = $"RunPass1\n11Series: {e11series}\nDAStartNumber: {dAStartNo}\nTileID: {tileID}\n";
                 Event.OSRAMICC.Set($"TileID: {tileID}", "Run Pass1");
                 Pass1.PanelIDs.Insert(0, tileID);
                 Pass1.WriteFile();

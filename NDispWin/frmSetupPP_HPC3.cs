@@ -154,7 +154,7 @@ namespace NDispWin
             GControl.UI_Disable(btnCleanFillCancel);
             try
             {
-                if (!TaskGantry.CheckDoorSw()) return;
+                if (!TaskGantry.CheckDoorSw()) goto _End;
 
                 if (!TaskDisp.TaskMoveGZZ2Up()) goto _End;
                 if (!TaskDisp.TaskGotoPMaint()) goto _End;
@@ -165,14 +165,15 @@ namespace NDispWin
                     await Task.Run(() => { return TFPump.PP4.PCleanFill(pumpSelect); });
                     if (CleanFillCancel) break;
                 }
+
+            _End:
+                TaskDisp.TaskMoveGZZ2Up();
             }
             finally
             {
+                UpdateDisplay();
+                GControl.UI_Enable();
             }
-        _End:
-            TaskDisp.TaskMoveGZZ2Up();
-            UpdateDisplay();
-            GControl.UI_Enable();
         }
         private void btnCleanFillCancel_Click(object sender, EventArgs e)
         {

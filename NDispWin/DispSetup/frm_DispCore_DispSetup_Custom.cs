@@ -361,14 +361,37 @@ namespace NDispWin
 
         private void btnOsramICCTest_Click(object sender, EventArgs e)
         {
-            double[] d = new double[2] { 0, 0 };
-            if (OsramICC.Execute(tbxLookUpTileID.Text, LotInfo2.LotNumber, LotInfo2.Osram.ElevenSeries, LotInfo2.Osram.DAStartNumber, ref d))
+
+            if (LotInfo2.LotNumber.Length == 0)
             {
-                MessageBox.Show($"{tbxLookUpTileID.Text},{d[0]:f3},{d[1]:f4}");
+                MessageBox.Show($"Lot Number is not entered.");
+                return;
+            }
+            if (LotInfo2.Osram.ElevenSeries.Length == 0)
+            {
+                MessageBox.Show($"ElevenSeries is not entered.");
+                return;
+            }
+            if (LotInfo2.Osram.DAStartNumber.Length == 0)
+            {
+                MessageBox.Show($"DAStartNumber is not entered.");
+                return;
+            }
+            if (tbxLookUpTileID.Text.Length == 0)
+            {
+                MessageBox.Show($"TileID is not entered.");
+                return;
+            }
+
+            string msg = "";
+            double[] d = new double[2] { 0, 0 };
+            if (OsramICC.Execute(tbxLookUpTileID.Text, LotInfo2.LotNumber, LotInfo2.Osram.ElevenSeries, LotInfo2.Osram.DAStartNumber, ref msg, ref d))
+            {
+                MessageBox.Show($"{msg}\nVolume,{d[0]:f3},{d[1]:f3}");
             }
             else
             {
-                MessageBox.Show($"{tbxLookUpTileID.Text} test fail.");
+                MessageBox.Show($"{msg}\n{tbxLookUpTileID.Text} test fail.");
             }
         }
 

@@ -147,24 +147,24 @@ namespace NDispWin
                     TaskVision.frmMVCGenTLCamera.ShowReticles = false;
                     TaskVision.frmMVCGenTLCamera.SelectCamera(0);
                 }
+
+                //IO.SetState(EMcState.Idle);
+                frm = new frm_DispCore_JogGantryVision();
+                frm.Inst = "Position Crosshair to Ref";
+                frm.ShowVision = true;
+                frm.Top = 0;
+                frm.Left = this.Width;
+
+                DialogResult dr = frm.ShowDialog();
+                this.TopMost = true;
+                if (dr == DialogResult.OK)
+                {
+                    TCTwrLight.SetStatus(TwrLight.Run);//IO.SetState(EMcState.Last);
+                                                       //IO.SetState(EMcState.Idle);
+                    DialogResult = DialogResult.OK;
+                }
             };
             Invoke(action);
-            this.TopMost = true;
-
-            //IO.SetState(EMcState.Idle);
-            frm = new frm_DispCore_JogGantryVision();
-            frm.Inst = "Position Crosshair to Ref";
-            frm.ShowVision = true;
-            frm.Top = 0;
-            frm.Left = this.Width;
-
-            DialogResult dr = frm.ShowDialog();
-            if (dr == DialogResult.OK)
-            {
-                TCTwrLight.SetStatus(TwrLight.Run);//IO.SetState(EMcState.Last);
-                                                   //IO.SetState(EMcState.Idle);
-                DialogResult = DialogResult.OK;
-            }
         }
         private void btn_Accept_Click(object sender, EventArgs e)
         {

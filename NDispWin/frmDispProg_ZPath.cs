@@ -26,7 +26,6 @@ namespace NDispWin
 
             pbZPathLines.Size = pbZPathDot.Size;
             pbZPathLines.Location = pbZPathDot.Location;
-            cbxType.DataSource = Enum.GetNames(typeof(EZPathType));
         }
 
         private void UpdateDisplay()
@@ -45,16 +44,14 @@ namespace NDispWin
             lblPointTL.Text = $"{CmdLine.X[0]:f3},{CmdLine.Y[0]:f3}";
             lblPointBR.Text = $"{CmdLine.X[1]:f3},{CmdLine.Y[1]:f3}";
 
-            cbxType.SelectedIndex = CmdLine.IPara[3];
-            lbkStartLength.Visible = CmdLine.IPara[3] == 1;
-            lblStartLength.Visible = CmdLine.IPara[3] == 1;
-            lbkEndLength.Visible = CmdLine.IPara[3] == 1;
-            lblEndLength.Visible = CmdLine.IPara[3] == 1;
+            //cbxType.SelectedIndex = CmdLine.IPara[3];
+            //lbkStartLength.Visible = CmdLine.IPara[3] == 1;
+            //lblStartLength.Visible = CmdLine.IPara[3] == 1;
+            //lbkEndLength.Visible = CmdLine.IPara[3] == 1;
+            //lblEndLength.Visible = CmdLine.IPara[3] == 1;
             lbkStartGap.Visible = CmdLine.IPara[3] == 1;
             lblStartGap.Visible = CmdLine.IPara[3] == 1;
 
-            lblStartLength.Text = $"{CmdLine.DPara[0]}";
-            lblEndLength.Text = $"{CmdLine.DPara[1]}";
             lblStartGap.Text = $"{CmdLine.DPara[2]}";
             lblDispGap.Text = $"{Model.DispGap}";
             lblEndGap.Text = $"{CmdLine.DPara[3]}";
@@ -72,6 +69,8 @@ namespace NDispWin
             lblHead2DefVolume.Text = $"{CmdLine.DPara[19]:f3}";
             lblHead1Volume.Text = $"{(TFPump.PP4.DispAmounts[0] - TFPump.PP4.BSuckAmounts[0]):f3}";
             lblHead2Volume.Text = $"{(TFPump.PP4.DispAmounts[1] - TFPump.PP4.BSuckAmounts[1]):f3}";
+            lblBackSuck1.Text = $"{TFPump.PP4.BSuckAmounts[0]:f3}";
+            lblBackSuck2.Text = $"{TFPump.PP4.BSuckAmounts[1]:f3}";
 
             if (CmdLine.DPara[10] + CmdLine.DPara[11] + CmdLine.DPara[11] + CmdLine.DPara[12] == 0)
             {
@@ -241,16 +240,6 @@ namespace NDispWin
             UpdateDisplay();
         }
 
-        private void lblStartLength_Click(object sender, EventArgs e)
-        {
-            UC.AdjustExec(CmdName + ", StartLength", ref CmdLine.DPara[0], 0, 5);
-            UpdateDisplay();
-        }
-        private void lblEndLength_Click(object sender, EventArgs e)
-        {
-            UC.AdjustExec(CmdName + ", EndLength", ref CmdLine.DPara[1], 0, 5);
-            UpdateDisplay();
-        }
         private void lblStartGap_Click(object sender, EventArgs e)
         {
             UC.AdjustExec(CmdName + ", StartGap", ref CmdLine.DPara[2], 0, 5);
@@ -339,7 +328,6 @@ namespace NDispWin
 
             UpdateDisplay();
         }
-
         private void lblPostWait_Click(object sender, EventArgs e)
         {
             int modelNo = CmdLine.IPara[0];
@@ -362,35 +350,24 @@ namespace NDispWin
             UpdateDisplay();
         }
 
-        private void cbxType_SelectionChangeCommitted(object sender, EventArgs e)
-        {
-            int old = CmdLine.IPara[3];
-            CmdLine.IPara[3] = cbxType.SelectedIndex;
-            Log.OnSet(CmdName + ", Type", old, CmdLine.IPara[3]);
-            UpdateDisplay();
-        }
-
         private void lblDot1Pc_Click(object sender, EventArgs e)
         {
             UC.AdjustExec(CmdName + ", Dot1Pc", ref CmdLine.DPara[10], 0, 100);
             CmdLine.DPara[11] = 100 - CmdLine.DPara[10] - CmdLine.DPara[12] - CmdLine.DPara[13];
             UpdateDisplay();
         }
-
         private void lblDot2Pc_Click(object sender, EventArgs e)
         {
             UC.AdjustExec(CmdName + ", Dot2Pc", ref CmdLine.DPara[11], 0, 100);
             CmdLine.DPara[12] = 100 - CmdLine.DPara[10] - CmdLine.DPara[11] - CmdLine.DPara[13];
             UpdateDisplay();
         }
-
         private void lblDot3Pc_Click(object sender, EventArgs e)
         {
             UC.AdjustExec(CmdName + ", Dot3Pc", ref CmdLine.DPara[12], 0, 100);
             CmdLine.DPara[13] = 100 - CmdLine.DPara[10] - CmdLine.DPara[11] - CmdLine.DPara[12];
             UpdateDisplay();
         }
-
         private void lblDot4Pc_Click(object sender, EventArgs e)
         {
             UC.AdjustExec(CmdName + ", Dot4Pc", ref CmdLine.DPara[13], 0, 100);
@@ -398,13 +375,11 @@ namespace NDispWin
             UpdateDisplay();
         }
 
-
         private void lblHead1DefVolume_Click(object sender, EventArgs e)
         {
             UC.AdjustExec(CmdName + ", Head1DefNettVolume", ref CmdLine.DPara[18], 0, 100);
             UpdateDisplay();
         }
-
         private void lblHead2DefVolume_Click(object sender, EventArgs e)
         {
             UC.AdjustExec(CmdName + ", Head2DefNettVolume", ref CmdLine.DPara[19], 0, 100);
@@ -417,7 +392,6 @@ namespace NDispWin
                 TFPump.PP4.DispAmounts = new double[] { TFPump.PP4.DispAmounts[0], d + TFPump.PP4.BSuckAmounts[1] };
             UpdateDisplay();
         }
-
         private void lblHead1Volume_Click(object sender, EventArgs e)
         {
             double d = TFPump.PP4.DispAmounts[0] - TFPump.PP4.BSuckAmounts[0];
@@ -426,12 +400,17 @@ namespace NDispWin
             UpdateDisplay();
         }
 
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
         //PAR_LINES = 461,
         /* Parameters
         ID              nil
-        IPara[0..9]     [ModelNo, .1., Disp, Type, .4., .5., .6., .7., .8., .9.]
+        IPara[0..9]     [ModelNo, .1., Disp, .3., .4., .5., .6., .7., .8., .9.]
         IPara[10..19]   [.10., .11., .12., .13., .14., .15., .16., .17., .18., .19.]
-        DPara[0..9]     [StartLen, EndLen, .3., EndGap, .4., .5., .6., .7., .8., .9.]
+        DPara[0..9]     [.0., .1., .2., EndGap, .4., .5., .6., .7., .8., .9.]
         DPara[10..19]   [Dot1Pc, Dot2Pc, Dot3Pc, Dot4Pc, .14., .15., .16., .17., H1DefNettVolume, H2DefNettVolume]
         X[0..99]        [PointTL, ..]
         Y[0..99]        [PointBR, ..]

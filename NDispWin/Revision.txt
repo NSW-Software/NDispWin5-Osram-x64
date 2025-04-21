@@ -10,7 +10,22 @@ Todo
 - PurgeStage Dry Mode do not dispsense
 
 
-Ver 6.1.5.0 - KN - 20250401
+DOT, CLINE
+
+Ver 6.1.5.6 - KN - 20250416 - Gitted
+[Enhance] frmDispProg do not allow double click set Ready if Unknowm
+[Features] Added MeasureInterval CleanPurgeEveryInterval.
+[Changes] Change command DELAY from 100,0000 to 3,600,000 to allow long period program eval.
+Ver 6.1.5.3 - KN - 20250415
+[Improve] frm_DispCore_VisionFailMsg invoke action
+[Feature] Prompt Save Recipe on closing Program and new recipe. OsPen/Harin/Afif
+  [BugFix] Fix CleanFill door alarm UI enable. OsKul/Faris
+  [BugFix] TaskDisp.TeachNeedleOfst_Touch_Dot_Set check correct Pump2 status for HPC3. OsKul/Faris
+Ver 6.1.5.1 - KN - 20250415
+[Improve] Fix frmMsgBox lbl_DESC_ALT to wrap message for better display
+[Enhance] Added method invoked SetCameraLive(), ensure DialogResult on same thread
+  [Feature] Added DOT_ZPATH display BackSuck
+Ver 6.1.5.0 - KN - 20250401 - Gitted
   [Feature] Added TFSecsGem and frmSecsGem, Removed frmSECSGEMConnect2 and dependencies
 Ver 6.1.4.5 - KN - 20250328
   [BugFix] Fix frmVisionFailMsg btnManual to not Invoke Diaglog

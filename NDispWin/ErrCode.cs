@@ -198,6 +198,7 @@ namespace NDispWin
         public static TEMessage EXIT_SAVE_RECIPE = new TEMessage(105, "Close NDisp3Win?", "Ensure all Parameters are saved.", TEMessage.EType.Confirmation, false);
         public static TEMessage LOAD_NEW_RECIPE = new TEMessage(106, "Load New Recipe?", "Initialization required.", TEMessage.EType.Confirmation, false);
         public static TEMessage EXIT_WHEN_LOT_ACTIVATED = new TEMessage(107, "Lot Is Activated!", "Please End Lot Before Close NDisp3Win", TEMessage.EType.Notification, false);
+        public static TEMessage SAVE_RECIPE = new TEMessage(110, "Save Current Recipe?", "", TEMessage.EType.Confirmation, false);
         public static TEMessage INIT_SYSTEM = new TEMessage(150, "Initialize System?", "", TEMessage.EType.Confirmation, false);
         public static TEMessage INIT_GANTRY = new TEMessage(151, "Initialize Gantry?", "", TEMessage.EType.Confirmation, false);
         public static TEMessage INIT_GANTRY_FAIL = new TEMessage(152, "Init Gantry Failed.", "Check Parameter and Settings.", TEMessage.EType.Error, false);

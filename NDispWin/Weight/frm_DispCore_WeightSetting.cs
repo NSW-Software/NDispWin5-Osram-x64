@@ -116,8 +116,11 @@ namespace NDispWin
             lbl_MeasPosMthd.Text = TaskWeight.MeasPosMethod.ToString();
             lbl_MeasPosPCD.Text = TaskWeight.MeasPosPCD.ToString();
             lbl_MeasPosCount.Text = TaskWeight.MeasPosCount.ToString();
+            lblMeasureInterval.Text = $"{TaskWeight.MeasureInterval}";
+            cbCleanIgnoreEveryInterval.Checked = TaskWeight.CleanPurgeEveryInterval;
 
             lbl_CleanOnStart.Text = TaskWeight.CleanOnStart.ToString();
+
         }
 
         private void btn_SetNeedleWeightPos_Click(object sender, EventArgs e)
@@ -237,6 +240,17 @@ namespace NDispWin
         private void lbl_MeasCount_Click(object sender, EventArgs e)
         {
             UC.AdjustExec("Weight Setting, Meas Count (count)", ref TaskWeight.MeasureCount, 1, 2500);
+            UpdateDisplay();
+        }
+        private void lblMeasureInterval_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec("Weight Setting, Measure Interval (s)", ref TaskWeight.MeasureInterval, 0, 3600000);
+            UpdateDisplay();
+        }
+        private void cbCleanIgnoreEverySample_Click(object sender, EventArgs e)
+        {
+            TaskWeight.CleanPurgeEveryInterval = !TaskWeight.CleanPurgeEveryInterval;
+            Log.OnSet("Weight Setting, Measure Clean Purge Every Interval", !TaskWeight.CleanPurgeEveryInterval, TaskWeight.CleanPurgeEveryInterval);
             UpdateDisplay();
         }
         #endregion
@@ -426,31 +440,6 @@ namespace NDispWin
         {
             UC.AdjustExec("Weight Setting, Cal_RequireOnLoadProgram", ref TaskWeight.Cal_RequireOnLoadProgram);
             UpdateDisplay();
-        }
-
-        private void tabPage4_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label56_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label55_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void tabPage3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label53_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

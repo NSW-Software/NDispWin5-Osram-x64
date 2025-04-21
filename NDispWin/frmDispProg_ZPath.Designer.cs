@@ -40,7 +40,6 @@ namespace NDispWin
             this.lblPointBR = new System.Windows.Forms.Label();
             this.lblStartGap = new System.Windows.Forms.Label();
             this.lbkStartGap = new System.Windows.Forms.Label();
-            this.lbkStartLength = new System.Windows.Forms.Label();
             this.lblDispGap = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.lblSpeed1 = new System.Windows.Forms.Label();
@@ -55,9 +54,6 @@ namespace NDispWin
             this.lblSpeedF = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.lblStartLength = new System.Windows.Forms.Label();
-            this.lbkEndLength = new System.Windows.Forms.Label();
-            this.lblEndLength = new System.Windows.Forms.Label();
             this.lblEndGap = new System.Windows.Forms.Label();
             this.label26 = new System.Windows.Forms.Label();
             this.lblAD = new System.Windows.Forms.Label();
@@ -74,11 +70,12 @@ namespace NDispWin
             this.lblHead2DefVolume = new System.Windows.Forms.Label();
             this.lblRetGap = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.cbxType = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.lblDot1Pc = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lblBackSuck1 = new System.Windows.Forms.Label();
+            this.lblBackSuck2 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
             this.lblHead2Volume = new System.Windows.Forms.Label();
             this.lblHead1Volume = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
@@ -233,17 +230,6 @@ namespace NDispWin
             this.lbkStartGap.TabIndex = 160;
             this.lbkStartGap.Text = "Start Gap (mm)";
             this.lbkStartGap.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lbkStartLength
-            // 
-            this.lbkStartLength.AccessibleDescription = "";
-            this.lbkStartLength.Location = new System.Drawing.Point(281, 63);
-            this.lbkStartLength.Margin = new System.Windows.Forms.Padding(2);
-            this.lbkStartLength.Name = "lbkStartLength";
-            this.lbkStartLength.Size = new System.Drawing.Size(126, 23);
-            this.lbkStartLength.TabIndex = 154;
-            this.lbkStartLength.Text = "Start Length (mm)";
-            this.lbkStartLength.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblDispGap
             // 
@@ -418,43 +404,6 @@ namespace NDispWin
             this.label7.TabIndex = 160;
             this.label7.Text = "Disp Gap (mm)*";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblStartLength
-            // 
-            this.lblStartLength.BackColor = System.Drawing.SystemColors.Window;
-            this.lblStartLength.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblStartLength.Location = new System.Drawing.Point(411, 63);
-            this.lblStartLength.Margin = new System.Windows.Forms.Padding(2);
-            this.lblStartLength.Name = "lblStartLength";
-            this.lblStartLength.Size = new System.Drawing.Size(75, 23);
-            this.lblStartLength.TabIndex = 168;
-            this.lblStartLength.Text = "-999.999";
-            this.lblStartLength.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.lblStartLength.Click += new System.EventHandler(this.lblStartLength_Click);
-            // 
-            // lbkEndLength
-            // 
-            this.lbkEndLength.AccessibleDescription = "";
-            this.lbkEndLength.Location = new System.Drawing.Point(281, 90);
-            this.lbkEndLength.Margin = new System.Windows.Forms.Padding(2);
-            this.lbkEndLength.Name = "lbkEndLength";
-            this.lbkEndLength.Size = new System.Drawing.Size(126, 23);
-            this.lbkEndLength.TabIndex = 154;
-            this.lbkEndLength.Text = "End Length (mm)";
-            this.lbkEndLength.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblEndLength
-            // 
-            this.lblEndLength.BackColor = System.Drawing.SystemColors.Window;
-            this.lblEndLength.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblEndLength.Location = new System.Drawing.Point(411, 90);
-            this.lblEndLength.Margin = new System.Windows.Forms.Padding(2);
-            this.lblEndLength.Name = "lblEndLength";
-            this.lblEndLength.Size = new System.Drawing.Size(75, 23);
-            this.lblEndLength.TabIndex = 168;
-            this.lblEndLength.Text = "-999.999";
-            this.lblEndLength.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.lblEndLength.Click += new System.EventHandler(this.lblEndLength_Click);
             // 
             // lblEndGap
             // 
@@ -650,28 +599,6 @@ namespace NDispWin
             this.label6.Text = "Ret Gap (mm)*";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // cbxType
-            // 
-            this.cbxType.FormattingEnabled = true;
-            this.cbxType.Location = new System.Drawing.Point(387, 34);
-            this.cbxType.Name = "cbxType";
-            this.cbxType.Size = new System.Drawing.Size(99, 22);
-            this.cbxType.TabIndex = 195;
-            this.cbxType.Visible = false;
-            this.cbxType.SelectionChangeCommitted += new System.EventHandler(this.cbxType_SelectionChangeCommitted);
-            // 
-            // label1
-            // 
-            this.label1.AccessibleDescription = "";
-            this.label1.Location = new System.Drawing.Point(281, 33);
-            this.label1.Margin = new System.Windows.Forms.Padding(2);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(46, 23);
-            this.label1.TabIndex = 196;
-            this.label1.Text = "Type";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label1.Visible = false;
-            // 
             // lblDot1Pc
             // 
             this.lblDot1Pc.BackColor = System.Drawing.SystemColors.Window;
@@ -699,6 +626,9 @@ namespace NDispWin
             // groupBox1
             // 
             this.groupBox1.AutoSize = true;
+            this.groupBox1.Controls.Add(this.lblBackSuck1);
+            this.groupBox1.Controls.Add(this.lblBackSuck2);
+            this.groupBox1.Controls.Add(this.label13);
             this.groupBox1.Controls.Add(this.lblHead2Volume);
             this.groupBox1.Controls.Add(this.lblHead1Volume);
             this.groupBox1.Controls.Add(this.label12);
@@ -720,7 +650,41 @@ namespace NDispWin
             this.groupBox1.Size = new System.Drawing.Size(478, 144);
             this.groupBox1.TabIndex = 199;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Nett Volume";
+            this.groupBox1.Text = "Volume";
+            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
+            // 
+            // lblBackSuck1
+            // 
+            this.lblBackSuck1.AccessibleDescription = "";
+            this.lblBackSuck1.Location = new System.Drawing.Point(185, 98);
+            this.lblBackSuck1.Margin = new System.Windows.Forms.Padding(2);
+            this.lblBackSuck1.Name = "lblBackSuck1";
+            this.lblBackSuck1.Size = new System.Drawing.Size(76, 23);
+            this.lblBackSuck1.TabIndex = 211;
+            this.lblBackSuck1.Text = "0.000";
+            this.lblBackSuck1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblBackSuck2
+            // 
+            this.lblBackSuck2.AccessibleDescription = "";
+            this.lblBackSuck2.Location = new System.Drawing.Point(106, 98);
+            this.lblBackSuck2.Margin = new System.Windows.Forms.Padding(2);
+            this.lblBackSuck2.Name = "lblBackSuck2";
+            this.lblBackSuck2.Size = new System.Drawing.Size(76, 23);
+            this.lblBackSuck2.TabIndex = 210;
+            this.lblBackSuck2.Text = "0.000";
+            this.lblBackSuck2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label13
+            // 
+            this.label13.AccessibleDescription = "";
+            this.label13.Location = new System.Drawing.Point(5, 98);
+            this.label13.Margin = new System.Windows.Forms.Padding(2);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(109, 23);
+            this.label13.TabIndex = 209;
+            this.label13.Text = "BackSuck (ul)";
+            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblHead2Volume
             // 
@@ -754,9 +718,9 @@ namespace NDispWin
             this.label12.Location = new System.Drawing.Point(5, 71);
             this.label12.Margin = new System.Windows.Forms.Padding(2);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(76, 23);
+            this.label12.Size = new System.Drawing.Size(109, 23);
             this.label12.TabIndex = 206;
-            this.label12.Text = "Current (ul)";
+            this.label12.Text = "Current Nett (ul)";
             this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label11
@@ -767,7 +731,7 @@ namespace NDispWin
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(98, 23);
             this.label11.TabIndex = 205;
-            this.label11.Text = "Default (ul)";
+            this.label11.Text = "Default Nett (ul)";
             this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblDot4Pc
@@ -849,8 +813,6 @@ namespace NDispWin
             this.ClientSize = new System.Drawing.Size(492, 623);
             this.ControlBox = false;
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.cbxType);
             this.Controls.Add(this.lblRetGap);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
@@ -866,17 +828,13 @@ namespace NDispWin
             this.Controls.Add(this.lblDispGap);
             this.Controls.Add(this.gbox_Pos);
             this.Controls.Add(this.cbDispense);
-            this.Controls.Add(this.lblEndLength);
             this.Controls.Add(this.lblStartGap);
-            this.Controls.Add(this.lblStartLength);
             this.Controls.Add(this.lbkStartGap);
             this.Controls.Add(this.btnEditModel);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.l_lbl_ModelNo);
             this.Controls.Add(this.lblModelNo);
-            this.Controls.Add(this.lbkEndLength);
             this.Controls.Add(this.l_lbl_HeadNo);
-            this.Controls.Add(this.lbkStartLength);
             this.Controls.Add(this.lblHeadNo);
             this.Controls.Add(this.btn_Cancel);
             this.Controls.Add(this.label21);
@@ -910,7 +868,6 @@ namespace NDispWin
         private System.Windows.Forms.Button btnGotoPtTL;
         private System.Windows.Forms.Label lblStartGap;
         private System.Windows.Forms.Label lbkStartGap;
-        private System.Windows.Forms.Label lbkStartLength;
         private System.Windows.Forms.Label lblDispGap;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label lblSpeed1;
@@ -928,9 +885,6 @@ namespace NDispWin
         private System.Windows.Forms.Label lblSpeedF;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label lblStartLength;
-        private System.Windows.Forms.Label lbkEndLength;
-        private System.Windows.Forms.Label lblEndLength;
         private System.Windows.Forms.Label lblEndGap;
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.Label lblAD;
@@ -948,8 +902,6 @@ namespace NDispWin
         private System.Windows.Forms.Label lblHead2DefVolume;
         private System.Windows.Forms.Label lblRetGap;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.ComboBox cbxType;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblDot1Pc;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.GroupBox groupBox1;
@@ -964,5 +916,8 @@ namespace NDispWin
         private System.Windows.Forms.Label lblHead1Volume;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label lblBackSuck1;
+        private System.Windows.Forms.Label lblBackSuck2;
+        private System.Windows.Forms.Label label13;
     }
 }

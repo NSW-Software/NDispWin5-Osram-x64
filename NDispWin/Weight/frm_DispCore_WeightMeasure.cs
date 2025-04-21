@@ -10,6 +10,7 @@ using System.IO;
 using System.Threading;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace NDispWin
 {
@@ -573,25 +574,44 @@ namespace NDispWin
                 vsbar_Zoom.Enabled = true;
                 try
                 {
+                    sslMessage.Text = $"Measure started.";
+
                     lbox_Result.Items.Clear();
                     ResultUpdateHeader();
                     TaskWeight.WeightMeas_Reset();
 
                     TaskWeight.TimeStart = DateTime.Now;
 
-                    bool Res = TaskWeight.WeightMeas_Execute(lbox_Result, this, list_Data, (int)Head + 1);
+                    sslMessage.Text = $"Measuring {TaskWeight.list_WM_MeasWeight.Count + 1}/{TaskWeight.MeasureCount}";
 
-                    if (TaskWeight.list_WM_MeasWeight.Count >= TaskWeight.MeasureCount) ComputeResult();
+                    //bool Res = false;
+                    //Task.Run(() =>
+                    //{
+                        bool Res = TaskWeight.WeightMeas_Execute(lbox_Result, this, list_Data, (int)Head + 1);
+                    //});
 
+                    if (TaskWeight.list_WM_MeasWeight.Count >= TaskWeight.MeasureCount)
+                    {
+                        ComputeResult();
+                        sslMessage.Text = $"Measure ended.";
+                    }
                     TaskWeight.TimeEnd = DateTime.Now;
 
-                    if (!Res) return false;
+                    if (!Res)
+                    {
+                        sslMessage.Text = $"Measure cancelled.";
+                        return false;
+                    }
 
                     TaskWeight.Meas_Status = TaskWeight.EWeightMeasStatus.Measured;
 
                     if (!Directory.Exists(GDefine.WeightMeasPath)) Directory.CreateDirectory(GDefine.WeightMeasPath);
                     string Filename = GDefine.WeightMeasPath + "\\" + DateTime.Now.ToString("yyyyMMdd_HHmm") + "_Head" + ((int)Head + 1).ToString() + ".txt";
                     TaskWeight.WriteToFile(Filename, (int)Head + 1, this);
+
+                    sslMessage.Text = $"Measure complete {TaskWeight.list_WM_MeasWeight.Count + 1}/{TaskWeight.MeasureCount}";
+
+
                     bSaved = true;
                 }
                 catch (Exception ex)

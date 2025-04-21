@@ -51,6 +51,8 @@ namespace NDispWin
         public static int StartMeasDelay = 3000;
         public static int EndMeasDelay = 15000;
         public static bool CleanOnStart = false;
+        public static double MeasureInterval = 0;//2
+        public static bool CleanPurgeEveryInterval = false;
 
         public enum EMeasType { Cal, Meas }
         public static int iDotsPerSample(EMeasType measType)
@@ -175,6 +177,9 @@ namespace NDispWin
             MeasureCount = IniFile.ReadInteger("Measure", "Count", 10);
             MeasureSpecTol = IniFile.ReadFloat("Measure", "SpecTol", 0.05);
             Meas_RequireOnLotStart = IniFile.ReadBool("Measure", "RequireOnLotStart", false);
+
+            MeasureInterval = IniFile.ReadDouble("Measure", "MeasureInterval", 0);
+            CleanPurgeEveryInterval = IniFile.ReadBool("Measure", "CleanPurgeEveryInterval", false);
             #endregion
         }
         public static void SaveSetup(string SetupName)
@@ -228,6 +233,9 @@ namespace NDispWin
             IniFile.WriteInteger("Measure", "Count", MeasureCount);
             IniFile.WriteFloat("Measure", "SpecTol", MeasureSpecTol);
             IniFile.WriteBool("Measure", "RequireOnLotStart", Meas_RequireOnLotStart);
+
+            IniFile.WriteDouble("Measure", "MeasureInterval", MeasureInterval);
+            IniFile.WriteBool("Measure", "CleanPurgeEveryInterval", CleanPurgeEveryInterval);
             #endregion
         }
 
@@ -1690,8 +1698,11 @@ namespace NDispWin
 
             if (!TaskWeight.TaskGotoWeight(HeadNo)) goto _Error;
 
+           _Purge:
             while (list_WM_PurgeWeight.Count < TaskWeight.PurgeCount)
             {
+                if (!TaskWeight.TaskGotoWeight(HeadNo)) goto _Error;
+
                 frm_Message frm_Message = new frm_Message();
                 try
                 {
@@ -1727,6 +1738,8 @@ namespace NDispWin
 
             while (list_WM_MeasWeight.Count < TaskWeight.MeasureCount)
             {
+                if (!TaskWeight.TaskGotoWeight(HeadNo)) goto _Error;
+
                 frm_Message frm_Message = new frm_Message();
                 try
                 {
@@ -1785,6 +1798,21 @@ namespace NDispWin
                         goto _Cancel;
                     }
                     #endregion
+                    
+                    int t = Environment.TickCount;
+                    while (true)
+                    {
+                        Thread.Sleep(10);
+                        int wait_s = (Environment.TickCount - t) / 1000;
+                        if (wait_s >= TaskWeight.MeasureInterval) break;
+                    }
+
+                    if (CleanPurgeEveryInterval)
+                    {
+                        if (!TaskDisp.TaskCleanNeedle(false)) goto _Error;
+                        list_WM_PurgeWeight.Clear();
+                        goto _Purge;
+                    }
                 }
                 catch { }
                 finally
