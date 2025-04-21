@@ -9646,7 +9646,7 @@ namespace NDispWin
 
     public class FPressCtrl
     {
-        public static TAIO AIO = new TAIO();
+        //public static TAIO AIO = new TAIO();
 
         public static bool Enabled
         {
@@ -9693,7 +9693,7 @@ namespace NDispWin
                 if (val[Ch] < 0) val[Ch] = 0;
                 if (val[Ch] > 10) val[Ch] = 5;
 
-                AIO.Write(val);
+                //AIO.Write(val);
                 Value[0] = val[0];
                 Value[1] = val[1];
             }
@@ -9750,7 +9750,7 @@ namespace NDispWin
                 if (val[1] < 0) val[1] = 0;
                 if (val[1] > 10) val[1] = 5;
 
-                AIO.Write(val);
+                //AIO.Write(val);
                 Value[0] = val[0];
                 Value[1] = val[1];
             }

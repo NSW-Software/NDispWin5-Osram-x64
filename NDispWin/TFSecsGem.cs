@@ -339,8 +339,9 @@ namespace NDispWin
         public static TEStreamFunc LEAR = new TEStreamFunc("S5F7", "H->E, List Enabled Alarm Request.");//tested
         public static TEStreamFunc LEAD = new TEStreamFunc("S5F8", "H<-E, List Enabled Alarm Data.");//tested
 
-        public static TEStreamFunc ERS = new TEStreamFunc("S5F1", "H<-E, Alarm Report Send.");//tested
-        public static TEStreamFunc ERA = new TEStreamFunc("S5F2", "H->E, Alarm Report Acknowledge.");//tested
+        public static TEStreamFunc ERS = new TEStreamFunc("S6F11", "H<-E, Event Report Send.");//tested
+        public static TEStreamFunc ERA = new TEStreamFunc("S6F12", "H->E, Event Report Acknowledge.");//tested
+        public static TEStreamFunc VID = new TEStreamFunc("S6F3", "H->E, Equipment Status Request.", new List<int> { 11000, 11001 });//tested
 
         public static TEStreamFunc S7F0 = new TEStreamFunc("S7F0", "H<->E, Abort Transation.");
         public static TEStreamFunc PPI = new TEStreamFunc("S7F1", "H<->E, Process Program Inquire.");//H->E tested
@@ -517,6 +518,16 @@ namespace NDispWin
                             Send(nameof(StreamFunc.ONLA));
                             break;
                         }
+                    case "REOFL":
+                        {
+                            LocalRemote = ELocalRemote.Local;
+                            break;
+                        }
+                    case "REONL":
+                        {
+                            LocalRemote = ELocalRemote.Remote;
+                            break;
+                        }
                     case nameof(StreamFunc.CENR):
                         {
                             List<int> requestList = new List<int>();
@@ -578,7 +589,7 @@ namespace NDispWin
                             var aled = rxSplitData[1];
                             var alid = rxSplitData[2];
 
-                            if (alid == "")
+                            if (alid == "0")
                             {
                                 var msglist = typeof(Messages).GetFields(BindingFlags.Public | BindingFlags.Static)
                                     .Where(x => x.FieldType == typeof(TEMessage))
@@ -630,6 +641,23 @@ namespace NDispWin
                             }
                             List<string> responseList = LEAR_GetList();
                             Send($"{nameof(StreamFunc.LEAD)},{string.Join(",", responseList)}");
+                            break;
+                        }
+                    #endregion
+
+                    #region S6
+                    case nameof(StreamFunc.VID):
+                        {
+                            List<int> requestList = new List<int>();
+                            foreach (string d in rxSplitData)
+                            {
+                                if (int.TryParse(d, out int vid))
+                                {
+                                    requestList.Add(vid);
+                                }
+                            }
+                            List<string> responseList = VID_GetList(requestList);
+                            Send($"{nameof(StreamFunc.VID)},{string.Join(",", responseList)}");
                             break;
                         }
                     #endregion
@@ -740,10 +768,10 @@ namespace NDispWin
                             }
 
                             //LOTID, MATERIALNO, OPERATION, EMPLOYEEID
-                            LotInfo2.LotNumber = rxSplitData[2];
-                            LotInfo2.Osram.ElevenSeries = rxSplitData[3];
-                            LotInfo2.Osram.Operation = rxSplitData[4];
-                            LotInfo2.sOperatorID = rxSplitData[5];
+                            LotInfo2.LotNumber = rxSplitData[4];
+                            LotInfo2.Osram.ElevenSeries = rxSplitData[6];
+                            LotInfo2.Osram.Operation = rxSplitData[10];
+                            LotInfo2.sOperatorID = rxSplitData[8];
 
                             PPChangeStatus = "Success";
                             Send(data0);
@@ -1001,7 +1029,7 @@ namespace NDispWin
 
         public static void SendTerminalMsg_TRN(string msg)
         {
-            Send(nameof(StreamFunc.TRN) + $",{msg}");
+            Send(nameof(StreamFunc.TRN) + $",0,{msg}");
         }
 
         public static void UploadPP_PPI_PPS(string recipeName)
@@ -1060,6 +1088,32 @@ namespace NDispWin
             catch (Exception ex)
             {
             }
+        }
+
+        public static List<string> VID_GetList(List<int> requestList)
+        {
+            var sVIDList = typeof(VID).GetFields(BindingFlags.Public | BindingFlags.Static)
+                .Where(x => x.FieldType == typeof(TEVID))
+                .Select(x => (TEVID)x.GetValue(null)).ToArray();
+
+            List<string> list = new List<string>();
+            foreach (var sVID in sVIDList)
+            {
+                if (sVID.Code > 10000 && sVID.Code <= 22000)
+                {
+                    string info = Convert.ToString(sVID.Value);//SVID Values
+                    if (requestList.Count == 0)
+                    {
+                        list.Add(info);
+                    }
+                    else
+                    if (requestList.Contains(sVID.Code))
+                    {
+                        list.Add(info);
+                    }
+                }
+            }
+            return list;
         }
     }
 }
