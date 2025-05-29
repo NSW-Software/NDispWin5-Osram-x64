@@ -47,10 +47,12 @@ namespace NDispWin
             this.btnAlarmClear = new System.Windows.Forms.Button();
             this.btnAlarmSet = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.btnAckTerminalMessage = new System.Windows.Forms.Button();
             this.rtbRxTerminal = new System.Windows.Forms.RichTextBox();
             this.rtbTxTerminal = new System.Windows.Forms.RichTextBox();
             this.btnSendTerminalMessage = new System.Windows.Forms.Button();
             this.btnGenerateIDList = new System.Windows.Forms.Button();
+            this.lblProcessState = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -214,6 +216,7 @@ namespace NDispWin
             // 
             this.groupBox3.AutoSize = true;
             this.groupBox3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox3.Controls.Add(this.btnAckTerminalMessage);
             this.groupBox3.Controls.Add(this.rtbRxTerminal);
             this.groupBox3.Controls.Add(this.rtbTxTerminal);
             this.groupBox3.Controls.Add(this.btnSendTerminalMessage);
@@ -223,6 +226,16 @@ namespace NDispWin
             this.groupBox3.TabIndex = 72;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Terminal Message";
+            // 
+            // btnAckTerminalMessage
+            // 
+            this.btnAckTerminalMessage.Location = new System.Drawing.Point(402, 81);
+            this.btnAckTerminalMessage.Name = "btnAckTerminalMessage";
+            this.btnAckTerminalMessage.Size = new System.Drawing.Size(101, 32);
+            this.btnAckTerminalMessage.TabIndex = 74;
+            this.btnAckTerminalMessage.Text = "Acknowledge";
+            this.btnAckTerminalMessage.UseVisualStyleBackColor = true;
+            this.btnAckTerminalMessage.Click += new System.EventHandler(this.btnAckTerminalMessage_Click);
             // 
             // rtbRxTerminal
             // 
@@ -260,11 +273,23 @@ namespace NDispWin
             this.btnGenerateIDList.UseVisualStyleBackColor = true;
             this.btnGenerateIDList.Click += new System.EventHandler(this.btnGenerateIDList_Click);
             // 
+            // lblProcessState
+            // 
+            this.lblProcessState.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblProcessState.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblProcessState.Location = new System.Drawing.Point(116, 119);
+            this.lblProcessState.Name = "lblProcessState";
+            this.lblProcessState.Size = new System.Drawing.Size(157, 35);
+            this.lblProcessState.TabIndex = 75;
+            this.lblProcessState.Text = "-";
+            this.lblProcessState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // frmSecsGem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(535, 533);
+            this.Controls.Add(this.lblProcessState);
             this.Controls.Add(this.btnGenerateIDList);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
@@ -313,5 +338,7 @@ namespace NDispWin
         private System.Windows.Forms.Button btnSendTerminalMessage;
         private System.Windows.Forms.RichTextBox rtbRxTerminal;
         private System.Windows.Forms.Button btnGenerateIDList;
+        private System.Windows.Forms.Button btnAckTerminalMessage;
+        private System.Windows.Forms.Label lblProcessState;
     }
 }

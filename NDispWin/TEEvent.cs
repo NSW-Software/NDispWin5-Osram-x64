@@ -144,12 +144,12 @@ namespace NDispWin
         public static TEEvent OP_IDLE_PURGE_STOP = new TEEvent(2211, "Stop Idle Purge.");
         public static TEEvent OP_SET_WEIGHT = new TEEvent(2212, "Set Weight.");
 
-        public static TEEvent OP_DISP_LOAD_DEVICE = new TEEvent(2215, "Load Device.", new List<int> { 20100, 20101, 20102 });
-        public static TEEvent OP_DISP_LOAD_DISP_RECIPE = new TEEvent(2216, "Load Disp Recipe.", new List<int> { 20101 });
-        public static TEEvent OP_DISP_LOAD_MHS_RECIPE = new TEEvent(2217, "Load MHS Recipe.", new List<int> { 20102 });
+        public static TEEvent OP_DISP_LOAD_DEVICE = new TEEvent(2215, "Load Device.", new List<int> { 21200, 21201, 21202 });
+        public static TEEvent OP_DISP_LOAD_DISP_RECIPE = new TEEvent(2216, "Load Disp Recipe.", new List<int> { 21201 });
+        public static TEEvent OP_DISP_LOAD_MHS_RECIPE = new TEEvent(2217, "Load MHS Recipe.", new List<int> { 21202 });
         public static TEEvent OP_DISP_AUTO_LOAD_DEVICE_INVALID = new TEEvent(2218, "Auto Load Device is Invalid.");
         public static TEEvent OP_DISP_AUTO_LOAD_DEVICE_NO_FOUND = new TEEvent(2219, "Auto Load Device not Found.");
-        public static TEEvent OP_DISP_AUTO_LOAD_SUCCESSFUL = new TEEvent(2220, "Auto Load Device successful.", new List<int> { 20100, 20101, 20102 });
+        public static TEEvent OP_DISP_AUTO_LOAD_SUCCESSFUL = new TEEvent(2220, "Auto Load Device successful.", new List<int> { 21200, 21201, 21202 });
 
         public static TEEvent OP_EXT_VISION_OK = new TEEvent(2230, "Ext Vision Inspection OK.");
         public static TEEvent OP_EXT_VISION_NG = new TEEvent(2231, "Ext Vision Inspection NG.");
@@ -158,8 +158,8 @@ namespace NDispWin
         public static TEEvent OP_CHECK_MENISCUS = new TEEvent(2291, "Check Meniscus.");
         public static TEEvent OP_CHECK_MENISCUS_OOS = new TEEvent(2292, "Check Meniscus OOS.");
 
-        public static TEEvent OP_LOT_START = new TEEvent(2295, "Lot Start.", new List<int> { 20000, 20001, 20002, 20003, 20004, 20005, 20006, 20007 });
-        public static TEEvent OP_LOT_END = new TEEvent(2296, "Lot End.", new List<int> { 20000, 20001, 20002, 20003, 20004, 20005, 20006, 20007 });
+        public static TEEvent OP_LOT_START = new TEEvent(2295, "Lot Start.", new List<int> { 21100, 21101, 21102, 21103, 21104, 21105, 21106, 21107, 21108 });
+        public static TEEvent OP_LOT_END = new TEEvent(2296, "Lot End.", new List<int> { 21100, 21101, 21102, 21103, 21104, 21105, 21106, 21107, 21108 });
 
         public static TEEvent CLEAN_NEEDLE = new TEEvent(2300, "Clean Needle.");
         public static TEEvent PURGE_NEEDLE = new TEEvent(2301, "Purge Needle.");
@@ -274,9 +274,11 @@ namespace NDispWin
         public static TEEvent SECSGEM_HOST_REQ_REMOTE = new TEEvent(5005, "Host request Remote.", new List<int>{11001});
         public static TEEvent SECSGEM_EQ_SET_LOCAL = new TEEvent(5006, "Equipment set Local.", new List<int> { 11001 });
         public static TEEvent SECSGEM_EQ_SET_REMOTE = new TEEvent(5007, "Equipment set Remote.", new List<int>{11001});
+        public static TEEvent SECSGEM_CONTROL_STATE_CHANGE = new TEEvent(5008, "Control State Change.", new List<int> { 10999, 11003, 11004 });
 
-        public static TEEvent SECSGEM_EQ_PROCESS_CHANGE_STATE = new TEEvent(5010, "Process State Change.", new List<int> { 11010, 11011 });
-
+        public static TEEvent SECSGEM_EQ_PROCESS_CHANGE_STATE = new TEEvent(5010, "Process State Change.", new List<int> { 10999, 11010, 11011 });
+        public static TEEvent SECSGEM_EQUIPMENT_CONSTANT_CHANGE = new TEEvent(5020, "Equipment Constant Change.", new List<int> { 10999, 11010, 11011 });
+        
         public static TEEvent SECSGEM_PP_CREATE = new TEEvent(5030, "PP Create.", new List<int> { 11051, 11052 });
         public static TEEvent SECSGEM_PP_CHANGE = new TEEvent(5031, "PP Change.", new List<int> { 11050, 11051, 11052, 11053 });//edited
         public static TEEvent SECSGEM_PP_DELETE = new TEEvent(5032, "PP Delete.", new List<int> { 11051 });
@@ -348,16 +350,29 @@ namespace NDispWin
                 switch (vidName)
                 {
                     #region 10000
+                    case nameof(VID.CLOCK):
+                        {
+                            return DateTime.Now.ToString("yyMMddhhmmss");
+                        }
                     case nameof(VID.ONLINE_OFFLINE):
-                        return TFSecsGem.OnlineOffline.ToString();
+                        return (int)TFSecsGem.OnlineOffline;
                     case nameof(VID.LOCAL_REMOTE):
-                        return TFSecsGem.LocalRemote.ToString();
+                        return (int)TFSecsGem.LocalRemote;
                     case nameof(VID.PREV_LOCAL_REMOTE):
-                        return TFSecsGem.PrevLocalRemote.ToString();
+                        return (int)TFSecsGem.PrevLocalRemote;
                     case nameof(VID.PROCESS_STATE):
                         return (int)TFSecsGem.ProcessState;
                     case nameof(VID.PREV_PROCESS_STATE):
                         return (int)TFSecsGem.PrevProcessState;
+                    case nameof(VID.CONTROL_STATE):
+                        return (int)TFSecsGem.ControlState;
+                    case nameof(VID.PREV_CONTROL_STATE):
+                        return (int)TFSecsGem.PrevControlState;
+                    case nameof(VID.CHANGED_ECID):
+                        return TFSecsGem.ChangedECID;
+                    case nameof(VID.CHANGED_ECVALUE):
+                        return TFSecsGem.ChangedECValue;
+
                     case nameof(VID.PP_CHANGE_STATUS):
                         return TFSecsGem.PPChangeStatus.ToString();
                     case nameof(VID.PP_CHANGE_NAME):
@@ -433,7 +448,7 @@ namespace NDispWin
                         {
                             NSW.Net.Stats Stat = new NSW.Net.Stats();
                             return Stat.StDev(TaskWeightMeas.list_Weight);
-                        }
+                        }                
                     #endregion
                     #region 20000
                     case nameof(VID.TEMPCTRL1PV):
@@ -517,7 +532,7 @@ namespace NDispWin
                     case nameof(VID.MODEL13DISPGAP):
                     case nameof(VID.MODEL14DISPGAP):
                     case nameof(VID.MODEL15DISPGAP):
-                    case nameof(VID.MODEL16DISPGAP):
+                    //case nameof(VID.MODEL16DISPGAP):
                         {
                             string numberPart = vidName.Replace("MODEL", "").Replace("DISPGAP", "");
                             if (int.TryParse(numberPart, out int modelNo))
@@ -542,7 +557,7 @@ namespace NDispWin
                     case nameof(VID.MODEL13DNWAIT):
                     case nameof(VID.MODEL14DNWAIT):
                     case nameof(VID.MODEL15DNWAIT):
-                    case nameof(VID.MODEL16DNWAIT):
+                    //case nameof(VID.MODEL16DNWAIT):
                         {
                             string numberPart = vidName.Replace("MODEL", "").Replace("DNWAIT", "");
                             if (int.TryParse(numberPart, out int modelNo))
@@ -567,7 +582,7 @@ namespace NDispWin
                     case nameof(VID.MODEL13STARTDELAY):
                     case nameof(VID.MODEL14STARTDELAY):
                     case nameof(VID.MODEL15STARTDELAY):
-                    case nameof(VID.MODEL16STARTDELAY):
+                    //case nameof(VID.MODEL16STARTDELAY):
                         {
                             string numberPart = vidName.Replace("MODEL", "").Replace("STARTDELAY", "");
                             if (int.TryParse(numberPart, out int modelNo))
@@ -592,7 +607,7 @@ namespace NDispWin
                     case nameof(VID.MODEL13LINESPEED):
                     case nameof(VID.MODEL14LINESPEED):
                     case nameof(VID.MODEL15LINESPEED):
-                    case nameof(VID.MODEL16LINESPEED):
+                    //case nameof(VID.MODEL16LINESPEED):
                         {
                             string numberPart = vidName.Replace("MODEL", "").Replace("LINESPEED", "");
                             if (int.TryParse(numberPart, out int modelNo))
@@ -617,7 +632,7 @@ namespace NDispWin
                     case nameof(VID.MODEL13ENDDELAY):
                     case nameof(VID.MODEL14ENDDELAY):
                     case nameof(VID.MODEL15ENDDELAY):
-                    case nameof(VID.MODEL16ENDDELAY):
+                    //case nameof(VID.MODEL16ENDDELAY):
                         {
                             string numberPart = vidName.Replace("MODEL", "").Replace("ENDDELAY", "");
                             if (int.TryParse(numberPart, out int modelNo))
@@ -642,7 +657,7 @@ namespace NDispWin
                     case nameof(VID.MODEL13POSTWAIT):
                     case nameof(VID.MODEL14POSTWAIT):
                     case nameof(VID.MODEL15POSTWAIT):
-                    case nameof(VID.MODEL16POSTWAIT):
+                    //case nameof(VID.MODEL16POSTWAIT):
                         {
                             string numberPart = vidName.Replace("MODEL", "").Replace("POSTWAIT", "");
                             if (int.TryParse(numberPart, out int modelNo))
@@ -799,7 +814,7 @@ namespace NDispWin
                     case nameof(VID.MODEL13DISPGAP):
                     case nameof(VID.MODEL14DISPGAP):
                     case nameof(VID.MODEL15DISPGAP):
-                    case nameof(VID.MODEL16DISPGAP):
+                    //case nameof(VID.MODEL16DISPGAP):
                         {
                             string numberPart = vidName.Replace("MODEL", "").Replace("DISPGAP", "");
                             if (int.TryParse(numberPart, out int modelNo))
@@ -824,7 +839,7 @@ namespace NDispWin
                     case nameof(VID.MODEL13DNWAIT):
                     case nameof(VID.MODEL14DNWAIT):
                     case nameof(VID.MODEL15DNWAIT):
-                    case nameof(VID.MODEL16DNWAIT):
+                    //case nameof(VID.MODEL16DNWAIT):
                         {
                             string numberPart = vidName.Replace("MODEL", "").Replace("DNWAIT", "");
                             if (int.TryParse(numberPart, out int modelNo))
@@ -849,7 +864,7 @@ namespace NDispWin
                     case nameof(VID.MODEL13STARTDELAY):
                     case nameof(VID.MODEL14STARTDELAY):
                     case nameof(VID.MODEL15STARTDELAY):
-                    case nameof(VID.MODEL16STARTDELAY):
+                    //case nameof(VID.MODEL16STARTDELAY):
                         {
                             string numberPart = vidName.Replace("MODEL", "").Replace("STARTDELAY", "");
                             if (int.TryParse(numberPart, out int modelNo))
@@ -874,7 +889,7 @@ namespace NDispWin
                     case nameof(VID.MODEL13LINESPEED):
                     case nameof(VID.MODEL14LINESPEED):
                     case nameof(VID.MODEL15LINESPEED):
-                    case nameof(VID.MODEL16LINESPEED):
+                    //case nameof(VID.MODEL16LINESPEED):
                         {
                             string numberPart = vidName.Replace("MODEL", "").Replace("LINESPEED", "");
                             if (int.TryParse(numberPart, out int modelNo))
@@ -899,7 +914,7 @@ namespace NDispWin
                     case nameof(VID.MODEL13ENDDELAY):
                     case nameof(VID.MODEL14ENDDELAY):
                     case nameof(VID.MODEL15ENDDELAY):
-                    case nameof(VID.MODEL16ENDDELAY):
+                    //case nameof(VID.MODEL16ENDDELAY):
                         {
                             string numberPart = vidName.Replace("MODEL", "").Replace("ENDDELAY", "");
                             if (int.TryParse(numberPart, out int modelNo))
@@ -924,7 +939,7 @@ namespace NDispWin
                     case nameof(VID.MODEL13POSTWAIT):
                     case nameof(VID.MODEL14POSTWAIT):
                     case nameof(VID.MODEL15POSTWAIT):
-                    case nameof(VID.MODEL16POSTWAIT):
+                    //case nameof(VID.MODEL16POSTWAIT):
                         {
                             string numberPart = vidName.Replace("MODEL", "").Replace("POSTWAIT", "");
                             if (int.TryParse(numberPart, out int modelNo))
@@ -986,13 +1001,18 @@ namespace NDispWin
         // Unique ID ranges prevent conflicts between SVID, DVID, ECID, ALID, and CEID.
         // Each category serves a different purpose (status, control, configuration, alarm, event).
         #region 10000 SVID
+        public static TEVID CLOCK = new TEVID(10999, "Clock.");
         public static TEVID ONLINE_OFFLINE = new TEVID(11000, "Online Offline State.");
         public static TEVID LOCAL_REMOTE = new TEVID(11001, "Local Remote State.");
         public static TEVID PREV_LOCAL_REMOTE = new TEVID(11002, "Prev Local Remote State.");
+        public static TEVID CONTROL_STATE = new TEVID(11003, "Control State.");
+        public static TEVID PREV_CONTROL_STATE = new TEVID(11004, "Previous Control State.");   
 
         public static TEVID PROCESS_STATE = new TEVID(11010, "Process State.");
         public static TEVID PREV_PROCESS_STATE = new TEVID(11011, "Prev Process State.");
 
+        public static TEVID CHANGED_ECID = new TEVID(11020, "Changed ECID.");
+        public static TEVID CHANGED_ECVALUE = new TEVID(11021, "Changed EC Value.");
         public static TEVID PP_CHANGE_STATUS = new TEVID(11050, "PP Change Status.");
         public static TEVID PP_CHANGE_NAME = new TEVID(11051, "PP Change Name.");
         public static TEVID PP_FORMAT = new TEVID(11052, "PP Format.");
@@ -1017,7 +1037,7 @@ namespace NDispWin
         public static TEVID PUMP_WEIGHT_MEAS2_MIN = new TEVID(11140, "Pump Weight Meas2 Minimum Value.");
         public static TEVID PUMP_WEIGHT_MEAS2_MAX = new TEVID(11141, "Pump Weight Meas2 Maximum Value.");
         public static TEVID PUMP_WEIGHT_MEAS2_AVE = new TEVID(11142, "Pump Weight Meas2 Average Value.");
-        public static TEVID PUMP_WEIGHT_MEAS2_STDEV = new TEVID(11143, "Pump Weight Meas2 Standard Deviation Value.");
+        public static TEVID PUMP_WEIGHT_MEAS2_STDEV = new TEVID(11143, "Pump Weight Meas2 Standard Deviation Value.");      
         #endregion
 
         #region 20000 DVID
@@ -1060,7 +1080,7 @@ namespace NDispWin
         public static TEVID MODEL13DISPGAP = new TEVID(22012, "Model13 Disp Gap.");
         public static TEVID MODEL14DISPGAP = new TEVID(22013, "Model14 Disp Gap.");
         public static TEVID MODEL15DISPGAP = new TEVID(22014, "Model15 Disp Gap.");
-        public static TEVID MODEL16DISPGAP = new TEVID(22015, "Model16 Disp Gap.");
+        //public static TEVID MODEL16DISPGAP = new TEVID(22015, "Model16 Disp Gap.");
 
         public static TEVID MODEL1DNWAIT = new TEVID(22100, "Model1 Down Wait.");
         public static TEVID MODEL2DNWAIT = new TEVID(22101, "Model2 Down Wait.");
@@ -1077,7 +1097,7 @@ namespace NDispWin
         public static TEVID MODEL13DNWAIT = new TEVID(22112, "Model13 Down Wait.");
         public static TEVID MODEL14DNWAIT = new TEVID(22113, "Model14 Down Wait.");
         public static TEVID MODEL15DNWAIT = new TEVID(22114, "Model15 Down Wait.");
-        public static TEVID MODEL16DNWAIT = new TEVID(22115, "Model16 Down Wait.");
+        //public static TEVID MODEL16DNWAIT = new TEVID(22115, "Model16 Down Wait.");
 
         public static TEVID MODEL1STARTDELAY = new TEVID(22200, "Model1 Start Delay.");
         public static TEVID MODEL2STARTDELAY = new TEVID(22201, "Model2 Start Delay.");
@@ -1094,7 +1114,7 @@ namespace NDispWin
         public static TEVID MODEL13STARTDELAY = new TEVID(22212, "Model13 Start Delay.");
         public static TEVID MODEL14STARTDELAY = new TEVID(22213, "Model14 Start Delay.");
         public static TEVID MODEL15STARTDELAY = new TEVID(22214, "Model15 Start Delay.");
-        public static TEVID MODEL16STARTDELAY = new TEVID(22215, "Model16 Start Delay.");
+        //public static TEVID MODEL16STARTDELAY = new TEVID(22215, "Model16 Start Delay.");
 
         public static TEVID MODEL1LINESPEED = new TEVID(22300, "Model1 Line Speed.");
         public static TEVID MODEL2LINESPEED = new TEVID(22301, "Model2 Line Speed.");
@@ -1111,7 +1131,7 @@ namespace NDispWin
         public static TEVID MODEL13LINESPEED = new TEVID(22312, "Model13 Line Speed.");
         public static TEVID MODEL14LINESPEED = new TEVID(22313, "Model14 Line Speed.");
         public static TEVID MODEL15LINESPEED = new TEVID(22314, "Model15 Line Speed.");
-        public static TEVID MODEL16LINESPEED = new TEVID(22315, "Model16 Line Speed.");
+        //public static TEVID MODEL16LINESPEED = new TEVID(22315, "Model16 Line Speed.");
 
         public static TEVID MODEL1ENDDELAY = new TEVID(22400, "Model1 End Delay.");
         public static TEVID MODEL2ENDDELAY = new TEVID(22401, "Model2 End Delay.");
@@ -1128,7 +1148,7 @@ namespace NDispWin
         public static TEVID MODEL13ENDDELAY = new TEVID(22412, "Model13 End Delay.");
         public static TEVID MODEL14ENDDELAY = new TEVID(22413, "Model14 End Delay.");
         public static TEVID MODEL15ENDDELAY = new TEVID(22414, "Model15 End Delay.");
-        public static TEVID MODEL16ENDDELAY = new TEVID(22415, "Model16 End Delay.");
+        //public static TEVID MODEL16ENDDELAY = new TEVID(22415, "Model16 End Delay.");
 
         public static TEVID MODEL1POSTWAIT = new TEVID(22500, "Model1 Post Wait.");
         public static TEVID MODEL2POSTWAIT = new TEVID(22501, "Model2 Post Wait.");
@@ -1145,7 +1165,7 @@ namespace NDispWin
         public static TEVID MODEL13POSTWAIT = new TEVID(22512, "Model13 Post Wait.");
         public static TEVID MODEL14POSTWAIT = new TEVID(22513, "Model14 Post Wait.");
         public static TEVID MODEL15POSTWAIT = new TEVID(22514, "Model15 Post Wait.");
-        public static TEVID MODEL16POSTWAIT = new TEVID(22515, "Model16 Post Wait.");
+        //public static TEVID MODEL16POSTWAIT = new TEVID(22515, "Model16 Post Wait.");
         #endregion
         #endregion
 

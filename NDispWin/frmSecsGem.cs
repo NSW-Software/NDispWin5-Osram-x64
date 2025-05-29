@@ -14,16 +14,32 @@ namespace NDispWin
 {
     public partial class frmSecsGem : Form
     {
+        public string Message => TFSecsGem.RxTerminalMessage;
         public frmSecsGem()
         {
             InitializeComponent();
 
-            cbxProcessState.DataSource = Enum.GetNames(typeof(EProcessState)).ToList();
+            cbxProcessState.DataSource = Enum.GetNames(typeof(EProcessState1)).ToList();
             cbxProcessState.SelectedText = TFSecsGem.Eq.ProcessState.ToString();
+        }
+        public EventHandler<EventArgs> UpdateTerminal;
+        public bool TriggerUpdateTerminal()
+        {
+            //Message = msg;
+            UpdateTerminal?.Invoke(this, new EventArgs());
+            return true;
         }
         private void frmSecsGem_Load(object sender, EventArgs e)
         {
             UpdateDisplay();
+            UpdateTerminal += (a, b) =>
+            {
+                this.Invoke(new Action(() =>
+                {
+                    rtbRxTerminal.Text = Message;
+                }));
+            };
+            TriggerUpdateTerminal();
         }
         private void UpdateDisplay()
         {
@@ -33,9 +49,31 @@ namespace NDispWin
             btnOnlineOffline.Text = TFSecsGem.Eq.OnlineOffline == EOnlineOffline.Offline ? "Offline" : "Online";
             btnOnlineOffline.BackColor = TFSecsGem.Eq.OnlineOffline == EOnlineOffline.Offline ? Color.Red : Color.Lime;
             btnLocalRemote.Text = $"{TFSecsGem.Eq.LocalRemote}";
-            btnLocalRemote.BackColor = TFSecsGem.Eq.LocalRemote == ELocalRemote.Local ? Color.Yellow : Color.Lime;
+            if (TFSecsGem.Eq.LocalRemote == ELocalRemote.Offline)
+            {
+                btnLocalRemote.BackColor = Color.Red;
+            }
+            else
+            {
+                btnLocalRemote.BackColor = TFSecsGem.Eq.LocalRemote == ELocalRemote.Local ? Color.Yellow : Color.Lime;
+            }
 
-            rtbRxTerminal.Text = TFSecsGem.RxTerminalMessage;
+
+            if (TaskConv.TowerLight.TL_Red)
+            {
+                lblProcessState.Text = "Error";
+                lblProcessState.BackColor = Color.Red;
+                TFSecsGem.Eq.ProcessState = EProcessState.Error;
+            }
+            else
+
+            {
+                lblProcessState.Text = TFSecsGem.Eq.ProcessState.ToString();
+                if (TFSecsGem.Eq.ProcessState == EProcessState.Processing) { lblProcessState.BackColor = Color.Green; }
+                else { lblProcessState.BackColor = Color.Yellow; }
+            }
+
+            //rtbRxTerminal.Text = TFSecsGem.RxTerminalMessage;
         }
 
         private void tmr1s_Tick(object sender, EventArgs e)
@@ -193,6 +231,14 @@ namespace NDispWin
             }
 
             MessageBox.Show($"{fileName} was created.");
+        }
+
+        private void btnAckTerminalMessage_Click(object sender, EventArgs e)
+        {
+            TFSecsGem.RxTerminalMessage = "";
+            TFSecsGem.Send($"{nameof(StreamFunc.VTA)}");
+            Event.TERMINAL_MESSAGE_ACK.Set();
+            TriggerUpdateTerminal();
         }
     }
 }

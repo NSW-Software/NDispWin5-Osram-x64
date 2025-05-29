@@ -8,6 +8,9 @@ using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
 using System.IO;
+using System.CodeDom;
+using System.Windows.Forms;
+using Automation.BDaq;
 
 namespace NDispWin
 {
@@ -83,6 +86,7 @@ namespace NDispWin
         public event OnFrameEndReceived FrameEndReceivedEvent;
         private void Server_FrameEndReceivedEvent() { }
 
+        private frmSecsGem _frmSecsGem;
         // This the call back function which will be invoked when the socket
         // detects any TClient writing of data on the stream
         private void OnDataReceived(IAsyncResult asyn)
@@ -270,6 +274,7 @@ namespace NDispWin
     }
     enum ELocalRemote
     {
+        Offline,//Host connected, but Host can't monitor and commnad.
         Local,//Host connected, but local operator has control. Host can monitor but not command.
         Remote//Host has full control. Can send commands, start/stop processes, etc.
     }
@@ -280,7 +285,28 @@ namespace NDispWin
         Processing,//Actively running a job or executing a recipe.
         Paused,//Job was temporarily halted.
         Completed,//Job is finished.
+        Aborted,//Error Job was aborted or failed due to an error or alarm.
+        Error// Error prompt
+    }
+
+    enum EProcessState1
+    {
+        Idle,//Equipment is not processing any jobs.
+        Setup,//Preparing for a job (loading recipe, aligning, purging, etc.)
+        Processing,//Actively running a job or executing a recipe.
+        Paused,//Job was temporarily halted.
+        Completed,//Job is finished.
         Aborted//Error Job was aborted or failed due to an error or alarm.
+        
+    }
+
+    public enum EControlState
+    {
+        EquipmentOffline,
+        EquipmentLocal,
+        EquipmentRemote,
+        HostOffline,
+        HostOnline
     }
 
     class TEStreamFunc
@@ -329,6 +355,8 @@ namespace NDispWin
         public static TEStreamFunc ECD = new TEStreamFunc("S2F14", "H<-E, Equipment Constant Data.");//tested
         public static TEStreamFunc ECS = new TEStreamFunc("S2F15", "H->E, New Equipment Constant Send.");
         public static TEStreamFunc ECA = new TEStreamFunc("S2F16", "H<-E, New Equipment Constant Acknowledge.");
+        public static TEStreamFunc TIS = new TEStreamFunc("S2F23", "H->E, Trace Initialize Send.");
+        public static TEStreamFunc TIA = new TEStreamFunc("S2F24", "H->E, Trace Initialize Acknowledge.");//tested
         public static TEStreamFunc ECNR = new TEStreamFunc("S2F29", "H->E, Equipment Constant Namelist Request.");//tested
         public static TEStreamFunc ECN = new TEStreamFunc("S2F30", "H<-E, Equipment Constant Namelist.");//tested
 
@@ -370,14 +398,18 @@ namespace NDispWin
         public static ELocalRemote PrevLocalRemote = ELocalRemote.Local;
         public static EProcessState ProcessState = EProcessState.Idle;
         public static EProcessState PrevProcessState = EProcessState.Idle;
+        public static EControlState ControlState = EControlState.EquipmentLocal;
+        public static EControlState PrevControlState = EControlState.EquipmentLocal;
         public static string PPChangeStatus = "";
         public static string PPFormat = "Unformatted";
 
         public static string RxTerminalMessage = "";
         public static string TxTerminalMessage = "";
 
-        public static TClient2 client = new TClient2();
+        public static string ChangedECID = "";
+        public static string ChangedECValue = "";
 
+        public static TClient2 client = new TClient2();
         public static void Start()
         {
             client.ConnectedEvent -= OnConnectedEvent;
@@ -507,28 +539,43 @@ namespace NDispWin
                         }
                     case nameof(StreamFunc.ROFL):
                         {
-                            Event.SECSGEM_HOST_REQ_OFFLINE.Set();
                             if (!IsConnected) Send(nameof(StreamFunc.S1F0));
                             OnlineOffline = EOnlineOffline.Offline;
-                            Send(nameof(StreamFunc.OFLA));
+                            Event.SECSGEM_EQ_SET_OFFLINE.Set();
                             break;
                         }
                     case nameof(StreamFunc.RONL):
                         {
-                            Event.SECSGEM_HOST_REQ_ONLINE.Set();
                             if (!IsConnected) Send(nameof(StreamFunc.S1F0));
                             OnlineOffline = EOnlineOffline.Online;
-                            Send(nameof(StreamFunc.ONLA));
+                            Event.SECSGEM_EQ_SET_ONLINE.Set();
                             break;
                         }
                     case "REOFL":
                         {
+                            if (!IsConnected) Send(nameof(StreamFunc.S1F0));
+                            LocalRemote = ELocalRemote.Offline;
+                            PrevControlState = ControlState;
+                            ControlState = EControlState.EquipmentOffline;
+                            Event.SECSGEM_CONTROL_STATE_CHANGE.Set();
+                            break;
+                        }
+                    case "REOLL":
+                        {
+                            if (!IsConnected) Send(nameof(StreamFunc.S1F0));
                             LocalRemote = ELocalRemote.Local;
+                            PrevControlState = ControlState;
+                            ControlState = EControlState.EquipmentLocal;
+                            Event.SECSGEM_CONTROL_STATE_CHANGE.Set();
                             break;
                         }
                     case "REONL":
                         {
+                            if (!IsConnected) Send(nameof(StreamFunc.S1F0));
                             LocalRemote = ELocalRemote.Remote;
+                            PrevControlState = ControlState;
+                            ControlState = EControlState.EquipmentRemote;
+                            Event.SECSGEM_CONTROL_STATE_CHANGE.Set();
                             break;
                         }
                     case nameof(StreamFunc.CENR):
@@ -579,16 +626,38 @@ namespace NDispWin
                         {
                             try
                             {
-                                for (int i = 1; i < rxSplitData.Length; i += 2)
+                                if (rxSplitData[1] != "")
                                 {
-                                    TEVID.GetFieldFromId(Convert.ToInt32(rxSplitData[i])).Value = rxSplitData[i + 1];
+                                    for (int i = 1; i < rxSplitData.Length; i += 2)
+                                    {
+                                        TEVID.GetFieldFromId(Convert.ToInt32(rxSplitData[i])).Value = rxSplitData[i + 1];
+                                        ChangedECID = rxSplitData[i];
+                                        ChangedECValue = rxSplitData[i + 1];
+                                    }
                                 }
+                                
                                 Send($"{nameof(StreamFunc.ECA)}");
+                                Thread.Sleep(100);
+                                Send($"{nameof(StreamFunc.ERS)},5020");
                             }
                             catch
                             {
                                 Send($"{nameof(StreamFunc.S2F0)}");
                             }
+                            break;
+                        }
+                    case nameof(StreamFunc.TIS):
+                        {
+                            List<int> requestList = new List<int>();
+                            foreach (string d in rxSplitData)
+                            {
+                                if (int.TryParse(d, out int vid))
+                                {
+                                    requestList.Add(vid);
+                                }
+                            }
+                            List<string> responseList = SSR_GetList(requestList);
+                            Send($"{nameof(StreamFunc.TIA)},{string.Join(",", responseList)}");
                             break;
                         }
                     #endregion
@@ -660,6 +729,34 @@ namespace NDispWin
                             }
                             List<string> responseList = LEAR_GetList();
                             Send($"{nameof(StreamFunc.LEAD)},{string.Join(",", responseList)}");
+                            break;
+                        }
+                    case "LDA":
+                        {
+                            List<int> requestList = new List<int>();
+                            foreach (string d in rxSplitData)
+                            {
+                                if (int.TryParse(d, out int vid))
+                                {
+                                    requestList.Add(vid);
+                                }
+                            }
+                            List<string> responseList = LDA_GetList();
+                            Send($"LDA,{string.Join(",", responseList)}");
+                            break;
+                        }
+                    case "LEA":
+                        {
+                            List<int> requestList = new List<int>();
+                            foreach (string d in rxSplitData)
+                            {
+                                if (int.TryParse(d, out int vid))
+                                {
+                                    requestList.Add(vid);
+                                }
+                            }
+                            List<string> responseList = LEA_GetList();
+                            Send($"LEA,{string.Join(",", responseList)}");
                             break;
                         }
                     #endregion
@@ -752,10 +849,18 @@ namespace NDispWin
                     #endregion
                     #region S10
                     case nameof(StreamFunc.VTN):
-                        {
+                        {                         
                             rxSplitData = rxSplitData.Concat(Enumerable.Repeat("", 1)).ToArray();//add 1 empty strings
                             RxTerminalMessage = rxSplitData[2];
-                            Send($"{nameof(StreamFunc.VTA)}");
+
+                            var frms = Application.OpenForms.OfType<frmSecsGem>().ToArray();
+                            if (frms.Length < 1) break;
+                            foreach(var frm in frms)
+                            {
+                                frm.TriggerUpdateTerminal();
+                            }
+                            
+
                             break;
                         }
                     #endregion
@@ -768,8 +873,8 @@ namespace NDispWin
                             //PPID, LOTID, MATERIALNO, OPERATION, EMPLOYEEID
                             rxSplitData = rxSplitData.Concat(Enumerable.Repeat("", 4)).ToArray();//add 4 empty strings
 
-                            string fileName = GDefine.RecipeDir.FullName + rxSplitData[1] + GDefine.RecipeExt;
-                            if (!File.Exists(fileName))
+                            string fileName = Path.Combine(GDefine.RecipeDir.FullName + rxSplitData[2] + GDefine.RecipeExt);
+                            if (!FileExistsCaseSensitive(fileName))
                             {
                                 PPChangeStatus = "Recipe not found.";
                                 Send($"{data0},RECIPE NOT FOUND.");
@@ -792,30 +897,47 @@ namespace NDispWin
                             }
 
                             //LOTID, MATERIALNO, OPERATION, EMPLOYEEID
+                            LotInfo2.RecipeName = rxSplitData[2];
                             LotInfo2.LotNumber = rxSplitData[4];
                             LotInfo2.Osram.ElevenSeries = rxSplitData[6];
                             LotInfo2.Osram.Operation = rxSplitData[10];
                             LotInfo2.sOperatorID = rxSplitData[8];
 
                             PPChangeStatus = "Success";
-                            Send(data0);
+                            Send($"{data0},SUCCESS");
+                            Thread.Sleep(100);
                             Event.SECSGEM_PP_SELECTED.Set("FileName", fileName);
                             break;
                         }
                     case "START":
                     case "RESTART":
-                        if (OnlineOffline == EOnlineOffline.Offline) return;
-                        Define_Run.TR_StartRun();
-                        Send(data0);
+                        if (OnlineOffline == EOnlineOffline.Offline) { Send($"{data0},OFFLINE."); return; }
+                        if (!Define_Run.TR_StartRun()) 
+                        {
+                            Send($"{data0},SETUPFAIL.");
+                        }
+                        else
+                        {
+                            if (!frm_Auto.RunAuto())
+                            {
+                                Send($"{data0},AUTORUNFAIL.");
+                            }
+                            else
+                            {
+                                Send(data0);
+                            }
+                        }
+                        
+                        
                         break;
                     case "STOP":
                     case "PAUSE":
-                        if (OnlineOffline == EOnlineOffline.Offline) return;
+                        if (OnlineOffline == EOnlineOffline.Offline) { Send($"{data0},OFFLINE."); return; }
                         Define_Run.TR_StopRun();
                         Send(data0);
                         break;
                     case "ABORT":
-                        if (OnlineOffline == EOnlineOffline.Offline) return;
+                        if (OnlineOffline == EOnlineOffline.Offline) { Send($"{data0},OFFLINE."); return; }
                         Define_Run.TR_StopRun();
                         DispProg.TR_Cancel();
                         Send(data0);
@@ -834,6 +956,7 @@ namespace NDispWin
                     if (value == EOnlineOffline.Online) Event.SECSGEM_EQ_SET_ONLINE.Set();
                     if (value == EOnlineOffline.Offline) Event.SECSGEM_EQ_SET_OFFLINE.Set();
                     TFSecsGem.OnlineOffline = value;
+                    UpdateControlState(value.ToString());
                 }
                 get
                 {
@@ -848,6 +971,7 @@ namespace NDispWin
                     if (value == ELocalRemote.Local) Event.SECSGEM_EQ_SET_LOCAL.Set();
                     if (value == ELocalRemote.Remote) Event.SECSGEM_EQ_SET_REMOTE.Set();
                     TFSecsGem.LocalRemote = value;
+                    UpdateControlState(value.ToString());
                 }
                 get
                 {
@@ -867,77 +991,146 @@ namespace NDispWin
                     return TFSecsGem.ProcessState;
                 }
             }
-        }
 
+            private static void UpdateControlState(string value)
+            {
+                PrevControlState = ControlState;
+                switch (value)
+                {
+                    case "Local":
+                        {
+                            ControlState = EControlState.EquipmentLocal;
+                        }break;
+                    case "Remote":
+                        {
+                            ControlState = EControlState.EquipmentRemote;
+                        }break;
+
+                    case "Offline":
+                        {
+                            ControlState = EControlState.HostOffline;
+                        }break;
+                    case "Online":
+                        {
+                            ControlState = EControlState.HostOnline;
+                        }break;
+                }
+
+
+            }
+
+            public static EControlState ControlState
+            {
+                set
+                {
+                    TFSecsGem.PrevControlState = TFSecsGem.ControlState;
+                    Event.SECSGEM_CONTROL_STATE_CHANGE.Set();
+                    TFSecsGem.ControlState = value;
+                }
+                get
+                {
+                    return TFSecsGem.ControlState;
+                }
+            }
+            public static EControlState PrevControlState
+            {
+                set
+                {
+                    TFSecsGem.PrevControlState = value;
+                }
+                get
+                {
+                    return TFSecsGem.PrevControlState;
+                }
+            }
+        }
         public static List<string> SSR_GetList(List<int> requestList)
         {
-            var sVIDList = typeof(VID).GetFields(BindingFlags.Public | BindingFlags.Static)
-                .Where(x => x.FieldType == typeof(TEVID))
-                .Select(x => (TEVID)x.GetValue(null)).ToArray();
+            var sVIDDict = typeof(VID).GetFields(BindingFlags.Public | BindingFlags.Static)
+        .Where(x => x.FieldType == typeof(TEVID))
+        .Select(x => (TEVID)x.GetValue(null))
+        .Where(s => s.Code > 10000 && s.Code <= 29999)
+        .ToDictionary(s => s.Code, s => s); // Dictionary<int, TEVID>
 
             List<string> list = new List<string>();
-            foreach (var sVID in sVIDList)
+
+            if (requestList.Count == 0)
             {
-                if (sVID.Code > 10000 && sVID.Code <= 19999)
+                foreach (var svid in sVIDDict.Values)
                 {
-                    string info = Convert.ToString(sVID.Value);//SVID Values
-                    if (requestList.Count == 0)
+                    list.Add(Convert.ToString(svid.Value));
+                }
+            }
+            else
+            {
+                foreach (var code in requestList)
+                {
+                    if (sVIDDict.TryGetValue(code, out var svid))
                     {
-                        list.Add(info);
-                    }
-                    else
-                    if (requestList.Contains(sVID.Code))
-                    {
-                        list.Add(info);
+                        list.Add(Convert.ToString(svid.Value));
                     }
                 }
             }
+
             return list;
         }
         public static List<string> SVNR_GetList(List<int> requestList)
         {
-            var sVIDList = typeof(VID).GetFields(BindingFlags.Public | BindingFlags.Static)
+            var sVIDDict = typeof(VID).GetFields(BindingFlags.Public | BindingFlags.Static)
                 .Where(x => x.FieldType == typeof(TEVID))
-                .Select(x => (TEVID)x.GetValue(null)).ToArray();
+                .Select(x => (TEVID)x.GetValue(null))
+                .Where(s => s.Code > 10000 && s.Code <= 29999)
+                .ToDictionary(s => s.Code, s => s);
 
             List<string> list = new List<string>();
-            foreach (var sVID in sVIDList)
+
+            if (requestList.Count == 0)
             {
-                if (sVID.Code > 10000 && sVID.Code <= 19999)
+                foreach (var svid in sVIDDict.Values)
                 {
-                    string info = $"{sVID.Code:d5},{sVID.Desc},{""}";//SVID,SVNAME,UNITS
-                    if (requestList.Count == 0)
+                    string info = $"{svid.Code:d5},{svid.Desc},{""}"; // SVID, SVNAME, UNITS
+                    list.Add(info);
+                }
+            }
+            else
+            {
+                foreach (var code in requestList)
+                {
+                    if (sVIDDict.TryGetValue(code, out var svid))
                     {
-                        list.Add(info);
-                    }
-                    else
-                    if (requestList.Contains(sVID.Code))
-                    {
+                        string info = $"{svid.Code:d5},{svid.Desc},{""}"; // SVID, SVNAME, UNITS
                         list.Add(info);
                     }
                 }
             }
             return list;
         }
+
         public static List<string> ECR_GetList(List<int> requestList)
         {
-            var sVIDList = typeof(VID).GetFields(BindingFlags.Public | BindingFlags.Static)
+            var sVIDDict = typeof(VID).GetFields(BindingFlags.Public | BindingFlags.Static)
                 .Where(x => x.FieldType == typeof(TEVID))
-                .Select(x => (TEVID)x.GetValue(null)).ToArray();
+                .Select(x => (TEVID)x.GetValue(null))
+                .Where(s => s.Code > 30000 && s.Code <= 39999)
+                .ToDictionary(s => s.Code, s => s);
 
             List<string> list = new List<string>();
-            foreach (var sVID in sVIDList)
+
+            if (requestList.Count == 0)
             {
-                if (sVID.Code > 30000 && sVID.Code <= 39999)
+                foreach (var svid in sVIDDict.Values)
                 {
-                    string info = $"{sVID.Value}";//ECValue
-                    if (requestList.Count == 0)
+                    string info = $"{svid.Value}"; // ECValue
+                    list.Add(info);
+                }
+            }
+            else
+            {
+                foreach (var code in requestList)
+                {
+                    if (sVIDDict.TryGetValue(code, out var svid))
                     {
-                        list.Add(info);
-                    }
-                    else
-                    if (requestList.Contains(sVID.Code))
-                    {
+                        string info = $"{svid.Value}"; // ECValue
                         list.Add(info);
                     }
                 }
@@ -946,51 +1139,71 @@ namespace NDispWin
         }
         public static List<string> ECNR_GetList(List<int> requestList)
         {
-            var sVIDList = typeof(VID).GetFields(BindingFlags.Public | BindingFlags.Static)
+            var sVIDDict = typeof(VID).GetFields(BindingFlags.Public | BindingFlags.Static)
                 .Where(x => x.FieldType == typeof(TEVID))
-                .Select(x => (TEVID)x.GetValue(null)).ToArray();
+                .Select(x => (TEVID)x.GetValue(null))
+                .Where(s => s.Code > 30000 && s.Code <= 39999)
+                .ToDictionary(s => s.Code, s => s);
 
             List<string> list = new List<string>();
-            foreach (var sVID in sVIDList)
+
+            if (requestList.Count == 0)
             {
-                if (sVID.Code > 30000 && sVID.Code <= 39999)
+                foreach (var svid in sVIDDict.Values)
                 {
-                    string info = $"{sVID.Code:d5},{sVID.Desc},{sVID.Min},{sVID.Max},{sVID.Def},{sVID.Units}";//ECID,ECNAME,ECMIN,ECMAX,ECDEF,UNITS
-                    if (requestList.Count == 0)
+                    string info = $"{svid.Code:d5},{svid.Desc},{svid.Min},{svid.Max},{svid.Def},{svid.Units}"; // ECID, ECNAME, ECMIN, ECMAX, ECDEF, UNITS
+                    list.Add(info);
+                }
+            }
+            else
+            {
+                foreach (var code in requestList)
+                {
+                    if (sVIDDict.TryGetValue(code, out var svid))
                     {
-                        list.Add(info);
-                    }
-                    else
-                    if (requestList.Contains(sVID.Code))
-                    {
+                        string info = $"{svid.Code:d5},{svid.Desc},{svid.Min},{svid.Max},{svid.Def},{svid.Units}"; // ECID, ECNAME, ECMIN, ECMAX, ECDEF, UNITS
                         list.Add(info);
                     }
                 }
             }
+
             return list;
         }
+
         public static List<string> CENR_GetList(List<int> requestList)
         {
-            var ceIDlist = typeof(Event).GetFields(BindingFlags.Public | BindingFlags.Static)
-                .Where(x => x.FieldType == typeof(TEEvent))
-                .Select(x => (TEEvent)x.GetValue(null)).ToArray();
+            var ceIDDict = typeof(Event).GetFields(BindingFlags.Public | BindingFlags.Static)
+            .Where(x => x.FieldType == typeof(TEEvent))
+            .Select(x => (TEEvent)x.GetValue(null))
+            .GroupBy(e => e.Code)                  // Group duplicates
+            .Select(g => g.First())                // Take only one per Code
+            .ToDictionary(e => e.Code, e => e);
 
             List<string> list = new List<string>();
-            foreach (var cEID in ceIDlist)
+
+            if (requestList.Count == 0)
             {
-                string info = $"{cEID.Code:d5},{cEID.Name},[{string.Join(",",cEID.VIDs)}]";//CEID,CEName,[VID1,VID2,..VIDn]
-                if (requestList.Count == 0)
+                foreach (var ce in ceIDDict.Values)
                 {
-                    list.Add(info);
-                }
-                else
-                if (requestList.Contains(cEID.Code))
-                {
+                    string info = $"{ce.Code:d5},{ce.Name},[{string.Join(",", ce.VIDs)}]"; // CEID, CEName, [VID1,VID2,...]
                     list.Add(info);
                 }
             }
+            else
+            {
+                foreach (var code in requestList)
+                {
+                    if (ceIDDict.TryGetValue(code, out var ce))
+                    {
+                        string info = $"{ce.Code:d5},{ce.Name},[{string.Join(",", ce.VIDs)}]"; // CEID, CEName, [VID1,VID2,...]
+                        list.Add(info);
+                    }
+                }
+            }
+
             return list;
         }
+
         public static List<string> LAR_GetList(List<int> requestList)
         {
             var almList = typeof(Messages).GetFields(BindingFlags.Public | BindingFlags.Static)
@@ -1028,6 +1241,36 @@ namespace NDispWin
             return list;
         }
 
+        public static List<string> LDA_GetList()
+        {
+            var almList = typeof(Messages).GetFields(BindingFlags.Public | BindingFlags.Static)
+                .Where(x => x.FieldType == typeof(TEMessage))
+                .Select(x => (TEMessage)x.GetValue(null)).ToArray();
+
+            List<string> list = new List<string>();
+            foreach (var alm in almList)
+            {
+                string info = $"{alm.Code}";//ALID
+                if (!alm.Enabled) list.Add(info);
+            }
+            return list;
+        }
+
+        public static List<string> LEA_GetList()
+        {
+            var almList = typeof(Messages).GetFields(BindingFlags.Public | BindingFlags.Static)
+                .Where(x => x.FieldType == typeof(TEMessage))
+                .Select(x => (TEMessage)x.GetValue(null)).ToArray();
+
+            List<string> list = new List<string>();
+            foreach (var alm in almList)
+            {
+                string info = $"{alm.Code}";//ALID
+                if (alm.Enabled) list.Add(info);
+            }
+            return list;
+        }
+
         public static void SendAlarm_ARS(TEMessage msg, bool set)
         {
             //set bit8 = 1, clear bit8=0, ignore remaining
@@ -1042,8 +1285,9 @@ namespace NDispWin
 
         public static void UploadPP_PPI_PPS(string recipeName)
         {
+            string ppid = recipeName;
             rxPPGData.Clear();
-            Send(nameof(StreamFunc.PPI));
+            Send(nameof(StreamFunc.PPI) + $",{ppid},{ppid.Length}");
 
             int t = Environment.TickCount + Timeout;
             while (true)//wait PPG
@@ -1053,7 +1297,7 @@ namespace NDispWin
                 if (Environment.TickCount >= t) return;
             }
 
-            string ppid = recipeName;
+            
             var fileName = GDefine.RecipeDir + ppid + ".xml";
 
             StreamReader a = new StreamReader(fileName);
@@ -1122,6 +1366,18 @@ namespace NDispWin
                 }
             }
             return list;
+        }
+
+        private static bool FileExistsCaseSensitive(string fullPath)
+        {
+            if (!File.Exists(fullPath)) return false;
+
+            string directory = Path.GetDirectoryName(fullPath);
+            string targetFile = Path.GetFileName(fullPath);
+
+            return Directory
+                .GetFiles(directory)
+                .Any(f => Path.GetFileName(f) == targetFile); // case-sensitive match
         }
     }
 }

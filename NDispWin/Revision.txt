@@ -11,6 +11,22 @@ Todo
 
 
 DOT, CLINE
+Ver 6.1.6.0 - JH - 20250529 - Gitted
+  [Feature] SecsGem 
+  - frm_Auto.cs 
+  > added RunAuto event to trigger AutoRun when received start command from Host
+  > update PP-SELECT info in autofrm
+  - frmSecsGem.cs
+  > added update terminal handle to refresh terminal message received
+  > added EProcessState1 for ProcessState display (Process State need error but cant show in cbx)
+  > LocalRemote button need to show offline as well
+  - TEEvent.cs
+  > added Events and IDs, correction on linked IDs, comment disp_model 16 as value can't be obtained
+  - TFSecsGem.cs
+  > Added Enum for control state 
+  > Added Trace data feature
+  > Improvement on RMCD
+  > Modification at all GetList function to follow Host Send Sequences
 
 Ver 6.1.5.7 - KN - 20250421 - Gitted
   [Improve] SecsGem response PP-Select wiht error decsritption

@@ -31,6 +31,8 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frm_Auto));
             this.pnl_RightTop = new System.Windows.Forms.Panel();
+            this.btnSECSGEM = new System.Windows.Forms.Button();
+            this.btnBurnRun = new System.Windows.Forms.Button();
             this.btn_InitConveyor = new System.Windows.Forms.Button();
             this.btn_LotInfo = new System.Windows.Forms.Button();
             this.btn_ContinuePreviousMap = new System.Windows.Forms.Button();
@@ -120,6 +122,18 @@
             this.tpage_DispTools = new System.Windows.Forms.TabPage();
             this.tpageImage = new System.Windows.Forms.TabPage();
             this.imgBoxEmgu = new Emgu.CV.UI.ImageBox();
+            this.tpageSecsGem = new System.Windows.Forms.TabPage();
+            this.gbPPSelect = new System.Windows.Forms.GroupBox();
+            this.lblEmployeeID = new System.Windows.Forms.Label();
+            this.lblOperation = new System.Windows.Forms.Label();
+            this.lblMaterialNo = new System.Windows.Forms.Label();
+            this.lblLotID = new System.Windows.Forms.Label();
+            this.lblPPID = new System.Windows.Forms.Label();
+            this.label31 = new System.Windows.Forms.Label();
+            this.label30 = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
             this.ss_Bottom = new System.Windows.Forms.StatusStrip();
             this.tsddbtn_Language = new System.Windows.Forms.ToolStripDropDownButton();
@@ -135,7 +149,6 @@
             this.pnl_Right = new System.Windows.Forms.Panel();
             this.tmr_TR_Buttons = new System.Windows.Forms.Timer(this.components);
             this.tmr_1s = new System.Windows.Forms.Timer(this.components);
-            this.btnBurnRun = new System.Windows.Forms.Button();
             this.pnl_RightTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbox_Logo)).BeginInit();
             this.pnl_RightBottom.SuspendLayout();
@@ -150,6 +163,8 @@
             this.pnl_SysStatus.SuspendLayout();
             this.tpageImage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imgBoxEmgu)).BeginInit();
+            this.tpageSecsGem.SuspendLayout();
+            this.gbPPSelect.SuspendLayout();
             this.ss_Bottom.SuspendLayout();
             this.panel5.SuspendLayout();
             this.pnl_Right.SuspendLayout();
@@ -157,6 +172,7 @@
             // 
             // pnl_RightTop
             // 
+            this.pnl_RightTop.Controls.Add(this.btnSECSGEM);
             this.pnl_RightTop.Controls.Add(this.btnBurnRun);
             this.pnl_RightTop.Controls.Add(this.btn_InitConveyor);
             this.pnl_RightTop.Controls.Add(this.btn_LotInfo);
@@ -173,6 +189,52 @@
             this.pnl_RightTop.Padding = new System.Windows.Forms.Padding(3);
             this.pnl_RightTop.Size = new System.Drawing.Size(171, 416);
             this.pnl_RightTop.TabIndex = 0;
+            // 
+            // btnSECSGEM
+            // 
+            this.btnSECSGEM.AccessibleDescription = "";
+            this.btnSECSGEM.AutoEllipsis = true;
+            this.btnSECSGEM.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnSECSGEM.BackColor = System.Drawing.SystemColors.Control;
+            this.btnSECSGEM.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnSECSGEM.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnSECSGEM.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btnSECSGEM.FlatAppearance.BorderSize = 2;
+            this.btnSECSGEM.FlatAppearance.MouseDownBackColor = System.Drawing.Color.LightGray;
+            this.btnSECSGEM.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightGray;
+            this.btnSECSGEM.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSECSGEM.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSECSGEM.Location = new System.Drawing.Point(3, 362);
+            this.btnSECSGEM.Name = "btnSECSGEM";
+            this.btnSECSGEM.Size = new System.Drawing.Size(165, 40);
+            this.btnSECSGEM.TabIndex = 324;
+            this.btnSECSGEM.Text = "SECSGEM";
+            this.btnSECSGEM.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnSECSGEM.UseVisualStyleBackColor = false;
+            this.btnSECSGEM.Click += new System.EventHandler(this.btnSECSGEM_Click);
+            // 
+            // btnBurnRun
+            // 
+            this.btnBurnRun.AccessibleDescription = "Burn Run";
+            this.btnBurnRun.AutoEllipsis = true;
+            this.btnBurnRun.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnBurnRun.BackColor = System.Drawing.SystemColors.Control;
+            this.btnBurnRun.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnBurnRun.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnBurnRun.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btnBurnRun.FlatAppearance.BorderSize = 2;
+            this.btnBurnRun.FlatAppearance.MouseDownBackColor = System.Drawing.Color.LightGray;
+            this.btnBurnRun.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightGray;
+            this.btnBurnRun.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnBurnRun.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnBurnRun.Location = new System.Drawing.Point(3, 322);
+            this.btnBurnRun.Name = "btnBurnRun";
+            this.btnBurnRun.Size = new System.Drawing.Size(165, 40);
+            this.btnBurnRun.TabIndex = 323;
+            this.btnBurnRun.Text = "Burn Run";
+            this.btnBurnRun.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnBurnRun.UseVisualStyleBackColor = false;
+            this.btnBurnRun.Click += new System.EventHandler(this.btnBurnRun_Click);
             // 
             // btn_InitConveyor
             // 
@@ -391,6 +453,7 @@
             this.tabControl.Controls.Add(this.tpage_Map);
             this.tabControl.Controls.Add(this.tpage_DispTools);
             this.tabControl.Controls.Add(this.tpageImage);
+            this.tabControl.Controls.Add(this.tpageSecsGem);
             this.tabControl.Dock = System.Windows.Forms.DockStyle.Left;
             this.tabControl.ItemSize = new System.Drawing.Size(80, 40);
             this.tabControl.Location = new System.Drawing.Point(0, 0);
@@ -1378,6 +1441,126 @@
             this.imgBoxEmgu.TabIndex = 3;
             this.imgBoxEmgu.TabStop = false;
             // 
+            // tpageSecsGem
+            // 
+            this.tpageSecsGem.Controls.Add(this.gbPPSelect);
+            this.tpageSecsGem.Location = new System.Drawing.Point(4, 44);
+            this.tpageSecsGem.Name = "tpageSecsGem";
+            this.tpageSecsGem.Padding = new System.Windows.Forms.Padding(3);
+            this.tpageSecsGem.Size = new System.Drawing.Size(840, 604);
+            this.tpageSecsGem.TabIndex = 8;
+            this.tpageSecsGem.Text = "SecsGem";
+            this.tpageSecsGem.UseVisualStyleBackColor = true;
+            // 
+            // gbPPSelect
+            // 
+            this.gbPPSelect.Controls.Add(this.lblEmployeeID);
+            this.gbPPSelect.Controls.Add(this.lblOperation);
+            this.gbPPSelect.Controls.Add(this.lblMaterialNo);
+            this.gbPPSelect.Controls.Add(this.lblLotID);
+            this.gbPPSelect.Controls.Add(this.lblPPID);
+            this.gbPPSelect.Controls.Add(this.label31);
+            this.gbPPSelect.Controls.Add(this.label30);
+            this.gbPPSelect.Controls.Add(this.label22);
+            this.gbPPSelect.Controls.Add(this.label21);
+            this.gbPPSelect.Controls.Add(this.label8);
+            this.gbPPSelect.Location = new System.Drawing.Point(32, 38);
+            this.gbPPSelect.Name = "gbPPSelect";
+            this.gbPPSelect.Size = new System.Drawing.Size(252, 216);
+            this.gbPPSelect.TabIndex = 0;
+            this.gbPPSelect.TabStop = false;
+            this.gbPPSelect.Text = "PP-SELECT";
+            // 
+            // lblEmployeeID
+            // 
+            this.lblEmployeeID.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblEmployeeID.Location = new System.Drawing.Point(107, 148);
+            this.lblEmployeeID.Name = "lblEmployeeID";
+            this.lblEmployeeID.Size = new System.Drawing.Size(138, 22);
+            this.lblEmployeeID.TabIndex = 317;
+            this.lblEmployeeID.Text = "-";
+            // 
+            // lblOperation
+            // 
+            this.lblOperation.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblOperation.Location = new System.Drawing.Point(107, 119);
+            this.lblOperation.Name = "lblOperation";
+            this.lblOperation.Size = new System.Drawing.Size(138, 22);
+            this.lblOperation.TabIndex = 316;
+            this.lblOperation.Text = "-";
+            // 
+            // lblMaterialNo
+            // 
+            this.lblMaterialNo.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblMaterialNo.Location = new System.Drawing.Point(107, 91);
+            this.lblMaterialNo.Name = "lblMaterialNo";
+            this.lblMaterialNo.Size = new System.Drawing.Size(138, 22);
+            this.lblMaterialNo.TabIndex = 315;
+            this.lblMaterialNo.Text = "-";
+            // 
+            // lblLotID
+            // 
+            this.lblLotID.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblLotID.Location = new System.Drawing.Point(107, 59);
+            this.lblLotID.Name = "lblLotID";
+            this.lblLotID.Size = new System.Drawing.Size(138, 22);
+            this.lblLotID.TabIndex = 314;
+            this.lblLotID.Text = "-";
+            // 
+            // lblPPID
+            // 
+            this.lblPPID.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblPPID.Location = new System.Drawing.Point(107, 32);
+            this.lblPPID.Name = "lblPPID";
+            this.lblPPID.Size = new System.Drawing.Size(138, 22);
+            this.lblPPID.TabIndex = 313;
+            this.lblPPID.Text = "-";
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(16, 148);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(83, 14);
+            this.label31.TabIndex = 8;
+            this.label31.Text = "EMPLOYEE ID";
+            // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Location = new System.Drawing.Point(16, 119);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(74, 14);
+            this.label30.TabIndex = 6;
+            this.label30.Text = "OPERATION";
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(16, 91);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(85, 14);
+            this.label22.TabIndex = 4;
+            this.label22.Text = "MATERIAL NO";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(16, 59);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(46, 14);
+            this.label21.TabIndex = 2;
+            this.label21.Text = "LOT ID";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(16, 32);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(33, 14);
+            this.label8.TabIndex = 0;
+            this.label8.Text = "PPID";
+            // 
             // panel4
             // 
             this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
@@ -1412,49 +1595,49 @@
             this.tsddbtn_Language.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsddbtn_Language.Name = "tsddbtn_Language";
             this.tsddbtn_Language.ShowDropDownArrow = false;
-            this.tsddbtn_Language.Size = new System.Drawing.Size(75, 28);
+            this.tsddbtn_Language.Size = new System.Drawing.Size(64, 28);
             this.tsddbtn_Language.Text = "Language";
             this.tsddbtn_Language.Click += new System.EventHandler(this.tsddbtn_Language_Click);
             // 
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(14, 24);
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(12, 25);
             this.toolStripStatusLabel1.Text = "|";
             // 
             // tsslbl_BuzzerMute
             // 
             this.tsslbl_BuzzerMute.AccessibleDescription = "Buzzer Mute";
             this.tsslbl_BuzzerMute.Name = "tsslbl_BuzzerMute";
-            this.tsslbl_BuzzerMute.Size = new System.Drawing.Size(90, 24);
+            this.tsslbl_BuzzerMute.Size = new System.Drawing.Size(74, 25);
             this.tsslbl_BuzzerMute.Text = "Buzzer Mute";
             this.tsslbl_BuzzerMute.Click += new System.EventHandler(this.tsslbl_BuzzerMute_Click);
             // 
             // toolStripStatusLabel2
             // 
             this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            this.toolStripStatusLabel2.Size = new System.Drawing.Size(14, 24);
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(12, 25);
             this.toolStripStatusLabel2.Text = "|";
             // 
             // tsslbl_LULDoor
             // 
             this.tsslbl_LULDoor.AccessibleDescription = "LUL Door";
             this.tsslbl_LULDoor.Name = "tsslbl_LULDoor";
-            this.tsslbl_LULDoor.Size = new System.Drawing.Size(68, 24);
+            this.tsslbl_LULDoor.Size = new System.Drawing.Size(57, 25);
             this.tsslbl_LULDoor.Text = "LUL Door";
             this.tsslbl_LULDoor.Click += new System.EventHandler(this.tsslbl_LULDoor_Click);
             // 
             // tsslblDoorLock
             // 
             this.tsslblDoorLock.Name = "tsslblDoorLock";
-            this.tsslblDoorLock.Size = new System.Drawing.Size(84, 24);
+            this.tsslblDoorLock.Size = new System.Drawing.Size(71, 25);
             this.tsslblDoorLock.Text = "| Door Lock";
             this.tsslblDoorLock.Click += new System.EventHandler(this.tsslblDoorLock_Click);
             // 
             // tsslMonCamera
             // 
             this.tsslMonCamera.Name = "tsslMonCamera";
-            this.tsslMonCamera.Size = new System.Drawing.Size(103, 24);
+            this.tsslMonCamera.Size = new System.Drawing.Size(83, 25);
             this.tsslMonCamera.Text = "| Mon Camera";
             this.tsslMonCamera.Click += new System.EventHandler(this.tsslMonCamera_Click);
             // 
@@ -1496,29 +1679,6 @@
             this.tmr_1s.Interval = 1000;
             this.tmr_1s.Tick += new System.EventHandler(this.tmr_1s_Tick);
             // 
-            // btnBurnRun
-            // 
-            this.btnBurnRun.AccessibleDescription = "Burn Run";
-            this.btnBurnRun.AutoEllipsis = true;
-            this.btnBurnRun.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnBurnRun.BackColor = System.Drawing.SystemColors.Control;
-            this.btnBurnRun.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnBurnRun.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnBurnRun.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.btnBurnRun.FlatAppearance.BorderSize = 2;
-            this.btnBurnRun.FlatAppearance.MouseDownBackColor = System.Drawing.Color.LightGray;
-            this.btnBurnRun.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightGray;
-            this.btnBurnRun.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnBurnRun.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnBurnRun.Location = new System.Drawing.Point(3, 322);
-            this.btnBurnRun.Name = "btnBurnRun";
-            this.btnBurnRun.Size = new System.Drawing.Size(165, 40);
-            this.btnBurnRun.TabIndex = 323;
-            this.btnBurnRun.Text = "Burn Run";
-            this.btnBurnRun.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnBurnRun.UseVisualStyleBackColor = false;
-            this.btnBurnRun.Click += new System.EventHandler(this.btnBurnRun_Click);
-            // 
             // frm_Auto
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -1554,6 +1714,9 @@
             this.pnl_SysStatus.ResumeLayout(false);
             this.tpageImage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.imgBoxEmgu)).EndInit();
+            this.tpageSecsGem.ResumeLayout(false);
+            this.gbPPSelect.ResumeLayout(false);
+            this.gbPPSelect.PerformLayout();
             this.ss_Bottom.ResumeLayout(false);
             this.ss_Bottom.PerformLayout();
             this.panel5.ResumeLayout(false);
@@ -1670,5 +1833,18 @@
         private System.Windows.Forms.Label label29;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btnBurnRun;
+        private System.Windows.Forms.Button btnSECSGEM;
+        private System.Windows.Forms.TabPage tpageSecsGem;
+        private System.Windows.Forms.GroupBox gbPPSelect;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.Label label30;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Label lblEmployeeID;
+        private System.Windows.Forms.Label lblOperation;
+        private System.Windows.Forms.Label lblMaterialNo;
+        private System.Windows.Forms.Label lblLotID;
+        private System.Windows.Forms.Label lblPPID;
     }
 }

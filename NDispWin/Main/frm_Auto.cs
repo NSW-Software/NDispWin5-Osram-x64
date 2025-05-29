@@ -14,6 +14,15 @@ namespace NDispWin
 {
     public partial class frm_Auto : Form
     {
+
+        public static EventHandler<EventArgs> Event_AutoRun;
+
+        public static bool RunAuto()
+        {
+            Event_AutoRun?.Invoke(null, new EventArgs());
+            return true;
+        }
+
         public frm_Auto()
         {
             InitializeComponent();
@@ -43,6 +52,18 @@ namespace NDispWin
             tsslblDoorLock.Visible = GDefineN.EnableDoorLock;
 
             tsslMonCamera.Visible = GDefine.MCameraType[0] == GDefine.ECameraType.MVSGenTL || GDefine.MCameraType[1] == GDefine.ECameraType.MVSGenTL;
+
+
+            Event_AutoRun += (a, b) =>
+            {
+                if (!IsHandleCreated) return;
+                this.Invoke(new Action(() => {
+
+                    AutoRun();
+
+                }));
+
+            };
         }
 
         private void StartUp()
@@ -367,6 +388,14 @@ namespace NDispWin
             }
         }
 
+        private void UpdateSecsGem()
+        {
+            lblPPID.Text = LotInfo2.RecipeName;
+            lblLotID.Text = LotInfo2.LotNumber;
+            lblMaterialNo.Text = LotInfo2.Osram.ElevenSeries;
+            lblOperation.Text = LotInfo2.Osram.Operation;
+            lblEmployeeID.Text = LotInfo2.sOperatorID;
+        }
         private void tmr_DateTime_Tick(object sender, EventArgs e)
         {
             if (!Visible) return;
@@ -377,6 +406,7 @@ namespace NDispWin
             UpdateDisplay();
             UpdateStatus();
             UpdateWaitMagStatus();
+            UpdateSecsGem();
         }
         private void tmr_TR_Buttons_Tick(object sender, EventArgs e)
         {
@@ -1049,5 +1079,12 @@ namespace NDispWin
         {
             bBurnRun = !bBurnRun;
         }
+
+        private void btnSECSGEM_Click(object sender, EventArgs e)
+        {
+            frmSecsGem frm = new frmSecsGem();
+            frm.ShowDialog();
+        }
+
     }
 }

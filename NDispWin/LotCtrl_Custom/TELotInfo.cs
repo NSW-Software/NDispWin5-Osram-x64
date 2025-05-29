@@ -52,7 +52,7 @@ namespace NDispWin
 
         //General Lot Info
         public static string LotNumber = "";
-
+        public static string RecipeName = "";
         public static string sOperatorID = "";
         public static string sShift = "";
         public static string sStartTime = "";
