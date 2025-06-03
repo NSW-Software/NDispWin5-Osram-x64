@@ -859,6 +859,23 @@ namespace NDispWin
                         MsgBox.Show(Messages.CONV_VACUUM_LOW);
                     }
 
+                    if (TaskConv.LeftMode == TaskConv.ELeftMode.ElevatorZ)
+                    {
+                        if (TaskElev.Left.WaitMagChange)
+                        {
+                            if (TaskConv.Pre.Status == TaskConv.EProcessStatus.Empty &&
+                                TaskConv.Pro.Status == TaskConv.EProcessStatus.Empty &&
+                                TaskConv.Pos.Status == TaskConv.EProcessStatus.Empty)
+                            {
+                                GDefine.Status = EStatus.Stop;
+                                Define_Run.TR_StopRun();
+                                //Send LotEnd Here
+                                Msg MsgBox = new Msg();
+                                MsgBox.Show(Messages.LOT_COMPLETE_IN_MAGAZINE_EMPTY);
+                            }
+                        }
+                    }
+
                     Thread.Sleep(1000);
                 }
             });

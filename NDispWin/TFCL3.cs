@@ -4,6 +4,8 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO.Ports;
+using System.Threading;
 
 namespace NDispWin
 {
@@ -275,5 +277,94 @@ namespace NDispWin
         internal static extern int CL3IF_GetStorageData(int deviceId, uint index, uint requestDataCount, out uint nextIndex, out uint obtainedDataCount, out CL3IF_OUTNO outTarget, IntPtr measurementData);
         [DllImport(DllName)]
         internal static extern int CL3IF_SetHold(int deviceId, byte programNo, byte outNo, CL3IF_HOLDMODE holdMode, CL3IF_HOLDMODE_PARAM param);
+    }
+
+    public class TFSickOD2
+    {
+        private SerialPort Port = new SerialPort("COM1", 9600, Parity.None, 8, StopBits.One);
+        private Mutex mutex = new Mutex();
+        private bool IsValidated = false;
+        public bool IsConnected => Port.IsOpen && IsValidated;
+
+        public bool Open(string comport)
+        {
+            Port.PortName = comport;
+            Port.BaudRate = 9600;
+            Port.Open();
+            if (!Handshaking()) return false;
+            Port.DiscardInBuffer();
+            IsValidated = true;
+            return true;
+        }
+        public void Close()
+        {
+            IsValidated = false;
+            Port.Close();
+        }
+
+        private bool Handshaking()
+        {
+            Send("AVG");
+            string s = Read();
+            if (s == "")
+            {
+                //MessageBox.Show("Empty string");
+                return false;
+            }
+            if (s == "FAST" || s == "MEDIUM" || s == "SLOW") return true;
+            return false;
+        }
+        private bool Send(string msg)
+        {
+            try
+            {
+                msg = (char)2 + msg + (char)3;
+                Port.DiscardOutBuffer();
+                Port.Write(msg);
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
+        }
+        private string Read()
+        {
+
+            try
+            {
+                Port.ReadTimeout = 1000;
+                var a = Port.ReadTo(((char)3).ToString());
+                return a.Remove(0, 1);
+            }
+            catch
+            {
+                return "";
+            }
+            finally
+            {
+                Port.DiscardInBuffer();
+            }
+        }
+
+        public bool GetValue(ref double value)
+        {
+            mutex.WaitOne();
+            try
+            {
+                Send("MEASURE");
+                var a = Read();
+                value = Convert.ToDouble(a);
+            }
+            catch
+            {
+                return false;
+            }
+            finally
+            {
+                mutex.ReleaseMutex();
+            }
+            return true;
+        }
     }
 }

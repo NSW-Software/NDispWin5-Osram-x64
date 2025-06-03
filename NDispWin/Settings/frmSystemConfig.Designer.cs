@@ -109,7 +109,7 @@
             this.combox_WeightStType = new System.Windows.Forms.ComboBox();
             this.tpage_HeightSensor = new System.Windows.Forms.TabPage();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.label52 = new System.Windows.Forms.Label();
+            this.lblBaudRate = new System.Windows.Forms.Label();
             this.tbox_HSensorIPAddress = new System.Windows.Forms.TextBox();
             this.label27 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
@@ -298,7 +298,7 @@
             0,
             0});
             this.nud_LogLevel.Name = "nud_LogLevel";
-            this.nud_LogLevel.Size = new System.Drawing.Size(77, 26);
+            this.nud_LogLevel.Size = new System.Drawing.Size(77, 22);
             this.nud_LogLevel.TabIndex = 153;
             this.nud_LogLevel.Click += new System.EventHandler(this.nud_LogLevel_Click);
             // 
@@ -336,7 +336,7 @@
             this.groupBox17.Controls.Add(this.combox_TempCtrl_PortName);
             this.groupBox17.Location = new System.Drawing.Point(251, 6);
             this.groupBox17.Name = "groupBox17";
-            this.groupBox17.Size = new System.Drawing.Size(240, 297);
+            this.groupBox17.Size = new System.Drawing.Size(240, 293);
             this.groupBox17.TabIndex = 157;
             this.groupBox17.TabStop = false;
             this.groupBox17.Text = "Temp Controller";
@@ -367,7 +367,7 @@
             this.combox_TempCtrl3.FormattingEnabled = true;
             this.combox_TempCtrl3.Location = new System.Drawing.Point(113, 221);
             this.combox_TempCtrl3.Name = "combox_TempCtrl3";
-            this.combox_TempCtrl3.Size = new System.Drawing.Size(121, 26);
+            this.combox_TempCtrl3.Size = new System.Drawing.Size(121, 22);
             this.combox_TempCtrl3.TabIndex = 174;
             this.combox_TempCtrl3.SelectionChangeCommitted += new System.EventHandler(this.combox_TempCtrl0_SelectionChangeCommitted);
             // 
@@ -387,7 +387,7 @@
             this.combox_TempCtrl2.FormattingEnabled = true;
             this.combox_TempCtrl2.Location = new System.Drawing.Point(113, 193);
             this.combox_TempCtrl2.Name = "combox_TempCtrl2";
-            this.combox_TempCtrl2.Size = new System.Drawing.Size(121, 26);
+            this.combox_TempCtrl2.Size = new System.Drawing.Size(121, 22);
             this.combox_TempCtrl2.TabIndex = 172;
             this.combox_TempCtrl2.SelectionChangeCommitted += new System.EventHandler(this.combox_TempCtrl0_SelectionChangeCommitted);
             // 
@@ -407,7 +407,7 @@
             this.combox_TempCtrl1.FormattingEnabled = true;
             this.combox_TempCtrl1.Location = new System.Drawing.Point(113, 165);
             this.combox_TempCtrl1.Name = "combox_TempCtrl1";
-            this.combox_TempCtrl1.Size = new System.Drawing.Size(121, 26);
+            this.combox_TempCtrl1.Size = new System.Drawing.Size(121, 22);
             this.combox_TempCtrl1.TabIndex = 170;
             this.combox_TempCtrl1.SelectionChangeCommitted += new System.EventHandler(this.combox_TempCtrl0_SelectionChangeCommitted);
             // 
@@ -449,7 +449,7 @@
             this.combox_TempCtrl0.FormattingEnabled = true;
             this.combox_TempCtrl0.Location = new System.Drawing.Point(113, 137);
             this.combox_TempCtrl0.Name = "combox_TempCtrl0";
-            this.combox_TempCtrl0.Size = new System.Drawing.Size(121, 26);
+            this.combox_TempCtrl0.Size = new System.Drawing.Size(121, 22);
             this.combox_TempCtrl0.TabIndex = 165;
             this.combox_TempCtrl0.SelectionChangeCommitted += new System.EventHandler(this.combox_TempCtrl0_SelectionChangeCommitted);
             // 
@@ -469,7 +469,7 @@
             this.combox_TempCtrl_Type.FormattingEnabled = true;
             this.combox_TempCtrl_Type.Location = new System.Drawing.Point(112, 21);
             this.combox_TempCtrl_Type.Name = "combox_TempCtrl_Type";
-            this.combox_TempCtrl_Type.Size = new System.Drawing.Size(121, 26);
+            this.combox_TempCtrl_Type.Size = new System.Drawing.Size(121, 22);
             this.combox_TempCtrl_Type.TabIndex = 159;
             this.combox_TempCtrl_Type.SelectionChangeCommitted += new System.EventHandler(this.combox_TempCtrl_Type_SelectionChangeCommitted);
             // 
@@ -510,7 +510,7 @@
             this.combox_TempCtrl_PortName.FormattingEnabled = true;
             this.combox_TempCtrl_PortName.Location = new System.Drawing.Point(112, 48);
             this.combox_TempCtrl_PortName.Name = "combox_TempCtrl_PortName";
-            this.combox_TempCtrl_PortName.Size = new System.Drawing.Size(121, 26);
+            this.combox_TempCtrl_PortName.Size = new System.Drawing.Size(121, 22);
             this.combox_TempCtrl_PortName.TabIndex = 15;
             this.combox_TempCtrl_PortName.SelectionChangeCommitted += new System.EventHandler(this.combox_TempCtrl_PortName_SelectionChangeCommitted);
             // 
@@ -528,7 +528,7 @@
             this.groupBox12.Controls.Add(this.cbxTempSensorType);
             this.groupBox12.Location = new System.Drawing.Point(6, 132);
             this.groupBox12.Name = "groupBox12";
-            this.groupBox12.Size = new System.Drawing.Size(239, 125);
+            this.groupBox12.Size = new System.Drawing.Size(239, 121);
             this.groupBox12.TabIndex = 147;
             this.groupBox12.TabStop = false;
             this.groupBox12.Text = "Temp Sensor";
@@ -579,7 +579,7 @@
             this.cbxTempSensorComport.FormattingEnabled = true;
             this.cbxTempSensorComport.Location = new System.Drawing.Point(112, 49);
             this.cbxTempSensorComport.Name = "cbxTempSensorComport";
-            this.cbxTempSensorComport.Size = new System.Drawing.Size(121, 26);
+            this.cbxTempSensorComport.Size = new System.Drawing.Size(121, 22);
             this.cbxTempSensorComport.TabIndex = 17;
             this.cbxTempSensorComport.SelectionChangeCommitted += new System.EventHandler(this.cbxTempSensorComport_SelectionChangeCommitted);
             // 
@@ -599,7 +599,7 @@
             this.cbxTempSensorType.FormattingEnabled = true;
             this.cbxTempSensorType.Location = new System.Drawing.Point(112, 21);
             this.cbxTempSensorType.Name = "cbxTempSensorType";
-            this.cbxTempSensorType.Size = new System.Drawing.Size(121, 26);
+            this.cbxTempSensorType.Size = new System.Drawing.Size(121, 22);
             this.cbxTempSensorType.TabIndex = 15;
             this.cbxTempSensorType.SelectionChangeCommitted += new System.EventHandler(this.cbxTempSensorType_SelectionChangeCommitted);
             // 
@@ -631,7 +631,7 @@
             this.groupBox21.Controls.Add(this.cbxDispHeaterType);
             this.groupBox21.Location = new System.Drawing.Point(6, 260);
             this.groupBox21.Name = "groupBox21";
-            this.groupBox21.Size = new System.Drawing.Size(239, 125);
+            this.groupBox21.Size = new System.Drawing.Size(239, 121);
             this.groupBox21.TabIndex = 156;
             this.groupBox21.TabStop = false;
             this.groupBox21.Text = "Disp Heater";
@@ -673,7 +673,7 @@
             this.cbxDispHeaterComport.FormattingEnabled = true;
             this.cbxDispHeaterComport.Location = new System.Drawing.Point(112, 49);
             this.cbxDispHeaterComport.Name = "cbxDispHeaterComport";
-            this.cbxDispHeaterComport.Size = new System.Drawing.Size(121, 26);
+            this.cbxDispHeaterComport.Size = new System.Drawing.Size(121, 22);
             this.cbxDispHeaterComport.TabIndex = 24;
             this.cbxDispHeaterComport.SelectionChangeCommitted += new System.EventHandler(this.cbxDispHeaterComport_SelectionChangeCommitted);
             // 
@@ -693,7 +693,7 @@
             this.cbxDispHeaterType.FormattingEnabled = true;
             this.cbxDispHeaterType.Location = new System.Drawing.Point(112, 21);
             this.cbxDispHeaterType.Name = "cbxDispHeaterType";
-            this.cbxDispHeaterType.Size = new System.Drawing.Size(121, 26);
+            this.cbxDispHeaterType.Size = new System.Drawing.Size(121, 22);
             this.cbxDispHeaterType.TabIndex = 15;
             this.cbxDispHeaterType.SelectionChangeCommitted += new System.EventHandler(this.cbxDispHeaterType_SelectionChangeCommitted);
             // 
@@ -710,7 +710,7 @@
             this.groupBox13.Controls.Add(this.combox_DispCtrl1Type);
             this.groupBox13.Location = new System.Drawing.Point(6, 6);
             this.groupBox13.Name = "groupBox13";
-            this.groupBox13.Size = new System.Drawing.Size(239, 125);
+            this.groupBox13.Size = new System.Drawing.Size(239, 121);
             this.groupBox13.TabIndex = 148;
             this.groupBox13.TabStop = false;
             this.groupBox13.Text = "Disp Controller 1";
@@ -752,7 +752,7 @@
             this.combox_DispCtrl1Comport.FormattingEnabled = true;
             this.combox_DispCtrl1Comport.Location = new System.Drawing.Point(112, 49);
             this.combox_DispCtrl1Comport.Name = "combox_DispCtrl1Comport";
-            this.combox_DispCtrl1Comport.Size = new System.Drawing.Size(121, 26);
+            this.combox_DispCtrl1Comport.Size = new System.Drawing.Size(121, 22);
             this.combox_DispCtrl1Comport.TabIndex = 24;
             this.combox_DispCtrl1Comport.SelectionChangeCommitted += new System.EventHandler(this.combox_DispCtrl1Comport_SelectionChangeCommitted);
             // 
@@ -772,7 +772,7 @@
             this.combox_DispCtrl1Type.FormattingEnabled = true;
             this.combox_DispCtrl1Type.Location = new System.Drawing.Point(112, 21);
             this.combox_DispCtrl1Type.Name = "combox_DispCtrl1Type";
-            this.combox_DispCtrl1Type.Size = new System.Drawing.Size(121, 26);
+            this.combox_DispCtrl1Type.Size = new System.Drawing.Size(121, 22);
             this.combox_DispCtrl1Type.TabIndex = 15;
             this.combox_DispCtrl1Type.SelectionChangeCommitted += new System.EventHandler(this.combox_DispCtrl1Type_SelectionChangeCommitted);
             // 
@@ -789,7 +789,7 @@
             this.groupBox14.Controls.Add(this.combox_DispCtrl2Type);
             this.groupBox14.Location = new System.Drawing.Point(6, 133);
             this.groupBox14.Name = "groupBox14";
-            this.groupBox14.Size = new System.Drawing.Size(239, 125);
+            this.groupBox14.Size = new System.Drawing.Size(239, 121);
             this.groupBox14.TabIndex = 149;
             this.groupBox14.TabStop = false;
             this.groupBox14.Text = "Disp Controller 2";
@@ -831,7 +831,7 @@
             this.combox_DispCtrl2Comport.FormattingEnabled = true;
             this.combox_DispCtrl2Comport.Location = new System.Drawing.Point(112, 49);
             this.combox_DispCtrl2Comport.Name = "combox_DispCtrl2Comport";
-            this.combox_DispCtrl2Comport.Size = new System.Drawing.Size(121, 26);
+            this.combox_DispCtrl2Comport.Size = new System.Drawing.Size(121, 22);
             this.combox_DispCtrl2Comport.TabIndex = 24;
             this.combox_DispCtrl2Comport.SelectionChangeCommitted += new System.EventHandler(this.combox_DispCtrl2Comport_SelectionChangeCommitted);
             // 
@@ -851,7 +851,7 @@
             this.combox_DispCtrl2Type.FormattingEnabled = true;
             this.combox_DispCtrl2Type.Location = new System.Drawing.Point(112, 21);
             this.combox_DispCtrl2Type.Name = "combox_DispCtrl2Type";
-            this.combox_DispCtrl2Type.Size = new System.Drawing.Size(121, 26);
+            this.combox_DispCtrl2Type.Size = new System.Drawing.Size(121, 22);
             this.combox_DispCtrl2Type.TabIndex = 15;
             this.combox_DispCtrl2Type.SelectionChangeCommitted += new System.EventHandler(this.combox_DispCtrl2Type_SelectionChangeCommitted);
             // 
@@ -876,7 +876,7 @@
             this.groupBox9.Controls.Add(this.combox_FPressType);
             this.groupBox9.Location = new System.Drawing.Point(251, 6);
             this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(239, 240);
+            this.groupBox9.Size = new System.Drawing.Size(239, 236);
             this.groupBox9.TabIndex = 155;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "Fluid Pressure";
@@ -886,7 +886,7 @@
             this.combox_Pressunit.FormattingEnabled = true;
             this.combox_Pressunit.Location = new System.Drawing.Point(112, 49);
             this.combox_Pressunit.Name = "combox_Pressunit";
-            this.combox_Pressunit.Size = new System.Drawing.Size(121, 26);
+            this.combox_Pressunit.Size = new System.Drawing.Size(121, 22);
             this.combox_Pressunit.TabIndex = 37;
             this.combox_Pressunit.SelectionChangeCommitted += new System.EventHandler(this.combox_Pressunit_SelectionChangeCommitted);
             // 
@@ -906,7 +906,7 @@
             this.combox_FPressCh.FormattingEnabled = true;
             this.combox_FPressCh.Location = new System.Drawing.Point(6, 78);
             this.combox_FPressCh.Name = "combox_FPressCh";
-            this.combox_FPressCh.Size = new System.Drawing.Size(121, 26);
+            this.combox_FPressCh.Size = new System.Drawing.Size(121, 22);
             this.combox_FPressCh.TabIndex = 35;
             this.combox_FPressCh.SelectionChangeCommitted += new System.EventHandler(this.combox_FPressCh_SelectionChangeCommitted);
             // 
@@ -914,7 +914,7 @@
             // 
             this.tbox_FPressSet.Location = new System.Drawing.Point(6, 165);
             this.tbox_FPressSet.Name = "tbox_FPressSet";
-            this.tbox_FPressSet.Size = new System.Drawing.Size(50, 26);
+            this.tbox_FPressSet.Size = new System.Drawing.Size(50, 22);
             this.tbox_FPressSet.TabIndex = 29;
             this.tbox_FPressSet.Text = "0.9";
             this.tbox_FPressSet.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -988,7 +988,7 @@
             this.combox_FPress1Comport.FormattingEnabled = true;
             this.combox_FPress1Comport.Location = new System.Drawing.Point(112, 105);
             this.combox_FPress1Comport.Name = "combox_FPress1Comport";
-            this.combox_FPress1Comport.Size = new System.Drawing.Size(121, 26);
+            this.combox_FPress1Comport.Size = new System.Drawing.Size(121, 22);
             this.combox_FPress1Comport.TabIndex = 26;
             this.combox_FPress1Comport.SelectionChangeCommitted += new System.EventHandler(this.combox_FPress1Comport_SelectionChangeCommitted);
             // 
@@ -1018,7 +1018,7 @@
             this.combox_FPressType.FormattingEnabled = true;
             this.combox_FPressType.Location = new System.Drawing.Point(112, 21);
             this.combox_FPressType.Name = "combox_FPressType";
-            this.combox_FPressType.Size = new System.Drawing.Size(121, 26);
+            this.combox_FPressType.Size = new System.Drawing.Size(121, 22);
             this.combox_FPressType.TabIndex = 15;
             this.combox_FPressType.SelectionChangeCommitted += new System.EventHandler(this.combox_FPressType_SelectionChangeCommitted);
             // 
@@ -1046,7 +1046,7 @@
             this.groupBox5.Controls.Add(this.combox_WeightStType);
             this.groupBox5.Location = new System.Drawing.Point(6, 6);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(239, 125);
+            this.groupBox5.Size = new System.Drawing.Size(239, 121);
             this.groupBox5.TabIndex = 19;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Weight Station";
@@ -1086,7 +1086,7 @@
             this.combox_WeightComport.FormattingEnabled = true;
             this.combox_WeightComport.Location = new System.Drawing.Point(112, 48);
             this.combox_WeightComport.Name = "combox_WeightComport";
-            this.combox_WeightComport.Size = new System.Drawing.Size(121, 26);
+            this.combox_WeightComport.Size = new System.Drawing.Size(121, 22);
             this.combox_WeightComport.TabIndex = 22;
             this.combox_WeightComport.SelectionChangeCommitted += new System.EventHandler(this.combox_WeightComport_SelectionChangeCommitted);
             // 
@@ -1106,7 +1106,7 @@
             this.combox_WeightStType.FormattingEnabled = true;
             this.combox_WeightStType.Location = new System.Drawing.Point(112, 21);
             this.combox_WeightStType.Name = "combox_WeightStType";
-            this.combox_WeightStType.Size = new System.Drawing.Size(121, 26);
+            this.combox_WeightStType.Size = new System.Drawing.Size(121, 22);
             this.combox_WeightStType.TabIndex = 15;
             this.combox_WeightStType.SelectionChangeCommitted += new System.EventHandler(this.combox_WeightStType_SelectionChangeCommitted);
             // 
@@ -1128,7 +1128,7 @@
             this.groupBox4.AccessibleDescription = "Height Sensor";
             this.groupBox4.AutoSize = true;
             this.groupBox4.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.groupBox4.Controls.Add(this.label52);
+            this.groupBox4.Controls.Add(this.lblBaudRate);
             this.groupBox4.Controls.Add(this.tbox_HSensorIPAddress);
             this.groupBox4.Controls.Add(this.label27);
             this.groupBox4.Controls.Add(this.label8);
@@ -1138,27 +1138,27 @@
             this.groupBox4.Controls.Add(this.combox_HSensorType);
             this.groupBox4.Location = new System.Drawing.Point(6, 6);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(239, 181);
+            this.groupBox4.Size = new System.Drawing.Size(239, 198);
             this.groupBox4.TabIndex = 18;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Height Sensor";
             // 
-            // label52
+            // lblBaudRate
             // 
-            this.label52.AccessibleDescription = "";
-            this.label52.Location = new System.Drawing.Point(6, 134);
-            this.label52.Margin = new System.Windows.Forms.Padding(3);
-            this.label52.Name = "label52";
-            this.label52.Size = new System.Drawing.Size(227, 22);
-            this.label52.TabIndex = 160;
-            this.label52.Text = "IDL Baudrate 115200";
-            this.label52.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblBaudRate.AccessibleDescription = "";
+            this.lblBaudRate.Location = new System.Drawing.Point(6, 134);
+            this.lblBaudRate.Margin = new System.Windows.Forms.Padding(3);
+            this.lblBaudRate.Name = "lblBaudRate";
+            this.lblBaudRate.Size = new System.Drawing.Size(134, 43);
+            this.lblBaudRate.TabIndex = 160;
+            this.lblBaudRate.Text = "IDL Baudrate 115200 SICK BaudRate 9600";
+            this.lblBaudRate.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tbox_HSensorIPAddress
             // 
             this.tbox_HSensorIPAddress.Location = new System.Drawing.Point(112, 77);
             this.tbox_HSensorIPAddress.Name = "tbox_HSensorIPAddress";
-            this.tbox_HSensorIPAddress.Size = new System.Drawing.Size(121, 26);
+            this.tbox_HSensorIPAddress.Size = new System.Drawing.Size(121, 22);
             this.tbox_HSensorIPAddress.TabIndex = 159;
             this.tbox_HSensorIPAddress.TextChanged += new System.EventHandler(this.tbox_HSensorIPAddress_TextChanged);
             // 
@@ -1198,7 +1198,7 @@
             this.combox_HSensorComport.FormattingEnabled = true;
             this.combox_HSensorComport.Location = new System.Drawing.Point(112, 49);
             this.combox_HSensorComport.Name = "combox_HSensorComport";
-            this.combox_HSensorComport.Size = new System.Drawing.Size(121, 26);
+            this.combox_HSensorComport.Size = new System.Drawing.Size(121, 22);
             this.combox_HSensorComport.TabIndex = 25;
             this.combox_HSensorComport.SelectionChangeCommitted += new System.EventHandler(this.combox_HSensorComport_SelectionChangeCommitted);
             // 
@@ -1218,7 +1218,7 @@
             this.combox_HSensorType.FormattingEnabled = true;
             this.combox_HSensorType.Location = new System.Drawing.Point(112, 21);
             this.combox_HSensorType.Name = "combox_HSensorType";
-            this.combox_HSensorType.Size = new System.Drawing.Size(121, 26);
+            this.combox_HSensorType.Size = new System.Drawing.Size(121, 22);
             this.combox_HSensorType.TabIndex = 15;
             this.combox_HSensorType.SelectionChangeCommitted += new System.EventHandler(this.combox_HSensorType_SelectionChangeCommitted);
             // 
@@ -1229,9 +1229,9 @@
             this.groupBox7.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.groupBox7.Controls.Add(this.label21);
             this.groupBox7.Controls.Add(this.combox_ZSensorType);
-            this.groupBox7.Location = new System.Drawing.Point(6, 193);
+            this.groupBox7.Location = new System.Drawing.Point(6, 214);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(239, 72);
+            this.groupBox7.Size = new System.Drawing.Size(239, 64);
             this.groupBox7.TabIndex = 140;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Z Sensor";
@@ -1252,7 +1252,7 @@
             this.combox_ZSensorType.FormattingEnabled = true;
             this.combox_ZSensorType.Location = new System.Drawing.Point(112, 21);
             this.combox_ZSensorType.Name = "combox_ZSensorType";
-            this.combox_ZSensorType.Size = new System.Drawing.Size(121, 26);
+            this.combox_ZSensorType.Size = new System.Drawing.Size(121, 22);
             this.combox_ZSensorType.TabIndex = 15;
             this.combox_ZSensorType.SelectionChangeCommitted += new System.EventHandler(this.combox_ZSensorType_SelectionChangeCommitted);
             // 
@@ -1296,7 +1296,7 @@
             this.groupBox23.Controls.Add(this.cbxMCamera1Type);
             this.groupBox23.Location = new System.Drawing.Point(251, 6);
             this.groupBox23.Name = "groupBox23";
-            this.groupBox23.Size = new System.Drawing.Size(239, 279);
+            this.groupBox23.Size = new System.Drawing.Size(239, 275);
             this.groupBox23.TabIndex = 158;
             this.groupBox23.TabStop = false;
             this.groupBox23.Text = "Monitoring Camera";
@@ -1316,7 +1316,7 @@
             // 
             this.tbxMCamera2SerialNo.Location = new System.Drawing.Point(112, 188);
             this.tbxMCamera2SerialNo.Name = "tbxMCamera2SerialNo";
-            this.tbxMCamera2SerialNo.Size = new System.Drawing.Size(121, 26);
+            this.tbxMCamera2SerialNo.Size = new System.Drawing.Size(121, 22);
             this.tbxMCamera2SerialNo.TabIndex = 158;
             this.tbxMCamera2SerialNo.TextChanged += new System.EventHandler(this.tbxMCamera2SerialNo_TextChanged);
             // 
@@ -1346,7 +1346,7 @@
             // 
             this.tbxMCamera1SerialNo.Location = new System.Drawing.Point(112, 76);
             this.tbxMCamera1SerialNo.Name = "tbxMCamera1SerialNo";
-            this.tbxMCamera1SerialNo.Size = new System.Drawing.Size(121, 26);
+            this.tbxMCamera1SerialNo.Size = new System.Drawing.Size(121, 22);
             this.tbxMCamera1SerialNo.TabIndex = 156;
             this.tbxMCamera1SerialNo.TextChanged += new System.EventHandler(this.tbxMCamera1SerialNo_TextChanged);
             // 
@@ -1396,7 +1396,7 @@
             // 
             this.tbxMCamera2IPAddress.Location = new System.Drawing.Point(112, 160);
             this.tbxMCamera2IPAddress.Name = "tbxMCamera2IPAddress";
-            this.tbxMCamera2IPAddress.Size = new System.Drawing.Size(121, 26);
+            this.tbxMCamera2IPAddress.Size = new System.Drawing.Size(121, 22);
             this.tbxMCamera2IPAddress.TabIndex = 15;
             this.tbxMCamera2IPAddress.Text = "192.168.255.233";
             this.tbxMCamera2IPAddress.TextChanged += new System.EventHandler(this.tbxMCamera2IPAddress_TextChanged);
@@ -1417,7 +1417,7 @@
             this.cbxMCamera2Type.FormattingEnabled = true;
             this.cbxMCamera2Type.Location = new System.Drawing.Point(112, 133);
             this.cbxMCamera2Type.Name = "cbxMCamera2Type";
-            this.cbxMCamera2Type.Size = new System.Drawing.Size(121, 26);
+            this.cbxMCamera2Type.Size = new System.Drawing.Size(121, 22);
             this.cbxMCamera2Type.TabIndex = 15;
             this.cbxMCamera2Type.SelectionChangeCommitted += new System.EventHandler(this.cbxMCamera2Type_SelectionChangeCommitted);
             // 
@@ -1436,7 +1436,7 @@
             // 
             this.tbxMCamera1IPAddress.Location = new System.Drawing.Point(112, 48);
             this.tbxMCamera1IPAddress.Name = "tbxMCamera1IPAddress";
-            this.tbxMCamera1IPAddress.Size = new System.Drawing.Size(121, 26);
+            this.tbxMCamera1IPAddress.Size = new System.Drawing.Size(121, 22);
             this.tbxMCamera1IPAddress.TabIndex = 15;
             this.tbxMCamera1IPAddress.Text = "192.168.255.233";
             this.tbxMCamera1IPAddress.TextChanged += new System.EventHandler(this.tbxMCamera1IPAddress_TextChanged);
@@ -1446,7 +1446,7 @@
             this.cbxMCamera1Type.FormattingEnabled = true;
             this.cbxMCamera1Type.Location = new System.Drawing.Point(112, 21);
             this.cbxMCamera1Type.Name = "cbxMCamera1Type";
-            this.cbxMCamera1Type.Size = new System.Drawing.Size(121, 26);
+            this.cbxMCamera1Type.Size = new System.Drawing.Size(121, 22);
             this.cbxMCamera1Type.TabIndex = 15;
             this.cbxMCamera1Type.SelectionChangeCommitted += new System.EventHandler(this.cbxMCamera1Type_SelectionChangeCommitted);
             // 
@@ -1468,7 +1468,7 @@
             this.groupBox18.Controls.Add(this.combox_ExtVisType);
             this.groupBox18.Location = new System.Drawing.Point(496, 6);
             this.groupBox18.Name = "groupBox18";
-            this.groupBox18.Size = new System.Drawing.Size(239, 235);
+            this.groupBox18.Size = new System.Drawing.Size(239, 231);
             this.groupBox18.TabIndex = 157;
             this.groupBox18.TabStop = false;
             this.groupBox18.Text = "External Vision";
@@ -1524,7 +1524,7 @@
             // 
             this.tbox_ExtVisPort.Location = new System.Drawing.Point(112, 78);
             this.tbox_ExtVisPort.Name = "tbox_ExtVisPort";
-            this.tbox_ExtVisPort.Size = new System.Drawing.Size(121, 26);
+            this.tbox_ExtVisPort.Size = new System.Drawing.Size(121, 22);
             this.tbox_ExtVisPort.TabIndex = 158;
             this.tbox_ExtVisPort.Text = "8502";
             this.tbox_ExtVisPort.TextChanged += new System.EventHandler(this.tbox_ExtVisPort_TextChanged);
@@ -1577,7 +1577,7 @@
             // 
             this.tbox_ExtVisIPAddress.Location = new System.Drawing.Point(112, 50);
             this.tbox_ExtVisIPAddress.Name = "tbox_ExtVisIPAddress";
-            this.tbox_ExtVisIPAddress.Size = new System.Drawing.Size(121, 26);
+            this.tbox_ExtVisIPAddress.Size = new System.Drawing.Size(121, 22);
             this.tbox_ExtVisIPAddress.TabIndex = 15;
             this.tbox_ExtVisIPAddress.Text = "192.168.255.233";
             this.tbox_ExtVisIPAddress.TextChanged += new System.EventHandler(this.tbox_ExtVisIPAddress_TextChanged);
@@ -1587,7 +1587,7 @@
             this.combox_ExtVisType.FormattingEnabled = true;
             this.combox_ExtVisType.Location = new System.Drawing.Point(112, 21);
             this.combox_ExtVisType.Name = "combox_ExtVisType";
-            this.combox_ExtVisType.Size = new System.Drawing.Size(121, 26);
+            this.combox_ExtVisType.Size = new System.Drawing.Size(121, 22);
             this.combox_ExtVisType.TabIndex = 15;
             this.combox_ExtVisType.SelectionChangeCommitted += new System.EventHandler(this.combox_ExtVisType_SelectionChangeCommitted);
             // 
@@ -1606,7 +1606,7 @@
             this.groupBox2.Controls.Add(this.combox_Camera1Type);
             this.groupBox2.Location = new System.Drawing.Point(6, 6);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(239, 152);
+            this.groupBox2.Size = new System.Drawing.Size(239, 148);
             this.groupBox2.TabIndex = 16;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Camera 1";
@@ -1626,7 +1626,7 @@
             // 
             this.tbxCam1SerialNo.Location = new System.Drawing.Point(112, 76);
             this.tbxCam1SerialNo.Name = "tbxCam1SerialNo";
-            this.tbxCam1SerialNo.Size = new System.Drawing.Size(121, 26);
+            this.tbxCam1SerialNo.Size = new System.Drawing.Size(121, 22);
             this.tbxCam1SerialNo.TabIndex = 156;
             this.tbxCam1SerialNo.TextChanged += new System.EventHandler(this.tbxCam1SerialNo_TextChanged);
             // 
@@ -1676,7 +1676,7 @@
             // 
             this.tbxCam1IPAddress.Location = new System.Drawing.Point(112, 48);
             this.tbxCam1IPAddress.Name = "tbxCam1IPAddress";
-            this.tbxCam1IPAddress.Size = new System.Drawing.Size(121, 26);
+            this.tbxCam1IPAddress.Size = new System.Drawing.Size(121, 22);
             this.tbxCam1IPAddress.TabIndex = 15;
             this.tbxCam1IPAddress.Text = "192.168.255.233";
             this.tbxCam1IPAddress.TextChanged += new System.EventHandler(this.tbxCamera1IPAdress_TextChanged);
@@ -1686,7 +1686,7 @@
             this.combox_Camera1Type.FormattingEnabled = true;
             this.combox_Camera1Type.Location = new System.Drawing.Point(112, 21);
             this.combox_Camera1Type.Name = "combox_Camera1Type";
-            this.combox_Camera1Type.Size = new System.Drawing.Size(121, 26);
+            this.combox_Camera1Type.Size = new System.Drawing.Size(121, 22);
             this.combox_Camera1Type.TabIndex = 15;
             this.combox_Camera1Type.SelectionChangeCommitted += new System.EventHandler(this.combox_Camera1Type_SelectionChangeCommitted);
             // 
@@ -1705,7 +1705,7 @@
             this.groupBox15.Controls.Add(this.combox_Camera2Type);
             this.groupBox15.Location = new System.Drawing.Point(6, 164);
             this.groupBox15.Name = "groupBox15";
-            this.groupBox15.Size = new System.Drawing.Size(239, 152);
+            this.groupBox15.Size = new System.Drawing.Size(239, 148);
             this.groupBox15.TabIndex = 150;
             this.groupBox15.TabStop = false;
             this.groupBox15.Text = "Camera 2";
@@ -1725,7 +1725,7 @@
             // 
             this.tbxCam2SerialNo.Location = new System.Drawing.Point(112, 76);
             this.tbxCam2SerialNo.Name = "tbxCam2SerialNo";
-            this.tbxCam2SerialNo.Size = new System.Drawing.Size(121, 26);
+            this.tbxCam2SerialNo.Size = new System.Drawing.Size(121, 22);
             this.tbxCam2SerialNo.TabIndex = 158;
             this.tbxCam2SerialNo.TextChanged += new System.EventHandler(this.tbxCam2SerialNo_TextChanged);
             // 
@@ -1776,7 +1776,7 @@
             // 
             this.tbxCam2IPAddress.Location = new System.Drawing.Point(112, 48);
             this.tbxCam2IPAddress.Name = "tbxCam2IPAddress";
-            this.tbxCam2IPAddress.Size = new System.Drawing.Size(121, 26);
+            this.tbxCam2IPAddress.Size = new System.Drawing.Size(121, 22);
             this.tbxCam2IPAddress.TabIndex = 15;
             this.tbxCam2IPAddress.Text = "192.168.255.233";
             this.tbxCam2IPAddress.TextChanged += new System.EventHandler(this.tbxCamera2IPAdress_TextChanged);
@@ -1786,7 +1786,7 @@
             this.combox_Camera2Type.FormattingEnabled = true;
             this.combox_Camera2Type.Location = new System.Drawing.Point(112, 21);
             this.combox_Camera2Type.Name = "combox_Camera2Type";
-            this.combox_Camera2Type.Size = new System.Drawing.Size(121, 26);
+            this.combox_Camera2Type.Size = new System.Drawing.Size(121, 22);
             this.combox_Camera2Type.TabIndex = 15;
             this.combox_Camera2Type.SelectionChangeCommitted += new System.EventHandler(this.combox_Camera2Type_SelectionChangeCommitted);
             // 
@@ -1805,7 +1805,7 @@
             this.groupBox16.Controls.Add(this.combox_Camera3Type);
             this.groupBox16.Location = new System.Drawing.Point(6, 322);
             this.groupBox16.Name = "groupBox16";
-            this.groupBox16.Size = new System.Drawing.Size(239, 152);
+            this.groupBox16.Size = new System.Drawing.Size(239, 148);
             this.groupBox16.TabIndex = 151;
             this.groupBox16.TabStop = false;
             this.groupBox16.Text = "Camera 3";
@@ -1825,7 +1825,7 @@
             // 
             this.tbxCam3SerialNo.Location = new System.Drawing.Point(112, 76);
             this.tbxCam3SerialNo.Name = "tbxCam3SerialNo";
-            this.tbxCam3SerialNo.Size = new System.Drawing.Size(121, 26);
+            this.tbxCam3SerialNo.Size = new System.Drawing.Size(121, 22);
             this.tbxCam3SerialNo.TabIndex = 160;
             this.tbxCam3SerialNo.TextChanged += new System.EventHandler(this.tbxCam3SerialNo_TextChanged);
             // 
@@ -1876,7 +1876,7 @@
             // 
             this.tbxCam3IPAddress.Location = new System.Drawing.Point(112, 48);
             this.tbxCam3IPAddress.Name = "tbxCam3IPAddress";
-            this.tbxCam3IPAddress.Size = new System.Drawing.Size(121, 26);
+            this.tbxCam3IPAddress.Size = new System.Drawing.Size(121, 22);
             this.tbxCam3IPAddress.TabIndex = 15;
             this.tbxCam3IPAddress.Text = "192.168.255.233";
             this.tbxCam3IPAddress.TextChanged += new System.EventHandler(this.tbxCamera3IPAdress_TextChanged);
@@ -1886,7 +1886,7 @@
             this.combox_Camera3Type.FormattingEnabled = true;
             this.combox_Camera3Type.Location = new System.Drawing.Point(112, 21);
             this.combox_Camera3Type.Name = "combox_Camera3Type";
-            this.combox_Camera3Type.Size = new System.Drawing.Size(121, 26);
+            this.combox_Camera3Type.Size = new System.Drawing.Size(121, 22);
             this.combox_Camera3Type.TabIndex = 15;
             this.combox_Camera3Type.SelectionChangeCommitted += new System.EventHandler(this.combox_Camera3Type_SelectionChangeCommitted);
             // 
@@ -1902,7 +1902,7 @@
             this.groupBox3.Controls.Add(this.combox_LCType);
             this.groupBox3.Location = new System.Drawing.Point(496, 247);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(239, 124);
+            this.groupBox3.Size = new System.Drawing.Size(239, 120);
             this.groupBox3.TabIndex = 17;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Ligthing Controller";
@@ -1932,7 +1932,7 @@
             this.combox_LCComport.FormattingEnabled = true;
             this.combox_LCComport.Location = new System.Drawing.Point(112, 50);
             this.combox_LCComport.Name = "combox_LCComport";
-            this.combox_LCComport.Size = new System.Drawing.Size(121, 26);
+            this.combox_LCComport.Size = new System.Drawing.Size(121, 22);
             this.combox_LCComport.TabIndex = 28;
             this.combox_LCComport.SelectionChangeCommitted += new System.EventHandler(this.combox_LCComport_SelectionChangeCommitted);
             // 
@@ -1952,7 +1952,7 @@
             this.combox_LCType.FormattingEnabled = true;
             this.combox_LCType.Location = new System.Drawing.Point(112, 22);
             this.combox_LCType.Name = "combox_LCType";
-            this.combox_LCType.Size = new System.Drawing.Size(121, 26);
+            this.combox_LCType.Size = new System.Drawing.Size(121, 22);
             this.combox_LCType.TabIndex = 15;
             this.combox_LCType.SelectionChangeCommitted += new System.EventHandler(this.combox_LCType_SelectionChangeCommitted);
             // 
@@ -1965,7 +1965,7 @@
             this.groupBox1.Controls.Add(this.combox_BottomCamType);
             this.groupBox1.Location = new System.Drawing.Point(251, 287);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(239, 72);
+            this.groupBox1.Size = new System.Drawing.Size(239, 64);
             this.groupBox1.TabIndex = 152;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Bottom Camera";
@@ -1986,7 +1986,7 @@
             this.combox_BottomCamType.FormattingEnabled = true;
             this.combox_BottomCamType.Location = new System.Drawing.Point(112, 21);
             this.combox_BottomCamType.Name = "combox_BottomCamType";
-            this.combox_BottomCamType.Size = new System.Drawing.Size(121, 26);
+            this.combox_BottomCamType.Size = new System.Drawing.Size(121, 22);
             this.combox_BottomCamType.TabIndex = 15;
             this.combox_BottomCamType.SelectionChangeCommitted += new System.EventHandler(this.combox_BottomCamType_SelectionChangeCommitted);
             // 
@@ -2014,7 +2014,7 @@
             this.groupBox20.Controls.Add(this.cbxConveyorSystem);
             this.groupBox20.Location = new System.Drawing.Point(6, 104);
             this.groupBox20.Name = "groupBox20";
-            this.groupBox20.Size = new System.Drawing.Size(239, 72);
+            this.groupBox20.Size = new System.Drawing.Size(239, 64);
             this.groupBox20.TabIndex = 144;
             this.groupBox20.TabStop = false;
             this.groupBox20.Text = "Conveyor System";
@@ -2035,7 +2035,7 @@
             this.cbxConveyorSystem.FormattingEnabled = true;
             this.cbxConveyorSystem.Location = new System.Drawing.Point(112, 21);
             this.cbxConveyorSystem.Name = "cbxConveyorSystem";
-            this.cbxConveyorSystem.Size = new System.Drawing.Size(121, 26);
+            this.cbxConveyorSystem.Size = new System.Drawing.Size(121, 22);
             this.cbxConveyorSystem.TabIndex = 15;
             this.cbxConveyorSystem.SelectionChangeCommitted += new System.EventHandler(this.cbxConveyorSystem_SelectionChangeCommitted);
             // 
@@ -2055,7 +2055,7 @@
             // 
             this.tbox_EquipmentName.Location = new System.Drawing.Point(59, 22);
             this.tbox_EquipmentName.Name = "tbox_EquipmentName";
-            this.tbox_EquipmentName.Size = new System.Drawing.Size(174, 26);
+            this.tbox_EquipmentName.Size = new System.Drawing.Size(174, 22);
             this.tbox_EquipmentName.TabIndex = 18;
             this.tbox_EquipmentName.Text = "NSW";
             this.tbox_EquipmentName.MouseLeave += new System.EventHandler(this.tbox_EquipmentName_MouseLeave);
@@ -2082,7 +2082,7 @@
             this.groupBox10.Controls.Add(this.combox_GantryConfig);
             this.groupBox10.Location = new System.Drawing.Point(6, 6);
             this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Size = new System.Drawing.Size(239, 100);
+            this.groupBox10.Size = new System.Drawing.Size(239, 92);
             this.groupBox10.TabIndex = 142;
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "Gantry System";
@@ -2103,7 +2103,7 @@
             this.combox_HeadConfig.FormattingEnabled = true;
             this.combox_HeadConfig.Location = new System.Drawing.Point(112, 49);
             this.combox_HeadConfig.Name = "combox_HeadConfig";
-            this.combox_HeadConfig.Size = new System.Drawing.Size(121, 26);
+            this.combox_HeadConfig.Size = new System.Drawing.Size(121, 22);
             this.combox_HeadConfig.TabIndex = 145;
             this.combox_HeadConfig.SelectionChangeCommitted += new System.EventHandler(this.combox_HeadConfig_SelectionChangeCommitted);
             // 
@@ -2123,7 +2123,7 @@
             this.combox_GantryConfig.FormattingEnabled = true;
             this.combox_GantryConfig.Location = new System.Drawing.Point(112, 21);
             this.combox_GantryConfig.Name = "combox_GantryConfig";
-            this.combox_GantryConfig.Size = new System.Drawing.Size(121, 26);
+            this.combox_GantryConfig.Size = new System.Drawing.Size(121, 22);
             this.combox_GantryConfig.TabIndex = 15;
             this.combox_GantryConfig.SelectionChangeCommitted += new System.EventHandler(this.combox_GantryConfig_SelectionChangeCommitted);
             // 
@@ -2138,7 +2138,7 @@
             this.groupBox6.Controls.Add(this.lbl_Device0Info);
             this.groupBox6.Location = new System.Drawing.Point(6, 174);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(239, 113);
+            this.groupBox6.Size = new System.Drawing.Size(239, 109);
             this.groupBox6.TabIndex = 20;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Device Config";
@@ -2423,7 +2423,7 @@
         private System.Windows.Forms.Label lbl_Device1Info;
         private System.Windows.Forms.Label lbl_Device0Info;
         private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.Label label52;
+        private System.Windows.Forms.Label lblBaudRate;
         private System.Windows.Forms.Label label53;
         private System.Windows.Forms.TextBox tbxCam1SerialNo;
         private System.Windows.Forms.Label label54;

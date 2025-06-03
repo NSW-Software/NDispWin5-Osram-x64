@@ -10,10 +10,35 @@ Todo
 - PurgeStage Dry Mode do not dispsense
 
 
-DOT, CLINE
+DOT, CLINE add support
 
+
+1.	Machine delay for 3-5s after scanning, before start dispensing. Possible to improve?
+W 2.	To display 45 panels status on Auto page. Zakwan/Shahid to update template. Pending Zakwan/Osram
+3.	How to verify the new line speed during auto mode. Possible to display during auto mode?
+4.	First unit insufficient amount.
+5.	Activate dot and line/cline function
+/-6.	To display the volume for pump1 and pump2 at weigh check UI
+/-7.	Right location to enter volume for engineering (manual mode) -> Enter at ZPath Default Volume
+8.	Volume become higher after material refill 
+9.	Frequency of software hang very high. Camera Offset, select units layout, key parameter…  
+/-10.	Dry run function not working, pump still dispense when turn on dry run mode 
+X-11.	Least square height compensation not working. Software need to do something and hardware need to ensure best condition. -> Software comp is accurate
+X-12.	Unusual weight spike during weight check -> not occure after
+13.	Why there is still height variation after individual height scanning. May need your hardware team to plug in the external laser height system to verify the actual Z position vs compensate height. 
+/-14. Different speed for the lines -> Added Speed2, 3 Ratio
+
+
+
+Ver 6.1.5.9 - KN - 20250601 - Gitted
+  [Feature] Added LOT_END_IN_MAGAZINE_EMPTY to prompt event. OsKul/TPChng
+  [Feature] Added Speed2,3 Ratio to define line2 and 3. OsKul/TPChng
+  [Feature] Added Volume Display on Weight Measure. OsKul/TPChng
+Ver 6.1.5.8 - KN - 20250528
+  [BugFix] DryRun not dispense. OsKul/TPChng
+  [Feature] Added EHeightSensorType.Sick_OD2 support. OsKul/TPChng
 Ver 6.1.5.7 - KN - 20250421 - Gitted
-  [Improve] SecsGem response PP-Select wiht error decsritption
+  [Improve] SecsGem response PP-Select with error description
   [Feature] Added TFSecGem.ECS ECA
 Ver 6.1.5.6 - KN - 20250416 - Gitted
 [Enhance] frmDispProg do not allow double click set Ready if Unknowm

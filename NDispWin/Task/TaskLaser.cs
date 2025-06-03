@@ -11,6 +11,7 @@ namespace NDispWin
     {
         public static CLaser.MEDAQ Sensor = new CLaser.MEDAQ();
         public static TFCL3 CL3 = new TFCL3();
+        public static TFSickOD2 Sick_OD2 = new TFSickOD2();
 
         public static int SettleTime = 0;
         public static int TempSensor_SettleTime = 100;
@@ -52,6 +53,8 @@ namespace NDispWin
                         return Sensor.IsConnected;
                     case GDefine.EHeightSensorType.CL3000:
                         return CL3.IsConnected;
+                    case GDefine.EHeightSensorType.SICK_OD2:
+                        return Sick_OD2.IsConnected;
                     default:
                         return false;
                 }
@@ -120,6 +123,9 @@ namespace NDispWin
                             goto _retryCL3;
                         }
                         break;
+                    case GDefine.EHeightSensorType.SICK_OD2:
+                        Sick_OD2.Open(ComPort);
+                        break;
                 }
             }
             catch (Exception Ex)
@@ -137,6 +143,7 @@ namespace NDispWin
                     case GDefine.EHeightSensorType.None: break;
                     default: Sensor.Close(); break;
                     case GDefine.EHeightSensorType.CL3000: CL3.Close(); break;
+                    case GDefine.EHeightSensorType.SICK_OD2: Sick_OD2.Close(); break;
                 }
             }
             catch { }
@@ -191,6 +198,18 @@ namespace NDispWin
                         break;
                     case GDefine.EHeightSensorType.CL3000:
                         CL3.GetValue(0, out Value);
+                        break;
+                    case GDefine.EHeightSensorType.SICK_OD2:
+                        double value = 0;
+                        Sick_OD2.GetValue(ref value);
+                        //Value is distance from the sensor in mm
+                        if (PromptError && (value < 27 || value > 34))
+                        {
+                            Msg MsgBox = new Msg();
+                            MsgBox.Show(Messages.LASER_OUT_OF_RANGE_ERR);
+                            return false;
+                        }
+                        Value = 30 - value;
                         break;
                 }
             }
