@@ -871,7 +871,7 @@ namespace NDispWin
                                 Define_Run.TR_StopRun();
                                 //Send LotEnd Here
                                 Msg MsgBox = new Msg();
-                                MsgBox.Show(Messages.LOT_COMPLETE_IN_MAGAZINE_EMPTY);
+                                MsgBox.Show(Messages.LOT_END_IN_MAGAZINE_EMPTY);
                             }
                         }
                     }

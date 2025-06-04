@@ -67,6 +67,11 @@
             this.zg1 = new ZedGraph.ZedGraphControl();
             this.btn_Head1 = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.lblCurrentNettVolume1 = new System.Windows.Forms.Label();
+            this.lblCurrentNettVolume2 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
             this.lbl_CurrentCalName = new System.Windows.Forms.Label();
             this.lbl_CurrentCal1 = new System.Windows.Forms.Label();
             this.lbl_CurrentCal2 = new System.Windows.Forms.Label();
@@ -83,11 +88,6 @@
             this.btn_Close = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
-            this.lblCurrentNettVolume1 = new System.Windows.Forms.Label();
-            this.lblCurrentNettVolume2 = new System.Windows.Forms.Label();
             this.ssBottom.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -554,6 +554,63 @@
             this.groupBox3.TabIndex = 217;
             this.groupBox3.TabStop = false;
             // 
+            // label15
+            // 
+            this.label15.AccessibleDescription = "Nett Volume";
+            this.label15.Location = new System.Drawing.Point(5, 128);
+            this.label15.Margin = new System.Windows.Forms.Padding(2);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(99, 23);
+            this.label15.TabIndex = 223;
+            this.label15.Text = "Nett Volume";
+            this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblCurrentNettVolume1
+            // 
+            this.lblCurrentNettVolume1.BackColor = System.Drawing.SystemColors.Control;
+            this.lblCurrentNettVolume1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblCurrentNettVolume1.Location = new System.Drawing.Point(108, 128);
+            this.lblCurrentNettVolume1.Margin = new System.Windows.Forms.Padding(2);
+            this.lblCurrentNettVolume1.Name = "lblCurrentNettVolume1";
+            this.lblCurrentNettVolume1.Size = new System.Drawing.Size(70, 23);
+            this.lblCurrentNettVolume1.TabIndex = 224;
+            this.lblCurrentNettVolume1.Text = "0.0000";
+            this.lblCurrentNettVolume1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblCurrentNettVolume2
+            // 
+            this.lblCurrentNettVolume2.BackColor = System.Drawing.SystemColors.Control;
+            this.lblCurrentNettVolume2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblCurrentNettVolume2.Location = new System.Drawing.Point(182, 128);
+            this.lblCurrentNettVolume2.Margin = new System.Windows.Forms.Padding(2);
+            this.lblCurrentNettVolume2.Name = "lblCurrentNettVolume2";
+            this.lblCurrentNettVolume2.Size = new System.Drawing.Size(70, 23);
+            this.lblCurrentNettVolume2.TabIndex = 225;
+            this.lblCurrentNettVolume2.Text = "0.0000";
+            this.lblCurrentNettVolume2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label12
+            // 
+            this.label12.AccessibleDescription = "Density";
+            this.label12.Location = new System.Drawing.Point(108, 74);
+            this.label12.Margin = new System.Windows.Forms.Padding(2);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(70, 23);
+            this.label12.TabIndex = 222;
+            this.label12.Text = "Head 1";
+            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label9
+            // 
+            this.label9.AccessibleDescription = "Density";
+            this.label9.Location = new System.Drawing.Point(182, 74);
+            this.label9.Margin = new System.Windows.Forms.Padding(2);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(70, 23);
+            this.label9.TabIndex = 221;
+            this.label9.Text = "Head 2";
+            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // lbl_CurrentCalName
             // 
             this.lbl_CurrentCalName.AccessibleDescription = "Density";
@@ -743,63 +800,6 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(705, 315);
             this.panel3.TabIndex = 214;
-            // 
-            // label9
-            // 
-            this.label9.AccessibleDescription = "Density";
-            this.label9.Location = new System.Drawing.Point(182, 74);
-            this.label9.Margin = new System.Windows.Forms.Padding(2);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(70, 23);
-            this.label9.TabIndex = 221;
-            this.label9.Text = "Head 2";
-            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label12
-            // 
-            this.label12.AccessibleDescription = "Density";
-            this.label12.Location = new System.Drawing.Point(108, 74);
-            this.label12.Margin = new System.Windows.Forms.Padding(2);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(70, 23);
-            this.label12.TabIndex = 222;
-            this.label12.Text = "Head 1";
-            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label15
-            // 
-            this.label15.AccessibleDescription = "Density";
-            this.label15.Location = new System.Drawing.Point(5, 128);
-            this.label15.Margin = new System.Windows.Forms.Padding(2);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(99, 23);
-            this.label15.TabIndex = 223;
-            this.label15.Text = "Nett Volume";
-            this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblCurrentNettVolume1
-            // 
-            this.lblCurrentNettVolume1.BackColor = System.Drawing.SystemColors.Control;
-            this.lblCurrentNettVolume1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblCurrentNettVolume1.Location = new System.Drawing.Point(108, 128);
-            this.lblCurrentNettVolume1.Margin = new System.Windows.Forms.Padding(2);
-            this.lblCurrentNettVolume1.Name = "lblCurrentNettVolume1";
-            this.lblCurrentNettVolume1.Size = new System.Drawing.Size(70, 23);
-            this.lblCurrentNettVolume1.TabIndex = 224;
-            this.lblCurrentNettVolume1.Text = "0.0000";
-            this.lblCurrentNettVolume1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lblCurrentNettVolume2
-            // 
-            this.lblCurrentNettVolume2.BackColor = System.Drawing.SystemColors.Control;
-            this.lblCurrentNettVolume2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblCurrentNettVolume2.Location = new System.Drawing.Point(182, 128);
-            this.lblCurrentNettVolume2.Margin = new System.Windows.Forms.Padding(2);
-            this.lblCurrentNettVolume2.Name = "lblCurrentNettVolume2";
-            this.lblCurrentNettVolume2.Size = new System.Drawing.Size(70, 23);
-            this.lblCurrentNettVolume2.TabIndex = 225;
-            this.lblCurrentNettVolume2.Text = "0.0000";
-            this.lblCurrentNettVolume2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // frm_DispCore_WeightMeasure
             // 

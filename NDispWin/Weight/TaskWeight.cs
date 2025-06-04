@@ -1696,12 +1696,12 @@ namespace NDispWin
                 TaskDisp.Vermes1560[i_HeadIdx].UpdateSetup();
             }
 
+        _Purge:
             if (!TaskWeight.TaskGotoWeight(HeadNo)) goto _Error;
 
-           _Purge:
             while (list_WM_PurgeWeight.Count < TaskWeight.PurgeCount)
             {
-                if (!TaskWeight.TaskGotoWeight(HeadNo)) goto _Error;
+                //if (!TaskWeight.TaskGotoWeight(HeadNo)) goto _Error;
 
                 frm_Message frm_Message = new frm_Message();
                 try
@@ -1738,7 +1738,7 @@ namespace NDispWin
 
             while (list_WM_MeasWeight.Count < TaskWeight.MeasureCount)
             {
-                if (!TaskWeight.TaskGotoWeight(HeadNo)) goto _Error;
+                //if (!TaskWeight.TaskGotoWeight(HeadNo)) goto _Error;
 
                 frm_Message frm_Message = new frm_Message();
                 try

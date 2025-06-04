@@ -30,6 +30,10 @@ X-12.	Unusual weight spike during weight check -> not occure after
 
 
 
+Ver 6.1.5.11 - KN - 2025064 - Gitted
+  [BugFix] Fix TaskMeasure needle movement. OsKul/TPChng
+  [Feature] Added ZPath CutTail. OsKul/TPChng
+  [Feature] Added ZPath Square. OsKul/TPChng
 Ver 6.1.5.9 - KN - 20250601 - Gitted
   [Feature] Added LOT_END_IN_MAGAZINE_EMPTY to prompt event. OsKul/TPChng
   [Feature] Added Speed2,3 Ratio to define line2 and 3. OsKul/TPChng

@@ -55,12 +55,15 @@ namespace NDispWin
             lblInitialSpeed.Text = $"{Model.LineStartV:f1}";
             lblSpeed1.Text = $"{Model.LineSpeed:f1}";
             lblSpeed2Ratio.Text = $"{CmdLine.DPara[14]}";
-            lblSpeed3Ratio.Text = $"{CmdLine.DPara[15]}";
-
             lblSpeedF.Text = $"{Model.LineSpeed2:f1}";
+
+            if (CmdLine.DPara[14] <= 0) CmdLine.DPara[14] = 1;
 
             lblDownWait.Text = $"{Model.DnWait}";
             lblPostWait.Text = $"{Model.PostWait}";
+
+            cbTailOff.Checked = CmdLine.IPara[4] > 0;
+            cbSquare.Checked = CmdLine.IPara[5] > 0;
 
             lblHead1DefVolume.Text = $"{CmdLine.DPara[18]:f3}";
             lblHead2DefVolume.Text = $"{CmdLine.DPara[19]:f3}";
@@ -397,20 +400,34 @@ namespace NDispWin
             UpdateDisplay();
         }
 
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-
-        }
-
         private void lblSpeed2Ratio_Click(object sender, EventArgs e)
         {
             UC.AdjustExec(CmdName + ", Speed2Ratio", ref CmdLine.DPara[14], 0.1, 10);
             UpdateDisplay();
         }
 
-        private void lblSpeed3Ratio_Click(object sender, EventArgs e)
+        private void cbTailOff_Click(object sender, EventArgs e)
         {
-            UC.AdjustExec(CmdName + ", Speed3Ratio", ref CmdLine.DPara[15], 0.1, 10);
+            CmdLine.IPara[4] = CmdLine.IPara[4] > 0 ? 0 : 1;
+
+            bool enabled = CmdLine.IPara[4] > 0;
+            Log.OnSet(CmdName + ", TailOff", !enabled, enabled);
+
+            UpdateDisplay();
+        }
+
+        private void cbSquare_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cbSquare_Click(object sender, EventArgs e)
+        {
+            CmdLine.IPara[5] = CmdLine.IPara[5] > 0 ? 0 : 1;
+
+            bool enabled = CmdLine.IPara[5] > 0;
+            Log.OnSet(CmdName + ", Square", !enabled, enabled);
+
             UpdateDisplay();
         }
     }

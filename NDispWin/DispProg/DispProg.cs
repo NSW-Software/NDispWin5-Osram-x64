@@ -452,17 +452,27 @@ namespace NDispWin
             GROUP_DISP = 460,
 
             PAR_LINES = 461,
+            /* Parameters
+            ID              nil
+            IPara[0..9]     [ModelNo, .1., Disp, VHType, UseWeight, Reverse, EndDisp, .7., .8., .9.]
+            IPara[10..19]   [.10., IndFirstLine, IndLastLine, .13., .14., .15., .16., .17., .18., .19.]
+            DPara[0..9]     [LeadLen, LagLen, RelLeadHeight, RelLagHeight, AddLineTime, .5., StartOfst, EndOfst, StartVolume, .9.]
+            DPara[10..19]   [CutTailLength, Speed, Height, Type, ..]
+            DPara[20..29]   [FirstLineMass, LineMass, LastLineMass, ..]
+            X[0..99]        [XStart, XFirstStart, XLastStart, ..]
+            Y[0..99]        [YStart, YFirstStart, YLastStart, ..]
+            */
+            DOTS_ZPATH = 462,
             //PAR_LINES = 461,
             /* Parameters
             ID              nil
-            IPara[0..9]     [ModelNo, .1., Disp, .3., .4., .5., .6., .7., .8., .9.]
+            IPara[0..9]     [ModelNo, .1., Disp, .3., TailOff, Square, .6., .7., .8., .9.]
             IPara[10..19]   [.10., .11., .12., .13., .14., .15., .16., .17., .18., .19.]
-            DPara[0..9]     [.0., .1., StartGap, EndGap, .4., .5., .6., .7., .8., .9.]
-            DPara[10..19]   [Dot1Pc, Dot2Pc, Dot3Pc, Dot4Pc, Speed2Ratio, Speed3Ratio, .16., .17., H1DefNettVolume, H2DefNettVolume]
+            DPara[0..9]     [.0., .1., .2., EndGap, .4., .5., .6., .7., .8., .9.]
+            DPara[10..19]   [Dot1Pc, Dot2Pc, Dot3Pc, Dot4Pc, Speed2Ratio, .15., .16., .17., H1DefNettVolume, H2DefNettVolume]
             X[0..99]        [PointTL, ..]
             Y[0..99]        [PointBR, ..]
             */
-            DOTS_ZPATH = 462,
 
             VOL_SET_DOTS = 480,//distribute volume to total number of dots.
 
