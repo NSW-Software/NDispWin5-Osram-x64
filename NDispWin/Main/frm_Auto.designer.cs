@@ -123,6 +123,9 @@
             this.tpageImage = new System.Windows.Forms.TabPage();
             this.imgBoxEmgu = new Emgu.CV.UI.ImageBox();
             this.tpageSecsGem = new System.Windows.Forms.TabPage();
+            this.label32 = new System.Windows.Forms.Label();
+            this.lblProcessState = new System.Windows.Forms.Label();
+            this.btnLotEnd = new System.Windows.Forms.Button();
             this.gbPPSelect = new System.Windows.Forms.GroupBox();
             this.lblEmployeeID = new System.Windows.Forms.Label();
             this.lblOperation = new System.Windows.Forms.Label();
@@ -1443,6 +1446,9 @@
             // 
             // tpageSecsGem
             // 
+            this.tpageSecsGem.Controls.Add(this.label32);
+            this.tpageSecsGem.Controls.Add(this.lblProcessState);
+            this.tpageSecsGem.Controls.Add(this.btnLotEnd);
             this.tpageSecsGem.Controls.Add(this.gbPPSelect);
             this.tpageSecsGem.Location = new System.Drawing.Point(4, 44);
             this.tpageSecsGem.Name = "tpageSecsGem";
@@ -1451,6 +1457,34 @@
             this.tpageSecsGem.TabIndex = 8;
             this.tpageSecsGem.Text = "SecsGem";
             this.tpageSecsGem.UseVisualStyleBackColor = true;
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(725, 38);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(82, 14);
+            this.label32.TabIndex = 319;
+            this.label32.Text = "Process State";
+            // 
+            // lblProcessState
+            // 
+            this.lblProcessState.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblProcessState.Location = new System.Drawing.Point(696, 62);
+            this.lblProcessState.Name = "lblProcessState";
+            this.lblProcessState.Size = new System.Drawing.Size(138, 22);
+            this.lblProcessState.TabIndex = 318;
+            this.lblProcessState.Text = "-";
+            // 
+            // btnLotEnd
+            // 
+            this.btnLotEnd.Location = new System.Drawing.Point(751, 134);
+            this.btnLotEnd.Name = "btnLotEnd";
+            this.btnLotEnd.Size = new System.Drawing.Size(83, 24);
+            this.btnLotEnd.TabIndex = 1;
+            this.btnLotEnd.Text = "Lot End";
+            this.btnLotEnd.UseVisualStyleBackColor = true;
+            this.btnLotEnd.Click += new System.EventHandler(this.btnLotEnd_Click);
             // 
             // gbPPSelect
             // 
@@ -1715,6 +1749,7 @@
             this.tpageImage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.imgBoxEmgu)).EndInit();
             this.tpageSecsGem.ResumeLayout(false);
+            this.tpageSecsGem.PerformLayout();
             this.gbPPSelect.ResumeLayout(false);
             this.gbPPSelect.PerformLayout();
             this.ss_Bottom.ResumeLayout(false);
@@ -1846,5 +1881,8 @@
         private System.Windows.Forms.Label lblMaterialNo;
         private System.Windows.Forms.Label lblLotID;
         private System.Windows.Forms.Label lblPPID;
+        private System.Windows.Forms.Button btnLotEnd;
+        private System.Windows.Forms.Label lblProcessState;
+        private System.Windows.Forms.Label label32;
     }
 }

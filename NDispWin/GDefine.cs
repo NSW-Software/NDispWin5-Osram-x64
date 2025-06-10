@@ -1046,6 +1046,7 @@ namespace NDispWin
             GDefineN.sw_StartStopTime.Restart();
 
             Event.OP_START_RUN.Set();
+            TFSecsGem.Eq.ProcessState = EProcessState.Processing;
             return true;
         }
         public static void TR_StopRun()
@@ -1061,6 +1062,7 @@ namespace NDispWin
             {
                 TCTwrLight.SetStatus(TwrLight.Idle);
             }
+            TFSecsGem.Eq.ProcessState = EProcessState.Idle;
         }
 
         public static void RunDispConv()//full auto converyor run

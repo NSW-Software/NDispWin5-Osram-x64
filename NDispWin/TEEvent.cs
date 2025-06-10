@@ -83,6 +83,7 @@ namespace NDispWin
 
         public static TEEvent OP_START_RUN = new TEEvent(1010, "Auto Start Run.");
         public static TEEvent OP_STOP_RUN = new TEEvent(1011, "Auto Stop Run.");
+        public static TEEvent OP_FINISH_RUN = new TEEvent(1012, "Auto Run Finished.");
         public static TEEvent OP_INIT_GANTRY_START = new TEEvent(1020, "App Init Gantry Start.");
         public static TEEvent OP_INIT_GANTRY_COMPLETE = new TEEvent(1021, "App Init Gantry Complete.");
         public static TEEvent OP_INIT_CONV_START = new TEEvent(1022, "App Init Conveyor Start.");

@@ -395,6 +395,26 @@ namespace NDispWin
             lblMaterialNo.Text = LotInfo2.Osram.ElevenSeries;
             lblOperation.Text = LotInfo2.Osram.Operation;
             lblEmployeeID.Text = LotInfo2.sOperatorID;
+
+            if (TaskConv.TowerLight.TL_Red)
+            {
+                lblProcessState.Text = "Error";
+                lblProcessState.BackColor = Color.Red;
+                if (TFSecsGem.Eq.ProcessState != EProcessState.Error) { TFSecsGem.Eq.ProcessState = EProcessState.Error; }
+            }
+            else if (TaskConv.TowerLight.TL_Green)
+            {
+                lblProcessState.Text = "Processing";
+                lblProcessState.BackColor = Color.Green;
+                if(TFSecsGem.Eq.ProcessState != EProcessState.Processing) { TFSecsGem.Eq.ProcessState = EProcessState.Processing; }
+
+            }
+            else if (TaskConv.TowerLight.TL_Yellow)
+            {
+                lblProcessState.Text = "Idle";
+                lblProcessState.BackColor = Color.Yellow;
+                if(TFSecsGem.Eq.ProcessState != EProcessState.Idle) { TFSecsGem.Eq.ProcessState = EProcessState.Idle; }
+            }
         }
         private void tmr_DateTime_Tick(object sender, EventArgs e)
         {
@@ -848,6 +868,7 @@ namespace NDispWin
             {
                 Define_Run.StopDispTable();
             }
+            TFSecsGem.Eq.ProcessState = EProcessState.Idle;
         }
         private void btn_Back_Click(object sender, EventArgs e)
         {
@@ -887,6 +908,26 @@ namespace NDispWin
                         Define_Run.TR_StopRun();
                         Msg MsgBox = new Msg();
                         MsgBox.Show(Messages.CONV_VACUUM_LOW);
+                    }
+
+                    if (TaskConv.LeftMode == TaskConv.ELeftMode.ElevatorZ)
+                    {
+                        if (TaskElev.Left.WaitMagChange)
+                        {
+                            if (TaskConv.Pre.Status == TaskConv.EProcessStatus.Empty &&
+                                TaskConv.Pro.Status == TaskConv.EProcessStatus.Empty &&
+                                TaskConv.Pos.Status == TaskConv.EProcessStatus.Empty && 
+                                TaskConv.Out.Status == TaskConv.EProcessStatus.Empty )
+                            {
+                                GDefine.Status = EStatus.Stop;
+                                Define_Run.TR_StopRun();
+                                Event.OP_FINISH_RUN.Set();
+                                Event.OP_LOT_END.Set("LotInfo", $"{LotInfo2.sOperatorID},{LotInfo2.LotNumber},{LotInfo2.Osram.ElevenSeries},{LotInfo2.Osram.DAStartNumber}");
+                                Msg MsgBox = new Msg();
+                                MsgBox.Show(Messages.LOT_END_IN_MAGAZINE_EMPTY);
+                                
+                            }
+                        }
                     }
 
                     Thread.Sleep(1000);
@@ -1086,5 +1127,9 @@ namespace NDispWin
             frm.ShowDialog();
         }
 
+        private void btnLotEnd_Click(object sender, EventArgs e)
+        {
+            Event.OP_LOT_END.Set("LotInfo", $"{LotInfo2.sOperatorID},{LotInfo2.LotNumber},{LotInfo2.Osram.ElevenSeries},{LotInfo2.Osram.DAStartNumber}");
+        }
     }
 }

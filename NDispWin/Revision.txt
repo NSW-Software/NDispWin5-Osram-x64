@@ -11,6 +11,21 @@ Todo
 
 
 DOT, CLINE
+Ver 6.1.6.0 - JH - 20250610 - Gitted
+  [Feature] SecsGem 
+  - frm_Auto.cs 
+  > Inside UpdateSecsGem check tower light status to change process state
+  > AutoRun method added check loader finish and station clear then send lot end event
+  - ErrCode.cs
+  > Added LOT_END_IN_MAGAZINE_EMPTY mesage
+  - GDefine.cs
+  > change process state according to TR_StartRun or TR_StopRun
+  -TEEvent.cs
+  > Added OP_FINISH_RUN event to identify process finish
+  -TFSecsGem.cs
+  > Added Success info for RCMD 
+
+
 Ver 6.1.6.0 - JH - 20250529 - Gitted
   [Feature] SecsGem 
   - frm_Auto.cs 

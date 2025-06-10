@@ -924,7 +924,8 @@ namespace NDispWin
                             }
                             else
                             {
-                                Send(data0);
+                                Send($"{data0},SUCCESS");
+                                Event.OP_LOT_START.Set("LotInfo", $"{LotInfo2.sOperatorID},{LotInfo2.LotNumber},{LotInfo2.Osram.ElevenSeries},{LotInfo2.Osram.DAStartNumber}");
                             }
                         }
                         
@@ -934,13 +935,13 @@ namespace NDispWin
                     case "PAUSE":
                         if (OnlineOffline == EOnlineOffline.Offline) { Send($"{data0},OFFLINE."); return; }
                         Define_Run.TR_StopRun();
-                        Send(data0);
+                        Send($"{data0},SUCCESS");
                         break;
                     case "ABORT":
                         if (OnlineOffline == EOnlineOffline.Offline) { Send($"{data0},OFFLINE."); return; }
                         Define_Run.TR_StopRun();
                         DispProg.TR_Cancel();
-                        Send(data0);
+                        Send($"{data0},SUCCESS");
                         break;
                         #endregion
                 }
@@ -983,8 +984,8 @@ namespace NDispWin
                 set
                 {
                     TFSecsGem.PrevProcessState = TFSecsGem.ProcessState;
-                    Event.SECSGEM_EQ_PROCESS_CHANGE_STATE.Set();
                     TFSecsGem.ProcessState = value;
+                    Event.SECSGEM_EQ_PROCESS_CHANGE_STATE.Set();
                 }
                 get
                 {
@@ -1274,7 +1275,7 @@ namespace NDispWin
         public static void SendAlarm_ARS(TEMessage msg, bool set)
         {
             //set bit8 = 1, clear bit8=0, ignore remaining
-            string info = $"{(set?128:0)},{msg.Code:d5},{msg.Desc}";//ALCD,ALID,ADTX
+            string info = $"{(set?128:0)},{msg.Code},{msg.Desc}";//ALCD,ALID,ADTX
             Send(nameof(StreamFunc.ARS)+$",{info}");
         }
 
