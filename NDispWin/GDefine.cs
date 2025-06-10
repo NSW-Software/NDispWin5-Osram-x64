@@ -1854,7 +1854,7 @@ namespace NDispWin
         public enum ECameraType { None, Basler, Emulator, PtGrey, Spinnaker, Spinnaker2, MVSGenTL };
         public enum ELCType { None, LCSerial, LCSerLegacy };
 
-        public enum EHeightSensorType { None, ILD1700, ILD1302, IFD2451, DONOTUSE, ILD1X20, IFD2421, ILD1750, IFD2422, CL3000, ILD1900 };
+        public enum EHeightSensorType { None, ILD1700, ILD1302, IFD2451, DONOTUSE, ILD1X20, IFD2421, ILD1750, IFD2422, CL3000, ILD1900, SICK_OD2 };
 
         public enum EPreDispStType { None, Type1 };
         public enum EZSensorType { None, Sensor, Encoder };//Type1 - PinType, //Type2 - LinearEncoder

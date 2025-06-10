@@ -117,6 +117,9 @@ namespace NDispWin
             lbl_CurrentCal1.Text = TaskWeight.CurrentCal[0].ToString("f4");
             lbl_CurrentCal2.Text = TaskWeight.CurrentCal[1].ToString("f4");
 
+            lblCurrentNettVolume1.Text = $"{(TFPump.PP4.DispAmounts[0] - TFPump.PP4.BSuckAmounts[0]):f3}";
+            lblCurrentNettVolume2.Text = $"{(TFPump.PP4.DispAmounts[1] - TFPump.PP4.BSuckAmounts[1]):f3}";
+
             if (HeadToCal.Contains(TaskWeight.EHeadNo.One))
                 btn_Head1.BackColor = Color.Lime;
             else

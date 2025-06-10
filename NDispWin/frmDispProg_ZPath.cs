@@ -23,18 +23,12 @@ namespace NDispWin
             GControl.LogForm(this);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             AutoSize = true;
-
-            pbZPathLines.Size = pbZPathDot.Size;
-            pbZPathLines.Location = pbZPathDot.Location;
         }
 
         private void UpdateDisplay()
         {
             int modelNo = CmdLine.IPara[0];
             TModelPara Model = new TModelPara(DispProg.ModelList, modelNo);
-
-            if (CmdLine.IPara[3] == 0) pbZPathDot.BringToFront();
-            if (CmdLine.IPara[3] == 1) pbZPathLines.BringToFront();
 
             lblHeadNo.Text = CmdLine.ID.ToString();
             lblModelNo.Text = CmdLine.IPara[0].ToString();
@@ -60,10 +54,16 @@ namespace NDispWin
             lblAD.Text = $"{Model.LineAccel:f1}";
             lblInitialSpeed.Text = $"{Model.LineStartV:f1}";
             lblSpeed1.Text = $"{Model.LineSpeed:f1}";
+            lblSpeed2Ratio.Text = $"{CmdLine.DPara[14]}";
             lblSpeedF.Text = $"{Model.LineSpeed2:f1}";
+
+            if (CmdLine.DPara[14] <= 0) CmdLine.DPara[14] = 1;
 
             lblDownWait.Text = $"{Model.DnWait}";
             lblPostWait.Text = $"{Model.PostWait}";
+
+            cbTailOff.Checked = CmdLine.IPara[4] > 0;
+            cbSquare.Checked = CmdLine.IPara[5] > 0;
 
             lblHead1DefVolume.Text = $"{CmdLine.DPara[18]:f3}";
             lblHead2DefVolume.Text = $"{CmdLine.DPara[19]:f3}";
@@ -400,20 +400,35 @@ namespace NDispWin
             UpdateDisplay();
         }
 
-        private void groupBox1_Enter(object sender, EventArgs e)
+        private void lblSpeed2Ratio_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec(CmdName + ", Speed2Ratio", ref CmdLine.DPara[14], 0.1, 10);
+            UpdateDisplay();
+        }
+
+        private void cbTailOff_Click(object sender, EventArgs e)
+        {
+            CmdLine.IPara[4] = CmdLine.IPara[4] > 0 ? 0 : 1;
+
+            bool enabled = CmdLine.IPara[4] > 0;
+            Log.OnSet(CmdName + ", TailOff", !enabled, enabled);
+
+            UpdateDisplay();
+        }
+
+        private void cbSquare_CheckedChanged(object sender, EventArgs e)
         {
 
         }
 
-        //PAR_LINES = 461,
-        /* Parameters
-        ID              nil
-        IPara[0..9]     [ModelNo, .1., Disp, .3., .4., .5., .6., .7., .8., .9.]
-        IPara[10..19]   [.10., .11., .12., .13., .14., .15., .16., .17., .18., .19.]
-        DPara[0..9]     [.0., .1., .2., EndGap, .4., .5., .6., .7., .8., .9.]
-        DPara[10..19]   [Dot1Pc, Dot2Pc, Dot3Pc, Dot4Pc, .14., .15., .16., .17., H1DefNettVolume, H2DefNettVolume]
-        X[0..99]        [PointTL, ..]
-        Y[0..99]        [PointBR, ..]
-        */
+        private void cbSquare_Click(object sender, EventArgs e)
+        {
+            CmdLine.IPara[5] = CmdLine.IPara[5] > 0 ? 0 : 1;
+
+            bool enabled = CmdLine.IPara[5] > 0;
+            Log.OnSet(CmdName + ", Square", !enabled, enabled);
+
+            UpdateDisplay();
+        }
     }
 }

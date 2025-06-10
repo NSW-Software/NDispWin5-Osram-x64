@@ -67,6 +67,11 @@
             this.zg1 = new ZedGraph.ZedGraphControl();
             this.btn_Head1 = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.lblCurrentNettVolume1 = new System.Windows.Forms.Label();
+            this.lblCurrentNettVolume2 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
             this.lbl_CurrentCalName = new System.Windows.Forms.Label();
             this.lbl_CurrentCal1 = new System.Windows.Forms.Label();
             this.lbl_CurrentCal2 = new System.Windows.Forms.Label();
@@ -316,17 +321,17 @@
             this.groupBox1.Controls.Add(this.label11);
             this.groupBox1.Controls.Add(this.lbl_WeightSampleCount);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(228, 20);
+            this.groupBox1.Location = new System.Drawing.Point(269, 20);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.groupBox1.Size = new System.Drawing.Size(310, 178);
+            this.groupBox1.Size = new System.Drawing.Size(269, 178);
             this.groupBox1.TabIndex = 219;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Measure";
             // 
             // label19
             // 
-            this.label19.Location = new System.Drawing.Point(81, 75);
+            this.label19.Location = new System.Drawing.Point(40, 75);
             this.label19.Margin = new System.Windows.Forms.Padding(2);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(70, 23);
@@ -337,7 +342,7 @@
             // btn_SaveToFile
             // 
             this.btn_SaveToFile.AccessibleDescription = "Save File";
-            this.btn_SaveToFile.Location = new System.Drawing.Point(160, 130);
+            this.btn_SaveToFile.Location = new System.Drawing.Point(119, 130);
             this.btn_SaveToFile.Name = "btn_SaveToFile";
             this.btn_SaveToFile.Size = new System.Drawing.Size(70, 30);
             this.btn_SaveToFile.TabIndex = 170;
@@ -347,7 +352,7 @@
             // 
             // label16
             // 
-            this.label16.Location = new System.Drawing.Point(155, 47);
+            this.label16.Location = new System.Drawing.Point(114, 47);
             this.label16.Margin = new System.Windows.Forms.Padding(2);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(70, 23);
@@ -358,7 +363,7 @@
             // label10
             // 
             this.label10.AccessibleDescription = "Spec";
-            this.label10.Location = new System.Drawing.Point(6, 48);
+            this.label10.Location = new System.Drawing.Point(5, 48);
             this.label10.Margin = new System.Windows.Forms.Padding(2);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(70, 23);
@@ -370,7 +375,7 @@
             // 
             this.lbl_Spec.BackColor = System.Drawing.SystemColors.Window;
             this.lbl_Spec.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_Spec.Location = new System.Drawing.Point(234, 48);
+            this.lbl_Spec.Location = new System.Drawing.Point(193, 48);
             this.lbl_Spec.Margin = new System.Windows.Forms.Padding(2);
             this.lbl_Spec.Name = "lbl_Spec";
             this.lbl_Spec.Size = new System.Drawing.Size(70, 23);
@@ -382,7 +387,7 @@
             // label14
             // 
             this.label14.AccessibleDescription = "Tol";
-            this.label14.Location = new System.Drawing.Point(6, 75);
+            this.label14.Location = new System.Drawing.Point(5, 75);
             this.label14.Margin = new System.Windows.Forms.Padding(2);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(70, 23);
@@ -394,7 +399,7 @@
             // 
             this.lbl_TolPcnt.BackColor = System.Drawing.SystemColors.Window;
             this.lbl_TolPcnt.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_TolPcnt.Location = new System.Drawing.Point(155, 75);
+            this.lbl_TolPcnt.Location = new System.Drawing.Point(114, 75);
             this.lbl_TolPcnt.Margin = new System.Windows.Forms.Padding(2);
             this.lbl_TolPcnt.Name = "lbl_TolPcnt";
             this.lbl_TolPcnt.Size = new System.Drawing.Size(70, 23);
@@ -406,7 +411,7 @@
             // btn_ReComputeResult
             // 
             this.btn_ReComputeResult.AccessibleDescription = "Compute";
-            this.btn_ReComputeResult.Location = new System.Drawing.Point(234, 130);
+            this.btn_ReComputeResult.Location = new System.Drawing.Point(193, 130);
             this.btn_ReComputeResult.Name = "btn_ReComputeResult";
             this.btn_ReComputeResult.Size = new System.Drawing.Size(70, 30);
             this.btn_ReComputeResult.TabIndex = 172;
@@ -418,7 +423,7 @@
             // 
             this.lbl_Tol.BackColor = System.Drawing.SystemColors.Window;
             this.lbl_Tol.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_Tol.Location = new System.Drawing.Point(234, 75);
+            this.lbl_Tol.Location = new System.Drawing.Point(193, 75);
             this.lbl_Tol.Margin = new System.Windows.Forms.Padding(2);
             this.lbl_Tol.Name = "lbl_Tol";
             this.lbl_Tol.Size = new System.Drawing.Size(70, 23);
@@ -430,7 +435,7 @@
             // label22
             // 
             this.label22.AccessibleDescription = "";
-            this.label22.Location = new System.Drawing.Point(174, 20);
+            this.label22.Location = new System.Drawing.Point(133, 20);
             this.label22.Margin = new System.Windows.Forms.Padding(2);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(51, 23);
@@ -442,7 +447,7 @@
             // 
             this.lbl_DotsPerSample.BackColor = System.Drawing.SystemColors.Control;
             this.lbl_DotsPerSample.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_DotsPerSample.Location = new System.Drawing.Point(234, 21);
+            this.lbl_DotsPerSample.Location = new System.Drawing.Point(193, 21);
             this.lbl_DotsPerSample.Margin = new System.Windows.Forms.Padding(2);
             this.lbl_DotsPerSample.Name = "lbl_DotsPerSample";
             this.lbl_DotsPerSample.Size = new System.Drawing.Size(70, 23);
@@ -453,7 +458,7 @@
             // label21
             // 
             this.label21.AccessibleDescription = "";
-            this.label21.Location = new System.Drawing.Point(171, 102);
+            this.label21.Location = new System.Drawing.Point(130, 102);
             this.label21.Margin = new System.Windows.Forms.Padding(2);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(54, 23);
@@ -464,7 +469,7 @@
             // label11
             // 
             this.label11.AccessibleDescription = "Dots/Sample";
-            this.label11.Location = new System.Drawing.Point(6, 20);
+            this.label11.Location = new System.Drawing.Point(5, 20);
             this.label11.Margin = new System.Windows.Forms.Padding(2);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(144, 23);
@@ -476,7 +481,7 @@
             // 
             this.lbl_WeightSampleCount.BackColor = System.Drawing.SystemColors.Window;
             this.lbl_WeightSampleCount.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_WeightSampleCount.Location = new System.Drawing.Point(234, 102);
+            this.lbl_WeightSampleCount.Location = new System.Drawing.Point(193, 102);
             this.lbl_WeightSampleCount.Margin = new System.Windows.Forms.Padding(2);
             this.lbl_WeightSampleCount.Name = "lbl_WeightSampleCount";
             this.lbl_WeightSampleCount.Size = new System.Drawing.Size(70, 23);
@@ -488,7 +493,7 @@
             // label1
             // 
             this.label1.AccessibleDescription = "Measure Count";
-            this.label1.Location = new System.Drawing.Point(6, 102);
+            this.label1.Location = new System.Drawing.Point(5, 102);
             this.label1.Margin = new System.Windows.Forms.Padding(2);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(144, 23);
@@ -526,6 +531,11 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.label15);
+            this.groupBox3.Controls.Add(this.lblCurrentNettVolume1);
+            this.groupBox3.Controls.Add(this.lblCurrentNettVolume2);
+            this.groupBox3.Controls.Add(this.label12);
+            this.groupBox3.Controls.Add(this.label9);
             this.groupBox3.Controls.Add(this.lbl_CurrentCalName);
             this.groupBox3.Controls.Add(this.groupBox2);
             this.groupBox3.Controls.Add(this.lbl_CurrentCal1);
@@ -544,10 +554,67 @@
             this.groupBox3.TabIndex = 217;
             this.groupBox3.TabStop = false;
             // 
+            // label15
+            // 
+            this.label15.AccessibleDescription = "Nett Volume";
+            this.label15.Location = new System.Drawing.Point(5, 128);
+            this.label15.Margin = new System.Windows.Forms.Padding(2);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(99, 23);
+            this.label15.TabIndex = 223;
+            this.label15.Text = "Nett Volume";
+            this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblCurrentNettVolume1
+            // 
+            this.lblCurrentNettVolume1.BackColor = System.Drawing.SystemColors.Control;
+            this.lblCurrentNettVolume1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblCurrentNettVolume1.Location = new System.Drawing.Point(108, 128);
+            this.lblCurrentNettVolume1.Margin = new System.Windows.Forms.Padding(2);
+            this.lblCurrentNettVolume1.Name = "lblCurrentNettVolume1";
+            this.lblCurrentNettVolume1.Size = new System.Drawing.Size(70, 23);
+            this.lblCurrentNettVolume1.TabIndex = 224;
+            this.lblCurrentNettVolume1.Text = "0.0000";
+            this.lblCurrentNettVolume1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblCurrentNettVolume2
+            // 
+            this.lblCurrentNettVolume2.BackColor = System.Drawing.SystemColors.Control;
+            this.lblCurrentNettVolume2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblCurrentNettVolume2.Location = new System.Drawing.Point(182, 128);
+            this.lblCurrentNettVolume2.Margin = new System.Windows.Forms.Padding(2);
+            this.lblCurrentNettVolume2.Name = "lblCurrentNettVolume2";
+            this.lblCurrentNettVolume2.Size = new System.Drawing.Size(70, 23);
+            this.lblCurrentNettVolume2.TabIndex = 225;
+            this.lblCurrentNettVolume2.Text = "0.0000";
+            this.lblCurrentNettVolume2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label12
+            // 
+            this.label12.AccessibleDescription = "Density";
+            this.label12.Location = new System.Drawing.Point(108, 74);
+            this.label12.Margin = new System.Windows.Forms.Padding(2);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(70, 23);
+            this.label12.TabIndex = 222;
+            this.label12.Text = "Head 1";
+            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label9
+            // 
+            this.label9.AccessibleDescription = "Density";
+            this.label9.Location = new System.Drawing.Point(182, 74);
+            this.label9.Margin = new System.Windows.Forms.Padding(2);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(70, 23);
+            this.label9.TabIndex = 221;
+            this.label9.Text = "Head 2";
+            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // lbl_CurrentCalName
             // 
             this.lbl_CurrentCalName.AccessibleDescription = "Density";
-            this.lbl_CurrentCalName.Location = new System.Drawing.Point(5, 75);
+            this.lbl_CurrentCalName.Location = new System.Drawing.Point(5, 101);
             this.lbl_CurrentCalName.Margin = new System.Windows.Forms.Padding(2);
             this.lbl_CurrentCalName.Name = "lbl_CurrentCalName";
             this.lbl_CurrentCalName.Size = new System.Drawing.Size(70, 23);
@@ -559,7 +626,7 @@
             // 
             this.lbl_CurrentCal1.BackColor = System.Drawing.SystemColors.Control;
             this.lbl_CurrentCal1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_CurrentCal1.Location = new System.Drawing.Point(79, 73);
+            this.lbl_CurrentCal1.Location = new System.Drawing.Point(108, 101);
             this.lbl_CurrentCal1.Margin = new System.Windows.Forms.Padding(2);
             this.lbl_CurrentCal1.Name = "lbl_CurrentCal1";
             this.lbl_CurrentCal1.Size = new System.Drawing.Size(70, 23);
@@ -571,7 +638,7 @@
             // 
             this.lbl_CurrentCal2.BackColor = System.Drawing.SystemColors.Control;
             this.lbl_CurrentCal2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_CurrentCal2.Location = new System.Drawing.Point(153, 74);
+            this.lbl_CurrentCal2.Location = new System.Drawing.Point(182, 101);
             this.lbl_CurrentCal2.Margin = new System.Windows.Forms.Padding(2);
             this.lbl_CurrentCal2.Name = "lbl_CurrentCal2";
             this.lbl_CurrentCal2.Size = new System.Drawing.Size(70, 23);
@@ -582,7 +649,7 @@
             // btn_Zero
             // 
             this.btn_Zero.AccessibleDescription = "Zero";
-            this.btn_Zero.Location = new System.Drawing.Point(153, 47);
+            this.btn_Zero.Location = new System.Drawing.Point(182, 47);
             this.btn_Zero.Margin = new System.Windows.Forms.Padding(2);
             this.btn_Zero.Name = "btn_Zero";
             this.btn_Zero.Size = new System.Drawing.Size(70, 23);
@@ -593,7 +660,7 @@
             // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(79, 20);
+            this.label3.Location = new System.Drawing.Point(108, 20);
             this.label3.Margin = new System.Windows.Forms.Padding(2);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(70, 23);
@@ -616,7 +683,7 @@
             // 
             this.lbl_WeightCurrentValue.BackColor = System.Drawing.SystemColors.Control;
             this.lbl_WeightCurrentValue.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_WeightCurrentValue.Location = new System.Drawing.Point(153, 20);
+            this.lbl_WeightCurrentValue.Location = new System.Drawing.Point(182, 20);
             this.lbl_WeightCurrentValue.Margin = new System.Windows.Forms.Padding(2);
             this.lbl_WeightCurrentValue.Name = "lbl_WeightCurrentValue";
             this.lbl_WeightCurrentValue.Size = new System.Drawing.Size(70, 23);
@@ -627,7 +694,7 @@
             // btn_Start
             // 
             this.btn_Start.AccessibleDescription = "Start";
-            this.btn_Start.Location = new System.Drawing.Point(79, 131);
+            this.btn_Start.Location = new System.Drawing.Point(108, 168);
             this.btn_Start.Margin = new System.Windows.Forms.Padding(2);
             this.btn_Start.Name = "btn_Start";
             this.btn_Start.Size = new System.Drawing.Size(70, 30);
@@ -639,7 +706,7 @@
             // btn_Continue
             // 
             this.btn_Continue.AccessibleDescription = "Continue";
-            this.btn_Continue.Location = new System.Drawing.Point(153, 131);
+            this.btn_Continue.Location = new System.Drawing.Point(182, 168);
             this.btn_Continue.Margin = new System.Windows.Forms.Padding(2);
             this.btn_Continue.Name = "btn_Continue";
             this.btn_Continue.Size = new System.Drawing.Size(70, 30);
@@ -821,5 +888,10 @@
         private System.Windows.Forms.ToolStripStatusLabel sslMessage;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label lblCurrentNettVolume1;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label lblCurrentNettVolume2;
     }
 }

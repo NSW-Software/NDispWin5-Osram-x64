@@ -47,10 +47,7 @@ namespace NDispWin
 
             #region Height and ZSensor
             combox_HSensorType.DataSource = Enum.GetNames(typeof(GDefine.EHeightSensorType));
-
             combox_HSensorComport.DataSource = Enum.GetNames(typeof(EIPCom));
-
-
             combox_ZSensorType.DataSource = Enum.GetNames(typeof(GDefine.EZSensorType));
             #endregion
 

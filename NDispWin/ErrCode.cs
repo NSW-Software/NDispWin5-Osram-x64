@@ -213,12 +213,14 @@ namespace NDispWin
         public static TEMessage RIGHT_ELEV_DOOR_OPEN = new TEMessage(226, "Right Elevator Door Open.", "Check Elevator Door is closed.", TEMessage.EType.Error, false);
         public static TEMessage DISP12MODE_WAIT_PRE_TIMEOUT = new TEMessage(250, "Wait Pre TimeOut. Continue Pro only?", "", TEMessage.EType.Error, false);
         public static TEMessage INPUT_IS_STOPPED = new TEMessage(251, "Input is Stopped.", "1. OK - Enable Input and Start Run.@2. STOP - Stop Run.@3. CANCEL - Start Run.", TEMessage.EType.Confirmation, false);
+
         public static TEMessage RESET_PERF_INFO = new TEMessage(300, "Reset Performance Information?", "", TEMessage.EType.Confirmation, false);
         public static TEMessage S320_LOAD_PRODUCT = new TEMessage(400, "Load Product to Table", "", TEMessage.EType.Notification, false);
         public static TEMessage S320_UNLOAD_PRODUCT = new TEMessage(401, "Unload Product from Table", "", TEMessage.EType.Notification, false);
         public static TEMessage S320_NEW_DISPENSE = new TEMessage(402, "Clear current dispense status and start new dispense?", "", TEMessage.EType.Confirmation, false);
         public static TEMessage LOTINFO_ISEMPTY = new TEMessage(400, "Lot Info Is Empty. Please Fill All Information in All Textbox.", "", TEMessage.EType.Notification, false);
         public static TEMessage LOT_NOT_ACTIVATED = new TEMessage(401, "Please Start Lot Before Auto Run", "", TEMessage.EType.Notification, false);
+        public static TEMessage LOT_END_IN_MAGAZINE_EMPTY = new TEMessage(402, "Lot End. In Magazine Empty", "", TEMessage.EType.Notification, false);
         #endregion
         public static TEMessage ZSENSOR_NOT_CONFIG = new TEMessage(2200, "ZSensor is not configured.", "Check ZSensor configuration.", TEMessage.EType.Fault, false);
         public static TEMessage GANTRY_CONFIG_NOT_SUPPORT = new TEMessage(2201, "Gantry configuration is not supported.", "Check gantry configuration.", TEMessage.EType.Notification, false);
