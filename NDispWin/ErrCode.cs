@@ -475,7 +475,6 @@ namespace NDispWin
         public static TEMessage ELEV_MAG_MISSING = new TEMessage(5240, "Elevator Magazine is Missing.", "1. Check Magazine Present.@2. Check Magazine Sensor.", TEMessage.EType.Error, false);
         #endregion
         public static TEMessage ELEV_EX_ERR = new TEMessage(5998, "Elevator Exception Error.", "Check ExMessage for details.", TEMessage.EType.Error, false);
-        public static TEMessage LOT_END_IN_MAGAZINE_EMPTY = new TEMessage(6000, "LOT END IN MAGAZINE EMPTY", "Check ExMessage for details.", TEMessage.EType.Notification, false);
     }
 
     public class TCMessages
