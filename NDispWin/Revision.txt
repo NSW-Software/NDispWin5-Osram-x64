@@ -31,11 +31,12 @@ X-12.	Unusual weight spike during weight check -> not occure after
 
 DOT, CLINE
 
-
+Ver 6.1.5.17 - KN - 20250612 - Gitted
+  - [Feature] Bugfixes
 Ver 6.1.5.16 - KN - 20250612 - Gitted
   - [Feature] Added HPC3 support for DOT and LINE
   - [Feature] Added frmSetupPP_HPC3.Purge
-- [Feature] Added TOsramICC_LotInfo.ReadLotFile display at frmAuto
+  - [Feature] Added TOsramICC_LotInfo.ReadLotFile display at frmAuto
   - [Feature] Support HPC2 for purge stage
   - [Enhance] Refactor ZDOT_PATH for full backsuck and sync
   - [Feature] Added TaskDisp.EZTouchDetectMethod.Lift for Encoder Z stage.

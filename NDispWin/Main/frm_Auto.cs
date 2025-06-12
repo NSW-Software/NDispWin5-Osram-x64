@@ -1144,7 +1144,7 @@ namespace NDispWin
 
             OsramICC.ReadLotFile(lotFile);
 
-            if (OsramICC.OsramICC_LotInfo.Count != 45) return;
+            if (OsramICC.OsramICC_LotInfo.Count != 48) return;
 
             dgvPanelList.ColumnCount = 5;
             dgvPanelList.RowCount = 9;

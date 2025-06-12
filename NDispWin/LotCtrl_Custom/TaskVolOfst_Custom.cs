@@ -1125,13 +1125,14 @@ namespace NDispWin
                     OsramICC_LotInfo.Add(new TOsramICC_LotInfo(s, status));
                 }
 
-                while (OsramICC_LotInfo.Count < 45)
+                while (OsramICC_LotInfo.Count < 48)
                 {
                     OsramICC_LotInfo.Add(new TOsramICC_LotInfo("", 0));
                 }
             }
-            catch
+            catch (Exception ex)
             {
+               // MessageBox.Show(ex.Message.ToString());
                 return false;
             }
             return true;
