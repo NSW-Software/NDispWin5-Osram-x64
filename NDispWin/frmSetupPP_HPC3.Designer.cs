@@ -33,6 +33,7 @@ namespace NDispWin
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpOperation = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnPurge = new System.Windows.Forms.Button();
             this.btn_HeadAB = new System.Windows.Forms.Button();
             this.btn_HeadB = new System.Windows.Forms.Button();
             this.btn_HeadA = new System.Windows.Forms.Button();
@@ -157,6 +158,7 @@ namespace NDispWin
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.btnPurge);
             this.groupBox2.Controls.Add(this.btn_HeadAB);
             this.groupBox2.Controls.Add(this.btn_HeadB);
             this.groupBox2.Controls.Add(this.btn_HeadA);
@@ -179,6 +181,18 @@ namespace NDispWin
             this.groupBox2.TabIndex = 100;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Tools";
+            // 
+            // btnPurge
+            // 
+            this.btnPurge.Location = new System.Drawing.Point(350, 154);
+            this.btnPurge.Name = "btnPurge";
+            this.btnPurge.Size = new System.Drawing.Size(80, 40);
+            this.btnPurge.TabIndex = 111;
+            this.btnPurge.Text = "Purge";
+            this.btnPurge.UseVisualStyleBackColor = true;
+            this.btnPurge.Click += new System.EventHandler(this.btnPurge_Click);
+            this.btnPurge.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnPurge_MouseDown);
+            this.btnPurge.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btnPurge_MouseUp);
             // 
             // btn_HeadAB
             // 
@@ -363,7 +377,6 @@ namespace NDispWin
             this.gbxAmount.TabIndex = 98;
             this.gbxAmount.TabStop = false;
             this.gbxAmount.Text = "Pump A / Pump B";
-            this.gbxAmount.Enter += new System.EventHandler(this.gbxAmount_Enter);
             // 
             // label1
             // 
@@ -1339,5 +1352,6 @@ namespace NDispWin
         private System.Windows.Forms.Label lblHBDispAmount;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Button btnPurge;
     }
 }

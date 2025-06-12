@@ -1878,6 +1878,8 @@ namespace NDispWin
                 double dispGap = Model.DispGap;
                 double endGap = Line.DPara[3];
 
+                double endDelay = Model.EndDelay;
+
                 double accelDecel = Model.LineAccel;
                 double initialSpeed = Model.LineStartV;
                 double speed = Model.LineSpeed;
@@ -2048,10 +2050,11 @@ namespace NDispWin
 
                             if (RunMode == ERunMode.Normal || RunMode == ERunMode.Dry)
                             {
-                                double[] nettDispVol = new double[2] { DispProg.PP_HeadA_DispBaseVol + DispProg.PP_HeadA_BackSuckVol, DispProg.PP_HeadB_DispBaseVol + DispProg.PP_HeadB_BackSuckVol };
-                                double[] nettBsuckVol = new double[2] { DispProg.PP_HeadA_BackSuckVol, DispProg.PP_HeadB_BackSuckVol };
-                                double[] dispPulse = new double[2] { -TFPump.PP4.LengthConversion(nettDispVol[0]), -TFPump.PP4.LengthConversion(nettDispVol[1]) };
-                                double[] bsuckPulse = new double[2] { TFPump.PP4.LengthConversion(nettBsuckVol[0]), TFPump.PP4.LengthConversion(nettBsuckVol[1]) };
+                                //double[] nettDispVol = new double[2] { DispProg.PP_HeadA_DispBaseVol + DispProg.PP_HeadA_BackSuckVol, DispProg.PP_HeadB_DispBaseVol + DispProg.PP_HeadB_BackSuckVol };
+                                //double[] nettDispVol = new double[2] { DispProg.PP_HeadA_DispBaseVol, DispProg.PP_HeadB_DispBaseVol };
+                                //double[] nettBsuckVol = new double[2] { DispProg.PP_HeadA_BackSuckVol, DispProg.PP_HeadB_BackSuckVol };
+                                double[] dispPulse = new double[2] { -TFPump.PP4.LengthConversion(DispProg.PP_HeadA_DispBaseVol), -TFPump.PP4.LengthConversion(DispProg.PP_HeadB_DispBaseVol) };
+                                double[] bsuckPulse = new double[2] { TFPump.PP4.LengthConversion(DispProg.PP_HeadA_BackSuckVol), TFPump.PP4.LengthConversion(DispProg.PP_HeadB_BackSuckVol) };
 
                                 if (!disp || RunMode == ERunMode.Dry)
                                 {
@@ -2059,7 +2062,6 @@ namespace NDispWin
                                     bsuckPulse = new double[2] { 0, 0 };
                                 }
 
-                                //double[] relStartZ = new double[2] { startGap - dispGap, startGap - dispGap };
                                 double[] relEndZ = new double[2] { endGap - dispGap, endGap - dispGap };
 
                                 if (!bHeadRun[0])
@@ -2119,30 +2121,35 @@ namespace NDispWin
                                 else
                                 {
                                     CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.GPDELAY, false, 1, 0, null, null);
-                                    CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, TFPump.PP4.DispSpeed, 0, new double[6] { 0, 0, 0, 0, dispPulse[0] * ratio[0], dispPulse[1] * ratio[0] }, null);
-                                    CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, TFPump.PP4.BSuckSpeed, 0, new double[6] { 0, 0, 0, 0, bsuckPulse[0] * ratio[0], bsuckPulse[1] * ratio[0] }, null);
-                                    CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, 0, new double[6] { 0, 0, relEndZ[0], relEndZ[1], 0, 0 }, null);
+                                    CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, TFPump.PP4.DispSpeed, 0, new double[6] { 0, 0, 0, 0, (dispPulse[0] * ratio[0]) - bsuckPulse[0], (dispPulse[1] * ratio[0]) - bsuckPulse[1] }, null);
+                                    CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, TFPump.PP4.BSuckSpeed, 0, new double[6] { 0, 0, relEndZ[0], relEndZ[1], bsuckPulse[0], bsuckPulse[1] }, null);
+                                    //CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, 0, new double[6] { 0, 0, relEndZ[0], relEndZ[1], 0, 0 }, null);
+                                    CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.GPDELAY, false, endDelay, 0, null, null);
 
                                     CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, 0, new double[6] { p.X, 0, 0, 0, 0, 0 }, null);
                                     CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, 0, new double[6] { 0, 0, -relEndZ[0], -relEndZ[1], 0, 0 }, null);
                                     CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.GPDELAY, false, 1, 0, null, null);
-                                    CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, TFPump.PP4.DispSpeed, 0, new double[6] { 0, 0, 0, 0, dispPulse[0] * ratio[1], dispPulse[1] * ratio[1] }, null);
-                                    CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, TFPump.PP4.BSuckSpeed, 0, new double[6] { 0, 0, 0, 0, bsuckPulse[0] * ratio[1], bsuckPulse[1] * ratio[1] }, null);
-                                    CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, 0, new double[6] { 0, 0, relEndZ[0], relEndZ[1], 0, 0 }, null);
+                                    CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, TFPump.PP4.DispSpeed, 0, new double[6] { 0, 0, 0, 0, (dispPulse[0] * ratio[1]) - bsuckPulse[0], (dispPulse[1] * ratio[1]) - bsuckPulse[1] }, null);
+                                    CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, TFPump.PP4.BSuckSpeed, 0, new double[6] { 0, 0, relEndZ[0], relEndZ[1], bsuckPulse[0], bsuckPulse[1]}, null);
+                                    //CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, 0, new double[6] { 0, 0, relEndZ[0], relEndZ[1], 0, 0 }, null);
+                                    CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.GPDELAY, false, endDelay, 0, null, null);
 
                                     CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed2, 0, new double[6] { -p.X, p.Y, 0, 0, 0, 0 }, null);
                                     CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, 0, new double[6] { 0, 0, -relEndZ[0], -relEndZ[1], 0, 0 }, null);
                                     CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.GPDELAY, false, 1, 0, null, null);
-                                    CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, TFPump.PP4.DispSpeed, 0, new double[6] { 0, 0, 0, 0, dispPulse[0] * ratio[2], dispPulse[1] * ratio[2] }, null);
-                                    CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, TFPump.PP4.BSuckSpeed, 0, new double[6] { 0, 0, 0, 0, bsuckPulse[0] * ratio[2], bsuckPulse[1] * ratio[2] }, null);
-                                    CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, 0, new double[6] { 0, 0, relEndZ[0], relEndZ[1], 0, 0 }, null);
+                                    CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, TFPump.PP4.DispSpeed, 0, new double[6] { 0, 0, 0, 0, (dispPulse[0] * ratio[2]) - bsuckPulse[0], (dispPulse[1] * ratio[2]) - bsuckPulse[1] }, null);
+                                    CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, TFPump.PP4.BSuckSpeed, 0, new double[6] { 0, 0, relEndZ[0], relEndZ[1], bsuckPulse[0], bsuckPulse[1] }, null);
+                                    //CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, 0, new double[6] { 0, 0, relEndZ[0], relEndZ[1], 0, 0 }, null);
+                                    CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.GPDELAY, false, endDelay, 0, null, null);
 
                                     CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed3, 0, new double[6] { p.X, 0, 0, 0, 0, 0 }, null);
                                     CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, 0, new double[6] { 0, 0, -relEndZ[0], -relEndZ[1], 0, 0 }, null);
                                     CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.GPDELAY, false, 1, 0, null, null);
-                                    CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, TFPump.PP4.DispSpeed, 0, new double[6] { 0, 0, 0, 0, dispPulse[0] * ratio[3], dispPulse[1] * ratio[3] }, null);
-                                    CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, TFPump.PP4.BSuckSpeed, 0, new double[6] { 0, 0, 0, 0, bsuckPulse[0] * ratio[3], bsuckPulse[1] * ratio[3] }, null);
-                                    CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, 0, new double[6] { 0, 0, relEndZ[0], relEndZ[1], 0, 0 }, null);
+                                    CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, TFPump.PP4.DispSpeed, 0, new double[6] { 0, 0, 0, 0, (dispPulse[0] * ratio[3]) - bsuckPulse[0], (dispPulse[1] * ratio[3]) - bsuckPulse[1] }, null);
+                                    //CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, TFPump.PP4.BSuckSpeed, 0, new double[6] { 0, 0, 0, 0, bsuckPulse[0] * ratio[3], bsuckPulse[1] * ratio[3] }, null);
+                                    //CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, speed, 0, new double[6] { 0, 0, relEndZ[0], relEndZ[1], 0, 0 }, null);
+                                    //CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, TFPump.PP4.BSuckSpeed, 0, new double[6] { 0, 0, relEndZ[0], relEndZ[1], bsuckPulse[0] * ratio[3], bsuckPulse[1] * ratio[3] }, null);
+                                    CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, TFPump.PP4.BSuckSpeed, 0, new double[6] { 0, 0, relEndZ[0], relEndZ[1], bsuckPulse[0], bsuckPulse[1] }, null);
 
                                     if (tailOff)
                                     {

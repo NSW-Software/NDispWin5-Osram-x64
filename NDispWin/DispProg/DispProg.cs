@@ -4766,8 +4766,6 @@ namespace NDispWin
                     int i_UnitSkipCount = 0;
                     int i_MeniContOOSCntr = 0;
 
-                    int LastUColNo = 0; int LastURowNo = 0; int LastCColNo = 0; int LastCRowNo = 0;
-
                     double d_LastLaserHeight = 0;
 
                     for (int Line = StartLine; Line < CmdList.Count; Line++)
@@ -4937,7 +4935,6 @@ namespace NDispWin
                                     RunTime.Head_CR[1].X = h2ColNo + 1;
                                     RunTime.Head_CR[1].Y = h2RowNo + 1;
 
-
                                     if (RunTime.UIndex2 < TLayout.MAX_UNITS)//invalid when exceed MAX_UNITS
                                     {
                                         rt_Layout_Rel_X2 = rt_LayoutRelPos[RunTime.UIndex2].X;
@@ -4952,27 +4949,44 @@ namespace NDispWin
                                         b_IsNeedle2 = rt_Layouts[rt_LayoutID].UnitNoIsNeedle2(RunTime.UIndex);
                                     }
 
+                                    //LastInCluster = true;
+                                    //if (!(b_SecondHalf || b_IsNeedle2)) rt_Layouts[rt_LayoutID].UnitNoGetRC(RunTime.UIndex, ref LastUColNo, ref LastURowNo, ref LastCColNo, ref LastCRowNo);
+
+                                    //for (int i = RunTime.UIndex; i < rt_Layouts[rt_LayoutID].TUCount; i++)
+                                    //{
+                                    //    if (i == rt_Layouts[rt_LayoutID].TUCount)
+                                    //    {
+                                    //        break;
+                                    //    }
+
+                                    //    if (rt_SyncHead2)
+                                    //        if (rt_Layouts[rt_LayoutID].UnitNoIsHead2(i + 1)) continue;
+                                    //    if (DispProg.Pump_Type == TaskDisp.EPumpType.PP2D)
+                                    //    {
+                                    //        if (rt_Layouts[rt_LayoutID].UnitNoIsNeedle2(i + 1)) continue;
+                                    //    }
+                                    //    int NextUColNo = 0; int NextURowNo = 0; int NextCColNo = 0; int NextCRowNo = 0;
+                                    //    rt_Layouts[rt_LayoutID].UnitNoGetRC(i + 1, ref NextUColNo, ref NextURowNo, ref NextCColNo, ref NextCRowNo);
+                                    //    LastInCluster = (NextCColNo != LastCColNo || NextCRowNo != LastCRowNo);
+                                    //    break;
+                                    //}
+
+                                    //Check next Unit is last of Cluster 
                                     LastInCluster = true;
-                                    if (!(b_SecondHalf || b_IsNeedle2))
-                                        rt_Layouts[rt_LayoutID].UnitNoGetRC(RunTime.UIndex, ref LastUColNo, ref LastURowNo, ref LastCColNo, ref LastCRowNo);
-                                    for (int i = RunTime.UIndex; i < rt_Layouts[rt_LayoutID].TUCount; i++)
+                                    //if (!b_SecondHalf) 
+                                    int LastUColNo = 0; int LastURowNo = 0; int LastCColNo = 0; int LastCRowNo = 0;
+                                    int NextUColNo = 0; int NextURowNo = 0; int NextCColNo = 0; int NextCRowNo = 0;
+
+                                    rt_Layouts[rt_LayoutID].UnitNoGetRC(RunTime.UIndex, ref LastUColNo, ref LastURowNo, ref LastCColNo, ref LastCRowNo);
+                                    rt_Layouts[rt_LayoutID].UnitNoGetRC(RunTime.UIndex + 1, ref NextUColNo, ref NextURowNo, ref NextCColNo, ref NextCRowNo);
+                                    //Panel Gap when current != next unit Cluster CR
+                                    LastInCluster = (NextCColNo != LastCColNo || NextCRowNo != LastCRowNo);
+
+                                    if (!LastInCluster && rt_SyncHead2)//Check Unit2 is last of Cluster
                                     {
-                                        if (i == rt_Layouts[rt_LayoutID].TUCount)
-                                        {
-                                            break;
-                                        }
-
-                                        if (rt_SyncHead2)
-                                            if (rt_Layouts[rt_LayoutID].UnitNoIsHead2(i + 1)) continue;
-                                        if (DispProg.Pump_Type == TaskDisp.EPumpType.PP2D)
-                                        {
-                                            if (rt_Layouts[rt_LayoutID].UnitNoIsNeedle2(i + 1)) continue;
-                                        }
-                                        int NextUColNo = 0; int NextURowNo = 0; int NextCColNo = 0; int NextCRowNo = 0;
-                                        rt_Layouts[rt_LayoutID].UnitNoGetRC(i + 1, ref NextUColNo, ref NextURowNo, ref NextCColNo, ref NextCRowNo);
-
+                                        rt_Layouts[rt_LayoutID].UnitNoGetRC(RunTime.UIndex2, ref LastUColNo, ref LastURowNo, ref LastCColNo, ref LastCRowNo);
+                                        rt_Layouts[rt_LayoutID].UnitNoGetRC(RunTime.UIndex2 + 1, ref NextUColNo, ref NextURowNo, ref NextCColNo, ref NextCRowNo);
                                         LastInCluster = (NextCColNo != LastCColNo || NextCRowNo != LastCRowNo);
-                                        break;
                                     }
 
                                     break;
@@ -8447,280 +8461,6 @@ namespace NDispWin
                                         Z.Add(0);
                                     }
                                     #endregion
-
-                                    /*
-                                _RetryHeight:
-                                    bool doOK = false;
-                                    if (!DoHeight(ActiveLine, Points, X, Y, Z, out doOK)) goto _Pause;
-                                    int OK = doOK ? 0 : 100;//0 - OK, 1 - FailRefHeightTol, 2-FailRefHeightSkipTol, 3 - FailRange  100 - DoHeight Fail
-
-                                    if (Z.Average() == 0)//exact Zero prompt error
-                                    {
-                                        #region
-                                        Msg MsgBox = new Msg();
-                                        EMsgRes MsgRes = MsgBox.Show("Z Average 0. ", EMcState.Error, EMsgBtn.smbStop, false);
-                                        for (int L = Line; L >= 0; L--)
-                                        {
-                                            if (CmdList.Line[L].Cmd == ECmd.FOR_LAYOUT)
-                                            {
-                                                LastLine = L;
-                                                break;
-                                            }
-                                        }
-                                        goto _Pause;
-                                        #endregion
-                                    }
-
-                                    #region Add Laser Log
-                                    double Z_Ave = Math.Round(Z.Average(), 5);
-                                    if (Z_Ave == 0)
-                                    {
-                                        Z_Ave = 0.00001;
-                                        if (Z.Average() < 0) Z_Ave = -Z_Ave;
-                                    }
-                                    string s_HeightData = "";
-                                    s_HeightData = s_HeightData + "Ave" + (char)9 + Z_Ave.ToString("f5") + (char)9;
-                                    s_HeightData = s_HeightData + "Range" + (char)9 + (Z.Max() - Z.Min()).ToString("f5") + (char)9;
-                                    s_HeightData = s_HeightData + "Data" + (char)9;
-                                    foreach (double d in Z)
-                                    {
-                                        s_HeightData = s_HeightData + d.ToString("f5") + (char)9;
-                                    }
-                                    Log.Laser.WriteByMonthDay("UnitNo " + (char)9 + RunTime.UIndex.ToString() + (char)9 + s_HeightData);
-                                    #endregion
-
-                                    if (DispProg.Options_EnableProcessLog)
-                                    {
-                                        string str = $"Height\t";
-                                        str += $"Cal\t";
-                                        str += $"TouchPosZ,Z2={TaskDisp.Head_ZSensor_RefPosZ[0]:f3},{TaskDisp.Head_ZSensor_RefPosZ[1]:f3}\t";
-                                        str += $"H={TaskDisp.Laser_RefPosZ:f3}\t";
-                                        GLog.WriteProcessLog(str);
-
-                                        //string 
-                                        str = $"Height\t";
-                                        str += $"MeasID={ActiveLine.ID}\t";
-                                        str += $"C,R={RunTime.Head_CR[0].X},{RunTime.Head_CR[0].Y}\t";
-                                        for (int i = 0; i < Z.Count; i++)
-                                        {
-                                            str += $"X,Y,dH={X[i] + TaskDisp.Head_Ofst[0].X:f3},{Y[i] + TaskDisp.Head_Ofst[0].Y:f3},{Z[i]:f3}\t";
-                                        }
-                                        GLog.WriteProcessLog(str);
-                                    }
-
-                                    double d_RefHeight = TaskDisp.Laser_CalValue == 0 ? ActiveLine.DPara[5] : TaskDisp.Laser_CalValue - TaskDisp.Laser_RefPosZ + ActiveLine.DPara[5];
-                                    double d_RefHeightErrorTol = ActiveLine.DPara[6];
-                                    double d_RefHeightSkipTol = ActiveLine.DPara[7];
-
-                                    //Prompt Error when exceed Error Tolerance
-                                    if (d_RefHeightErrorTol > 0)
-                                    {
-                                        foreach (double d in Z)
-                                        {
-                                            if ((d <= d_RefHeight - d_RefHeightErrorTol) || (d >= d_RefHeight + d_RefHeightErrorTol))
-                                            {
-                                                HeightData.OK = false;
-                                                Msg MsgBox = new Msg();
-                                                EMsgRes MsgRes = MsgBox.Show((int)EErrCode.LASER_OUT_OF_REF_HEIGHT_TOL, "Ref Height = " + d_RefHeight.ToString("f4") + "@Current Height = " + d.ToString("f4"), EMcState.Warning, EMsgBtn.smbRetry_Stop, false);
-
-                                                switch (MsgRes)
-                                                {
-                                                    case EMsgRes.smrRetry: goto _Retry;
-                                                    case EMsgRes.smrCancel://skip
-                                                        OK = 1;
-                                                        //goto _Continue;
-                                                        HeightData.OK = false;
-                                                        goto _SkipHeight;
-                                                    default://Stop
-                                                        i_DoHeightSkipCntr = 0;
-                                                        //clear all height data
-                                                        RunTime.UIndex = 0;
-                                                        for (int i = 0; i < MAX_IDS; i++)
-                                                            for (int j = 0; j < TLayout.MAX_UNITS; j++)
-                                                            {
-                                                                rt_HeightData[i, j] = new THeightData();
-                                                            }
-                                                        goto _Pause;
-                                                }
-                                            }
-                                        }
-                                    }
-                                    if (d_RefHeightSkipTol > 0)
-                                    {
-                                        foreach (double d in Z)
-                                        {
-                                            if ((d <= d_RefHeight - d_RefHeightSkipTol) || (d >= d_RefHeight + d_RefHeightSkipTol))
-                                            {
-                                                HeightData.OK = false;
-                                                OK = 2;
-                                                goto _Continue;
-                                            }
-                                        }
-                                    }
-                                _Continue:
-
-                                    double Diff = Z.Max() - Z.Min();
-                                    if (Diff > CmdList.Line[Line].DPara[0]) OK = 3;
-
-                                    if (OK == 0)
-                                        i_DoHeightSkipCntr = 0;
-                                    else
-                                        i_DoHeightSkipCntr++;
-
-                                    //Check Z Rel Tolerance
-                                    if (CmdList.Line[Line].DPara[1] > 0)
-                                    {
-                                        if (d_LastLaserHeight == 0)
-                                        { }
-                                        else
-                                        {
-                                            #region
-                                            if (Math.Abs(Z.Average() - d_LastLaserHeight) >= CmdList.Line[Line].DPara[1])
-                                            {
-                                                DefineSafety.DoorLock = false;
-
-                                                frm_DispCore_HeightFailMsg frm = new frm_DispCore_HeightFailMsg();
-                                                frm.Message.Clear();
-                                                frm.Message.Add("Unit Relative Height Tol Error.");
-                                                frm.Message.Add("Relative difference " + (Math.Abs(Z.Average() - d_LastLaserHeight)).ToString("f3") + " mm.");
-                                                frm.Buttons = frm_DispCore_HeightFailMsg.Retry | frm_DispCore_HeightFailMsg.Stop | frm_DispCore_HeightFailMsg.Skip;
-
-                                                DialogResult dr = frm.ShowDialog();
-                                                switch (dr)
-                                                {
-                                                    case DialogResult.Retry:
-                                                        DefineSafety.DoorLock = true;
-                                                        goto _RetryHeight;
-                                                    case DialogResult.Abort://Stop
-                                                        for (int L = Line; L >= 0; L--)
-                                                        {
-                                                            if (CmdList.Line[L].Cmd == ECmd.FOR_LAYOUT)
-                                                            {
-                                                                LastLine = L;
-                                                                break;
-                                                            }
-                                                        }
-                                                        goto _Pause;
-                                                    case DialogResult.Ignore://Skip
-                                                        OK = 4;// false;
-                                                        i_DoHeightSkipCntr++;
-                                                        DefineSafety.DoorLock = true;
-                                                        HeightData.OK = false;
-                                                        goto _SkipHeight;
-                                                }
-
-                                            }
-                                            #endregion;
-                                        }
-                                        d_LastLaserHeight = Z.Average();
-                                    }
-
-                                    int SkipCount = ActiveLine.IPara[5];
-                                    EFailAction FailAction = (EFailAction)ActiveLine.IPara[6];
-                                    if (OK > 0 && i_DoHeightSkipCntr > SkipCount)
-                                    {
-                                        if (FailAction == EFailAction.AutoReject)
-                                        {
-                                            BdStatus = EBoardStatus.Reject;
-                                            goto _EndBoard;
-                                        }
-
-                                        #region
-                                        i_DoHeightSkipCntr = 0;
-
-                                        DefineSafety.DoorLock = false;
-                                        frm_DispCore_HeightFailMsg frm = new frm_DispCore_HeightFailMsg();
-                                        frm.FailAction = FailAction;
-                                        frm.Message.Clear();
-
-                                        switch (OK)
-                                        {
-                                            case 3:
-                                                frm.Message.Add("Laser Height Z Diff exceed spec.");
-                                                frm.Message.Add("Measured (mm)" + (char)9 + Diff.ToString("f3"));
-                                                frm.Message.Add("Spec (mm)" + (char)9 + CmdList.Line[Line].DPara[0].ToString("f3"));
-                                                break;
-                                            case 1:
-                                                frm.Message.Add("Laser Height exceed Ref Error Tol.");
-                                                break;
-                                            case 2:
-                                                frm.Message.Add("Laser Height exceed Ref Skip Tol.");
-                                                break;
-                                            default:
-                                                frm.Message.Add("Laser Height Error.");
-                                                break;
-                                        }
-                                        DialogResult dr = frm.ShowDialog();
-
-                                        switch (dr)
-                                        {
-                                            case DialogResult.Retry://Retry
-                                                DefineSafety.DoorLock = true;
-                                                goto _RetryHeight;
-                                            case DialogResult.Ignore://Skip
-                                                                     //OK = false;
-                                                DefineSafety.DoorLock = true;
-                                                break;
-                                            case DialogResult.Yes://Accept
-                                                OK = 0;
-                                                DefineSafety.DoorLock = true;
-                                                break;
-                                            case DialogResult.Cancel://Reject
-                                                BdStatus = EBoardStatus.Reject;
-                                                DefineSafety.DoorLock = true;
-                                                goto _EndBoard;
-                                            default://Stop
-                                                for (int L = Line; L >= 0; L--)
-                                                {
-                                                    if (CmdList.Line[L].Cmd == ECmd.FOR_LAYOUT)
-                                                    {
-                                                        LastLine = L;
-                                                        break;
-                                                    }
-                                                }
-                                                goto _Pause;
-                                        }
-                                        #endregion
-                                    }
-
-                                    //Update Height Data
-                                    switch (CmdList.Line[Line].IPara[0])
-                                    {
-                                        case 4:
-                                            List<TPos3> xyzData = new List<TPos3>();
-                                            for (int i = 0; i < X.Count(); i++)
-                                            {
-                                                xyzData.Add(new TPos3(X[i], Y[i], Z[i]));
-                                            }
-                                            HeightData.DataPoints = xyzData;
-                                            HeightData.OK = OK == 0;
-                                            break;
-                                        case 3:
-                                            #region generate plane eq and update height data
-                                            double A = 0;
-                                            double B = 0;
-                                            double C = 0;
-                                            bool b_planeOK = GDefine.GenerateXYZPlaneEquation(X[0], Y[0], Z[0], X[1], Y[1], Z[1], X[2], Y[2], Z[2], out A, out B, out C);
-
-                                            HeightData.A = A;
-                                            HeightData.B = B;
-                                            HeightData.C = C;
-                                            HeightData.OK = OK == 0 && b_planeOK;
-                                            break;
-                                            #endregion
-                                        case 1:
-                                            #region update height data
-                                            HeightData.A = 0;
-                                            HeightData.B = 0;
-                                            HeightData.C = Z.Average();
-                                            HeightData.OK = OK == 0;
-                                            break;
-                                            #endregion
-                                    }
-
-                                _SkipHeight:
-                                    HeightData.Ready = true;
-                                    */
                                     #endregion
 
                                     EExecuteDoHeight executeDoHeight = ExecuteDoHeight(ActiveLine, X, Y, Z, ref i_DoHeightSkipCntr, ref d_LastLaserHeight, ref HeightData);
@@ -12707,71 +12447,85 @@ namespace NDispWin
 
                             if (Disp)
                             {
-                                switch (Pump_Type)
+                                switch (GDefine.DispCtrlType[0])
                                 {
-                                    case TaskDisp.EPumpType.PP:
-                                    case TaskDisp.EPumpType.PP2D:
-                                    case TaskDisp.EPumpType.PPD:
-                                        //if (!TaskDisp.Thread_SetDispVolume_Run(b_Head1Run, b_Head2Run, VolToDispA_ul, VolToDispB_ul)) goto _Stop;
-                                        switch (TaskDisp.Preference)
+                                    case GDefine.EDispCtrlType.HPC3:
                                         {
-                                            case TaskDisp.EPreference.Osram:
-                                            case TaskDisp.EPreference.Lumileds:
+                                            bool pump2 = TaskDisp.Head_Operation == TaskDisp.EHeadOperation.Sync;
+                                            if (!TFPump.PP4.Ready(new bool[] { true, pump2 })) return false;
+                                            if (!TFPump.PP4.CheckStrokeThenFill(new bool[] { true, pump2 })) return false;
+                                            if (!TFPump.PP4.SingleShot(new bool[] { true, pump2 })) return false;
+
+                                            break;
+                                        }
+                                    default:
+                                        switch (Pump_Type)
+                                        {
+                                            case TaskDisp.EPumpType.PP:
+                                            case TaskDisp.EPumpType.PP2D:
+                                            case TaskDisp.EPumpType.PPD:
+                                                //if (!TaskDisp.Thread_SetDispVolume_Run(b_Head1Run, b_Head2Run, VolToDispA_ul, VolToDispB_ul)) goto _Stop;
+                                                switch (TaskDisp.Preference)
                                                 {
-                                                    if (VolToDispA_ul != progDispVol[0] || VolToDispB_ul != progDispVol[1])
-                                                    {
-                                                        if (!TaskDisp.SetDispVolume(b_Head1Run, b_Head2Run, VolToDispA_ul, VolToDispB_ul))
+                                                    case TaskDisp.EPreference.Osram:
+                                                    case TaskDisp.EPreference.Lumileds:
                                                         {
-                                                            Msg MsgBox = new Msg();
-                                                            MsgBox.Show(Messages.DISPCTRL1_COMM_ERR, "SetDispVolume ");
-                                                            goto _Stop;
+                                                            if (VolToDispA_ul != progDispVol[0] || VolToDispB_ul != progDispVol[1])
+                                                            {
+                                                                if (!TaskDisp.SetDispVolume(b_Head1Run, b_Head2Run, VolToDispA_ul, VolToDispB_ul))
+                                                                {
+                                                                    Msg MsgBox = new Msg();
+                                                                    MsgBox.Show(Messages.DISPCTRL1_COMM_ERR, "SetDispVolume ");
+                                                                    goto _Stop;
+                                                                }
+                                                                if (b_Head1Run) progDispVol[0] = VolToDispA_ul;
+                                                                if (b_Head2Run) progDispVol[1] = VolToDispB_ul;
+                                                            }
+                                                            //if (b_Head1Run) progDispVol[0] = VolToDispA_ul;
+                                                            //if (b_Head2Run) progDispVol[1] = VolToDispB_ul;
+                                                            break;
                                                         }
-                                                        if (b_Head1Run) progDispVol[0] = VolToDispA_ul;
-                                                        if (b_Head2Run) progDispVol[1] = VolToDispB_ul;
+                                                    default:
+                                                        {
+                                                            if (!TaskDisp.Thread_SetDispVolume_Run(b_Head1Run, b_Head2Run, VolToDispA_ul, VolToDispB_ul)) goto _Stop;
+                                                            break;
+                                                        }
+                                                }
+                                                if (Model.BSuckVol > 0)
+                                                {
+                                                    if (!TaskDisp.Thread_SetBackSuckVolume_Run(b_Head1Run, b_Head2Run, Model.BSuckVol, Model.BSuckVol)) goto _Stop;
+                                                }
+                                                if (Model.PumpSpeed > 0)
+                                                {
+                                                    if (!TaskDisp.Thread_SetDispSpeed_Run(b_Head1Run, b_Head2Run, Model.PumpSpeed, Model.PumpSpeed)) goto _Stop;
+                                                }
+                                                break;
+                                            case TaskDisp.EPumpType.Vermes:
+                                                for (int i = 0; i < 2; i++)
+                                                {
+                                                    if (TaskDisp.Vermes3200[i].IsOpen)
+                                                    {
+                                                        if (TaskDisp.Vermes3200[i].Param.NP != 1)
+                                                        {
+                                                            TaskDisp.Vermes3200[i].Param.NP = 1;
+                                                            TaskDisp.Vermes3200[i].Set();
+                                                        }
                                                     }
-                                                    //if (b_Head1Run) progDispVol[0] = VolToDispA_ul;
-                                                    //if (b_Head2Run) progDispVol[1] = VolToDispB_ul;
-                                                    break;
                                                 }
-                                            default:
+                                                break;
+                                            case TaskDisp.EPumpType.Vermes1560:
+                                                for (int i = 0; i < 2; i++)
                                                 {
-                                                    if (!TaskDisp.Thread_SetDispVolume_Run(b_Head1Run, b_Head2Run, VolToDispA_ul, VolToDispB_ul)) goto _Stop;
-                                                    break;
+                                                    if (TaskDisp.Vermes1560[i].IsOpen)
+                                                    {
+                                                        if (TaskDisp.Vermes1560[i].NP[0] != 1)
+                                                        {
+                                                            TaskDisp.Vermes1560[i].NP[0] = 1;
+                                                            TaskDisp.Vermes1560[i].UpdateSetup();
+                                                        }
+                                                    }
                                                 }
-                                        }
-                                        if (Model.BSuckVol > 0)
-                                        {
-                                            if (!TaskDisp.Thread_SetBackSuckVolume_Run(b_Head1Run, b_Head2Run, Model.BSuckVol, Model.BSuckVol)) goto _Stop;
-                                        }
-                                        if (Model.PumpSpeed > 0)
-                                        {
-                                            if (!TaskDisp.Thread_SetDispSpeed_Run(b_Head1Run, b_Head2Run, Model.PumpSpeed, Model.PumpSpeed)) goto _Stop;
-                                        }
-                                        break;
-                                    case TaskDisp.EPumpType.Vermes:
-                                        for (int i = 0; i < 2; i++)
-                                        {
-                                            if (TaskDisp.Vermes3200[i].IsOpen)
-                                            {
-                                                if (TaskDisp.Vermes3200[i].Param.NP != 1)
-                                                {
-                                                    TaskDisp.Vermes3200[i].Param.NP = 1;
-                                                    TaskDisp.Vermes3200[i].Set();
-                                                }
-                                            }
-                                        }
-                                        break;
-                                    case TaskDisp.EPumpType.Vermes1560:
-                                        for (int i = 0; i < 2; i++)
-                                        {
-                                            if (TaskDisp.Vermes1560[i].IsOpen)
-                                            {
-                                                if (TaskDisp.Vermes1560[i].NP[0] != 1)
-                                                {
-                                                    TaskDisp.Vermes1560[i].NP[0] = 1;
-                                                    TaskDisp.Vermes1560[i].UpdateSetup();
-                                                }
-                                            }
+                                                break;
                                         }
                                         break;
                                 }
@@ -13994,24 +13748,34 @@ namespace NDispWin
 
                     _Cont:
                     #region Continuous Trigger
-                    //if (Disp && RunMode == ERunMode.Normal)
-                    //{
-                    //    TaskDisp.TrigOn(b_Head1Run, b_Head2Run);
-                    //}
                     switch (RunMode)
                     {
                         case ERunMode.Normal:
                             {
-                                switch (Pump_Type)
+                                switch (GDefine.DispCtrlType[0])
                                 {
-                                    default:
-                                        if (Disp) TaskDisp.TrigOn(b_Head1Run, b_Head2Run);
-                                        break;
-                                    case TaskDisp.EPumpType.TP:
+                                    case GDefine.EDispCtrlType.HPC3:
                                         {
-                                            if (Disp) TaskDisp.TP.TrigOn();
+                                            bool pump2 = TaskDisp.Head_Operation == TaskDisp.EHeadOperation.Sync;
+                                            if (!TFPump.PP4.Ready(new bool[] { true, pump2 })) return false;
+                                            if (!TFPump.PP4.CheckStrokeThenFill(new bool[] { true, pump2 })) return false;
+                                            if (!TFPump.PP4.ShotStart(new bool[] { true, pump2 })) return false;
+
                                             break;
                                         }
+                                    default:
+                                        switch (Pump_Type)
+                                        {
+                                            default:
+                                                if (Disp) TaskDisp.TrigOn(b_Head1Run, b_Head2Run);
+                                                break;
+                                            case TaskDisp.EPumpType.TP:
+                                                {
+                                                    if (Disp) TaskDisp.TP.TrigOn();
+                                                    break;
+                                                }
+                                        }
+                                        break;
                                 }
                                 break;
                             }
@@ -14262,13 +14026,27 @@ namespace NDispWin
                     #region Stop Trigger
                     if (RunMode == ERunMode.Normal)
                     {
-                        switch (Pump_Type)
+                        switch (GDefine.DispCtrlType[0])
                         {
+                            case GDefine.EDispCtrlType.HPC3:
+                                {
+                                    bool pump2 = TaskDisp.Head_Operation == TaskDisp.EHeadOperation.Sync;
+                                    if (!TFPump.PP4.Ready(new bool[] { true, pump2 })) return false;
+                                    if (!TFPump.PP4.CheckStrokeThenFill(new bool[] { true, pump2 })) return false;
+                                    if (!TFPump.PP4.ShotStop(new bool[] { true, pump2 })) return false;
+
+                                    break;
+                                }
                             default:
-                                if (!TaskDisp.TrigOff(b_Head1Run, b_Head2Run)) return false;
-                                break;
-                            case TaskDisp.EPumpType.TP:
-                                TaskDisp.TP.TrigOff();
+                                switch (Pump_Type)
+                                {
+                                    default:
+                                        if (!TaskDisp.TrigOff(b_Head1Run, b_Head2Run)) return false;
+                                        break;
+                                    case TaskDisp.EPumpType.TP:
+                                        TaskDisp.TP.TrigOff();
+                                        break;
+                                }
                                 break;
                         }
                     }
@@ -18192,7 +17970,6 @@ namespace NDispWin
                                 break;
                             }
                     }
-
 
                     #region Move Z to Disp Gap
                     CurX = TaskGantry.GXPos();

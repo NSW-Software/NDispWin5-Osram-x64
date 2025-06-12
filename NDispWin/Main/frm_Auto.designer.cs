@@ -45,7 +45,7 @@
             this.btn_Start = new System.Windows.Forms.Button();
             this.btn_Stop = new System.Windows.Forms.Button();
             this.btn_Back = new System.Windows.Forms.Button();
-            this.tabControl = new System.Windows.Forms.TabControl();
+            this.TabPage = new System.Windows.Forms.TabControl();
             this.tpage_RunInfo = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.lbl_LastUPH = new System.Windows.Forms.Label();
@@ -152,10 +152,12 @@
             this.pnl_Right = new System.Windows.Forms.Panel();
             this.tmr_TR_Buttons = new System.Windows.Forms.Timer(this.components);
             this.tmr_1s = new System.Windows.Forms.Timer(this.components);
+            this.tpPanelList = new System.Windows.Forms.TabPage();
+            this.dgvPanelList = new System.Windows.Forms.DataGridView();
             this.pnl_RightTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbox_Logo)).BeginInit();
             this.pnl_RightBottom.SuspendLayout();
-            this.tabControl.SuspendLayout();
+            this.TabPage.SuspendLayout();
             this.tpage_RunInfo.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -171,6 +173,8 @@
             this.ss_Bottom.SuspendLayout();
             this.panel5.SuspendLayout();
             this.pnl_Right.SuspendLayout();
+            this.tpPanelList.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvPanelList)).BeginInit();
             this.SuspendLayout();
             // 
             // pnl_RightTop
@@ -374,7 +378,7 @@
             this.pnl_RightBottom.Controls.Add(this.btn_Back);
             this.pnl_RightBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnl_RightBottom.ForeColor = System.Drawing.Color.Navy;
-            this.pnl_RightBottom.Location = new System.Drawing.Point(0, 484);
+            this.pnl_RightBottom.Location = new System.Drawing.Point(0, 797);
             this.pnl_RightBottom.Name = "pnl_RightBottom";
             this.pnl_RightBottom.Padding = new System.Windows.Forms.Padding(3);
             this.pnl_RightBottom.Size = new System.Drawing.Size(171, 208);
@@ -448,23 +452,24 @@
             this.btn_Back.UseVisualStyleBackColor = false;
             this.btn_Back.Click += new System.EventHandler(this.btn_Back_Click);
             // 
-            // tabControl
+            // TabPage
             // 
-            this.tabControl.AccessibleDescription = "Status";
-            this.tabControl.Controls.Add(this.tpage_RunInfo);
-            this.tabControl.Controls.Add(this.tpage_Manual);
-            this.tabControl.Controls.Add(this.tpage_Map);
-            this.tabControl.Controls.Add(this.tpage_DispTools);
-            this.tabControl.Controls.Add(this.tpageImage);
-            this.tabControl.Controls.Add(this.tpageSecsGem);
-            this.tabControl.Dock = System.Windows.Forms.DockStyle.Left;
-            this.tabControl.ItemSize = new System.Drawing.Size(80, 40);
-            this.tabControl.Location = new System.Drawing.Point(0, 0);
-            this.tabControl.Name = "tabControl";
-            this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(848, 652);
-            this.tabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
-            this.tabControl.TabIndex = 2;
+            this.TabPage.AccessibleDescription = "TabPage";
+            this.TabPage.Controls.Add(this.tpage_RunInfo);
+            this.TabPage.Controls.Add(this.tpage_Manual);
+            this.TabPage.Controls.Add(this.tpage_Map);
+            this.TabPage.Controls.Add(this.tpage_DispTools);
+            this.TabPage.Controls.Add(this.tpageImage);
+            this.TabPage.Controls.Add(this.tpageSecsGem);
+            this.TabPage.Controls.Add(this.tpPanelList);
+            this.TabPage.Dock = System.Windows.Forms.DockStyle.Left;
+            this.TabPage.ItemSize = new System.Drawing.Size(80, 40);
+            this.TabPage.Location = new System.Drawing.Point(0, 0);
+            this.TabPage.Name = "TabPage";
+            this.TabPage.SelectedIndex = 0;
+            this.TabPage.Size = new System.Drawing.Size(848, 965);
+            this.TabPage.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
+            this.TabPage.TabIndex = 2;
             // 
             // tpage_RunInfo
             // 
@@ -482,7 +487,7 @@
             this.tpage_RunInfo.Margin = new System.Windows.Forms.Padding(0);
             this.tpage_RunInfo.Name = "tpage_RunInfo";
             this.tpage_RunInfo.Padding = new System.Windows.Forms.Padding(1);
-            this.tpage_RunInfo.Size = new System.Drawing.Size(840, 604);
+            this.tpage_RunInfo.Size = new System.Drawing.Size(840, 917);
             this.tpage_RunInfo.TabIndex = 0;
             this.tpage_RunInfo.Text = "Run Info";
             // 
@@ -1279,7 +1284,7 @@
             this.tpage_Manual.Controls.Add(this.pnl_SysStatus);
             this.tpage_Manual.Location = new System.Drawing.Point(4, 44);
             this.tpage_Manual.Name = "tpage_Manual";
-            this.tpage_Manual.Size = new System.Drawing.Size(840, 604);
+            this.tpage_Manual.Size = new System.Drawing.Size(840, 917);
             this.tpage_Manual.TabIndex = 6;
             this.tpage_Manual.Text = "Manual";
             // 
@@ -1409,7 +1414,7 @@
             this.tpage_Map.Location = new System.Drawing.Point(4, 44);
             this.tpage_Map.Name = "tpage_Map";
             this.tpage_Map.Padding = new System.Windows.Forms.Padding(3);
-            this.tpage_Map.Size = new System.Drawing.Size(840, 604);
+            this.tpage_Map.Size = new System.Drawing.Size(840, 917);
             this.tpage_Map.TabIndex = 1;
             this.tpage_Map.Text = "Map";
             // 
@@ -1420,18 +1425,19 @@
             this.tpage_DispTools.Location = new System.Drawing.Point(4, 44);
             this.tpage_DispTools.Name = "tpage_DispTools";
             this.tpage_DispTools.Padding = new System.Windows.Forms.Padding(3);
-            this.tpage_DispTools.Size = new System.Drawing.Size(840, 604);
+            this.tpage_DispTools.Size = new System.Drawing.Size(840, 917);
             this.tpage_DispTools.TabIndex = 4;
             this.tpage_DispTools.Text = "Disp Tools";
             // 
             // tpageImage
             // 
+            this.tpageImage.AccessibleDescription = "Image";
             this.tpageImage.BackColor = System.Drawing.SystemColors.Control;
             this.tpageImage.Controls.Add(this.imgBoxEmgu);
             this.tpageImage.Location = new System.Drawing.Point(4, 44);
             this.tpageImage.Name = "tpageImage";
             this.tpageImage.Padding = new System.Windows.Forms.Padding(3);
-            this.tpageImage.Size = new System.Drawing.Size(840, 604);
+            this.tpageImage.Size = new System.Drawing.Size(840, 917);
             this.tpageImage.TabIndex = 7;
             this.tpageImage.Text = "Image";
             // 
@@ -1446,6 +1452,7 @@
             // 
             // tpageSecsGem
             // 
+            this.tpageSecsGem.AccessibleDescription = "SecsGem";
             this.tpageSecsGem.Controls.Add(this.label32);
             this.tpageSecsGem.Controls.Add(this.lblProcessState);
             this.tpageSecsGem.Controls.Add(this.btnLotEnd);
@@ -1453,7 +1460,7 @@
             this.tpageSecsGem.Location = new System.Drawing.Point(4, 44);
             this.tpageSecsGem.Name = "tpageSecsGem";
             this.tpageSecsGem.Padding = new System.Windows.Forms.Padding(3);
-            this.tpageSecsGem.Size = new System.Drawing.Size(840, 604);
+            this.tpageSecsGem.Size = new System.Drawing.Size(840, 917);
             this.tpageSecsGem.TabIndex = 8;
             this.tpageSecsGem.Text = "SecsGem";
             this.tpageSecsGem.UseVisualStyleBackColor = true;
@@ -1600,7 +1607,7 @@
             this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel4.Location = new System.Drawing.Point(3, 3);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(848, 40);
+            this.panel4.Size = new System.Drawing.Size(1087, 40);
             this.panel4.TabIndex = 3;
             // 
             // ss_Bottom
@@ -1616,9 +1623,9 @@
             this.tsslbl_LULDoor,
             this.tsslblDoorLock,
             this.tsslMonCamera});
-            this.ss_Bottom.Location = new System.Drawing.Point(3, 695);
+            this.ss_Bottom.Location = new System.Drawing.Point(3, 1008);
             this.ss_Bottom.Name = "ss_Bottom";
-            this.ss_Bottom.Size = new System.Drawing.Size(1019, 30);
+            this.ss_Bottom.Size = new System.Drawing.Size(1258, 30);
             this.ss_Bottom.SizingGrip = false;
             this.ss_Bottom.TabIndex = 4;
             this.ss_Bottom.Text = "statusStrip1";
@@ -1677,11 +1684,11 @@
             // 
             // panel5
             // 
-            this.panel5.Controls.Add(this.tabControl);
+            this.panel5.Controls.Add(this.TabPage);
             this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel5.Location = new System.Drawing.Point(3, 43);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(848, 652);
+            this.panel5.Size = new System.Drawing.Size(1087, 965);
             this.panel5.TabIndex = 5;
             // 
             // tmr_DateTime_100
@@ -1699,9 +1706,9 @@
             this.pnl_Right.Controls.Add(this.pnl_RightTop);
             this.pnl_Right.Controls.Add(this.pnl_RightBottom);
             this.pnl_Right.Dock = System.Windows.Forms.DockStyle.Right;
-            this.pnl_Right.Location = new System.Drawing.Point(851, 3);
+            this.pnl_Right.Location = new System.Drawing.Point(1090, 3);
             this.pnl_Right.Name = "pnl_Right";
-            this.pnl_Right.Size = new System.Drawing.Size(171, 692);
+            this.pnl_Right.Size = new System.Drawing.Size(171, 1005);
             this.pnl_Right.TabIndex = 6;
             // 
             // tmr_TR_Buttons
@@ -1713,10 +1720,39 @@
             this.tmr_1s.Interval = 1000;
             this.tmr_1s.Tick += new System.EventHandler(this.tmr_1s_Tick);
             // 
+            // tpPanelList
+            // 
+            this.tpPanelList.AccessibleDescription = "Panel List";
+            this.tpPanelList.BackColor = System.Drawing.SystemColors.Control;
+            this.tpPanelList.Controls.Add(this.dgvPanelList);
+            this.tpPanelList.Location = new System.Drawing.Point(4, 44);
+            this.tpPanelList.Name = "tpPanelList";
+            this.tpPanelList.Padding = new System.Windows.Forms.Padding(3);
+            this.tpPanelList.Size = new System.Drawing.Size(840, 917);
+            this.tpPanelList.TabIndex = 9;
+            this.tpPanelList.Text = "Panel List";
+            // 
+            // dgvPanelList
+            // 
+            this.dgvPanelList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvPanelList.BackgroundColor = System.Drawing.SystemColors.Control;
+            this.dgvPanelList.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvPanelList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvPanelList.ColumnHeadersVisible = false;
+            this.dgvPanelList.Dock = System.Windows.Forms.DockStyle.Top;
+            this.dgvPanelList.Location = new System.Drawing.Point(3, 3);
+            this.dgvPanelList.Name = "dgvPanelList";
+            this.dgvPanelList.RowHeadersVisible = false;
+            this.dgvPanelList.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.dgvPanelList.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.dgvPanelList.ShowEditingIcon = false;
+            this.dgvPanelList.Size = new System.Drawing.Size(834, 394);
+            this.dgvPanelList.TabIndex = 333;
+            // 
             // frm_Auto
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(1025, 728);
+            this.ClientSize = new System.Drawing.Size(1264, 1041);
             this.Controls.Add(this.panel5);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.pnl_Right);
@@ -1736,7 +1772,7 @@
             this.pnl_RightTop.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbox_Logo)).EndInit();
             this.pnl_RightBottom.ResumeLayout(false);
-            this.tabControl.ResumeLayout(false);
+            this.TabPage.ResumeLayout(false);
             this.tpage_RunInfo.ResumeLayout(false);
             this.tpage_RunInfo.PerformLayout();
             this.groupBox3.ResumeLayout(false);
@@ -1756,6 +1792,8 @@
             this.ss_Bottom.PerformLayout();
             this.panel5.ResumeLayout(false);
             this.pnl_Right.ResumeLayout(false);
+            this.tpPanelList.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvPanelList)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1771,7 +1809,7 @@
         private System.Windows.Forms.Button btn_Back;
         private System.Windows.Forms.Button btn_Stop;
         private System.Windows.Forms.Button btn_Start;
-        private System.Windows.Forms.TabControl tabControl;
+        private System.Windows.Forms.TabControl TabPage;
         private System.Windows.Forms.TabPage tpage_RunInfo;
         private System.Windows.Forms.TabPage tpage_Map;
         private System.Windows.Forms.Panel panel4;
@@ -1884,5 +1922,7 @@
         private System.Windows.Forms.Button btnLotEnd;
         private System.Windows.Forms.Label lblProcessState;
         private System.Windows.Forms.Label label32;
+        private System.Windows.Forms.TabPage tpPanelList;
+        private System.Windows.Forms.DataGridView dgvPanelList;
     }
 }

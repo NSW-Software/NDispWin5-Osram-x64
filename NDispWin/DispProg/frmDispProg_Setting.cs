@@ -131,8 +131,8 @@ namespace NDispWin
             #endregion
 
             #region Advance
-            //lbl_PurgeStageCount.Text = DispProg.PurgeStage.Count.ToString();
-            //lbl_PurgeStageInterval.Text = DispProg.PurgeStage.Interval.ToString();
+            lbl_PurgeStageCount.Text = DispProg.PurgeStage.Count.ToString();
+            lbl_PurgeStageInterval.Text = DispProg.PurgeStage.Interval.ToString();
             //lbl_OnStartPurgeStageCount2.Text = DispProg.PurgeStage.OnStartCount.ToString();
             //lblOnStartPurgeStageCount.Text = $"{DispProg.OnStart.PurgeStageCount}";
             //lblOnStartCleanCount.Text = $"{DispProg.OnStart.CleanCount}";
@@ -603,13 +603,11 @@ namespace NDispWin
             UC.AdjustExec("Disp Prog, OnStart Purge Stage Count", ref DispProg.OnEvent.PurgeStageCount[iEvent], 0, 5);
             UpdateDisplay();
         }
-
         private void lblOnStartCleanCount_Click(object sender, EventArgs e)
         {
             UC.AdjustExec("Disp Prog, OnStart Clean Count", ref DispProg.OnEvent.CleanCount[iEvent], 0, 5);
             UpdateDisplay();
         }
-
         private void lblOnStartPurgeCount_Click(object sender, EventArgs e)
         {
             UC.AdjustExec("Disp Prog, OnStart Purge Count", ref DispProg.OnEvent.PurgeCount[iEvent], 0, 5);

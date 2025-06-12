@@ -235,59 +235,96 @@ namespace NDispWin
                 if (!TaskGantry.MovePtpAbs(TaskGantry.GZAxis, Z_Disp)) return false;
                 if (!TaskGantry.WaitGZ()) return false;
 
-                switch (DispProg.Pump_Type)
+
+                switch (GDefine.DispCtrlType[0])
                 {
-                    case TaskDisp.EPumpType.SP:
+                    case GDefine.EDispCtrlType.HPC3:
                         {
-                            if (Model.DnWait > 0)
-                            {
-                                int t = GDefine.GetTickCount() + Model.DnWait;
-                                while (true) { if (GDefine.GetTickCount() >= t) break; Thread.Sleep(0); }
-                            }
+                            //double VolToDispA_ul = DispProg.PP_HeadA_DispBaseVol + DispProg.PP_HeadA_DispVol_Adj;
+                            //double VolToDispB_ul = DispProg.PP_HeadB_DispBaseVol + DispProg.PP_HeadB_DispVol_Adj;
 
-                            if (Model.StartDelay > 0)
-                                TaskDisp.SP.SP_Shot(Model.StartDelay);
-                            else
-                                TaskDisp.SP.SP_Shot((double)DispProg.SP.DispTime[0]);
+                            bool pump2 = TaskDisp.Head_Operation == TaskDisp.EHeadOperation.Sync;
 
+                            if (!TFPump.PP4.Ready(new bool[] { true, pump2 })) return false;
+                            if (!TFPump.PP4.CheckStrokeThenFill(new bool[] { true, pump2 })) return false;
+                            if (!TFPump.PP4.SingleShot(new bool[] { true, pump2 })) return false;
+
+                            int t_Start = GDefine.GetTickCount() + (int)Model.PostWait;
                             if (Model.PostWait > 0)
-                            {
-                                int t = GDefine.GetTickCount() + Model.PostWait;
-                                while (true) { if (GDefine.GetTickCount() >= t) break; Thread.Sleep(0); }
-                            }
-                            break;
-                        }
-                    case TaskDisp.EPumpType.PP:
-                    //case TaskDisp.EPumpType.PP2D:
-                    case TaskDisp.EPumpType.PPD:
-                        {
-                            if (!TaskDisp.Thread_SetDispVolume_Wait()) return false;
-                            if (Model.BSuckVol > 0)
-                                if (!TaskDisp.Thread_SetBackSuckVolume_Wait()) return false;
-                            if (Model.PumpSpeed > 0)
-                                if (!TaskDisp.Thread_SetDispSpeed_Wait()) return false;
-
-                            if (!TaskDisp.CtrlWaitReady(true, false)) return false;
-                            if (!TaskDisp.TrigOn(true, false)) return false;
-                            if (!TaskDisp.CtrlWaitResponse(true, false)) return false;
-                            if (!TaskDisp.TrigOff(true, false)) return false;
-                            //if (b_Head1Run) DispProg.Stats.DispCount_Inc(0);
-                            //if (b_Head2Run) DispProg.Stats.DispCount_Inc(1);
-
-                            int t_Start = GDefine.GetTickCount() + (int)Model.StartDelay;
-
-                            if (Model.StartDelay > 0)
                             {
                                 while (GDefine.GetTickCount() < t_Start)
                                 {
-                                    if (Model.StartDelay > 75) Thread.Sleep(1);
+                                    Thread.Sleep(1);
                                 }
-                                goto _Ret;
                             }
-
-                            if (!TaskDisp.CtrlWaitComplete(true, false)) return false;
                             break;
                         }
+                    default:
+                        switch (DispProg.Pump_Type)
+                        {
+                            case TaskDisp.EPumpType.SP:
+                                {
+                                    if (Model.DnWait > 0)
+                                    {
+                                        int t = GDefine.GetTickCount() + Model.DnWait;
+                                        while (true) { if (GDefine.GetTickCount() >= t) break; Thread.Sleep(0); }
+                                    }
+
+                                    if (Model.StartDelay > 0)
+                                        TaskDisp.SP.SP_Shot(Model.StartDelay);
+                                    else
+                                        TaskDisp.SP.SP_Shot((double)DispProg.SP.DispTime[0]);
+
+                                    if (Model.PostWait > 0)
+                                    {
+                                        int t = GDefine.GetTickCount() + Model.PostWait;
+                                        while (true) { if (GDefine.GetTickCount() >= t) break; Thread.Sleep(0); }
+                                    }
+                                    break;
+                                }
+                            case TaskDisp.EPumpType.PP:
+                            //case TaskDisp.EPumpType.PP2D:
+                            case TaskDisp.EPumpType.PPD:
+                                {
+                                    {
+                                        if (!TaskDisp.Thread_SetDispVolume_Wait()) return false;
+                                        if (Model.BSuckVol > 0)
+                                            if (!TaskDisp.Thread_SetBackSuckVolume_Wait()) return false;
+                                        if (Model.PumpSpeed > 0)
+                                            if (!TaskDisp.Thread_SetDispSpeed_Wait()) return false;
+
+                                        if (!TaskDisp.CtrlWaitReady(true, false)) return false;
+                                        if (!TaskDisp.TrigOn(true, false)) return false;
+                                        if (!TaskDisp.CtrlWaitResponse(true, false)) return false;
+                                        if (!TaskDisp.TrigOff(true, false)) return false;
+                                        //if (b_Head1Run) DispProg.Stats.DispCount_Inc(0);
+                                        //if (b_Head2Run) DispProg.Stats.DispCount_Inc(1);
+
+                                        //int t_Start = GDefine.GetTickCount() + (int)Model.StartDelay;
+
+                                        //if (Model.StartDelay > 0)
+                                        //{
+                                        //    while (GDefine.GetTickCount() < t_Start)
+                                        //    {
+                                        //        if (Model.StartDelay > 75) Thread.Sleep(1);
+                                        //    }
+                                        //    goto _Ret;
+                                        //}
+                                        int t_Start = GDefine.GetTickCount() + (int)Model.PostWait;
+                                        if (Model.PostWait > 0)
+                                        {
+                                            while (GDefine.GetTickCount() < t_Start)
+                                            {
+                                                Thread.Sleep(1);
+                                            }
+                                        }
+
+                                        if (!TaskDisp.CtrlWaitComplete(true, false)) return false;
+                                        break;
+                                    }
+                                }
+                        }
+                        break;
                 }
             _Ret:
 
@@ -908,7 +945,7 @@ namespace NDispWin
 
         public enum EVolumeOfstProtocol { None, Reserved_1, Reserved_2, OSRAM_SCC, Reserved_4, Reserved_5, Reserved_6, OSRAM_ICC };
         public static EVolumeOfstProtocol VolumeOfst_Protocol = EVolumeOfstProtocol.None;
-        
+
         //public static string VolumeOfst_EqID = "EqID";
         //public static string VolumeOfst_LocalPath = "";
         //public static string VolumeOfst_DataPath = "";
@@ -917,6 +954,7 @@ namespace NDispWin
 
         public static string OsramICC_InputPath = "";
         public static string OsramICC_OutputPath = "";
+        public static string OsramICC_LotPath = "";
 
         public enum EInputMapProtocol { None, Lumileds_EMap, TD_COB, OSRAM_eMos };
         public static EInputMapProtocol InputMap_Protocol = EInputMapProtocol.None;
@@ -1359,6 +1397,7 @@ namespace NDispWin
             
             OsramICC_InputPath = IniFile.ReadString("OsramICC", "InputPath", "c:\\OsramICC");
             OsramICC_OutputPath = IniFile.ReadString("OsramICC", "OutputPath", "c:\\OsramICC");
+            OsramICC_LotPath = IniFile.ReadString("OsramICC", "LotPath", "c:\\OsramICC");
 
             InputMap_Protocol = (EInputMapProtocol)IniFile.ReadInteger("InputMap", "Protocol", 0);
 
@@ -1665,6 +1704,7 @@ namespace NDispWin
 
             IniFile.WriteString("OsramICC", "InputPath", OsramICC_InputPath);
             IniFile.WriteString("OsramICC", "OutputPath", OsramICC_OutputPath);
+            IniFile.WriteString("OsramICC", "LotPath", OsramICC_LotPath);
 
             IniFile.WriteInteger("InputMap", "Protocol", (int)InputMap_Protocol);
             //IniFile.WriteBool("InputMap", "Enable", InputMap_Enabled);

@@ -430,5 +430,21 @@ namespace NDispWin
 
             UpdateDisplay();
         }
+
+        private void lblBackSuck2_Click(object sender, EventArgs e)
+        {
+            double d = TFPump.PP4.BSuckAmounts[1];
+            if (UC.AdjustExec("PP PA Backsuck Amount", ref d, 0, 1300))
+                TFPump.PP4.BSuckAmounts = new double[] { TFPump.PP4.BSuckAmounts[1], d };
+            UpdateDisplay();
+        }
+
+        private void lblBackSuck1_Click(object sender, EventArgs e)
+        {
+            double d = TFPump.PP4.BSuckAmounts[0];
+            if (UC.AdjustExec("PP PB Backsuck Amount", ref d, 0, 1300))
+                TFPump.PP4.BSuckAmounts = new double[] { d, TFPump.PP4.BSuckAmounts[1] };
+            UpdateDisplay();
+        }
     }
 }

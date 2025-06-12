@@ -646,6 +646,8 @@ namespace NDispWin
             // lblBackSuck1
             // 
             this.lblBackSuck1.AccessibleDescription = "";
+            this.lblBackSuck1.BackColor = System.Drawing.SystemColors.Window;
+            this.lblBackSuck1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblBackSuck1.Location = new System.Drawing.Point(185, 98);
             this.lblBackSuck1.Margin = new System.Windows.Forms.Padding(2);
             this.lblBackSuck1.Name = "lblBackSuck1";
@@ -653,10 +655,13 @@ namespace NDispWin
             this.lblBackSuck1.TabIndex = 211;
             this.lblBackSuck1.Text = "0.000";
             this.lblBackSuck1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblBackSuck1.Click += new System.EventHandler(this.lblBackSuck1_Click);
             // 
             // lblBackSuck2
             // 
             this.lblBackSuck2.AccessibleDescription = "";
+            this.lblBackSuck2.BackColor = System.Drawing.SystemColors.Window;
+            this.lblBackSuck2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblBackSuck2.Location = new System.Drawing.Point(106, 98);
             this.lblBackSuck2.Margin = new System.Windows.Forms.Padding(2);
             this.lblBackSuck2.Name = "lblBackSuck2";
@@ -664,6 +669,7 @@ namespace NDispWin
             this.lblBackSuck2.TabIndex = 210;
             this.lblBackSuck2.Text = "0.000";
             this.lblBackSuck2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblBackSuck2.Click += new System.EventHandler(this.lblBackSuck2_Click);
             // 
             // label13
             // 

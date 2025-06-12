@@ -57,7 +57,8 @@ namespace NDispWin
             Event_AutoRun += (a, b) =>
             {
                 if (!IsHandleCreated) return;
-                this.Invoke(new Action(() => {
+                this.Invoke(new Action(() =>
+                {
 
                     AutoRun();
 
@@ -130,7 +131,7 @@ namespace NDispWin
             InfoPanel_VolAdjust.Top = i_Top;
             InfoPanel_VolAdjust.Left = 5 * 120;
             InfoPanel_VolAdjust.BringToFront();
-          
+
             if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)
             {
                 pnl_Table.Visible = false;
@@ -165,7 +166,7 @@ namespace NDispWin
             frm_DispTool.Visible = true;
 
             if (!GDefineN.AutoPageShowImage)
-                tabControl.TabPages.Remove(tpageImage);
+                TabPage.TabPages.Remove(tpageImage);
             else
             {
                 imgBoxEmgu.Dock = DockStyle.Fill;
@@ -406,14 +407,14 @@ namespace NDispWin
             {
                 lblProcessState.Text = "Processing";
                 lblProcessState.BackColor = Color.Green;
-                if(TFSecsGem.Eq.ProcessState != EProcessState.Processing) { TFSecsGem.Eq.ProcessState = EProcessState.Processing; }
+                if (TFSecsGem.Eq.ProcessState != EProcessState.Processing) { TFSecsGem.Eq.ProcessState = EProcessState.Processing; }
 
             }
             else if (TaskConv.TowerLight.TL_Yellow)
             {
                 lblProcessState.Text = "Idle";
                 lblProcessState.BackColor = Color.Yellow;
-                if(TFSecsGem.Eq.ProcessState != EProcessState.Idle) { TFSecsGem.Eq.ProcessState = EProcessState.Idle; }
+                if (TFSecsGem.Eq.ProcessState != EProcessState.Idle) { TFSecsGem.Eq.ProcessState = EProcessState.Idle; }
             }
         }
         private void tmr_DateTime_Tick(object sender, EventArgs e)
@@ -447,7 +448,7 @@ namespace NDispWin
                 if (bStart)
                 {
                     if (btn_Start.Enabled)
-                    btn_Start_Click(sender, e);
+                        btn_Start_Click(sender, e);
                 }
             }
 
@@ -527,6 +528,11 @@ namespace NDispWin
                     //MsgBox.Show((int)EErrCode.MATERIAL_EXPIRY_PREALERT, $"Material Expire in {TaskDisp.Material_ExpiryPreAlertTime} minutes.");
                     MsgBox.Show(Messages.MATERIAL_EXPIRY_PREALERT, $"Material Expire in {TaskDisp.Material_ExpiryPreAlertTime} minutes.");
                 }
+            }
+
+            if (LotInfo2.LotActive)
+            {
+                if (TaskDisp.VolumeOfst_Protocol == TaskDisp.EVolumeOfstProtocol.OSRAM_ICC) Refresh_OsramICCPanelID(sender, e);
             }
         }
         private void tmr_Perf_Tick(object sender, EventArgs e)
@@ -746,7 +752,7 @@ namespace NDispWin
                         break;
                     }
             }
-        
+
             if (LotInfo2.LoadRecipe)
             {
                 switch (LotInfo2.Customer)
@@ -916,8 +922,8 @@ namespace NDispWin
                         {
                             if (TaskConv.Pre.Status == TaskConv.EProcessStatus.Empty &&
                                 TaskConv.Pro.Status == TaskConv.EProcessStatus.Empty &&
-                                TaskConv.Pos.Status == TaskConv.EProcessStatus.Empty && 
-                                TaskConv.Out.Status == TaskConv.EProcessStatus.Empty )
+                                TaskConv.Pos.Status == TaskConv.EProcessStatus.Empty &&
+                                TaskConv.Out.Status == TaskConv.EProcessStatus.Empty)
                             {
                                 GDefine.Status = EStatus.Stop;
                                 Define_Run.TR_StopRun();
@@ -925,7 +931,7 @@ namespace NDispWin
                                 Event.OP_LOT_END.Set("LotInfo", $"{LotInfo2.sOperatorID},{LotInfo2.LotNumber},{LotInfo2.Osram.ElevenSeries},{LotInfo2.Osram.DAStartNumber}");
                                 Msg MsgBox = new Msg();
                                 MsgBox.Show(Messages.LOT_END_IN_MAGAZINE_EMPTY);
-                                
+
                             }
                         }
                     }
@@ -1130,6 +1136,66 @@ namespace NDispWin
         private void btnLotEnd_Click(object sender, EventArgs e)
         {
             Event.OP_LOT_END.Set("LotInfo", $"{LotInfo2.sOperatorID},{LotInfo2.LotNumber},{LotInfo2.Osram.ElevenSeries},{LotInfo2.Osram.DAStartNumber}");
+        }
+
+        public void Refresh_OsramICCPanelID(object sender, EventArgs e)
+        {
+            string lotFile = $"{TaskDisp.OsramICC_LotPath}\\{LotInfo2.LotNumber}.txt";
+
+            OsramICC.ReadLotFile(lotFile);
+
+            if (OsramICC.OsramICC_LotInfo.Count != 45) return;
+
+            dgvPanelList.ColumnCount = 5;
+            dgvPanelList.RowCount = 9;
+
+            // Remove grid UI decorations
+            dgvPanelList.RowHeadersVisible = false;
+            dgvPanelList.ColumnHeadersVisible = false;
+            dgvPanelList.AllowUserToAddRows = false;
+            dgvPanelList.AllowUserToResizeColumns = false;
+            dgvPanelList.AllowUserToResizeRows = false;
+            dgvPanelList.ScrollBars = ScrollBars.None;
+            dgvPanelList.ReadOnly = true;
+            dgvPanelList.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            // Resize cells to fill the grid evenly
+            dgvPanelList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvPanelList.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+
+            dgvPanelList.SelectionMode = DataGridViewSelectionMode.CellSelect;
+            dgvPanelList.ClearSelection();
+            dgvPanelList.Enabled = false; // Optional: disable interaction
+
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 5; j++)
+                {
+                    var value = OsramICC.OsramICC_LotInfo[i + (j * 8)].PanelID;
+                    dgvPanelList.Rows[i].Cells[j].Value = value;
+
+                    var color = OsramICC.OsramICC_LotInfo[i + (j * 8)].Status;
+                    Color cellColor;
+                    switch (color)
+                    {
+                        case 1:
+                            cellColor = Color.Yellow;
+                            break;
+                        case 2:
+                            cellColor = Color.Lime;
+                            break;
+                        default:
+                            cellColor = SystemColors.Control;
+                            break;
+                    }
+
+                    dgvPanelList.Rows[i].Cells[j].Style.BackColor = cellColor;
+                }
+            }
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
         }
     }
 }
