@@ -8234,6 +8234,7 @@ namespace NDispWin
                                     if (!Read_ID(ActiveLine, dx, dy)) goto _Pause;
                                     TCTwrLight.SetStatus(TwrLight.Run);
 
+                                    Event.SUBSTRATE_START.Set();
                                 _End:
                                     break;
                                 }
@@ -11334,6 +11335,21 @@ namespace NDispWin
                         {
                             if (rt_MeniscusDatas.Count > 0) rt_MeniscusDatas.SaveOsram(rt_Read_IDs[0, 0]);
                         }
+
+                        switch (TaskDisp.InputMap_Protocol)
+                        {
+                            case TaskDisp.EInputMapProtocol.OSRAM_E142:
+                                {
+                                    string xmlString = "";
+                                    string s = TFSecsGem.EncodeBinCodeStrings();
+                                    TFSecsGem.EncodeMap(s, ref xmlString);
+                                    TFSecsGem.Send($"{nameof(StreamFunc.ERS)},MapData,{xmlString}");
+
+                                    Event.SECSGEM_MAP_UPDATED.Set();
+                                    break;
+                                }
+                        }
+                        Event.SUBSTRATE_END.Set();
 
                         BdReady = true;
                         Define_Run.UpdateProcessStatus_BdReady();  
@@ -22757,7 +22773,8 @@ namespace NDispWin
                     TaskDisp.IDReader_Read(false, ref ID);
                     rt_Read_IDs[Line.ID, RunTime.UIndex] = ID;
                     Log.Board.WriteByMonthDay("READ_ID: " + ID);
-                    Event.READ_ID.Set("ID", ID);
+                    //Event.READ_ID.Set("ID", ID);
+                    Event.SECSGEM_E142_SUBSTRATE_SCANNED.Set();
 
                     if (ID == "")
                     {
@@ -22967,7 +22984,7 @@ namespace NDispWin
                                     //if (SS_Map_CR[0, 0] >= 1)
                                     if (SS_Map[0, 0] >= 1)
                                     {
-                                            Map.Bin[0] = EMapBin.MapOK;
+                                        Map.Bin[0] = EMapBin.MapOK;
                                     }
                                     else
                                     {
@@ -23127,105 +23144,23 @@ namespace NDispWin
                                 }
                                 break;
                             }
+                        case TaskDisp.EInputMapProtocol.OSRAM_E142:
+                            {
+                                TFSecsGem.GAR(FrameNo);
+
+                                int t = Environment.TickCount;
+                                while (!TFSecsGem.ReceivedXMLMapData)
+                                {
+                                    Thread.Sleep(10);
+                                    if (Environment.TickCount - t >= 30000) return false;
+                                }
+                                TFSecsGem.DecodeMap(TFSecsGem.rxE142XmlData);
+                                break;
+                            }
                     }
 
                     if (TaskDisp.Preference == TaskDisp.EPreference.Unisem && TaskDisp.SECSGEMProtocol == TaskDisp.ESECSGEMProtocol.SECSGEMConnect2 && GDefine.sgc2.EnableStripMapE142)
                     {
-                        //special condition for Unisem process half frame
-                        //if (TaskConv.Pre.rt_StType == TaskConv.EPreStType.Disp1 && TaskConv.Pre.Status >= TaskConv.EProcessStatus.Heating)
-                        //{
-                        //    GDefine.sgc2.SendDownload(FrameNo);
-                        //    int t = GDefine.GetTickCount();
-                        //    while (true)
-                        //    {
-                        //        if (GDefine.sgc2.MapState == SECSGEMConnect2.EMapState.Loaded)
-                        //        {
-                        //            #region update to rt_Map
-                        //            if (!GDefine.sgc2.UseFreshMap)
-                        //            {
-                        //                for (int i = 0; i < rt_Layouts[rt_LayoutID].TUCount; i++)
-                        //                {
-                        //                    int iCol = 0;
-                        //                    int iRow = 0;
-                        //                    rt_Layouts[rt_LayoutID].UnitNoGetRC(i, ref iCol, ref iRow);
-
-                        //                    int iColM = (rt_Layouts[rt_LayoutID].TColCount * 2) - 1 - iCol;
-
-                        //                    try
-                        //                    {
-                        //                        Map.Bin[i] = (EMapBin)GDefine.sgc2.map[iColM, iRow];
-                        //                    }
-                        //                    catch
-                        //                    {
-                        //                        Map.Bin[i] = EMapBin.None;
-                        //                    }
-                        //                }
-                        //            }
-                        //            #endregion
-                        //            break;
-                        //        }
-                        //        if (GDefine.sgc2.MapState == SECSGEMConnect2.EMapState.DecodeError)
-                        //        {
-                        //            Msg MsgBox = new Msg();
-                        //            EMsgRes Res = MsgBox.Show("Download Map Decode Error." +
-                        //                "@OK - Continue without ID." +
-                        //                "@STOP - Stop Process.", "", TEMessage.EType.Error, EMsgBtn.smbOK_Stop);
-                        //            switch (Res)
-                        //            {
-                        //                case EMsgRes.smrOK:
-                        //                    return true;
-                        //                default:
-                        //                    return false;
-                        //            }
-                        //        }
-                        //        if (GDefine.GetTickCount() - t > GDefine.sgc2.TimeOut)
-                        //        {
-                        //            Msg MsgBox = new Msg();
-                        //            EMsgRes Res = MsgBox.Show("Download Map TimeOut." +
-                        //                "@OK - Continue without ID." +
-                        //                "@STOP - Stop Process.", "", TEMessage.EType.Error, EMsgBtn.smbOK_Stop);
-                        //            switch (Res)
-                        //            {
-                        //                case EMsgRes.smrOK:
-                        //                    return true;
-                        //                default:
-                        //                    return false;
-                        //            }
-                        //        }
-                        //        Thread.Sleep(1);
-                        //    }
-                        //}
-                        //else
-                        //if (TaskConv.Pro.rt_StType == TaskConv.EProStType.Disp2 && TaskConv.Pro.Status >= TaskConv.EProcessStatus.Heating)
-                        //{
-                        //    if (GDefine.sgc2.MapState == SECSGEMConnect2.EMapState.Loaded)
-                        //    {
-                        //        #region update to rt_Map
-                        //        if (!GDefine.sgc2.UseFreshMap)
-                        //        {
-                        //            for (int i = 0; i < rt_Layouts[rt_LayoutID].TUCount; i++)
-                        //            {
-                        //                int iCol = 0;
-                        //                int iRow = 0;
-                        //                rt_Layouts[rt_LayoutID].UnitNoGetRC(i, ref iCol, ref iRow);
-
-                        //                int iColM = rt_Layouts[rt_LayoutID].TColCount - 1 - iCol;
-
-                        //                try
-                        //                {
-                        //                    Map.Bin[i] = (EMapBin)GDefine.sgc2.map[iColM, iRow];
-                        //                }
-                        //                catch
-                        //                {
-                        //                    Map.Bin[i] = EMapBin.None;
-                        //                }
-                        //            }
-                        //        }
-                        //        #endregion
-                        //    }
-                        //}
-                        //else
-                        {
                             GDefine.sgc2.SendDownload(FrameNo);
                             int t = GDefine.GetTickCount();
                             while (true)
@@ -23286,7 +23221,6 @@ namespace NDispWin
                                 }
                                 Thread.Sleep(1);
                             }
-                        }
                     }
                 }
                 catch (Exception Ex)
@@ -23324,92 +23258,6 @@ namespace NDispWin
                                     goto _Stop;
                         }
 
-                        //special condition for Unisem process 1st half frame
-                        //if (TaskConv.Pre.rt_StType == TaskConv.EPreStType.Disp1 && TaskConv.Pre.Status >= TaskConv.EProcessStatus.Heating)
-                        //{
-                        //    for (int i = 0; i < rt_Layouts[rt_LayoutID].TUCount; i++)
-                        //    {
-                        //        int iCol = 0;
-                        //        int iRow = 0;
-                        //        rt_Layouts[rt_LayoutID].UnitNoGetRC(i, ref iCol, ref iRow);
-                        //        int iColM = (rt_Layouts[rt_LayoutID].TColCount*2) - 1 - iCol;
-
-                        //        try
-                        //        {
-                        //            GDefine.sgc2.map[iColM, iRow] = (int)Map.Bin[i];
-                        //        }
-                        //        catch
-                        //        {
-
-                        //        }
-                        //    }
-                        //}
-                        //else//special condition for Unisem process 2nd half frame
-                        //if (TaskConv.Pro.rt_StType == TaskConv.EProStType.Disp2 && TaskConv.Pro.Status >= TaskConv.EProcessStatus.Heating)
-                        //{
-                        //    for (int i = 0; i < rt_Layouts[rt_LayoutID].TUCount; i++)
-                        //    {
-                        //        int iCol = 0;
-                        //        int iRow = 0;
-                        //        rt_Layouts[rt_LayoutID].UnitNoGetRC(i, ref iCol, ref iRow);
-                        //        int iColM = rt_Layouts[rt_LayoutID].TColCount - 1 - iCol;
-
-                        //        try
-                        //        {
-                        //            GDefine.sgc2.map[iColM, iRow] = (int)Map.Bin[i];
-                        //        }
-                        //        catch
-                        //        {
-
-                        //        }
-                        //    }
-
-                        //    #region update to SECSGEMConnect2
-                        //    GDefine.sgc2.UploadXMLString("");
-
-                        //    int t = GDefine.GetTickCount();
-                        //    while (true)
-                        //    {
-                        //        if (GDefine.sgc2.MapState == SECSGEMConnect2.EMapState.Uploaded)
-                        //        {
-                        //            string file = GDefine.StripMapDir.FullName + FrameNo + ".txt";
-                        //            if (File.Exists(file)) File.Delete(file);
-                        //            break;
-                        //        }
-                        //        if (GDefine.sgc2.MapState == SECSGEMConnect2.EMapState.UploadFail)
-                        //        {
-                        //            Msg MsgBox = new Msg();
-                        //            EMsgRes Res = MsgBox.Show("Upload Map Fail." +
-                        //                "@OK - Continue to unload frame? Map data will be lost." +
-                        //                "@STOP - Stop Process.", "", TEMessage.EType.Error, EMsgBtn.smbOK_Stop);
-                        //            switch (Res)
-                        //            {
-                        //                case EMsgRes.smrOK:
-                        //                    break;
-                        //                default:
-                        //                    goto _Stop;
-                        //            }
-                        //        }
-                        //        if (GDefine.GetTickCount() - t > GDefine.sgc2.TimeOut)
-                        //        {
-                        //            Msg MsgBox = new Msg();
-                        //            EMsgRes Res = MsgBox.Show("Upload Map TimeOut." +
-                        //                "@OK - Continue to unload frame? Map data will be lost." +
-                        //                "@STOP - Stop Process.", "", TEMessage.EType.Error, EMsgBtn.smbOK_Stop);
-                        //            switch (Res)
-                        //            {
-                        //                case EMsgRes.smrOK:
-                        //                    break;
-                        //                default:
-                        //                    goto _Stop;
-                        //            }
-                        //        }
-                        //        Thread.Sleep(1);
-                        //    }
-                        //    #endregion
-                        //}
-                        else//full frame process
-                        {
                             #region update to SECSGEMConnect2
                             for (int i = 0; i < rt_Layouts[rt_LayoutID].TUCount; i++)
                             {
@@ -23455,7 +23303,6 @@ namespace NDispWin
                                 Thread.Sleep(1);
                             }
                             #endregion
-                        }
                     }
                 }
                 catch (Exception Ex)
@@ -23523,165 +23370,93 @@ namespace NDispWin
                                 Task_InputMap.OsramEMos.WriteETVFile(MaterialNr + "-" + FrameNo, map3, new Size(rt_Layouts[0].TColCount, rt_Layouts[0].TRowCount));
                                 break;
                             }
+                        case TaskDisp.EInputMapProtocol.OSRAM_E142:
+                            {
+
+
+                                for (int i = 0; i < rt_Layouts[rt_LayoutID].TUCount; i++)
+                                {
+                                    int iCol = 0;
+                                    int iRow = 0;
+                                    rt_Layouts[rt_LayoutID].UnitNoGetRC(i, ref iCol, ref iRow);
+
+                                    int iColM = rt_Layouts[rt_LayoutID].TColCount - 1 - iCol;
+
+                                    try
+                                    {
+                                        Map.Bin[i] = (EMapBin)GDefine.sgc2.map[iColM, iRow];
+                                    }
+                                    catch
+                                    {
+                                        Map.Bin[i] = EMapBin.None;
+                                    }
+                                }
+
+                                break;
+                            }
                     }
 
                     if (TaskDisp.Preference == TaskDisp.EPreference.Unisem && TaskDisp.SECSGEMProtocol == TaskDisp.ESECSGEMProtocol.SECSGEMConnect2 && GDefine.sgc2.EnableStripMapE142)
                     {
-                        //special condition for Unisem process half frame
-                        //if (TaskConv.Pre.rt_StType == TaskConv.EPreStType.Disp1 && TaskConv.Pre.Status >= TaskConv.EProcessStatus.Heating)
-                        //{
-                        //    GDefine.sgc2.SendDownload(FrameNo);
-                        //    int t = GDefine.GetTickCount();
-                        //    while (true)
-                        //    {
-                        //        if (GDefine.sgc2.MapState == SECSGEMConnect2.EMapState.Loaded)
-                        //        {
-                        //            #region update to rt_Map
-                        //            if (!GDefine.sgc2.UseFreshMap)
-                        //            {
-                        //                for (int i = 0; i < rt_Layouts[rt_LayoutID].TUCount; i++)
-                        //                {
-                        //                    int iCol = 0;
-                        //                    int iRow = 0;
-                        //                    rt_Layouts[rt_LayoutID].UnitNoGetRC(i, ref iCol, ref iRow);
-
-                        //                    int iColM = (rt_Layouts[rt_LayoutID].TColCount * 2) - 1 - iCol;
-
-                        //                    try
-                        //                    {
-                        //                        Map.Bin[i] = (EMapBin)GDefine.sgc2.map[iColM, iRow];
-                        //                    }
-                        //                    catch
-                        //                    {
-                        //                        Map.Bin[i] = EMapBin.None;
-                        //                    }
-                        //                }
-                        //            }
-                        //            #endregion
-                        //            break;
-                        //        }
-                        //        if (GDefine.sgc2.MapState == SECSGEMConnect2.EMapState.DecodeError)
-                        //        {
-                        //            Msg MsgBox = new Msg();
-                        //            EMsgRes Res = MsgBox.Show("Download Map Decode Error." +
-                        //                "@OK - Continue without ID." +
-                        //                "@STOP - Stop Process.", "", TEMessage.EType.Error, EMsgBtn.smbOK_Stop);
-                        //            switch (Res)
-                        //            {
-                        //                case EMsgRes.smrOK:
-                        //                    return true;
-                        //                default:
-                        //                    return false;
-                        //            }
-                        //        }
-                        //        if (GDefine.GetTickCount() - t > GDefine.sgc2.TimeOut)
-                        //        {
-                        //            Msg MsgBox = new Msg();
-                        //            EMsgRes Res = MsgBox.Show("Download Map TimeOut." +
-                        //                "@OK - Continue without ID." +
-                        //                "@STOP - Stop Process.", "", TEMessage.EType.Error, EMsgBtn.smbOK_Stop);
-                        //            switch (Res)
-                        //            {
-                        //                case EMsgRes.smrOK:
-                        //                    return true;
-                        //                default:
-                        //                    return false;
-                        //            }
-                        //        }
-                        //        Thread.Sleep(1);
-                        //    }
-                        //}
-                        //else
-                        //if (TaskConv.Pro.rt_StType == TaskConv.EProStType.Disp2 && TaskConv.Pro.Status >= TaskConv.EProcessStatus.Heating)
-                        //{
-                        //    if (GDefine.sgc2.MapState == SECSGEMConnect2.EMapState.Loaded)
-                        //    {
-                        //        #region update to rt_Map
-                        //        if (!GDefine.sgc2.UseFreshMap)
-                        //        {
-                        //            for (int i = 0; i < rt_Layouts[rt_LayoutID].TUCount; i++)
-                        //            {
-                        //                int iCol = 0;
-                        //                int iRow = 0;
-                        //                rt_Layouts[rt_LayoutID].UnitNoGetRC(i, ref iCol, ref iRow);
-
-                        //                int iColM = rt_Layouts[rt_LayoutID].TColCount - 1 - iCol;
-
-                        //                try
-                        //                {
-                        //                    Map.Bin[i] = (EMapBin)GDefine.sgc2.map[iColM, iRow];
-                        //                }
-                        //                catch
-                        //                {
-                        //                    Map.Bin[i] = EMapBin.None;
-                        //                }
-                        //            }
-                        //        }
-                        //        #endregion
-                        //    }
-                        //}
-                        //else
+                        GDefine.sgc2.SendDownload(FrameNo);
+                        int t = GDefine.GetTickCount();
+                        while (true)
                         {
-                            GDefine.sgc2.SendDownload(FrameNo);
-                            int t = GDefine.GetTickCount();
-                            while (true)
+                            if (GDefine.sgc2.MapState == SECSGEMConnect2.EMapState.Loaded)
                             {
-                                if (GDefine.sgc2.MapState == SECSGEMConnect2.EMapState.Loaded)
+                                #region update to rt_Map
+                                if (!GDefine.sgc2.UseFreshMap)
                                 {
-                                    #region update to rt_Map
-                                    if (!GDefine.sgc2.UseFreshMap)
+                                    for (int i = 0; i < rt_Layouts[rt_LayoutID].TUCount; i++)
                                     {
-                                        for (int i = 0; i < rt_Layouts[rt_LayoutID].TUCount; i++)
+                                        int iCol = 0;
+                                        int iRow = 0;
+                                        rt_Layouts[rt_LayoutID].UnitNoGetRC(i, ref iCol, ref iRow);
+
+                                        int iColM = rt_Layouts[rt_LayoutID].TColCount - 1 - iCol;
+
+                                        try
                                         {
-                                            int iCol = 0;
-                                            int iRow = 0;
-                                            rt_Layouts[rt_LayoutID].UnitNoGetRC(i, ref iCol, ref iRow);
-
-                                            int iColM = rt_Layouts[rt_LayoutID].TColCount - 1 - iCol;
-
-                                            try
-                                            {
-                                                Map.Bin[i] = (EMapBin)GDefine.sgc2.map[iColM, iRow];
-                                            }
-                                            catch
-                                            {
-                                                Map.Bin[i] = EMapBin.None;
-                                            }
+                                            Map.Bin[i] = (EMapBin)GDefine.sgc2.map[iColM, iRow];
+                                        }
+                                        catch
+                                        {
+                                            Map.Bin[i] = EMapBin.None;
                                         }
                                     }
-                                    #endregion
-                                    break;
                                 }
-                                if (GDefine.sgc2.MapState == SECSGEMConnect2.EMapState.DecodeError)
-                                {
-                                    Msg MsgBox = new Msg();
-                                    EMsgRes Res = MsgBox.Show("Download Map Decode Error." +
-                                        "@OK - Continue without Map." +
-                                        "@STOP - Stop Process.", "", TEMessage.EType.Error, EMsgBtn.smbOK_Stop);
-                                    switch (Res)
-                                    {
-                                        case EMsgRes.smrOK:
-                                            return true;
-                                        default:
-                                            return false;
-                                    }
-                                }
-                                if (GDefine.GetTickCount() - t > GDefine.sgc2.TimeOut)
-                                {
-                                    Msg MsgBox = new Msg();
-                                    EMsgRes Res = MsgBox.Show("Download Map TimeOut." +
-                                        "@OK - Continue without Map." +
-                                        "@STOP - Stop Process.", "", TEMessage.EType.Error, EMsgBtn.smbOK_Stop);
-                                    switch (Res)
-                                    {
-                                        case EMsgRes.smrOK:
-                                            return true;
-                                        default:
-                                            return false;
-                                    }
-                                }
-                                Thread.Sleep(1);
+                                #endregion
+                                break;
                             }
+                            if (GDefine.sgc2.MapState == SECSGEMConnect2.EMapState.DecodeError)
+                            {
+                                Msg MsgBox = new Msg();
+                                EMsgRes Res = MsgBox.Show("Download Map Decode Error." +
+                                    "@OK - Continue without Map." +
+                                    "@STOP - Stop Process.", "", TEMessage.EType.Error, EMsgBtn.smbOK_Stop);
+                                switch (Res)
+                                {
+                                    case EMsgRes.smrOK:
+                                        return true;
+                                    default:
+                                        return false;
+                                }
+                            }
+                            if (GDefine.GetTickCount() - t > GDefine.sgc2.TimeOut)
+                            {
+                                Msg MsgBox = new Msg();
+                                EMsgRes Res = MsgBox.Show("Download Map TimeOut." +
+                                    "@OK - Continue without Map." +
+                                    "@STOP - Stop Process.", "", TEMessage.EType.Error, EMsgBtn.smbOK_Stop);
+                                switch (Res)
+                                {
+                                    case EMsgRes.smrOK:
+                                        return true;
+                                    default:
+                                        return false;
+                                }
+                            }
+                            Thread.Sleep(1);
                         }
                     }
                 }

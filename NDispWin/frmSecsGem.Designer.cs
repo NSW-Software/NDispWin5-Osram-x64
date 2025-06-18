@@ -53,9 +53,18 @@ namespace NDispWin
             this.btnSendTerminalMessage = new System.Windows.Forms.Button();
             this.btnGenerateIDList = new System.Windows.Forms.Button();
             this.lblProcessState = new System.Windows.Forms.Label();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.tbSubstrateID = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.btnUpload = new System.Windows.Forms.Button();
+            this.btnDownload = new System.Windows.Forms.Button();
+            this.rtbInfo = new System.Windows.Forms.RichTextBox();
+            this.rtbBinCodes = new System.Windows.Forms.RichTextBox();
+            this.cbLocal = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblIPPort
@@ -284,11 +293,92 @@ namespace NDispWin
             this.lblProcessState.Text = "-";
             this.lblProcessState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.cbLocal);
+            this.groupBox4.Controls.Add(this.rtbBinCodes);
+            this.groupBox4.Controls.Add(this.tbSubstrateID);
+            this.groupBox4.Controls.Add(this.rtbInfo);
+            this.groupBox4.Controls.Add(this.label3);
+            this.groupBox4.Controls.Add(this.btnUpload);
+            this.groupBox4.Controls.Add(this.btnDownload);
+            this.groupBox4.Location = new System.Drawing.Point(527, 199);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(509, 314);
+            this.groupBox4.TabIndex = 76;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "E142";
+            // 
+            // tbSubstrateID
+            // 
+            this.tbSubstrateID.Location = new System.Drawing.Point(88, 27);
+            this.tbSubstrateID.Name = "tbSubstrateID";
+            this.tbSubstrateID.Size = new System.Drawing.Size(128, 22);
+            this.tbSubstrateID.TabIndex = 72;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 30);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(76, 14);
+            this.label3.TabIndex = 71;
+            this.label3.Text = "Subsrtate ID";
+            // 
+            // btnUpload
+            // 
+            this.btnUpload.Location = new System.Drawing.Point(431, 21);
+            this.btnUpload.Name = "btnUpload";
+            this.btnUpload.Size = new System.Drawing.Size(72, 32);
+            this.btnUpload.TabIndex = 70;
+            this.btnUpload.Text = "Upload";
+            this.btnUpload.UseVisualStyleBackColor = true;
+            this.btnUpload.Click += new System.EventHandler(this.btnUpload_Click);
+            // 
+            // btnDownload
+            // 
+            this.btnDownload.Location = new System.Drawing.Point(353, 21);
+            this.btnDownload.Name = "btnDownload";
+            this.btnDownload.Size = new System.Drawing.Size(72, 32);
+            this.btnDownload.TabIndex = 69;
+            this.btnDownload.Text = "Download";
+            this.btnDownload.UseVisualStyleBackColor = true;
+            this.btnDownload.Click += new System.EventHandler(this.btnDownload_Click);
+            // 
+            // rtbInfo
+            // 
+            this.rtbInfo.Location = new System.Drawing.Point(9, 67);
+            this.rtbInfo.Name = "rtbInfo";
+            this.rtbInfo.Size = new System.Drawing.Size(129, 241);
+            this.rtbInfo.TabIndex = 77;
+            this.rtbInfo.Text = "";
+            this.rtbInfo.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
+            // 
+            // rtbBinCodes
+            // 
+            this.rtbBinCodes.Location = new System.Drawing.Point(144, 67);
+            this.rtbBinCodes.Name = "rtbBinCodes";
+            this.rtbBinCodes.Size = new System.Drawing.Size(359, 241);
+            this.rtbBinCodes.TabIndex = 78;
+            this.rtbBinCodes.Text = "";
+            this.rtbBinCodes.WordWrap = false;
+            // 
+            // cbLocal
+            // 
+            this.cbLocal.AutoSize = true;
+            this.cbLocal.Location = new System.Drawing.Point(294, 29);
+            this.cbLocal.Name = "cbLocal";
+            this.cbLocal.Size = new System.Drawing.Size(53, 18);
+            this.cbLocal.TabIndex = 79;
+            this.cbLocal.Text = "Local";
+            this.cbLocal.UseVisualStyleBackColor = true;
+            // 
             // frmSecsGem
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(535, 533);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.AutoSize = true;
+            this.ClientSize = new System.Drawing.Size(1143, 627);
+            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.lblProcessState);
             this.Controls.Add(this.btnGenerateIDList);
             this.Controls.Add(this.groupBox3);
@@ -310,6 +400,8 @@ namespace NDispWin
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -340,5 +432,13 @@ namespace NDispWin
         private System.Windows.Forms.Button btnGenerateIDList;
         private System.Windows.Forms.Button btnAckTerminalMessage;
         private System.Windows.Forms.Label lblProcessState;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.TextBox tbSubstrateID;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button btnUpload;
+        private System.Windows.Forms.Button btnDownload;
+        private System.Windows.Forms.RichTextBox rtbInfo;
+        private System.Windows.Forms.RichTextBox rtbBinCodes;
+        private System.Windows.Forms.CheckBox cbLocal;
     }
 }

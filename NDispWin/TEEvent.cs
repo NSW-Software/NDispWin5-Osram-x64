@@ -284,6 +284,9 @@ namespace NDispWin
         public static TEEvent SECSGEM_PP_CHANGE = new TEEvent(5031, "PP Change.", new List<int> { 11050, 11051, 11052, 11053 });//edited
         public static TEEvent SECSGEM_PP_DELETE = new TEEvent(5032, "PP Delete.", new List<int> { 11051 });
         public static TEEvent SECSGEM_PP_SELECTED = new TEEvent(5033, "PP Selected.", new List<int> { 11051, 11052 });
+
+        public static TEEvent SECSGEM_E142_SUBSTRATE_SCANNED = new TEEvent(5100, "Substrate Scaned.");
+        public static TEEvent SECSGEM_MAP_UPDATED = new TEEvent(5105, "Map Updated.");
     }
 
     public class TEVID//SV, DV, EC Represents real-time status variables of equipment.

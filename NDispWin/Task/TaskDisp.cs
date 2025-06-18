@@ -956,7 +956,7 @@ namespace NDispWin
         public static string OsramICC_OutputPath = "";
         public static string OsramICC_LotPath = "";
 
-        public enum EInputMapProtocol { None, Lumileds_EMap, TD_COB, OSRAM_eMos };
+        public enum EInputMapProtocol { None, Lumileds_EMap, TD_COB, OSRAM_eMos, OSRAM_E142 };
         public static EInputMapProtocol InputMap_Protocol = EInputMapProtocol.None;
         public static bool InputMap_Enabled;
 
