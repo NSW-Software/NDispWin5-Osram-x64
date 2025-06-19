@@ -408,7 +408,7 @@ namespace NDispWin
 
         public static string ChangedECID = "";
         public static string ChangedECValue = "";
-
+        public static string PPError = "";
         public static TClient2 client = new TClient2();
         public static void Start()
         {
@@ -464,10 +464,10 @@ namespace NDispWin
         }
         public static bool IsConnected
         {
-            get 
+            get
             {
                 if (!client.IsConnected) OnlineOffline = EOnlineOffline.Offline;
-                return client.IsConnected; 
+                return client.IsConnected;
             }
         }
 
@@ -635,7 +635,7 @@ namespace NDispWin
                                         ChangedECValue = rxSplitData[i + 1];
                                     }
                                 }
-                                
+
                                 Send($"{nameof(StreamFunc.ECA)}");
                                 Thread.Sleep(100);
                                 Send($"{nameof(StreamFunc.ERS)},5020");
@@ -657,7 +657,7 @@ namespace NDispWin
                                 }
                             }
                             List<string> responseList = SSR_GetList(requestList);
-                            Send($"{nameof(StreamFunc.TIA)},{string.Join(",", responseList)}");
+                            Send($"{nameof(StreamFunc.TIA)},{rxSplitData[1]},{string.Join(",", responseList)}");
                             break;
                         }
                     #endregion
@@ -697,7 +697,7 @@ namespace NDispWin
                                 foreach (var msg in msglist)
                                 {
                                     if (alid == $"{msg.Code}")
-                                    msg.Enabled = aled == "128" ? true : false;
+                                        msg.Enabled = aled == "128" ? true : false;
                                 }
                             }
                             Send($"{nameof(StreamFunc.EAA)}");
@@ -849,10 +849,12 @@ namespace NDispWin
                     #endregion
                     #region S10
                     case nameof(StreamFunc.VTN):
-                        {                         
+                        {
                             rxSplitData = rxSplitData.Concat(Enumerable.Repeat("", 1)).ToArray();//add 1 empty strings
                             RxTerminalMessage = rxSplitData[2];
-
+                            bool isFormOpen = Application.OpenForms["frmSecsGem"] != null;
+                            if(!isFormOpen){ frm_Main.RunTerminal(); }
+                            
                             var frms = Application.OpenForms.OfType<frmSecsGem>().ToArray();
                             if (frms.Length < 1) break;
                             foreach(var frm in frms)

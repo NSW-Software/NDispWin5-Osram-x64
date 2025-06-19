@@ -30,6 +30,17 @@ X-12.	Unusual weight spike during weight check -> not occure after
 
 
 DOT, CLINE
+Ver 6.1.5.14 - JH - 20250619 - Gitted
+  [Feature] SecsGem 
+  - frm_Main.cs 
+  > added Event_Terminal EventHandler to trigger SECSGEM form when received S10F1
+  - TEEvent.cs
+  > Added events and Vids for substrate map and info
+  - TFSecsGem.cs
+  > trigger main page event handler when received terminal msg
+  > added TRID for Trace data
+
+
 Ver 6.1.5.13 - JH - 20250610 - Gitted
   [Feature] SecsGem 
   - frm_Auto.cs 
