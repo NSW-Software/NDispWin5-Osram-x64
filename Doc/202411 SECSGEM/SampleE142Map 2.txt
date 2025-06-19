@@ -1,0 +1,81 @@
+
+#GetMap E -> H
+2024-08-15 13:15:20.748	S14F1 <- #157, Xml:
+<L>
+	<A/>
+	<A>Substrate</A>
+	<L>
+		<A>0SLAE3</A>
+	</L>
+	<L>
+		<L>
+			<A>SubstrateType</A>
+			<A>Strip</A>
+			<U1>0</U1>
+		</L>
+	</L>
+	<L>
+		<A>MapData</A>
+	</L>
+</L>
+
+
+#GetMap H -> E
+2024-08-15 13:15:22.695	S14F2 -> #157, Xml: <L>
+	<L>
+		<L>
+			<A>0SLAE3</A>
+			<L>
+				<L>
+					<A>MapData</A>
+					<A><?xml version='1.0' encoding='utf-8' ?>
+						<MapData xmlns="urn:semi-org:xsd.E142-1.V1005.SubstrateMap">
+							<Layouts>
+								<Layout DefaultUnits="mm" LayoutId="SubstrateLayout" TopLevel="true">
+									<Dimension X="1" Y="1"/>
+									<ChildLayouts>
+										<ChildLayout LayoutId="UnitLayout"/>
+									</ChildLayouts>
+								</Layout>
+								<Layout DefaultUnits="mm" LayoutId="UnitLayout">
+									<Dimension X="28" Y="8"/>
+								</Layout>
+							</Layouts>
+							<Substrates>
+								<Substrate SubstrateId="0SLAE3" SubstrateType="Strip"/>
+							</Substrates>
+							<SubstrateMaps>
+								<SubstrateMap SubstrateId="0SLAE3" SubstrateType="Strip" AxisDirection="DownRight" OriginLocation="UpperLeft" Orientation="0" LayoutSpecifier="SubstrateLayout/UnitLayout">
+									<Overlay MapVersion="1" MapName="PanelMap">
+										<BinCodeMap MapType="2DArray" BinType="Integer2" NullBin="FFFF">
+											<BinDefinitions>
+												<BinDefinition Pick="true" BinDescription="Tested Ok" BinQuality="Good" BinCount="222" BinCode="0000"/>
+												<BinDefinition Pick="false" BinDescription="Tested Failed" BinQuality="Bad" BinCount="2" BinCode="5000"/>
+											</BinDefinitions>
+											<BinCode>5000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000</BinCode>
+											<BinCode>0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000</BinCode>
+											<BinCode>0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000</BinCode>
+											<BinCode>0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000</BinCode>
+											<BinCode>0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000</BinCode>
+											<BinCode>0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000</BinCode>
+											<BinCode>0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000</BinCode>
+											<BinCode>0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000005000</BinCode>
+										</BinCodeMap>
+									</Overlay>
+								</SubstrateMap>
+							</SubstrateMaps>
+						</MapData>
+					</A>
+				</L>
+			</L>
+		</L>
+	</L>
+	<L>
+		<U1>0</U1>
+		<L/>
+	</L>
+</L>
+
+
+SetMap
+S6F11 - GLobal Semi E142 Substrate Mapping Specification.

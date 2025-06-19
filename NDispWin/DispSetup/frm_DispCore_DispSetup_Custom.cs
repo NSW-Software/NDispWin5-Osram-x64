@@ -42,6 +42,7 @@ namespace NDispWin
             pnlOsramICC.Visible = TaskDisp.VolumeOfst_Protocol == TaskDisp.EVolumeOfstProtocol.OSRAM_ICC;
             tbxOsramICCInputPath.Text = TaskDisp.OsramICC_InputPath;
             tbxOsramICCOutputPath.Text = TaskDisp.OsramICC_OutputPath;
+            tbxOsramICCLotPath.Text = TaskDisp.OsramICC_LotPath;
 
             lbl_InputMap_Protocol.Text = ((int)TaskDisp.InputMap_Protocol).ToString() + " : " + TaskDisp.InputMap_Protocol.ToString();
             btnInputMapSetup.Visible = TaskDisp.InputMap_Protocol == TaskDisp.EInputMapProtocol.OSRAM_eMos;
@@ -219,11 +220,13 @@ namespace NDispWin
         {
             TaskDisp.OsramICC_InputPath = tbxOsramICCInputPath.Text;
             TaskDisp.OsramICC_OutputPath = tbxOsramICCOutputPath.Text;
+            TaskDisp.OsramICC_LotPath = tbxOsramICCLotPath.Text;
 
             Task.Run(() =>
             {
                 Color inputColor = Directory.Exists(TaskDisp.OsramICC_InputPath) ? Color.Lime : Color.Red;
                 Color outputColor = Directory.Exists(TaskDisp.OsramICC_OutputPath) ? Color.Lime : Color.Red;
+                Color lotColor = Directory.Exists(TaskDisp.OsramICC_LotPath) ? Color.Lime : Color.Red;
 
                 tbxOsramICCInputPath.Invoke(new Action(() =>
                 {
@@ -233,6 +236,11 @@ namespace NDispWin
                 tbxOsramICCOutputPath.Invoke(new Action(() =>
                 {
                     tbxOsramICCOutputPath.BackColor = outputColor;
+                }));
+
+                tbxOsramICCLotPath.Invoke(new Action(() =>
+                {
+                    tbxOsramICCLotPath.BackColor = outputColor;
                 }));
 
                 System.Threading.Thread.Sleep(500);
@@ -246,12 +254,18 @@ namespace NDispWin
                 {
                     tbxOsramICCOutputPath.BackColor = Color.White;
                 }));
+
+                tbxOsramICCLotPath.Invoke(new Action(() =>
+                {
+                    tbxOsramICCLotPath.BackColor = Color.White;
+                }));
             });
         }
         private void btnUpdateOsramICC_Click(object sender, EventArgs e)
         {
             TaskDisp.OsramICC_InputPath = tbxOsramICCInputPath.Text;
             TaskDisp.OsramICC_OutputPath = tbxOsramICCOutputPath.Text;
+            TaskDisp.OsramICC_LotPath = tbxOsramICCLotPath.Text;
         }
 
         private void btnInputFileLoad_Click(object sender, EventArgs e)
@@ -273,7 +287,6 @@ namespace NDispWin
                 MessageBox.Show($"Input File InitialDispenserSetting: {d:f4}.");
             }
         }
-
         private void btnOutputFileLoad_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog
@@ -361,7 +374,6 @@ namespace NDispWin
 
         private void btnOsramICCTest_Click(object sender, EventArgs e)
         {
-
             if (LotInfo2.LotNumber.Length == 0)
             {
                 MessageBox.Show($"Lot Number is not entered.");
@@ -395,9 +407,36 @@ namespace NDispWin
             }
         }
 
-        private void tbxOsramICCInputPath_TextChanged(object sender, EventArgs e)
+        private void btnLotFileLoad_Click(object sender, EventArgs e)
         {
+            OpenFileDialog ofd = new OpenFileDialog
+            {
+                InitialDirectory = TaskDisp.OsramICC_LotPath,
+                Title = "Select a Lot File",
+                Filter = "TXT Files (*.txt)|*.txt|All Files (*.*)|*.*"
+            };
 
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                string fileName = ofd.FileName;
+
+                double d = 0;
+                OsramICC.ReadLotFile(fileName);
+
+                string info = "";
+                for (int i = 0; i < 8; i++)
+                {
+                    if (OsramICC.OsramICC_LotInfo[i].PanelID.Length > 0) info = info + $"{OsramICC.OsramICC_LotInfo[i].PanelID},Pass{ OsramICC.OsramICC_LotInfo[i].Status}\t";
+                    if (OsramICC.OsramICC_LotInfo[i + 8].PanelID.Length > 0) info = info + $"{OsramICC.OsramICC_LotInfo[i + 8].PanelID},Pass{ OsramICC.OsramICC_LotInfo[i + 8].Status}\t";
+                    if (OsramICC.OsramICC_LotInfo[i + 16].PanelID.Length > 0) info = info + $"{OsramICC.OsramICC_LotInfo[i + 16].PanelID},Pass{ OsramICC.OsramICC_LotInfo[i + 16].Status}\t";
+                    if (OsramICC.OsramICC_LotInfo[i + 24].PanelID.Length > 0) info = info + $"{OsramICC.OsramICC_LotInfo[i + 24].PanelID},Pass{ OsramICC.OsramICC_LotInfo[i + 24].Status}\t";
+                    if (OsramICC.OsramICC_LotInfo[i + 32].PanelID.Length > 0) info = info + $"{OsramICC.OsramICC_LotInfo[i + 32].PanelID},Pass{ OsramICC.OsramICC_LotInfo[i + 32].Status}\t";
+                    if (OsramICC.OsramICC_LotInfo[i + 40].PanelID.Length > 0) info = info + $"{OsramICC.OsramICC_LotInfo[i + 40].PanelID},Pass{ OsramICC.OsramICC_LotInfo[i + 40].Status}\t";
+                    info = info + "\n";
+                }
+
+                MessageBox.Show($"Lot File\n" + info);
+            }
         }
     }
 }

@@ -451,7 +451,19 @@ namespace NDispWin
             UpdateDisplay();
         }
 
-        private void gbxAmount_Enter(object sender, EventArgs e)
+        private void btnPurge_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (!TFPump.PP4.Ready(pumpSelect)) return;
+            if (!TFPump.PP4.CheckStrokeThenFill(pumpSelect)) return;
+            if (!TFPump.PP4.ShotStart(pumpSelect)) return;
+        }
+        private void btnPurge_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (!TFPump.PP4.ShotStop(pumpSelect)) return;
+            if (!TFPump.PP4.CheckStrokeThenFill(pumpSelect)) return;
+        }
+
+        private void btnPurge_Click(object sender, EventArgs e)
         {
 
         }

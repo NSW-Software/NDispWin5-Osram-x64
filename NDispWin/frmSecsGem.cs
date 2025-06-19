@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Reflection;
 using System.IO;
+using System.Threading;
 
 namespace NDispWin
 {
@@ -239,6 +240,106 @@ namespace NDispWin
             TFSecsGem.Send($"{nameof(StreamFunc.VTA)}");
             Event.TERMINAL_MESSAGE_ACK.Set();
             TriggerUpdateTerminal();
+        }
+
+        private void btnDownload_Click(object sender, EventArgs e)
+        {
+            rtbInfo.Clear();
+            rtbBinCodes.Clear();
+
+            string substrateID = "";
+            string binDefStrings = "";
+            string binCodeStrings = "";
+
+            if (cbLocal.Checked)
+            {
+                OpenFileDialog ofd = new OpenFileDialog
+                {
+                    InitialDirectory = TaskDisp.OsramICC_LotPath,
+                    Title = "Select a XMLFile",
+                    Filter = "TXT Files (*.txt)|*.txt|XML Files (*.xml)|*.xml"
+                };
+
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        TFSecsGem.rxE142XmlData = File.ReadAllText(ofd.FileName);
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                }
+                else return;
+
+                TFSecsGem.DecodeMap(TFSecsGem.rxE142XmlData, ref substrateID, ref binDefStrings, ref binCodeStrings);
+
+                rtbInfo.Clear();
+                rtbInfo.Text = $"{substrateID}\n" + binDefStrings;
+                rtbBinCodes.Clear();
+                rtbBinCodes.Text = binCodeStrings;
+            }
+            else
+            {
+                TFSecsGem.GAR(tbSubstrateID.Text);
+
+                int t = Environment.TickCount;
+                while (!TFSecsGem.ReceivedXMLMapData)
+                {
+                    Thread.Sleep(10);
+                    if (Environment.TickCount - t >= 30000) return;
+                }
+
+                TFSecsGem.DecodeMap(TFSecsGem.rxE142XmlData, ref substrateID, ref binDefStrings, ref binCodeStrings);
+
+                rtbInfo.Clear();
+                rtbInfo.Text = $"{substrateID}\n" + binDefStrings;
+                rtbBinCodes.Clear();
+                rtbBinCodes.Text = binCodeStrings;
+            }
+        }
+
+        private void btnUpload_Click(object sender, EventArgs e)
+        {
+            if (cbLocal.Checked)
+            {
+                SaveFileDialog sfd = new SaveFileDialog
+                {
+                    InitialDirectory = TaskDisp.OsramICC_LotPath,
+                    Title = "Save as file",
+                    Filter = "TXT Files (*.txt)|*.txt|XML Files (*.xml)|*.xml"
+                };
+
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        string xmlString = "";
+                        TFSecsGem.EncodeMap(rtbBinCodes.Text, ref xmlString);
+                        File.WriteAllText(sfd.FileName, xmlString);
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                }
+                else return;
+            }
+            else
+            {
+                string xmlString = "";
+                TFSecsGem.EncodeMap(rtbBinCodes.Text, ref xmlString);
+                TFSecsGem.Send($"{nameof(StreamFunc.ERS)},MapData,{xmlString}");
+            }
+
+            rtbInfo.Clear();
+            rtbBinCodes.Clear();
+        }
+
+        private void richTextBox1_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

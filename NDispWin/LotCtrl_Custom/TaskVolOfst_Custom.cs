@@ -1034,7 +1034,7 @@ namespace NDispWin
                     EMsgRes Resp = MsgBox.Show($"Output File: {outputFile} is not found.");
                     return false;
                 }
-                
+
                 if (!ReadOutputFile(outputFile))
                 {
                     Msg MsgBox = new Msg();
@@ -1092,6 +1092,49 @@ namespace NDispWin
                 return true;
             }
 
+            return true;
+        }
+
+        public class TOsramICC_LotInfo
+        {
+            public string PanelID;
+            public int Status;//0:None, 1:Pass1, 2:Pass2
+
+            public TOsramICC_LotInfo(string panelID, int status)
+            {
+                PanelID = panelID;
+                Status = status;
+            }
+        }
+        public static List<TOsramICC_LotInfo> OsramICC_LotInfo = new List<TOsramICC_LotInfo>();
+
+        public static bool ReadLotFile(string filename)
+        {
+            OsramICC_LotInfo.Clear();
+            List<string> panelIDs;
+            try
+            {
+                string list = File.ReadAllText(filename);
+                panelIDs = list.Split(new[] { ',', '\t', '\r' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()).ToList();
+
+                foreach (string s in panelIDs)
+                {
+                    int status = 0;
+                    if (Pass1.PanelIDs.Contains(s)) status = 1;
+                    if (Pass2.PanelIDs.Contains(s)) status = 2;
+                    OsramICC_LotInfo.Add(new TOsramICC_LotInfo(s, status));
+                }
+
+                while (OsramICC_LotInfo.Count < 48)
+                {
+                    OsramICC_LotInfo.Add(new TOsramICC_LotInfo("", 0));
+                }
+            }
+            catch (Exception ex)
+            {
+               // MessageBox.Show(ex.Message.ToString());
+                return false;
+            }
             return true;
         }
     }

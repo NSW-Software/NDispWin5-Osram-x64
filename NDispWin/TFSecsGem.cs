@@ -11,6 +11,8 @@ using System.IO;
 using System.CodeDom;
 using System.Windows.Forms;
 using Automation.BDaq;
+using System.Xml.Linq;
+using System.Drawing;
 
 namespace NDispWin
 {
@@ -383,10 +385,14 @@ namespace NDispWin
         public static TEStreamFunc PPD = new TEStreamFunc("S7F6", "H<->E, Process Program Data.");//tested
 
         public static TEStreamFunc S10F0 = new TEStreamFunc("S10F0", "H<->E, Abort Transaction.");
-        public static TEStreamFunc TRN = new TEStreamFunc("S10F1", "H<-E, Terminal Request.");
+        public static TEStreamFunc TRN = new TEStreamFunc("S10F1", "H->E, Terminal Request.");
         public static TEStreamFunc TRA = new TEStreamFunc("S10F2", "H->E, Terminal Request Acknowledge.");
         public static TEStreamFunc VTN = new TEStreamFunc("S10F3", "H->E, Terminal Display,Single.");
         public static TEStreamFunc VTA = new TEStreamFunc("S10F4", "H<-E, Terminal Display,Single Acknowledge.");
+
+        public static TEStreamFunc S14F0 = new TEStreamFunc("S14F0", "H<->E, Abort Transaction.");
+        public static TEStreamFunc GAR = new TEStreamFunc("S14F1", "H<->E, Get Attribute Request.");
+        public static TEStreamFunc GAD = new TEStreamFunc("S14F2", "H<->E, Get Attribute Data.");
     }
 
     class TFSecsGem
@@ -493,6 +499,8 @@ namespace NDispWin
 
         static List<string> rxPPGData;
         static List<string> rxPPDData;
+        public static bool ReceivedXMLMapData = false;
+        public static string rxE142XmlData;
         private static void OnFrameEndReceivedEvent()
         {
             string rxRawData = "";
@@ -866,6 +874,14 @@ namespace NDispWin
                             break;
                         }
                     #endregion
+                    #region S14
+                    case nameof(StreamFunc.GAD):
+                        // Expect GAD,SubtrateID, MapData, XmlContent
+                        var substrateID = Path.GetFileNameWithoutExtension(rxSplitData[1]);// SubstrateID
+                        rxE142XmlData = Path.GetFileNameWithoutExtension(rxSplitData[3]);// XmlContent
+                        ReceivedXMLMapData = true;
+                        break;
+                    #endregion
 
                     #region RMCD
                     case "PP-SELECT":
@@ -930,8 +946,6 @@ namespace NDispWin
                                 Event.OP_LOT_START.Set("LotInfo", $"{LotInfo2.sOperatorID},{LotInfo2.LotNumber},{LotInfo2.Osram.ElevenSeries},{LotInfo2.Osram.DAStartNumber}");
                             }
                         }
-                        
-                        
                         break;
                     case "STOP":
                     case "PAUSE":
@@ -1258,7 +1272,6 @@ namespace NDispWin
             }
             return list;
         }
-
         public static List<string> LEA_GetList()
         {
             var almList = typeof(Messages).GetFields(BindingFlags.Public | BindingFlags.Static)
@@ -1381,6 +1394,192 @@ namespace NDispWin
             return Directory
                 .GetFiles(directory)
                 .Any(f => Path.GetFileName(f) == targetFile); // case-sensitive match
+        }
+
+        public static void GAR(string attribute)
+        {
+            ReceivedXMLMapData = false;
+            Send(nameof(StreamFunc.GAR) + $"{attribute}");// SubstrateID
+        }
+
+        static string currentXmlString = "";
+        public static bool DecodeMap(string xmlString, ref string substrateID, ref string binCodeDefinitionString, ref string binCodesString)
+        {
+            currentXmlString = xmlString;
+
+            XNamespace ns = "urn:semi-org:xsd.E142-1.V1005.SubstrateMap";
+            XDocument doc = null;
+
+            try
+            {
+                doc = XDocument.Parse(xmlString);
+
+                var substrateId = doc.Descendants(ns + "Substrate")
+                                     .FirstOrDefault()?
+                                     .Attribute("SubstrateId")?
+                                     .Value;
+                substrateID = substrateId;
+
+                var binDefinitions = doc.Descendants(ns + "BinDefinition")
+                .Select(x => new
+                {
+                    Pick = (string)x.Attribute("Pick"),
+                    BinDescription = (string)x.Attribute("BinDescription"),
+                    BinQuality = (string)x.Attribute("BinQuality"),
+                    BinCount = (string)x.Attribute("BinCount"),
+                    BinCode = (string)x.Attribute("BinCode")
+                })
+                .ToList();
+
+                List<string> toProcess = new List<string>();
+                foreach (var bin in binDefinitions)
+                {
+                    binCodeDefinitionString = binCodeDefinitionString + $"{bin.BinQuality}-{bin.BinCode}\n";
+                }
+
+                var binCodes = doc.Descendants(ns + "BinCode")
+                                  .Select(x => x.Value.Trim())
+                                  .Where(x => !string.IsNullOrEmpty(x))
+                                  .ToList();
+
+                foreach (var bin in binCodes)
+                {
+                    binCodesString = binCodesString + $"{bin}\n";
+                }
+
+                Point cr = new Point(0, 0);
+                cr = new Point(binCodes[0].Length / 4, binCodes.Count);
+
+                string[,] dnLoadMap = new string[400, 400];
+                int[,] map = new int[400, 400];
+
+                for (int r = 0; r < cr.Y; r++)
+                {
+                    for (int c = 0; c < cr.X; c++)
+                    {
+                        dnLoadMap[c, r] = binCodes[r].Substring(c * 4, 4);
+                        switch (dnLoadMap[c, r])
+                        {
+                            case string s when s.StartsWith("0"):
+                            case string t when t.StartsWith("1"):
+                            case string u when u.StartsWith("2"):
+                            case string v when v.StartsWith("3"):
+                            case string w when w.StartsWith("4"):
+                                {
+                                    map[c, r] = 0;
+                                    break;
+                                }
+                            default:
+                                map[c, r] = 210;
+                                break;
+                        }
+                        int unitNo = 0;
+                        DispProg.rt_Layouts[0].RCGetUnitNo(ref unitNo, c, r);
+                        DispProg.Map.CurrMap[0].Bin[unitNo] = (EMapBin)map[c, r];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message.ToString());
+            }
+            return true;
+        }
+        public static bool DecodeMap(string xmlString)
+        {
+            string substrateID = "";
+            string binCodeDefinitions = "";
+            string binCodes = "";
+            return DecodeMap(xmlString, ref substrateID, ref binCodeDefinitions, ref binCodes);
+        }
+
+        public static string EncodeBinCodeStrings()
+        {
+            int iCol = 0;
+            int iRow = 0;
+            int[,] map = new int[400, 400];
+            for (int i = 0; i < DispProg.rt_Layouts[0].TUCount; i++)
+            {
+                DispProg.rt_Layouts[0].UnitNoGetRC(i, ref iCol, ref iRow);
+                int iColM = DispProg.rt_Layouts[0].TColCount - 1 - iCol;
+
+                try
+                {
+                    map[iColM, iRow] = (int)DispProg.Map.CurrMap[0].Bin[i];
+                }
+                catch
+                {
+
+                }
+            }
+
+            string binCodesStrings = "";
+            for (int r = 0; r < iRow; r++)
+            {
+                for (int c = 0; c < iCol; c++)
+                {
+                    int bin = map[c, r];
+                    string binCode = "AAAA";
+
+                    //if (bin < 100) binCode = "0A0F";//Unprocessed
+                    //                                //None = 0, BinNG = 100,
+                    //                                //MapOK = 1, MapNG = 101,
+                    //                                //RefOK = 2, RefNG = 102,
+                    //                                //HeightOK = 3, HeightNG = 103,
+                    //                                //UnitMarkOK = 4, UnitMarkNG = 104,
+                    //                                //VVIOK = 6, VVING = 106,
+                    if (bin >= 100 && bin < 200) binCode = "0000";//Complete = 200
+                                                                  //if (bin == (int)EMapBin.VVING/*106*/) binCode = "0F0F";//VVING = 106
+                                                                  //if (bin == 200) binCode = "AAAA";//Complete = 200
+                                                                  //if (bin == 210) binCode = "0C0F";//InMapNG = 210,
+                                                                  //if (bin == 220) binCode = "0AFF";//Bypass = 220,
+                                                                  //if (bin == 255) binCode = "0A0F";//PreMapNG = 255
+
+                    binCodesStrings = binCodesStrings + binCode;
+                }
+                binCodesStrings = binCodesStrings + $"\n";
+            }
+
+            return "";
+        }
+
+        public static bool EncodeMap(string binCodesString, ref string xmlString)
+        {
+            XNamespace ns = "urn:semi-org:xsd.E142-1.V1005.SubstrateMap";
+            XDocument doc = null;
+
+            try
+            {
+                doc = XDocument.Parse(currentXmlString);
+
+                var substrate = doc.Descendants(ns + "Substrate").FirstOrDefault();
+                if (substrate != null)
+                {
+                    substrate.SetAttributeValue("SubstrateId", "FO");
+                }
+
+                string[] lines = binCodesString.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+                // Locate the <BinCodeMap> node
+                var binCodes = doc.Descendants(ns + "BinCodeMap").FirstOrDefault();
+                // Remove existing BinCode elements
+                binCodes.Elements(ns + "BinCode").Remove();
+
+                foreach (string line in lines)
+                {
+                    // Add new BinCode elements
+                    binCodes.Add(new XElement(ns + "BinCode", line));
+                }
+
+                xmlString = doc.ToString();
+                currentXmlString = "";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message.ToString());
+            }
+
+            return true;
         }
     }
 }

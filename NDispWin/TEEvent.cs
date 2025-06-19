@@ -217,7 +217,7 @@ namespace NDispWin
         public static TEEvent MAP_REQUEST = new TEEvent(2835, "Map Request.");
         public static TEEvent MAP_DOWNLOADED = new TEEvent(2836, "Map Downloaded.");
         public static TEEvent MAP_UPLOADED = new TEEvent(2837, "Map Upload.");
-        public static TEEvent MAP_UPDATE = new TEEvent(2838, "Map Update.");
+        public static TEEvent SECSGEM_MAP_UPDATED = new TEEvent(2838, "Map Update.");
 
         public static TEEvent MAP_RECOVER_PROMPT = new TEEvent(2840, "Map Recover Prompt.");
         public static TEEvent MAP_RECOVER_UPLOADED = new TEEvent(2841, "Map Recover Uploaded.");
@@ -226,8 +226,8 @@ namespace NDispWin
 
         public static TEEvent SUBSTRATE_START = new TEEvent(2850, "Substrate Start.");
         public static TEEvent SUBSTRATE_END = new TEEvent(2851, "Substrate End.");
-        public static TEEvent SUBSTRATE_SCANNED = new TEEvent(2852, "Substrate Scanned.");
-        public static TEEvent SUBSTRATE_INFO = new TEEvent(2853, "Set Substrate Info Received.");
+        public static TEEvent SECSGEM_E142_SUBSTRATE_SCANNED = new TEEvent(2852, "Substrate Scanned.");
+        public static TEEvent SECSGEM_E142_SUBSTRATE_INFO = new TEEvent(2853, "Set Substrate Info Received.");
 
         public static TEEvent TERMINAL_MESSAGE_ACK = new TEEvent(2880, "Terminal Message Acknowledge.");
 
