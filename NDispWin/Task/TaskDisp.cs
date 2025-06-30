@@ -9363,6 +9363,8 @@ namespace NDispWin
             {
                 Msg MsgBox = new Msg();
                 EMsgRes Resp = MsgBox.Show("IDReader_Read DataMatrix Error.", Ex.Message.ToString(), TEMessage.EType.Error, EMsgBtn.smbRetry_Cancel);
+                Msg MsgBox1 = new Msg();
+                MsgBox1.Show(Messages.E142_SCANNER_TIMEOUT, Ex.Message);
                 switch (Resp)
                 {
                     case EMsgRes.smrRetry: goto _Retry;

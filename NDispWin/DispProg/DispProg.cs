@@ -11344,13 +11344,13 @@ namespace NDispWin
                                     string s = TFSecsGem.EncodeBinCodeStrings();
                                     TFSecsGem.EncodeMap(s, ref xmlString);
                                     TFSecsGem.Send($"{nameof(StreamFunc.ERS)},MapData,{xmlString}");
-
+                                    TFSecsGem.Map_Update_Content = xmlString;
                                     Event.SECSGEM_MAP_UPDATED.Set();
                                     break;
                                 }
                         }
                         Event.SUBSTRATE_END.Set();
-
+                        TFSecsGem.SubstrateStatus[TFSecsGem.SubstrateID] = "COMPLETE";
                         BdReady = true;
                         Define_Run.UpdateProcessStatus_BdReady();  
 
@@ -22775,6 +22775,13 @@ namespace NDispWin
                     Log.Board.WriteByMonthDay("READ_ID: " + ID);
                     //Event.READ_ID.Set("ID", ID);
                     Event.SECSGEM_E142_SUBSTRATE_SCANNED.Set();
+                    if (!TFSecsGem.SubstrateStatus.ContainsKey(ID) && ID !="")
+                    {
+                        Msg MsgBox = new Msg();
+                        MsgBox.Show(Messages.E142_SUBSTRATEID_MISMATCH);
+                        goto _Stop;
+                    }
+                    TFSecsGem.SubstrateID = ID;
 
                     if (ID == "")
                     {

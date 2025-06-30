@@ -54,13 +54,17 @@ namespace NDispWin
             this.btnGenerateIDList = new System.Windows.Forms.Button();
             this.lblProcessState = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.cbE142 = new System.Windows.Forms.CheckBox();
+            this.tbBadgeNo = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.cbSetSubstrate = new System.Windows.Forms.CheckBox();
+            this.cbLocal = new System.Windows.Forms.CheckBox();
+            this.rtbBinCodes = new System.Windows.Forms.RichTextBox();
             this.tbSubstrateID = new System.Windows.Forms.TextBox();
+            this.rtbInfo = new System.Windows.Forms.RichTextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.btnUpload = new System.Windows.Forms.Button();
             this.btnDownload = new System.Windows.Forms.Button();
-            this.rtbInfo = new System.Windows.Forms.RichTextBox();
-            this.rtbBinCodes = new System.Windows.Forms.RichTextBox();
-            this.cbLocal = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -295,6 +299,10 @@ namespace NDispWin
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.cbE142);
+            this.groupBox4.Controls.Add(this.tbBadgeNo);
+            this.groupBox4.Controls.Add(this.label4);
+            this.groupBox4.Controls.Add(this.cbSetSubstrate);
             this.groupBox4.Controls.Add(this.cbLocal);
             this.groupBox4.Controls.Add(this.rtbBinCodes);
             this.groupBox4.Controls.Add(this.tbSubstrateID);
@@ -309,17 +317,83 @@ namespace NDispWin
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "E142";
             // 
+            // cbE142
+            // 
+            this.cbE142.AutoSize = true;
+            this.cbE142.Location = new System.Drawing.Point(9, 15);
+            this.cbE142.Name = "cbE142";
+            this.cbE142.Size = new System.Drawing.Size(54, 18);
+            this.cbE142.TabIndex = 83;
+            this.cbE142.Text = "E142";
+            this.cbE142.UseVisualStyleBackColor = true;
+            this.cbE142.CheckedChanged += new System.EventHandler(this.cbE142_CheckedChanged);
+            // 
+            // tbBadgeNo
+            // 
+            this.tbBadgeNo.Location = new System.Drawing.Point(88, 40);
+            this.tbBadgeNo.Name = "tbBadgeNo";
+            this.tbBadgeNo.Size = new System.Drawing.Size(128, 22);
+            this.tbBadgeNo.TabIndex = 82;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 43);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(60, 14);
+            this.label4.TabIndex = 81;
+            this.label4.Text = "Badge No";
+            // 
+            // cbSetSubstrate
+            // 
+            this.cbSetSubstrate.AutoSize = true;
+            this.cbSetSubstrate.Location = new System.Drawing.Point(89, 15);
+            this.cbSetSubstrate.Name = "cbSetSubstrate";
+            this.cbSetSubstrate.Size = new System.Drawing.Size(102, 18);
+            this.cbSetSubstrate.TabIndex = 80;
+            this.cbSetSubstrate.Text = "Set Substrate";
+            this.cbSetSubstrate.UseVisualStyleBackColor = true;
+            this.cbSetSubstrate.CheckedChanged += new System.EventHandler(this.cbSubstrateScanner_CheckedChanged);
+            // 
+            // cbLocal
+            // 
+            this.cbLocal.AutoSize = true;
+            this.cbLocal.Location = new System.Drawing.Point(294, 29);
+            this.cbLocal.Name = "cbLocal";
+            this.cbLocal.Size = new System.Drawing.Size(53, 18);
+            this.cbLocal.TabIndex = 79;
+            this.cbLocal.Text = "Local";
+            this.cbLocal.UseVisualStyleBackColor = true;
+            // 
+            // rtbBinCodes
+            // 
+            this.rtbBinCodes.Location = new System.Drawing.Point(144, 95);
+            this.rtbBinCodes.Name = "rtbBinCodes";
+            this.rtbBinCodes.Size = new System.Drawing.Size(359, 213);
+            this.rtbBinCodes.TabIndex = 78;
+            this.rtbBinCodes.Text = "";
+            this.rtbBinCodes.WordWrap = false;
+            // 
             // tbSubstrateID
             // 
-            this.tbSubstrateID.Location = new System.Drawing.Point(88, 27);
+            this.tbSubstrateID.Location = new System.Drawing.Point(88, 68);
             this.tbSubstrateID.Name = "tbSubstrateID";
             this.tbSubstrateID.Size = new System.Drawing.Size(128, 22);
             this.tbSubstrateID.TabIndex = 72;
             // 
+            // rtbInfo
+            // 
+            this.rtbInfo.Location = new System.Drawing.Point(9, 95);
+            this.rtbInfo.Name = "rtbInfo";
+            this.rtbInfo.Size = new System.Drawing.Size(129, 213);
+            this.rtbInfo.TabIndex = 77;
+            this.rtbInfo.Text = "";
+            this.rtbInfo.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 30);
+            this.label3.Location = new System.Drawing.Point(6, 71);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(76, 14);
             this.label3.TabIndex = 71;
@@ -344,34 +418,6 @@ namespace NDispWin
             this.btnDownload.Text = "Download";
             this.btnDownload.UseVisualStyleBackColor = true;
             this.btnDownload.Click += new System.EventHandler(this.btnDownload_Click);
-            // 
-            // rtbInfo
-            // 
-            this.rtbInfo.Location = new System.Drawing.Point(9, 67);
-            this.rtbInfo.Name = "rtbInfo";
-            this.rtbInfo.Size = new System.Drawing.Size(129, 241);
-            this.rtbInfo.TabIndex = 77;
-            this.rtbInfo.Text = "";
-            this.rtbInfo.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
-            // 
-            // rtbBinCodes
-            // 
-            this.rtbBinCodes.Location = new System.Drawing.Point(144, 67);
-            this.rtbBinCodes.Name = "rtbBinCodes";
-            this.rtbBinCodes.Size = new System.Drawing.Size(359, 241);
-            this.rtbBinCodes.TabIndex = 78;
-            this.rtbBinCodes.Text = "";
-            this.rtbBinCodes.WordWrap = false;
-            // 
-            // cbLocal
-            // 
-            this.cbLocal.AutoSize = true;
-            this.cbLocal.Location = new System.Drawing.Point(294, 29);
-            this.cbLocal.Name = "cbLocal";
-            this.cbLocal.Size = new System.Drawing.Size(53, 18);
-            this.cbLocal.TabIndex = 79;
-            this.cbLocal.Text = "Local";
-            this.cbLocal.UseVisualStyleBackColor = true;
             // 
             // frmSecsGem
             // 
@@ -440,5 +486,9 @@ namespace NDispWin
         private System.Windows.Forms.RichTextBox rtbInfo;
         private System.Windows.Forms.RichTextBox rtbBinCodes;
         private System.Windows.Forms.CheckBox cbLocal;
+        private System.Windows.Forms.CheckBox cbSetSubstrate;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.CheckBox cbE142;
+        private System.Windows.Forms.TextBox tbBadgeNo;
     }
 }

@@ -32,7 +32,29 @@ DOT, CLINE
 
 DOT, CLINE
 
-
+Ver 6.1.6.1 - JH - 20250630 -Gitted
+[Feature] SecsGem 
+  - DispProg.cs
+  > Update Map_Update_Content and send MAP_UPDATE CEID, Check Scanned SubstrateID in Set Substrate and prompt Alarm if not tally
+  - frmAuto.cs
+  > Added DataGrid for Set substrate info
+  - TaskDisp.cs
+  > Prompt SubstrateID scan time out in Read ID
+  - ErrCode.cs
+  > Add ALID for E142
+  - frmSecsGem.cs
+  > Add ECID for E142 & Set Substrate
+  > Update OperatorID(Badge No)when request mapping
+  - TEEvent.cs
+  > Add Get & Set for new VID
+  - TFSecsGem.cs
+  > Modify ECS case
+  > Modify PPS case to read binary recipe data
+  > Add DPS ( delete program Set ), already deleted in gemtaro hence here reply event only
+  > Modify GAD case for request mapping and add SAR case for Set substrate info
+  > Add PPverification to verify PP error if any
+  > Modify GetVID function to reply according to sequence received
+  > Prompt invalid data input alarm if fail to decode map
 
 Ver 6.1.6.0 - KN - 20250619 - Gitted
 - [Feature] Added Osram E142 Support 

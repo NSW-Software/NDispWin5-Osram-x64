@@ -416,6 +416,8 @@ namespace NDispWin
                 lblProcessState.BackColor = Color.Yellow;
                 if (TFSecsGem.Eq.ProcessState != EProcessState.Idle) { TFSecsGem.Eq.ProcessState = EProcessState.Idle; }
             }
+
+            RefreshSubstrateGrid();
         }
         private void tmr_DateTime_Tick(object sender, EventArgs e)
         {
@@ -928,9 +930,17 @@ namespace NDispWin
                                 GDefine.Status = EStatus.Stop;
                                 Define_Run.TR_StopRun();
                                 Event.OP_FINISH_RUN.Set();
-                                Event.OP_LOT_END.Set("LotInfo", $"{LotInfo2.sOperatorID},{LotInfo2.LotNumber},{LotInfo2.Osram.ElevenSeries},{LotInfo2.Osram.DAStartNumber}");
-                                Msg MsgBox = new Msg();
-                                MsgBox.Show(Messages.LOT_END_IN_MAGAZINE_EMPTY);
+                                if(TFSecsGem.SubstrateStatus.Values.All(s => s == "Complete"))
+                                {
+                                    Event.OP_LOT_END.Set("LotInfo", $"{LotInfo2.sOperatorID},{LotInfo2.LotNumber},{LotInfo2.Osram.ElevenSeries},{LotInfo2.Osram.DAStartNumber}");
+                                    Msg MsgBox = new Msg();
+                                    MsgBox.Show(Messages.LOT_END_IN_MAGAZINE_EMPTY);
+                                }
+                                else
+                                {
+                                    Msg MsgBox = new Msg();
+                                    MsgBox.Show("Check Set Substrate Status.");
+                                }
 
                             }
                         }
@@ -1196,6 +1206,24 @@ namespace NDispWin
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
+        }
+
+        private void RefreshSubstrateGrid()
+        {
+            dgvSubstrateStatus.AutoGenerateColumns = true;
+
+            var displayList = TFSecsGem.SubstrateStatus
+                .Select(kv => new SubstrateDisplay { ID = kv.Key, Status = kv.Value })
+                .ToList();
+
+            dgvSubstrateStatus.DataSource = null; // Clear old data
+            dgvSubstrateStatus.DataSource = displayList;
+        }
+
+        public class SubstrateDisplay
+        {
+            public string ID { get; set; }
+            public string Status { get; set; }
         }
     }
 }

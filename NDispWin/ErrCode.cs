@@ -475,6 +475,12 @@ namespace NDispWin
         public static TEMessage ELEV_MAG_MISSING = new TEMessage(5240, "Elevator Magazine is Missing.", "1. Check Magazine Present.@2. Check Magazine Sensor.", TEMessage.EType.Error, false);
         #endregion
         public static TEMessage ELEV_EX_ERR = new TEMessage(5998, "Elevator Exception Error.", "Check ExMessage for details.", TEMessage.EType.Error, false);
+        #region E142
+        public static TEMessage E142_SCANNER_TIMEOUT = new TEMessage(6000, "E142 Scan Time Out.", "Check Camera Resolution.", TEMessage.EType.Error, true);
+        public static TEMessage E142_INVALID_MAPDATA_XML_FORMAT = new TEMessage(6001, "E142 Invalid Map Data XML Format.", "Check ExMessage for details.", TEMessage.EType.Error, true);
+        public static TEMessage E142_SUBSTRATEID_MISMATCH = new TEMessage(6002, "E142 Substrate ID Mismatch.", "Check Substrate ID and Set Substrate ID.", TEMessage.EType.Error, true);
+        public static TEMessage E142_HOST_REJECT_MAPDATA_REQUEST = new TEMessage(6003, "E142 Host Reject MapData Request.", "Check ExMessage for details.", TEMessage.EType.Error, true);
+        #endregion
     }
 
     public class TCMessages

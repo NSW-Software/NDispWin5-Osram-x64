@@ -387,7 +387,7 @@ namespace NDispWin
                     case nameof(VID.PP_EXECNAME):
                         return GDefine.ProgRecipeName;
                     case nameof(VID.PP_ERROR):
-                        return TFSecsGem.PPError;
+                        return (int)TFSecsGem.PPError;
 
                     case nameof(VID.TEMPCTRL1SV):
                         if (GDefine.TempCtrl_Type == GDefine.ETempCtrl.Autonics_TX_TK)
@@ -524,6 +524,8 @@ namespace NDispWin
                         return LotInfo2.Osram.Operation;
                     case nameof(VID.SUBSTRATEID):
                         return DispProg.rt_Read_IDs[0, 0];
+                    case nameof(VID.MAP_UPDATE):
+                        return TFSecsGem.Map_Update_Content;
                     case nameof(VID.MODEL1DISPGAP):
                     case nameof(VID.MODEL2DISPGAP):
                     case nameof(VID.MODEL3DISPGAP):
@@ -712,6 +714,10 @@ namespace NDispWin
                             }
                         }
                         break;
+                    case nameof(VID.SET_SUBSTRATE):
+                        return Convert.ToInt32(TFSecsGem.Set_Substrate);
+                    case nameof(VID.E142_Map_On):
+                        return Convert.ToInt32(TFSecsGem.E142_Map_On);
                         #endregion
                 }
                 return 0;
@@ -998,6 +1004,16 @@ namespace NDispWin
                             }
                         }
                         break;
+                    case nameof(VID.SET_SUBSTRATE):
+                        {
+                            TFSecsGem.Set_Substrate = value;
+                        }
+                        break;
+                    case nameof(VID.E142_Map_On):
+                        {
+                            TFSecsGem.E142_Map_On = value;
+                        }
+                        break;
                         #endregion
                 }
             }
@@ -1184,6 +1200,9 @@ namespace NDispWin
         public static TEVID TEMPCTRL2TOL = new TEVID(31002, "Temperature Control Tol 2.", 0, 10, 0, "DegC");
         public static TEVID TEMPCTRL3TOL = new TEVID(31003, "Temperature Control Tol 3.", 0, 10, 0, "DegC");
         public static TEVID TEMPCTRL4TOL = new TEVID(31004, "Temperature Control Tol 4.", 0, 10, 0, "DegC");
+        public static TEVID SET_SUBSTRATE = new TEVID(31101, "Set Substrate Info On Off.", 0, 1, 0, "");
+        public static TEVID E142_Map_On = new TEVID(31102, "Ë142 Mapping On Off.", 0, 1, 0, "");
+
         #endregion
     }
 
