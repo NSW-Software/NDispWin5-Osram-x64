@@ -32,6 +32,12 @@ DOT, CLINE
 
 DOT, CLINE
 
+Ver 6.1.6.2 - JH - 20250706 -Gitted
+[Feature] SecsGem
+- TFSecsgem.cs
+> Modify PPS and send back event according to condition
+> Modify upload and download PP through read xml content in the file written by gemtaro
+
 Ver 6.1.6.1 - JH - 20250630 -Gitted
 [Feature] SecsGem 
   - DispProg.cs

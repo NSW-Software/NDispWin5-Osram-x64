@@ -13,6 +13,7 @@ using System.Windows.Forms;
 using Automation.BDaq;
 using System.Xml.Linq;
 using System.Drawing;
+using static NDispWin.Intf;
 
 namespace NDispWin
 {
@@ -812,10 +813,16 @@ namespace NDispWin
                         {
                             try
                             {
+                                bool isCreated = false;
                                 var ppid = rxSplitData[1];
                                 var filePath = rxSplitData[2];
                                 var file = GDefine.RecipeDir.FullName + ppid + ".xml";
                                 string ppbody = "";
+                                string fullFilename = GDefine.ProgPath + "\\" + ppid + "." + GDefine.ProgExt;
+                                if (!File.Exists(fullFilename))
+                                {
+                                    isCreated = true;
+                                }
                                 if (File.Exists(filePath))
                                 {
                                     ppbody = File.ReadAllText(filePath);
@@ -850,7 +857,20 @@ namespace NDispWin
                                 }
                                     
                                 else
+                                { 
                                     Send(nameof(StreamFunc.PPA) + ",Success");
+                                    if (isCreated)
+                                    {
+                                        Event.SECSGEM_PP_CREATE.Set();
+                                        isCreated = false;
+                                    }
+                                    else
+                                    {
+                                        Event.SECSGEM_PP_CHANGE.Set();
+                                    }
+                                    
+                                }
+                                    
                             }
                             catch (Exception ex)
                             {
@@ -1407,17 +1427,27 @@ namespace NDispWin
                 if (Environment.TickCount >= t) return;
             }
 
-            
-            var fileName = GDefine.RecipeDir + ppid + ".xml";
+            var fileName = GDefine.RecipeDir.FullName + ppid + ".xml";
 
-            StreamReader a = new StreamReader(fileName);
-            var slist = new List<dynamic>()
-                                {
-                                    fileName,
-                                    a.ReadToEnd(),
-                                };
+            if (File.Exists(fileName))
+            {
+                string content;
+                using (StreamReader reader = new StreamReader(fileName))
+                {
+                    content = reader.ReadToEnd();
+                }
+                StringBuilder binaryBuilder = new StringBuilder();
 
-            Send(nameof(StreamFunc.PPS) + $",{ppid},{slist}");
+                foreach (char c in content)
+                {
+                    string binarychar = Convert.ToString(c, 2).PadLeft(8, '0');
+                    binaryBuilder.Append(binarychar);
+                }
+                string filepath = @"D:\GemTaro__\READFILE\PPSData.txt";
+                string binaryString = binaryBuilder.ToString();
+                File.WriteAllText(filepath, binaryString);
+                Send(nameof(StreamFunc.PPS) + $",{ppid},{filepath}");
+            }
         }
         public static void RequestPP_PPR(string recipeName)
         {
@@ -1434,21 +1464,69 @@ namespace NDispWin
 
             try
             {
+                bool isCreated = false;
                 var ppid = rxPPDData[1];
-                var ppbody = rxPPDData[2];
-                var file = GDefine.RecipeDir + ppid + ".xml";
-
+                var filePath = rxPPDData[2];
+                var file = GDefine.RecipeDir.FullName + ppid + ".xml";
+                string ppbody = "";
+                string fullFilename = GDefine.ProgPath + "\\" + ppid + "." + GDefine.ProgExt;
+                if (!File.Exists(fullFilename))
+                {
+                    isCreated = true;
+                }
+                if (File.Exists(filePath))
+                {
+                    ppbody = File.ReadAllText(filePath);
+                }
+                StringBuilder xmlbuilder = new StringBuilder();
+                for (int i = 0; i < ppbody.Length; i += 8)
+                {
+                    string byteString = ppbody.Substring(i, 8);
+                    char character = (char)Convert.ToByte(byteString, 2);
+                    xmlbuilder.Append(character);
+                }
+                string xmlcontent = xmlbuilder.ToString();
                 slim.EnterWriteLock();
-                StreamWriter a = new StreamWriter(file);
-                a.Write(ppbody as string);
-                a.Close();
-                slim.ExitWriteLock();
+                try
+                {
+                    using (StreamWriter writer = new StreamWriter(file))
+                    {
+                        writer.Write(xmlcontent);
+                        //a.Close();
+                    }
+                }
+                finally
+                {
+                    slim.ExitWriteLock();
+                }
 
-                DispProg.LoadProgName(ppid);
+                if (!DispProg.LoadProgName(ppid))
+                {
+                    Send(nameof(StreamFunc.PPA) + ",LoadProgNameFail");
+                    PPError = EPPError.LoadFail;
+                    Event.SECSGEM_PP_VERIFICATION.Set();
+                }
 
+                else
+                {
+                    Send(nameof(StreamFunc.PPA) + ",Success");
+                    if (isCreated)
+                    {
+                        Event.SECSGEM_PP_CREATE.Set();
+                        isCreated = false;
+                    }
+                    else
+                    {
+                        Event.SECSGEM_PP_CHANGE.Set();
+                    }
+
+                }
             }
             catch (Exception ex)
             {
+                Send(nameof(StreamFunc.PPA) + ",LoadProgNameFail");
+                PPError = EPPError.LoadFail;
+                Event.SECSGEM_PP_VERIFICATION.Set();
             }
         }
 
