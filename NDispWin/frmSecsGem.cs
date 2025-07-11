@@ -293,6 +293,8 @@ namespace NDispWin
             }
             else
             {
+                if (TFSecsGem.E142_Map_On == "0") return;
+
                 TFSecsGem.GAR(tbSubstrateID.Text);
                 LotInfo2.sOperatorID = tbBadgeNo.Text;
                 Event.MAP_REQUEST.Set();

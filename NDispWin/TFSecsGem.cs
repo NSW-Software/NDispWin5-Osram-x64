@@ -1057,7 +1057,8 @@ namespace NDispWin
                             else
                             {
                                 Send($"{data0},SUCCESS");
-                                Event.OP_LOT_START.Set("LotInfo", $"{LotInfo2.sOperatorID},{LotInfo2.LotNumber},{LotInfo2.Osram.ElevenSeries},{LotInfo2.Osram.DAStartNumber}");
+                                Event.OP_START_RUN.Set();
+                                //Event.OP_LOT_START.Set("LotInfo", $"{LotInfo2.sOperatorID},{LotInfo2.LotNumber},{LotInfo2.Osram.ElevenSeries},{LotInfo2.Osram.DAStartNumber}");
                             }
                         }
                         break;
@@ -1416,13 +1417,13 @@ namespace NDispWin
         public static void UploadPP_PPI_PPS(string recipeName)
         {
             string ppid = recipeName;
-            rxPPGData.Clear();
+            rxPPGData?.Clear();
             Send(nameof(StreamFunc.PPI) + $",{ppid},{ppid.Length}");
 
             int t = Environment.TickCount + Timeout;
             while (true)//wait PPG
             {
-                if (rxPPGData.Count > 1) break;
+                if (rxPPGData?.Count > 1) break;
                 Thread.Sleep(0);
                 if (Environment.TickCount >= t) return;
             }
@@ -1451,13 +1452,13 @@ namespace NDispWin
         }
         public static void RequestPP_PPR(string recipeName)
         {
-            rxPPDData.Clear();
-            Send(nameof(StreamFunc.PPR) + $"{recipeName}");
+            rxPPDData?.Clear();
+            Send(nameof(StreamFunc.PPR) + $",{recipeName}");
 
             int t = Environment.TickCount + Timeout;
             while (true)//wait PPD
             {
-                if (rxPPDData.Count >= 3) break;
+                if (rxPPDData?.Count >= 3) break;
                 Thread.Sleep(0);
                 if (Environment.TickCount >= t) return;
             }

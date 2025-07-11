@@ -23153,6 +23153,7 @@ namespace NDispWin
                             }
                         case TaskDisp.EInputMapProtocol.OSRAM_E142:
                             {
+                                if (TFSecsGem.E142_Map_On == "0") return true;
                                 TFSecsGem.GAR(FrameNo);
 
                                 int t = Environment.TickCount;

@@ -31,6 +31,15 @@ X-12.	Unusual weight spike during weight check -> not occure after
 DOT, CLINE
 
 DOT, CLINE
+Ver 6.1.6.6 - JAY - 20250711 -Gitted
+[Feature] SecsGem
+- TFSecsgem.cs, GDefine.cs
+> SWAP the OP_START_RUN event and OP_LOT_START event
+> Add rxPPGData null checking
+> Add comma for RequestPP_PPR
+
+- frmSecsGem, DispProg.cs
+> Add E142_Map_On condition to end input map
 
 Ver 6.1.6.2 - JH - 20250706 -Gitted
 [Feature] SecsGem

@@ -1045,7 +1045,8 @@ namespace NDispWin
             b_TR_IsRunning = true;
             GDefineN.sw_StartStopTime.Restart();
 
-            Event.OP_START_RUN.Set();
+            //Event.OP_START_RUN.Set();
+            Event.OP_LOT_START.Set("LotInfo", $"{LotInfo2.sOperatorID},{LotInfo2.LotNumber},{LotInfo2.Osram.ElevenSeries},{LotInfo2.Osram.DAStartNumber}");
             TFSecsGem.Eq.ProcessState = EProcessState.Processing;
             return true;
         }
