@@ -62,13 +62,13 @@ namespace NDispWin
             lblDownWait.Text = $"{Model.DnWait}";
             lblPostWait.Text = $"{Model.PostWait}";
 
-            cbTailOff.Checked = CmdLine.IPara[4] > 0;
-            cbSquare.Checked = CmdLine.IPara[5] > 0;
+            //cbTailOff.Checked = CmdLine.IPara[4] > 0;
+            //cbSquare.Checked = CmdLine.IPara[5] > 0;
 
             lblHead1DefVolume.Text = $"{CmdLine.DPara[18]:f3}";
             lblHead2DefVolume.Text = $"{CmdLine.DPara[19]:f3}";
-            lblHead1Volume.Text = $"{(TFPump.PP4.DispAmounts[0] - TFPump.PP4.BSuckAmounts[0]):f3}";
-            lblHead2Volume.Text = $"{(TFPump.PP4.DispAmounts[1] - TFPump.PP4.BSuckAmounts[1]):f3}";
+            //lblHead1Volume.Text = $"{(TFPump.PP4.DispAmounts[0] - TFPump.PP4.BSuckAmounts[0]):f3}";
+            //lblHead2Volume.Text = $"{(TFPump.PP4.DispAmounts[1] - TFPump.PP4.BSuckAmounts[1]):f3}";
             lblBackSuck1.Text = $"{TFPump.PP4.BSuckAmounts[0]:f3}";
             lblBackSuck2.Text = $"{TFPump.PP4.BSuckAmounts[1]:f3}";
 
@@ -385,20 +385,20 @@ namespace NDispWin
             UC.AdjustExec(CmdName + ", Head2DefNettVolume", ref CmdLine.DPara[19], 0, 100);
             UpdateDisplay();
         }
-        private void lblHead2Volume_Click(object sender, EventArgs e)
-        {
-            double d = TFPump.PP4.DispAmounts[1] - TFPump.PP4.BSuckAmounts[1];
-            if (UC.AdjustExec("PP PA Net Disp Amount", ref d, 0.001, 1300))
-                TFPump.PP4.DispAmounts = new double[] { TFPump.PP4.DispAmounts[0], d + TFPump.PP4.BSuckAmounts[1] };
-            UpdateDisplay();
-        }
-        private void lblHead1Volume_Click(object sender, EventArgs e)
-        {
-            double d = TFPump.PP4.DispAmounts[0] - TFPump.PP4.BSuckAmounts[0];
-            if (UC.AdjustExec("PP PB Net Disp Amount", ref d, 0.001, 1300))
-                TFPump.PP4.DispAmounts = new double[] { d + TFPump.PP4.BSuckAmounts[0], TFPump.PP4.DispAmounts[1] };
-            UpdateDisplay();
-        }
+        //private void lblHead2Volume_Click(object sender, EventArgs e)
+        //{
+        //    double d = TFPump.PP4.DispAmounts[1] - TFPump.PP4.BSuckAmounts[1];
+        //    if (UC.AdjustExec("PP PA Net Disp Amount", ref d, 0.001, 1300))
+        //        TFPump.PP4.DispAmounts = new double[] { TFPump.PP4.DispAmounts[0], d + TFPump.PP4.BSuckAmounts[1] };
+        //    UpdateDisplay();
+        //}
+        //private void lblHead1Volume_Click(object sender, EventArgs e)
+        //{
+        //    double d = TFPump.PP4.DispAmounts[0] - TFPump.PP4.BSuckAmounts[0];
+        //    if (UC.AdjustExec("PP PB Net Disp Amount", ref d, 0.001, 1300))
+        //        TFPump.PP4.DispAmounts = new double[] { d + TFPump.PP4.BSuckAmounts[0], TFPump.PP4.DispAmounts[1] };
+        //    UpdateDisplay();
+        //}
 
         private void lblSpeed2Ratio_Click(object sender, EventArgs e)
         {
@@ -406,30 +406,27 @@ namespace NDispWin
             UpdateDisplay();
         }
 
-        private void cbTailOff_Click(object sender, EventArgs e)
-        {
-            CmdLine.IPara[4] = CmdLine.IPara[4] > 0 ? 0 : 1;
+        //private void cbTailOff_Click(object sender, EventArgs e)
+        //{
+        //    CmdLine.IPara[4] = CmdLine.IPara[4] > 0 ? 0 : 1;
 
-            bool enabled = CmdLine.IPara[4] > 0;
-            Log.OnSet(CmdName + ", TailOff", !enabled, enabled);
+        //    bool enabled = CmdLine.IPara[4] > 0;
+        //    Log.OnSet(CmdName + ", TailOff", !enabled, enabled);
 
-            UpdateDisplay();
-        }
+        //    UpdateDisplay();
+        //}
+        //private void cbSquare_CheckedChanged(object sender, EventArgs e)
+        //{
+        //}
+        //private void cbSquare_Click(object sender, EventArgs e)
+        //{
+        //    CmdLine.IPara[5] = CmdLine.IPara[5] > 0 ? 0 : 1;
 
-        private void cbSquare_CheckedChanged(object sender, EventArgs e)
-        {
+        //    bool enabled = CmdLine.IPara[5] > 0;
+        //    Log.OnSet(CmdName + ", Square", !enabled, enabled);
 
-        }
-
-        private void cbSquare_Click(object sender, EventArgs e)
-        {
-            CmdLine.IPara[5] = CmdLine.IPara[5] > 0 ? 0 : 1;
-
-            bool enabled = CmdLine.IPara[5] > 0;
-            Log.OnSet(CmdName + ", Square", !enabled, enabled);
-
-            UpdateDisplay();
-        }
+        //    UpdateDisplay();
+        //}
 
         private void lblBackSuck2_Click(object sender, EventArgs e)
         {

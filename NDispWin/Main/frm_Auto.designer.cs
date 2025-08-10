@@ -92,6 +92,7 @@
             this.lbl_DB_DispOfst = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.btnResetProgram = new System.Windows.Forms.Button();
             this.label13 = new System.Windows.Forms.Label();
@@ -137,6 +138,8 @@
             this.label22 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
+            this.tpPanelList = new System.Windows.Forms.TabPage();
+            this.dgvPanelList = new System.Windows.Forms.DataGridView();
             this.panel4 = new System.Windows.Forms.Panel();
             this.ss_Bottom = new System.Windows.Forms.StatusStrip();
             this.tsddbtn_Language = new System.Windows.Forms.ToolStripDropDownButton();
@@ -152,8 +155,6 @@
             this.pnl_Right = new System.Windows.Forms.Panel();
             this.tmr_TR_Buttons = new System.Windows.Forms.Timer(this.components);
             this.tmr_1s = new System.Windows.Forms.Timer(this.components);
-            this.tpPanelList = new System.Windows.Forms.TabPage();
-            this.dgvPanelList = new System.Windows.Forms.DataGridView();
             this.pnl_RightTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbox_Logo)).BeginInit();
             this.pnl_RightBottom.SuspendLayout();
@@ -170,11 +171,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.imgBoxEmgu)).BeginInit();
             this.tpageSecsGem.SuspendLayout();
             this.gbPPSelect.SuspendLayout();
+            this.tpPanelList.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvPanelList)).BeginInit();
             this.ss_Bottom.SuspendLayout();
             this.panel5.SuspendLayout();
             this.pnl_Right.SuspendLayout();
-            this.tpPanelList.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvPanelList)).BeginInit();
             this.SuspendLayout();
             // 
             // pnl_RightTop
@@ -1078,6 +1079,7 @@
             // groupBox1
             // 
             this.groupBox1.AutoSize = true;
+            this.groupBox1.Controls.Add(this.richTextBox1);
             this.groupBox1.Controls.Add(this.label12);
             this.groupBox1.Controls.Add(this.btnResetProgram);
             this.groupBox1.Controls.Add(this.label13);
@@ -1095,6 +1097,16 @@
             this.groupBox1.TabIndex = 328;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Program";
+            // 
+            // richTextBox1
+            // 
+            this.richTextBox1.BackColor = System.Drawing.SystemColors.Control;
+            this.richTextBox1.ForeColor = System.Drawing.Color.Navy;
+            this.richTextBox1.Location = new System.Drawing.Point(7, 196);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(223, 86);
+            this.richTextBox1.TabIndex = 79;
+            this.richTextBox1.Text = "";
             // 
             // label12
             // 
@@ -1602,6 +1614,35 @@
             this.label8.TabIndex = 0;
             this.label8.Text = "PPID";
             // 
+            // tpPanelList
+            // 
+            this.tpPanelList.AccessibleDescription = "Panel List";
+            this.tpPanelList.BackColor = System.Drawing.SystemColors.Control;
+            this.tpPanelList.Controls.Add(this.dgvPanelList);
+            this.tpPanelList.Location = new System.Drawing.Point(4, 44);
+            this.tpPanelList.Name = "tpPanelList";
+            this.tpPanelList.Padding = new System.Windows.Forms.Padding(3);
+            this.tpPanelList.Size = new System.Drawing.Size(840, 917);
+            this.tpPanelList.TabIndex = 9;
+            this.tpPanelList.Text = "Panel List";
+            // 
+            // dgvPanelList
+            // 
+            this.dgvPanelList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvPanelList.BackgroundColor = System.Drawing.SystemColors.Control;
+            this.dgvPanelList.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvPanelList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvPanelList.ColumnHeadersVisible = false;
+            this.dgvPanelList.Dock = System.Windows.Forms.DockStyle.Top;
+            this.dgvPanelList.Location = new System.Drawing.Point(3, 3);
+            this.dgvPanelList.Name = "dgvPanelList";
+            this.dgvPanelList.RowHeadersVisible = false;
+            this.dgvPanelList.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.dgvPanelList.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.dgvPanelList.ShowEditingIcon = false;
+            this.dgvPanelList.Size = new System.Drawing.Size(834, 394);
+            this.dgvPanelList.TabIndex = 333;
+            // 
             // panel4
             // 
             this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
@@ -1720,35 +1761,6 @@
             this.tmr_1s.Interval = 1000;
             this.tmr_1s.Tick += new System.EventHandler(this.tmr_1s_Tick);
             // 
-            // tpPanelList
-            // 
-            this.tpPanelList.AccessibleDescription = "Panel List";
-            this.tpPanelList.BackColor = System.Drawing.SystemColors.Control;
-            this.tpPanelList.Controls.Add(this.dgvPanelList);
-            this.tpPanelList.Location = new System.Drawing.Point(4, 44);
-            this.tpPanelList.Name = "tpPanelList";
-            this.tpPanelList.Padding = new System.Windows.Forms.Padding(3);
-            this.tpPanelList.Size = new System.Drawing.Size(840, 917);
-            this.tpPanelList.TabIndex = 9;
-            this.tpPanelList.Text = "Panel List";
-            // 
-            // dgvPanelList
-            // 
-            this.dgvPanelList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvPanelList.BackgroundColor = System.Drawing.SystemColors.Control;
-            this.dgvPanelList.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvPanelList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvPanelList.ColumnHeadersVisible = false;
-            this.dgvPanelList.Dock = System.Windows.Forms.DockStyle.Top;
-            this.dgvPanelList.Location = new System.Drawing.Point(3, 3);
-            this.dgvPanelList.Name = "dgvPanelList";
-            this.dgvPanelList.RowHeadersVisible = false;
-            this.dgvPanelList.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            this.dgvPanelList.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.dgvPanelList.ShowEditingIcon = false;
-            this.dgvPanelList.Size = new System.Drawing.Size(834, 394);
-            this.dgvPanelList.TabIndex = 333;
-            // 
             // frm_Auto
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -1788,12 +1800,12 @@
             this.tpageSecsGem.PerformLayout();
             this.gbPPSelect.ResumeLayout(false);
             this.gbPPSelect.PerformLayout();
+            this.tpPanelList.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvPanelList)).EndInit();
             this.ss_Bottom.ResumeLayout(false);
             this.ss_Bottom.PerformLayout();
             this.panel5.ResumeLayout(false);
             this.pnl_Right.ResumeLayout(false);
-            this.tpPanelList.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvPanelList)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1924,5 +1936,6 @@
         private System.Windows.Forms.Label label32;
         private System.Windows.Forms.TabPage tpPanelList;
         private System.Windows.Forms.DataGridView dgvPanelList;
+        private System.Windows.Forms.RichTextBox richTextBox1;
     }
 }

@@ -429,7 +429,7 @@ namespace NDispWin
 
         private void lblStartLength_Click(object sender, EventArgs e)
         {
-            UC.AdjustExec(CmdName + ", StartLength", ref CmdLine.DPara[0], 0, 10);
+            UC.AdjustExec(CmdName + ", StartLength", ref CmdLine.DPara[0], 0, 20);
             UpdateDisplay();
         }
         private void lblStartGap_Click(object sender, EventArgs e)
@@ -450,7 +450,7 @@ namespace NDispWin
 
         private void lblEndLength_Click(object sender, EventArgs e)
         {
-            UC.AdjustExec(CmdName + ", EndLength", ref CmdLine.DPara[1], 0, 10);
+            UC.AdjustExec(CmdName + ", EndLength", ref CmdLine.DPara[1], 0, 20);
             UpdateDisplay();
         }
         private void lblEndGap_Click(object sender, EventArgs e)

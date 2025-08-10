@@ -30,6 +30,27 @@ X-12.	Unusual weight spike during weight check -> not occure after
 
 DOT, CLINE
 
+6/8 Osram items:
+//- Model list, Auto prevent update number.
+- BackCuck for Parlines.
+//- Set DownSpeed adn Z-Limit.
+//- Display total weight in auto
+- Auto load sequece recipe
+//BoardCapture allow stop
+
+Ver 6.1.7.0 - KN - 20250810 - Gitted
+- [Feature] Added frmMap load OSRAM eMOS csv format. Req YQ.
+- [Feature] Added BD_CAPTURE area scan cancel scan. Apply Max Image Size. Req YQ.
+- [Feature] Display GROUP_DISP and PAR_LINES weight at auto. Req Harin.
+- [Changes] Increased PAR_LINES Start and End Length limit from 10 to 20. Req Harin.
+- [Refactor] Refactor GROUP_DISP to support HPC3, customized for OsramPg
+- [Improve] frmDispProg set and check isDirty to prompt save
+- [BugFix] Corrected Model Auto value.
+Ver 6.1.6.1 - KN - 20250619 - Gitted
+- [Changes] Finalization of DOT_ZPATH UI
+- [Feature] Update Program Display to include current net vol.
+- [Changes] Hide Master Align buttons when not enabled.
+- [BugFix] Added TaskMHS Init set Pos station.
 Ver 6.1.6.0 - KN - 20250619 - Gitted
 - [Feature] Added Osram E142 Support 
 Ver 6.1.5.17 - KN - 20250612 - Gitted

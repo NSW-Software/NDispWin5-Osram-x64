@@ -75,9 +75,6 @@ namespace NDispWin
             this.lblBackSuck1 = new System.Windows.Forms.Label();
             this.lblBackSuck2 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
-            this.lblHead2Volume = new System.Windows.Forms.Label();
-            this.lblHead1Volume = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.lblDot4Pc = new System.Windows.Forms.Label();
             this.lblDot3Pc = new System.Windows.Forms.Label();
@@ -87,8 +84,6 @@ namespace NDispWin
             this.label8 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.lblSpeed2Ratio = new System.Windows.Forms.Label();
-            this.cbTailOff = new System.Windows.Forms.CheckBox();
-            this.cbSquare = new System.Windows.Forms.CheckBox();
             this.gbox_Pos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbZPathDot)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -620,9 +615,6 @@ namespace NDispWin
             this.groupBox1.Controls.Add(this.lblBackSuck1);
             this.groupBox1.Controls.Add(this.lblBackSuck2);
             this.groupBox1.Controls.Add(this.label13);
-            this.groupBox1.Controls.Add(this.lblHead2Volume);
-            this.groupBox1.Controls.Add(this.lblHead1Volume);
-            this.groupBox1.Controls.Add(this.label12);
             this.groupBox1.Controls.Add(this.label11);
             this.groupBox1.Controls.Add(this.lblDot4Pc);
             this.groupBox1.Controls.Add(this.lblDot3Pc);
@@ -681,43 +673,6 @@ namespace NDispWin
             this.label13.TabIndex = 209;
             this.label13.Text = "BackSuck (ul)";
             this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblHead2Volume
-            // 
-            this.lblHead2Volume.BackColor = System.Drawing.SystemColors.Window;
-            this.lblHead2Volume.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblHead2Volume.Location = new System.Drawing.Point(107, 71);
-            this.lblHead2Volume.Margin = new System.Windows.Forms.Padding(2);
-            this.lblHead2Volume.Name = "lblHead2Volume";
-            this.lblHead2Volume.Size = new System.Drawing.Size(75, 23);
-            this.lblHead2Volume.TabIndex = 208;
-            this.lblHead2Volume.Text = "-999.999";
-            this.lblHead2Volume.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.lblHead2Volume.Click += new System.EventHandler(this.lblHead2Volume_Click);
-            // 
-            // lblHead1Volume
-            // 
-            this.lblHead1Volume.BackColor = System.Drawing.SystemColors.Window;
-            this.lblHead1Volume.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblHead1Volume.Location = new System.Drawing.Point(186, 71);
-            this.lblHead1Volume.Margin = new System.Windows.Forms.Padding(2);
-            this.lblHead1Volume.Name = "lblHead1Volume";
-            this.lblHead1Volume.Size = new System.Drawing.Size(75, 23);
-            this.lblHead1Volume.TabIndex = 207;
-            this.lblHead1Volume.Text = "-999.999";
-            this.lblHead1Volume.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.lblHead1Volume.Click += new System.EventHandler(this.lblHead1Volume_Click);
-            // 
-            // label12
-            // 
-            this.label12.AccessibleDescription = "";
-            this.label12.Location = new System.Drawing.Point(5, 71);
-            this.label12.Margin = new System.Windows.Forms.Padding(2);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(109, 23);
-            this.label12.TabIndex = 206;
-            this.label12.Text = "Current Nett (ul)";
-            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label11
             // 
@@ -826,37 +781,12 @@ namespace NDispWin
             this.lblSpeed2Ratio.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.lblSpeed2Ratio.Click += new System.EventHandler(this.lblSpeed2Ratio_Click);
             // 
-            // cbTailOff
-            // 
-            this.cbTailOff.AutoSize = true;
-            this.cbTailOff.Location = new System.Drawing.Point(283, 390);
-            this.cbTailOff.Name = "cbTailOff";
-            this.cbTailOff.Size = new System.Drawing.Size(65, 18);
-            this.cbTailOff.TabIndex = 204;
-            this.cbTailOff.Text = "Tail Off";
-            this.cbTailOff.UseVisualStyleBackColor = true;
-            this.cbTailOff.Click += new System.EventHandler(this.cbTailOff_Click);
-            // 
-            // cbSquare
-            // 
-            this.cbSquare.AutoSize = true;
-            this.cbSquare.Location = new System.Drawing.Point(283, 410);
-            this.cbSquare.Name = "cbSquare";
-            this.cbSquare.Size = new System.Drawing.Size(64, 18);
-            this.cbSquare.TabIndex = 205;
-            this.cbSquare.Text = "Square";
-            this.cbSquare.UseVisualStyleBackColor = true;
-            this.cbSquare.CheckedChanged += new System.EventHandler(this.cbSquare_CheckedChanged);
-            this.cbSquare.Click += new System.EventHandler(this.cbSquare_Click);
-            // 
             // frmDispProg_ZPath
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(492, 623);
             this.ControlBox = false;
-            this.Controls.Add(this.cbSquare);
-            this.Controls.Add(this.cbTailOff);
             this.Controls.Add(this.lblSpeed2Ratio);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.groupBox1);
@@ -956,9 +886,6 @@ namespace NDispWin
         private System.Windows.Forms.Label lblDot3Pc;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label lblDot2Pc;
-        private System.Windows.Forms.Label lblHead2Volume;
-        private System.Windows.Forms.Label lblHead1Volume;
-        private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label lblBackSuck1;
         private System.Windows.Forms.Label lblBackSuck2;
@@ -966,7 +893,5 @@ namespace NDispWin
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblSpeed2Ratio;
         private System.Windows.Forms.PictureBox pbZPathDot;
-        private System.Windows.Forms.CheckBox cbTailOff;
-        private System.Windows.Forms.CheckBox cbSquare;
     }
 }

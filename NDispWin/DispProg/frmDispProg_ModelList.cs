@@ -488,9 +488,10 @@ namespace NDispWin
                                 }
                                 else
                                 {
+                                    Max = 500;
                                     CommonControl.GetMotorSpeedRange(TaskGantry.GZAxis, ref Min, ref Max);
                                     Min = 0;
-                                    Max = Math.Min(500, Max);
+                                    //Max = Math.Min(500, Max);
                                 }
                             }
                             if (ParaName.Contains("Accel"))

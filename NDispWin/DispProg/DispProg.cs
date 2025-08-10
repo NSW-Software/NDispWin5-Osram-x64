@@ -12,7 +12,7 @@ using Emgu.CV;
 
 namespace NDispWin
 {
-    enum EGDispCmd { None, New, DOT, LINE_START, LINE_PASS, LINE_END, DOT_START, DOT_END }
+    enum EGDispCmd { None, New, DOT, LINE_START, LINE_PASS, LINE_END, /*DOT_START, DOT_END*/ }
     enum ECutTailType { None, Fwd, Bwd, SqFwd, SqBwd, Rev, SqRev };
     enum EVHType { Hort, Vert };
     enum ELineType { Cont, Dash };
@@ -463,7 +463,6 @@ namespace NDispWin
             Y[0..99]        [YStart, YFirstStart, YLastStart, ..]
             */
             DOTS_ZPATH = 462,
-            //PAR_LINES = 461,
             /* Parameters
             ID              nil
             IPara[0..9]     [ModelNo, .1., Disp, .3., TailOff, Square, .6., .7., .8., .9.]
@@ -7832,7 +7831,8 @@ namespace NDispWin
 
                                     if (ActiveLine.IPara[3] == 0)
                                     {
-                                        if (!DoBdCapture(ActiveLine, CmdList.Line[Line].ID, dx, dy, dx2, dy2))
+                                        var cts = new CancellationTokenSource();
+                                        if (!DoBdCapture(ActiveLine, CmdList.Line[Line].ID, dx, dy, dx2, dy2, cts.Token))
                                         {
                                             Running = false;
                                         }
@@ -18375,25 +18375,25 @@ namespace NDispWin
         }
 
         public static double rt_RefWhitePixelPcnt = 0;
-        public static double rt_MinWhitePixelPcnt = 0;
-        public static double rt_MaxWhitePixelPcnt = 0;
-        public static double rt_OKMinWhitePixelPcnt = 0;
-        public static double rt_OKMaxWhitePixelPcnt = 0;
-        public static double rt_NGMinWhitePixelPcnt = 0;
-        public static double rt_NGMaxWhitePixelPcnt = 0;
+        public static double rt_DetectPixelPcntMin = 0;
+        public static double rt_DetectPixelPcntMax = 0;
+        public static double rt_OKDetectPixelPcntMin = 0;
+        public static double rt_OKDetectPixelPcntMax = 0;
+        public static double rt_NGDetectPixelPcntMin = 0;
+        public static double rt_NGDetectPixelPcntMax = 0;
         public static int rt_GenMap_OKCount = 0;
         public static int rt_GenMap_NGCount = 0;
         public static bool GenerateMap(TLine Line, TLayout Layout, Emgu.CV.Image<Emgu.CV.Structure.Gray, byte> Image, ref EMapBin[] MapBin)
         {
             rt_RefWhitePixelPcnt = 0;
-            rt_MinWhitePixelPcnt = 1;
-            rt_MaxWhitePixelPcnt = 0;
-            rt_OKMinWhitePixelPcnt = 1;
-            rt_OKMaxWhitePixelPcnt = 0;
-            rt_OKMinWhitePixelPcnt = 1;
-            rt_OKMaxWhitePixelPcnt = 0;
-            rt_NGMinWhitePixelPcnt = 1;
-            rt_NGMaxWhitePixelPcnt = 0;
+            rt_DetectPixelPcntMin = 1;
+            rt_DetectPixelPcntMax = 0;
+            rt_OKDetectPixelPcntMin = 1;
+            rt_OKDetectPixelPcntMax = 0;
+            rt_OKDetectPixelPcntMin = 1;
+            rt_OKDetectPixelPcntMax = 0;
+            rt_NGDetectPixelPcntMin = 1;
+            rt_NGDetectPixelPcntMax = 0;
             rt_GenMap_OKCount = 0;
             rt_GenMap_NGCount = 0;
 
@@ -18420,7 +18420,6 @@ namespace NDispWin
 
                 urx = Layout.UColPX * UColNo + Layout.URowPX * URowNo;
                 ury = Layout.UColPY * UColNo + Layout.URowPY * URowNo;
-
 
                 double crx = 0;//clstr relative x
                 double cry = 0;//clstr relative y
@@ -18459,7 +18458,6 @@ namespace NDispWin
             if (Layout.MapOrigin == TLayout.EMapOrigin.Right) XRatio = -XRatio;
             double YRatio = Line.Y[2] / ActualH;
 
-
             for (int i = 0; i < Layout.TUCount; i++)
             {
                 Pos[i].X = (Line.X[0] + Line.X[1] / 2) + (Pos[i].X * XRatio);
@@ -18484,53 +18482,33 @@ namespace NDispWin
                 DispProg.rt_MapS[i] = 0;
 
                 ImgThld.ROI = new Rectangle(X1, Y1, W, H);
-                //Emgu.CV.Image<Emgu.CV.Structure.Gray, byte> RoiImage = ImgThld.Copy();
-                //byte[, ,] data = RoiImage.Data;
+                int TotalPix = W * H;
                 int[] Pixels;
                 Pixels = ImgThld.CountNonzero();
-
-                //uint TotalPix = 0;
-                //uint WhitePix = 0;
-
-                //uint sq = 0;
-                //for (int r = 0; r < H - 1; r++)
-                //    for (int c = 0; c < W - 1; c++)
-                //    {
-                //        byte b = data[r, c, 0];
-                //        if (b == 255) WhitePix++;
-                //        TotalPix++;
-                //    }
-                int WhitePix = Pixels[0];
-                int TotalPix = W * H;
+                int detectPix = Pixels[0];
+                if (Line.IPara[11] > 0) detectPix = TotalPix - detectPix;
 
                 double Score = Line.DPara[10];
-                double WhitePixelPcnt = (double)WhitePix / TotalPix;
-                if (i == 0)
-                {
-                    rt_RefWhitePixelPcnt = WhitePixelPcnt;
-                    rt_OKMinWhitePixelPcnt = rt_RefWhitePixelPcnt;
-                    rt_OKMaxWhitePixelPcnt = rt_RefWhitePixelPcnt;
-                }
+                double detectPixelPcnt = (double)detectPix / TotalPix;
 
-                //double d_UnitPixPcnt = (double)WhitePix / TotalPix;
-                rt_MinWhitePixelPcnt = Math.Min(WhitePixelPcnt, rt_MinWhitePixelPcnt);
-                rt_MaxWhitePixelPcnt = Math.Max(WhitePixelPcnt, rt_MaxWhitePixelPcnt);
+                rt_DetectPixelPcntMin = Math.Min(detectPixelPcnt, rt_DetectPixelPcntMin);
+                rt_DetectPixelPcntMax = Math.Max(detectPixelPcnt, rt_DetectPixelPcntMax);
 
-                if (WhitePixelPcnt >= Score)
+                if (detectPixelPcnt >= Score)
                 {
-                    rt_OKMinWhitePixelPcnt = Math.Min(WhitePixelPcnt, rt_OKMinWhitePixelPcnt);
-                    rt_OKMaxWhitePixelPcnt = Math.Max(WhitePixelPcnt, rt_OKMaxWhitePixelPcnt);
+                    rt_OKDetectPixelPcntMin = Math.Min(detectPixelPcnt, rt_OKDetectPixelPcntMin);
+                    rt_OKDetectPixelPcntMax = Math.Max(detectPixelPcnt, rt_OKDetectPixelPcntMax);
                 }
                 else
                 {
-                    rt_NGMinWhitePixelPcnt = Math.Min(WhitePixelPcnt, rt_NGMinWhitePixelPcnt);
-                    rt_NGMaxWhitePixelPcnt = Math.Max(WhitePixelPcnt, rt_NGMaxWhitePixelPcnt);
+                    rt_NGDetectPixelPcntMin = Math.Min(detectPixelPcnt, rt_NGDetectPixelPcntMin);
+                    rt_NGDetectPixelPcntMax = Math.Max(detectPixelPcnt, rt_NGDetectPixelPcntMax);
                 }
 
-                if (MapBin[i] == EMapBin.PreMapNG) continue;// break;//continue;
-                if (MapBin[i] == EMapBin.Bypass) continue;//break;//continue;
+                if (MapBin[i] == EMapBin.PreMapNG) continue;
+                if (MapBin[i] == EMapBin.Bypass) continue;
 
-                if ((double)WhitePix / TotalPix >= Score)
+                if ((double)detectPix / TotalPix >= Score)
                 {
                     MapBin[i] = EMapBin.MapOK;
                     rt_GenMap_OKCount++;
@@ -22220,7 +22198,7 @@ namespace NDispWin
                     #endregion
             }
         }
-        public static bool DoBdCapture(TLine Line, int ImageID, double StartX, double StartY, double EndX, double EndY)
+        public static bool DoBdCapture(TLine Line, int ImageID, double StartX, double StartY, double EndX, double EndY, CancellationToken token)
         {
             GDefine.Status = EStatus.Busy;
 
@@ -22269,7 +22247,6 @@ namespace NDispWin
 
                 int pixX = TaskVision.ImgWN[Line.IPara[CamID]] * indexC;
                 int pixY = TaskVision.ImgHN[Line.IPara[CamID]] * indexR;
-                //float ImgScale = Math.Min((float)2000 / pixX, (float)2000 / pixY);
                 int maxSize = Line.IPara[5] == 0 ? 32768 : Line.IPara[5];
                 float imgScale = Math.Min((float)maxSize / pixX, (float)maxSize / pixY);
                 imgScale = Math.Min(imgScale, 1);
@@ -22278,7 +22255,7 @@ namespace NDispWin
                 TaskVision.LightingOn(TaskVision.BdCaptureLightRGB);
 
                 #region Set Camera Properties
-                if (Line.DPara[5] == 0) Line.DPara[5] = (double)(Line.IPara[5] / 1000);//1.0.42.5 reverse compatibility
+                if (Line.DPara[5] == 0) Line.DPara[5] = (double)(Line.DPara[5] / 1000);//1.0.42.5 reverse compatibility
                 double Exposure = Line.DPara[5];
                 double Gain = Line.DPara[6];
 
@@ -22322,8 +22299,6 @@ namespace NDispWin
                     int t1 = GDefine.GetTickCount() + SettleTime;
                     while (GDefine.GetTickCount() <= t1) { Thread.Sleep(1); }
 
-                    //TaskVision.GrabN(CamID, ref SImg[IndexX, IndexY]);
-
                     switch (GDefine.CameraType[CamID])
                     {
                         case GDefine.ECameraType.Basler:
@@ -22350,9 +22325,6 @@ namespace NDispWin
 
                     SImg[indexX, indexY] = SImg[indexX, indexY].Resize(imgScale, Emgu.CV.CvEnum.Inter.Linear);
 
-                    //SImg[indexX, indexY].Save(@"c:\TestMergeS" + indexX.ToString() + "_" + indexY.ToString() + ".bmp");
-
-
                     int angle = 0;
                     switch (Line.IPara[8])
                     {
@@ -22365,6 +22337,9 @@ namespace NDispWin
 
                     GetNextPos(indexC, indexR, Line.IPara[2], ref indexX, ref indexY);
                     #endregion
+
+                    Thread.Sleep(0);
+                    if (token.IsCancellationRequested) goto _Stop;
                 }
 
                 #region Merge Image
@@ -22402,6 +22377,9 @@ namespace NDispWin
                     Thread.Sleep(1);
                 }
                 #endregion
+
+                double scale = (double)Line.IPara[5] / Math.Max(FImg.Width, FImg.Height);
+                FImg.Resize(scale, Emgu.CV.CvEnum.Inter.Linear);
 
                 TaskVision.BoardImage[ImageID] = FImg.Clone();
                 TaskVision.BoardImage_ID[ImageID]++;
@@ -22449,8 +22427,6 @@ namespace NDispWin
 
             int CamNo = Line.IPara[1];
             double ADist = 10;
-
-
 
             List<Emgu.CV.Image<Emgu.CV.Structure.Gray, byte>> imgVertSlices = new List<Emgu.CV.Image<Emgu.CV.Structure.Gray, byte>>();//vertical image slices
             Emgu.CV.Image<Emgu.CV.Structure.Gray, byte> imgVertMerged = null;//merged vertical slices

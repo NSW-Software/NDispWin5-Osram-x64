@@ -217,6 +217,9 @@ namespace NDispWin
                 frmMonCamera.TopMost = true;
                 frmMonCamera.Show();
             }
+
+            UpdateProgramInfo();
+            richTextBox1.Text = s;
         }
         private void frm_Auto_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -524,9 +527,7 @@ namespace NDispWin
 
                     TaskDisp.Material_LifePreAlert_Time = TaskDisp.Material_Life_EndTime;
                     Msg MsgBox = new Msg();
-                    EMsgRes MsgRes =
-                    //MsgBox.Show((int)EErrCode.MATERIAL_EXPIRY_PREALERT, $"Material Expire in {TaskDisp.Material_ExpiryPreAlertTime} minutes.");
-                    MsgBox.Show(Messages.MATERIAL_EXPIRY_PREALERT, $"Material Expire in {TaskDisp.Material_ExpiryPreAlertTime} minutes.");
+                    EMsgRes MsgRes = MsgBox.Show(Messages.MATERIAL_EXPIRY_PREALERT, $"Material Expire in {TaskDisp.Material_ExpiryPreAlertTime} minutes.");
                 }
             }
 
@@ -1196,6 +1197,44 @@ namespace NDispWin
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
+        }
+
+        string s = "";
+        private void UpdateProgramInfo()
+        {
+            s = "";
+            double totalWeight = 0;
+            for (int i = 0; i < DispProg.Script[0].CmdList.Count; i++)
+            {
+                DispProg.TLine Line = DispProg.Script[0].CmdList.Line[i];
+                if (Line.Cmd == DispProg.ECmd.GROUP_DISP)
+                {
+                    s += $"GROUP_DISP: {Line.DPara[1]:f2} mg\n";
+                    totalWeight += Line.DPara[1];
+                }
+                if (Line.Cmd == DispProg.ECmd.PAR_LINES)
+                {
+                    TLayout layout = new TLayout();
+                    layout.Copy(DispProg.rt_Layouts[DispProg.rt_LayoutID]);
+
+                    s += $"PAR_LINES: {Line.DPara[21]:f2}, F{Line.DPara[20]:f2}, L{Line.DPara[22]:f2} mg\n";
+
+                    EVHType vhType = EVHType.Hort;//0=Horizontal, 1=Vertical
+                    try { vhType = (EVHType)Line.IPara[3]; } catch { };
+
+                    double w = 0;
+                    if (vhType == EVHType.Hort)
+                        w += layout.URowCount * Line.DPara[21];
+                    else
+                        w += layout.UColCount * Line.DPara[21];
+
+                    if (Line.IPara[11] > 0) w += (Line.DPara[20] - Line.DPara[21]);//Individual 1st line
+                    if (Line.IPara[12] > 0) w += (Line.DPara[22] - Line.DPara[21]);//Individual last line
+
+                    totalWeight += w;
+                }
+            }
+            if (s.Length > 0) s += $"TOTAL: {totalWeight:f2} mg\n";
         }
     }
 }

@@ -918,6 +918,9 @@ namespace NDispWin
                 Pro.SvStopperUp = false;
                 Pro.SvLifterUp = false;
 
+                Pos.SvStopperUp = false;
+                Pos.SvLifterUp = false;
+
                 Out.SvKickerExt = false;
 
                 if (

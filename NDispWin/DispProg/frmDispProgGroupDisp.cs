@@ -85,9 +85,9 @@ namespace NDispWin
                 lvi.SubItems.Add(Enum.GetName(typeof(EGDispCmd), CmdLine.Index[i]).ToString());
                 lvi.SubItems.Add(string.Format("X: {0:f3}, Y: {1:f3}", CmdLine.X[i], CmdLine.Y[i]));
                 if (CmdLine.Index[i] == (int)EGDispCmd.DOT ||
-                    CmdLine.Index[i] == (int)EGDispCmd.DOT_START ||
-                    CmdLine.Index[i] == (int)EGDispCmd.LINE_START)
-                    lvi.SubItems.Add(CmdLine.U[i] > 0?"[ x ]":"[ * ]");
+                    CmdLine.Index[i] == (int)EGDispCmd.LINE_PASS ||
+                CmdLine.Index[i] == (int)EGDispCmd.LINE_END)
+                    lvi.SubItems.Add(CmdLine.U[i] > 0?"[ * ]":"[  ]");
                 else
                     lvi.SubItems.Add("");
                 lvi.SubItems.Add("[ SET ]");
@@ -109,7 +109,7 @@ namespace NDispWin
         }
         private void lblWeight_Click(object sender, EventArgs e)
         {
-            UC.AdjustExec(CmdName + ", TotalWeight", ref CmdLine.DPara[1], 0, 100);
+            UC.AdjustExec(CmdName + ", TotalWeight", ref CmdLine.DPara[1], 0, 200);
             UpdateDisplay();
         }
         private void cbTotalWeight_Click(object sender, EventArgs e)

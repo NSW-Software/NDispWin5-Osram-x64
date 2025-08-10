@@ -44,6 +44,7 @@
             this.lbl_LayoutNo = new System.Windows.Forms.Label();
             this.lbl_MoveTo = new System.Windows.Forms.Label();
             this.pnl_Bottom = new System.Windows.Forms.Panel();
+            this.lblLoadMap = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbox_Map)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbox_Image)).BeginInit();
             this.pnl_Bottom.SuspendLayout();
@@ -239,6 +240,7 @@
             // 
             // pnl_Bottom
             // 
+            this.pnl_Bottom.Controls.Add(this.lblLoadMap);
             this.pnl_Bottom.Controls.Add(this.lbl_MoveTo);
             this.pnl_Bottom.Controls.Add(this.lbl_LayoutNo);
             this.pnl_Bottom.Controls.Add(this.lbl_123);
@@ -255,6 +257,20 @@
             this.pnl_Bottom.Name = "pnl_Bottom";
             this.pnl_Bottom.Size = new System.Drawing.Size(764, 22);
             this.pnl_Bottom.TabIndex = 8;
+            // 
+            // lblLoadMap
+            // 
+            this.lblLoadMap.AccessibleDescription = "";
+            this.lblLoadMap.Dock = System.Windows.Forms.DockStyle.Right;
+            this.lblLoadMap.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblLoadMap.ForeColor = System.Drawing.Color.Navy;
+            this.lblLoadMap.Location = new System.Drawing.Point(97, 0);
+            this.lblLoadMap.Name = "lblLoadMap";
+            this.lblLoadMap.Size = new System.Drawing.Size(72, 22);
+            this.lblLoadMap.TabIndex = 13;
+            this.lblLoadMap.Text = "LoadMap";
+            this.lblLoadMap.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblLoadMap.Click += new System.EventHandler(this.lblLoadMap_Click);
             // 
             // frm_DispCore_Map
             // 
@@ -298,5 +314,6 @@
         private System.Windows.Forms.Label lbl_LayoutNo;
         private System.Windows.Forms.Label lbl_MoveTo;
         private System.Windows.Forms.Panel pnl_Bottom;
+        private System.Windows.Forms.Label lblLoadMap;
     }
 }
