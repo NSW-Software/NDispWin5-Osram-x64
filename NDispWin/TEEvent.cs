@@ -217,6 +217,7 @@ namespace NDispWin
         public static TEEvent MAP_REQUEST = new TEEvent(2835, "Map Request.");
         public static TEEvent MAP_DOWNLOADED = new TEEvent(2836, "Map Downloaded.");
         public static TEEvent MAP_UPLOADED = new TEEvent(2837, "Map Upload.");
+        public static TEEvent SECSGEM_MAP_UPDATED = new TEEvent(2838, "Map Update.");
 
         public static TEEvent MAP_RECOVER_PROMPT = new TEEvent(2840, "Map Recover Prompt.");
         public static TEEvent MAP_RECOVER_UPLOADED = new TEEvent(2841, "Map Recover Uploaded.");
@@ -225,6 +226,8 @@ namespace NDispWin
 
         public static TEEvent SUBSTRATE_START = new TEEvent(2850, "Substrate Start.");
         public static TEEvent SUBSTRATE_END = new TEEvent(2851, "Substrate End.");
+        public static TEEvent SECSGEM_E142_SUBSTRATE_SCANNED = new TEEvent(2852, "Substrate Scanned.");
+        public static TEEvent SECSGEM_E142_SUBSTRATE_INFO = new TEEvent(2853, "Set Substrate Info Received.");
 
         public static TEEvent TERMINAL_MESSAGE_ACK = new TEEvent(2880, "Terminal Message Acknowledge.");
 
@@ -284,9 +287,7 @@ namespace NDispWin
         public static TEEvent SECSGEM_PP_CHANGE = new TEEvent(5031, "PP Change.", new List<int> { 11050, 11051, 11052, 11053 });//edited
         public static TEEvent SECSGEM_PP_DELETE = new TEEvent(5032, "PP Delete.", new List<int> { 11051 });
         public static TEEvent SECSGEM_PP_SELECTED = new TEEvent(5033, "PP Selected.", new List<int> { 11051, 11052 });
-
-        public static TEEvent SECSGEM_E142_SUBSTRATE_SCANNED = new TEEvent(5100, "Substrate Scaned.");
-        public static TEEvent SECSGEM_MAP_UPDATED = new TEEvent(5105, "Map Updated.");
+        public static TEEvent SECSGEM_PP_VERIFICATION = new TEEvent(5034, "PP Verification.", new List<int> { 11054 });
     }
 
     public class TEVID//SV, DV, EC Represents real-time status variables of equipment.
@@ -385,6 +386,8 @@ namespace NDispWin
                         return TFSecsGem.PPFormat.ToString();
                     case nameof(VID.PP_EXECNAME):
                         return GDefine.ProgRecipeName;
+                    case nameof(VID.PP_ERROR):
+                        return (int)TFSecsGem.PPError;
 
                     case nameof(VID.TEMPCTRL1SV):
                         if (GDefine.TempCtrl_Type == GDefine.ETempCtrl.Autonics_TX_TK)
@@ -521,6 +524,8 @@ namespace NDispWin
                         return LotInfo2.Osram.Operation;
                     case nameof(VID.SUBSTRATEID):
                         return DispProg.rt_Read_IDs[0, 0];
+                    case nameof(VID.MAP_UPDATE):
+                        return TFSecsGem.Map_Update_Content;
                     case nameof(VID.MODEL1DISPGAP):
                     case nameof(VID.MODEL2DISPGAP):
                     case nameof(VID.MODEL3DISPGAP):
@@ -709,6 +714,10 @@ namespace NDispWin
                             }
                         }
                         break;
+                    case nameof(VID.SET_SUBSTRATE):
+                        return Convert.ToInt32(TFSecsGem.Set_Substrate);
+                    case nameof(VID.E142_Map_On):
+                        return Convert.ToInt32(TFSecsGem.E142_Map_On);
                         #endregion
                 }
                 return 0;
@@ -995,6 +1004,16 @@ namespace NDispWin
                             }
                         }
                         break;
+                    case nameof(VID.SET_SUBSTRATE):
+                        {
+                            TFSecsGem.Set_Substrate = value;
+                        }
+                        break;
+                    case nameof(VID.E142_Map_On):
+                        {
+                            TFSecsGem.E142_Map_On = value;
+                        }
+                        break;
                         #endregion
                 }
             }
@@ -1021,6 +1040,7 @@ namespace NDispWin
         public static TEVID PP_CHANGE_NAME = new TEVID(11051, "PP Change Name.");
         public static TEVID PP_FORMAT = new TEVID(11052, "PP Format.");
         public static TEVID PP_EXECNAME = new TEVID(11053, "PP Exec Name.");
+        public static TEVID PP_ERROR = new TEVID(11054, "PP Error.");
 
         public static TEVID TEMPCTRL1PV = new TEVID(11101, "Temperature Control PV 1.");
         public static TEVID TEMPCTRL2PV = new TEVID(11102, "Temperature Control PV 2.");
@@ -1068,6 +1088,8 @@ namespace NDispWin
         public static TEVID MHSRECIPE = new TEVID(21202, "MHS Recipe.");
 
         public static TEVID SUBSTRATEID = new TEVID(21300, "SubstrateID.");
+        public static TEVID MAP_UPDATE = new TEVID(21301, "Map Update Content.");
+
         #region Model
         public static TEVID MODEL1DISPGAP = new TEVID(22000, "Model1 Disp Gap.");
         public static TEVID MODEL2DISPGAP = new TEVID(22001, "Model2 Disp Gap.");
@@ -1178,6 +1200,9 @@ namespace NDispWin
         public static TEVID TEMPCTRL2TOL = new TEVID(31002, "Temperature Control Tol 2.", 0, 10, 0, "DegC");
         public static TEVID TEMPCTRL3TOL = new TEVID(31003, "Temperature Control Tol 3.", 0, 10, 0, "DegC");
         public static TEVID TEMPCTRL4TOL = new TEVID(31004, "Temperature Control Tol 4.", 0, 10, 0, "DegC");
+        public static TEVID SET_SUBSTRATE = new TEVID(31101, "Set Substrate Info On Off.", 0, 1, 0, "");
+        public static TEVID E142_Map_On = new TEVID(31102, "Ë142 Mapping On Off.", 0, 1, 0, "");
+
         #endregion
     }
 

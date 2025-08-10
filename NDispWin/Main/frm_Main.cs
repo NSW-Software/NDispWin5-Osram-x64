@@ -17,6 +17,8 @@ namespace NDispWin
 {
     public partial class frm_Main : Form
     {
+        public static EventHandler<EventArgs> Event_Terminal;
+        private frmSecsGem _frmSecsGem;
         #region Click Through ToolStrip
         //[DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
         //public static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint cButtons, uint dwExtraInfo);
@@ -46,6 +48,12 @@ namespace NDispWin
 
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         public static extern bool SetDllDirectory(string lpPathName);
+
+        public static bool RunTerminal()
+        {
+            Event_Terminal?.Invoke(null, new EventArgs());
+            return true;
+        }
 
         public frm_Main()
         {
@@ -98,6 +106,24 @@ namespace NDispWin
             AppLanguage.Func2.WriteLangFile(this);
 
             NUtils.UserAcc.Users.Load();
+
+            Event_Terminal += (a, b) =>
+            {
+                if (!IsHandleCreated) return;
+
+                this.Invoke(new Action(() => {
+                    if (_frmSecsGem == null || _frmSecsGem.IsDisposed)
+                    {
+                        _frmSecsGem = new frmSecsGem();
+                        _frmSecsGem.Show();
+                    }
+                    else
+                    {
+                        _frmSecsGem.BringToFront();
+                    }
+                }));
+
+            };
         }
 
         bool MasterInit = false;

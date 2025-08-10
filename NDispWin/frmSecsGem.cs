@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Reflection;
 using System.IO;
 using System.Threading;
+using static NDispWin.SECSGEMConnect2;
 
 namespace NDispWin
 {
@@ -50,6 +51,17 @@ namespace NDispWin
             btnOnlineOffline.Text = TFSecsGem.Eq.OnlineOffline == EOnlineOffline.Offline ? "Offline" : "Online";
             btnOnlineOffline.BackColor = TFSecsGem.Eq.OnlineOffline == EOnlineOffline.Offline ? Color.Red : Color.Lime;
             btnLocalRemote.Text = $"{TFSecsGem.Eq.LocalRemote}";
+            if(TFSecsGem.E142_Map_On == "1")
+            {
+                cbE142.CheckState = CheckState.Checked;
+            }
+            else { cbE142.CheckState = CheckState.Unchecked; }
+            if (TFSecsGem.Set_Substrate == "1")
+            {
+                cbSetSubstrate.CheckState = CheckState.Checked;
+            }
+            else { cbSetSubstrate.CheckState = CheckState.Unchecked; }
+
             if (TFSecsGem.Eq.LocalRemote == ELocalRemote.Offline)
             {
                 btnLocalRemote.BackColor = Color.Red;
@@ -93,7 +105,7 @@ namespace NDispWin
 
             try
             {
-                TFSecsGem.Connect(); 
+                TFSecsGem.Connect();
             }
             catch (Exception ex)
             {
@@ -146,7 +158,7 @@ namespace NDispWin
                     TFSecsGem.SendAlarm_ARS(alm, true);
                 }
             }
-         }
+        }
         private void btnAlarmClear_Click(object sender, EventArgs e)
         {
             int code = Convert.ToInt32(tbAlarmCode.Text);
@@ -237,7 +249,6 @@ namespace NDispWin
         private void btnAckTerminalMessage_Click(object sender, EventArgs e)
         {
             TFSecsGem.RxTerminalMessage = "";
-            TFSecsGem.Send($"{nameof(StreamFunc.VTA)}");
             Event.TERMINAL_MESSAGE_ACK.Set();
             TriggerUpdateTerminal();
         }
@@ -282,8 +293,11 @@ namespace NDispWin
             }
             else
             {
-                TFSecsGem.GAR(tbSubstrateID.Text);
+                if (TFSecsGem.E142_Map_On == "0") return;
 
+                TFSecsGem.GAR(tbSubstrateID.Text);
+                LotInfo2.sOperatorID = tbBadgeNo.Text;
+                Event.MAP_REQUEST.Set();
                 int t = Environment.TickCount;
                 while (!TFSecsGem.ReceivedXMLMapData)
                 {
@@ -340,6 +354,30 @@ namespace NDispWin
         private void richTextBox1_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void cbSubstrateScanner_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbSetSubstrate.Checked)
+            {
+                TFSecsGem.Set_Substrate = "1";
+            }
+            else
+            {
+                TFSecsGem.Set_Substrate = "0";
+            }
+        }
+
+        private void cbE142_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbE142.Checked)
+            {
+                TFSecsGem.E142_Map_On = "1";
+            }
+            else
+            {
+                TFSecsGem.E142_Map_On = "0";
+            }
         }
     }
 }

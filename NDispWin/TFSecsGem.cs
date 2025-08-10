@@ -13,6 +13,7 @@ using System.Windows.Forms;
 using Automation.BDaq;
 using System.Xml.Linq;
 using System.Drawing;
+using static NDispWin.Intf;
 
 namespace NDispWin
 {
@@ -311,6 +312,13 @@ namespace NDispWin
         HostOnline
     }
 
+    public enum EPPError
+    {
+        RecipeNotFound,
+        LoadFail,
+        EquipmentBusy
+    }
+
     class TEStreamFunc
     {
         public string SF = "";
@@ -383,6 +391,7 @@ namespace NDispWin
         public static TEStreamFunc PPA = new TEStreamFunc("S7F4", "H<->E, Process Program Acknowledge.");//tested
         public static TEStreamFunc PPR = new TEStreamFunc("S7F5", "H<->E, Process Program Request.");//H->E tested
         public static TEStreamFunc PPD = new TEStreamFunc("S7F6", "H<->E, Process Program Data.");//tested
+        public static TEStreamFunc DPS = new TEStreamFunc("S7F17", "H->E, Delete Process Program Send.");//tested
 
         public static TEStreamFunc S10F0 = new TEStreamFunc("S10F0", "H<->E, Abort Transaction.");
         public static TEStreamFunc TRN = new TEStreamFunc("S10F1", "H->E, Terminal Request.");
@@ -393,6 +402,8 @@ namespace NDispWin
         public static TEStreamFunc S14F0 = new TEStreamFunc("S14F0", "H<->E, Abort Transaction.");
         public static TEStreamFunc GAR = new TEStreamFunc("S14F1", "H<->E, Get Attribute Request.");
         public static TEStreamFunc GAD = new TEStreamFunc("S14F2", "H<->E, Get Attribute Data.");
+        public static TEStreamFunc SAR = new TEStreamFunc("S14F3", "H<->E, Set Attribute Request.");
+        public static TEStreamFunc SAD = new TEStreamFunc("S14F4", "H<->E, Set Attribute Data.");
     }
 
     class TFSecsGem
@@ -406,7 +417,8 @@ namespace NDispWin
         public static EProcessState PrevProcessState = EProcessState.Idle;
         public static EControlState ControlState = EControlState.EquipmentLocal;
         public static EControlState PrevControlState = EControlState.EquipmentLocal;
-        public static string PPChangeStatus = "";
+        public static EPPError PPError;
+        public static string PPChangeStatus = "Success";
         public static string PPFormat = "Unformatted";
 
         public static string RxTerminalMessage = "";
@@ -414,7 +426,10 @@ namespace NDispWin
 
         public static string ChangedECID = "";
         public static string ChangedECValue = "";
+        public static string Set_Substrate = "0";
+        public static string E142_Map_On = "0";
 
+        public static string Map_Update_Content = "";
         public static TClient2 client = new TClient2();
         public static void Start()
         {
@@ -470,10 +485,10 @@ namespace NDispWin
         }
         public static bool IsConnected
         {
-            get 
+            get
             {
                 if (!client.IsConnected) OnlineOffline = EOnlineOffline.Offline;
-                return client.IsConnected; 
+                return client.IsConnected;
             }
         }
 
@@ -501,6 +516,8 @@ namespace NDispWin
         static List<string> rxPPDData;
         public static bool ReceivedXMLMapData = false;
         public static string rxE142XmlData;
+        public static Dictionary<string, string> SubstrateStatus = new Dictionary<string, string>();
+        public static string SubstrateID;
         private static void OnFrameEndReceivedEvent()
         {
             string rxRawData = "";
@@ -634,6 +651,7 @@ namespace NDispWin
                         {
                             try
                             {
+                                Send($"{nameof(StreamFunc.ECA)}");
                                 if (rxSplitData[1] != "")
                                 {
                                     for (int i = 1; i < rxSplitData.Length; i += 2)
@@ -641,16 +659,14 @@ namespace NDispWin
                                         TEVID.GetFieldFromId(Convert.ToInt32(rxSplitData[i])).Value = rxSplitData[i + 1];
                                         ChangedECID = rxSplitData[i];
                                         ChangedECValue = rxSplitData[i + 1];
+                                        Send($"ERS1,5020,{ChangedECID},{ChangedECValue}");
                                     }
                                 }
-                                
-                                Send($"{nameof(StreamFunc.ECA)}");
-                                Thread.Sleep(100);
-                                Send($"{nameof(StreamFunc.ERS)},5020");
+
                             }
                             catch
                             {
-                                Send($"{nameof(StreamFunc.S2F0)}");
+                                Send($"{nameof(StreamFunc.ECA)},FAIL.");
                             }
                             break;
                         }
@@ -665,7 +681,7 @@ namespace NDispWin
                                 }
                             }
                             List<string> responseList = SSR_GetList(requestList);
-                            Send($"{nameof(StreamFunc.TIA)},{string.Join(",", responseList)}");
+                            Send($"{nameof(StreamFunc.TIA)},{rxSplitData[1]},{string.Join(",", responseList)}");
                             break;
                         }
                     #endregion
@@ -705,7 +721,7 @@ namespace NDispWin
                                 foreach (var msg in msglist)
                                 {
                                     if (alid == $"{msg.Code}")
-                                    msg.Enabled = aled == "128" ? true : false;
+                                        msg.Enabled = aled == "128" ? true : false;
                                 }
                             }
                             Send($"{nameof(StreamFunc.EAA)}");
@@ -797,16 +813,34 @@ namespace NDispWin
                         {
                             try
                             {
-                                var ppid = Path.GetFileNameWithoutExtension(rxSplitData[1]);
-                                var ppbody = rxSplitData[2];
+                                bool isCreated = false;
+                                var ppid = rxSplitData[1];
+                                var filePath = rxSplitData[2];
                                 var file = GDefine.RecipeDir.FullName + ppid + ".xml";
-
+                                string ppbody = "";
+                                string fullFilename = GDefine.ProgPath + "\\" + ppid + "." + GDefine.ProgExt;
+                                if (!File.Exists(fullFilename))
+                                {
+                                    isCreated = true;
+                                }
+                                if (File.Exists(filePath))
+                                {
+                                    ppbody = File.ReadAllText(filePath);
+                                }
+                                StringBuilder xmlbuilder = new StringBuilder();
+                                for(int i = 0; i< ppbody.Length; i += 8)
+                                {
+                                    string byteString = ppbody.Substring(i, 8);
+                                    char character = (char)Convert.ToByte(byteString,2);
+                                    xmlbuilder.Append(character);
+                                }
+                                string xmlcontent = xmlbuilder.ToString();
                                 slim.EnterWriteLock();
                                 try
                                 {
                                     using (StreamWriter writer = new StreamWriter(file))
                                     {
-                                        writer.Write(ppbody);
+                                        writer.Write(xmlcontent);
                                         //a.Close();
                                     }
                                 }
@@ -816,17 +850,42 @@ namespace NDispWin
                                 }
 
                                 if (!DispProg.LoadProgName(ppid))
-                                    Send(nameof(StreamFunc.S7F0));
+                                {
+                                    Send(nameof(StreamFunc.PPA) + ",LoadProgNameFail");
+                                    PPError = EPPError.LoadFail;
+                                    Event.SECSGEM_PP_VERIFICATION.Set();
+                                }
+                                    
                                 else
-                                    Send(nameof(StreamFunc.PPA));
+                                { 
+                                    Send(nameof(StreamFunc.PPA) + ",Success");
+                                    if (isCreated)
+                                    {
+                                        Event.SECSGEM_PP_CREATE.Set();
+                                        isCreated = false;
+                                    }
+                                    else
+                                    {
+                                        Event.SECSGEM_PP_CHANGE.Set();
+                                    }
+                                    
+                                }
+                                    
                             }
                             catch (Exception ex)
                             {
-                                Send(nameof(StreamFunc.S7F0));
+                                Send(nameof(StreamFunc.PPA) + ",LoadProgNameFail");
+                                PPError = EPPError.LoadFail;
+                                Event.SECSGEM_PP_VERIFICATION.Set();
                             }
                         }
                         else
-                            Send(nameof(StreamFunc.S7F0));
+                        {
+                            Send(nameof(StreamFunc.PPA) + ",LoadProgNameFail");
+                            PPError = EPPError.LoadFail;
+                            Event.SECSGEM_PP_VERIFICATION.Set();
+                        }
+                            
                         break;
                     case nameof(StreamFunc.PPR):
                         {
@@ -854,13 +913,20 @@ namespace NDispWin
                     case nameof(StreamFunc.PPD):
                         rxPPDData = rxSplitData.ToList();
                         break;
+                    case nameof(StreamFunc.DPS):
+                        {
+                            Event.SECSGEM_PP_DELETE.Set();
+                        }
+                        break;
                     #endregion
                     #region S10
                     case nameof(StreamFunc.VTN):
-                        {                         
+                        {
                             rxSplitData = rxSplitData.Concat(Enumerable.Repeat("", 1)).ToArray();//add 1 empty strings
                             RxTerminalMessage = rxSplitData[2];
-
+                            bool isFormOpen = Application.OpenForms["frmSecsGem"] != null;
+                            if(!isFormOpen){ frm_Main.RunTerminal(); }
+                            
                             var frms = Application.OpenForms.OfType<frmSecsGem>().ToArray();
                             if (frms.Length < 1) break;
                             foreach(var frm in frms)
@@ -874,11 +940,53 @@ namespace NDispWin
                     #endregion
                     #region S14
                     case nameof(StreamFunc.GAD):
-                        // Expect GAD,SubtrateID, MapData, XmlContent
-                        var substrateID = Path.GetFileNameWithoutExtension(rxSplitData[1]);// SubstrateID
-                        rxE142XmlData = Path.GetFileNameWithoutExtension(rxSplitData[3]);// XmlContent
-                        ReceivedXMLMapData = true;
+                        if (rxSplitData[1] == "HOSTREJECT") 
+                        {
+                            Msg MsgBox = new Msg();
+                            MsgBox.Show(Messages.E142_HOST_REJECT_MAPDATA_REQUEST);
+                        }
+                        else
+                        {
+                            // Expect GAD,SubtrateID, MapData, XmlContent
+                            var substrateID = (rxSplitData[1]);// SubstrateID
+                            rxE142XmlData = (rxSplitData[2]);// XmlContent
+                            ReceivedXMLMapData = true;
+                        }
+                        
                         break;
+                    case nameof(StreamFunc.SAR):
+                        if (SubstrateStatus == null)
+                        {
+                            SubstrateStatus = new Dictionary<string, string>();
+                        }
+                        SubstrateStatus.Clear();
+                        var data = rxSplitData.Skip(3).ToList();
+                        foreach (string d in data)
+                        {
+                            if (!string.IsNullOrWhiteSpace(d))
+                                SubstrateStatus[d] = "PENDING";
+                        }
+                        string SID = string.Join(",", data.Select(item => item?.ToString() ?? ""));
+                        if (Set_Substrate == "1")
+                        {
+                            if (SubstrateStatus.Count == 1)
+                            {
+                                Send(nameof(StreamFunc.SAD) + ",REJECT.," + rxSplitData[1] + "," + rxSplitData[2] + "," + SID);
+                            }
+                            else
+                            {
+                                Send(nameof(StreamFunc.SAD) + ",SUCCESS.," + rxSplitData[1] + "," + rxSplitData[2] + "," + SID);
+                                Event.SECSGEM_E142_SUBSTRATE_INFO.Set();
+                            }
+                        }
+                        else
+                        {
+                            Send(nameof(StreamFunc.SAD) + ",SUCCESS.," + rxSplitData[1] + "," + rxSplitData[2] + "," + SID);
+                            Event.SECSGEM_E142_SUBSTRATE_INFO.Set();
+                        }
+                        break;
+
+
                     #endregion
 
                     #region RMCD
@@ -894,6 +1002,8 @@ namespace NDispWin
                             {
                                 PPChangeStatus = "Recipe not found.";
                                 Send($"{data0},RECIPE NOT FOUND.");
+                                PPError = EPPError.RecipeNotFound;
+                                Event.SECSGEM_PP_VERIFICATION.Set();
                                 break;
                             }
 
@@ -902,6 +1012,9 @@ namespace NDispWin
                             {
                                 PPChangeStatus = "Equipment is busy.";
                                 Send($"{data0},EQUIPMENT IS BUSY.");
+
+                                PPError = EPPError.EquipmentBusy;
+                                Event.SECSGEM_PP_VERIFICATION.Set();
                                 break;
                             }
 
@@ -909,6 +1022,9 @@ namespace NDispWin
                             {
                                 PPChangeStatus = "Load fail.";
                                 Send($"{data0},LOAD FAIL.");
+
+                                PPError = EPPError.LoadFail;
+                                Event.SECSGEM_PP_VERIFICATION.Set();
                                 break;
                             }
 
@@ -941,7 +1057,8 @@ namespace NDispWin
                             else
                             {
                                 Send($"{data0},SUCCESS");
-                                Event.OP_LOT_START.Set("LotInfo", $"{LotInfo2.sOperatorID},{LotInfo2.LotNumber},{LotInfo2.Osram.ElevenSeries},{LotInfo2.Osram.DAStartNumber}");
+                                Event.OP_START_RUN.Set();
+                                //Event.OP_LOT_START.Set("LotInfo", $"{LotInfo2.sOperatorID},{LotInfo2.LotNumber},{LotInfo2.Osram.ElevenSeries},{LotInfo2.Osram.DAStartNumber}");
                             }
                         }
                         break;
@@ -1300,85 +1417,148 @@ namespace NDispWin
         public static void UploadPP_PPI_PPS(string recipeName)
         {
             string ppid = recipeName;
-            rxPPGData.Clear();
+            rxPPGData?.Clear();
             Send(nameof(StreamFunc.PPI) + $",{ppid},{ppid.Length}");
 
             int t = Environment.TickCount + Timeout;
             while (true)//wait PPG
             {
-                if (rxPPGData.Count > 1) break;
+                if (rxPPGData?.Count > 1) break;
                 Thread.Sleep(0);
                 if (Environment.TickCount >= t) return;
             }
 
-            
-            var fileName = GDefine.RecipeDir + ppid + ".xml";
+            var fileName = GDefine.RecipeDir.FullName + ppid + ".xml";
 
-            StreamReader a = new StreamReader(fileName);
-            var slist = new List<dynamic>()
-                                {
-                                    fileName,
-                                    a.ReadToEnd(),
-                                };
+            if (File.Exists(fileName))
+            {
+                string content;
+                using (StreamReader reader = new StreamReader(fileName))
+                {
+                    content = reader.ReadToEnd();
+                }
+                StringBuilder binaryBuilder = new StringBuilder();
 
-            Send(nameof(StreamFunc.PPS) + $",{ppid},{slist}");
+                foreach (char c in content)
+                {
+                    string binarychar = Convert.ToString(c, 2).PadLeft(8, '0');
+                    binaryBuilder.Append(binarychar);
+                }
+                string filepath = @"D:\GemTaro__\READFILE\PPSData.txt";
+                string binaryString = binaryBuilder.ToString();
+                File.WriteAllText(filepath, binaryString);
+                Send(nameof(StreamFunc.PPS) + $",{ppid},{filepath}");
+            }
         }
         public static void RequestPP_PPR(string recipeName)
         {
-            rxPPDData.Clear();
-            Send(nameof(StreamFunc.PPR) + $"{recipeName}");
+            rxPPDData?.Clear();
+            Send(nameof(StreamFunc.PPR) + $",{recipeName}");
 
             int t = Environment.TickCount + Timeout;
             while (true)//wait PPD
             {
-                if (rxPPDData.Count >= 3) break;
+                if (rxPPDData?.Count >= 3) break;
                 Thread.Sleep(0);
                 if (Environment.TickCount >= t) return;
             }
 
             try
             {
+                bool isCreated = false;
                 var ppid = rxPPDData[1];
-                var ppbody = rxPPDData[2];
-                var file = GDefine.RecipeDir + ppid + ".xml";
-
+                var filePath = rxPPDData[2];
+                var file = GDefine.RecipeDir.FullName + ppid + ".xml";
+                string ppbody = "";
+                string fullFilename = GDefine.ProgPath + "\\" + ppid + "." + GDefine.ProgExt;
+                if (!File.Exists(fullFilename))
+                {
+                    isCreated = true;
+                }
+                if (File.Exists(filePath))
+                {
+                    ppbody = File.ReadAllText(filePath);
+                }
+                StringBuilder xmlbuilder = new StringBuilder();
+                for (int i = 0; i < ppbody.Length; i += 8)
+                {
+                    string byteString = ppbody.Substring(i, 8);
+                    char character = (char)Convert.ToByte(byteString, 2);
+                    xmlbuilder.Append(character);
+                }
+                string xmlcontent = xmlbuilder.ToString();
                 slim.EnterWriteLock();
-                StreamWriter a = new StreamWriter(file);
-                a.Write(ppbody as string);
-                a.Close();
-                slim.ExitWriteLock();
+                try
+                {
+                    using (StreamWriter writer = new StreamWriter(file))
+                    {
+                        writer.Write(xmlcontent);
+                        //a.Close();
+                    }
+                }
+                finally
+                {
+                    slim.ExitWriteLock();
+                }
 
-                DispProg.LoadProgName(ppid);
+                if (!DispProg.LoadProgName(ppid))
+                {
+                    Send(nameof(StreamFunc.PPA) + ",LoadProgNameFail");
+                    PPError = EPPError.LoadFail;
+                    Event.SECSGEM_PP_VERIFICATION.Set();
+                }
 
+                else
+                {
+                    Send(nameof(StreamFunc.PPA) + ",Success");
+                    if (isCreated)
+                    {
+                        Event.SECSGEM_PP_CREATE.Set();
+                        isCreated = false;
+                    }
+                    else
+                    {
+                        Event.SECSGEM_PP_CHANGE.Set();
+                    }
+
+                }
             }
             catch (Exception ex)
             {
+                Send(nameof(StreamFunc.PPA) + ",LoadProgNameFail");
+                PPError = EPPError.LoadFail;
+                Event.SECSGEM_PP_VERIFICATION.Set();
             }
         }
 
         public static List<string> VID_GetList(List<int> requestList)
         {
-            var sVIDList = typeof(VID).GetFields(BindingFlags.Public | BindingFlags.Static)
-                .Where(x => x.FieldType == typeof(TEVID))
-                .Select(x => (TEVID)x.GetValue(null)).ToArray();
+            var sVIDDict = typeof(VID).GetFields(BindingFlags.Public | BindingFlags.Static)
+        .Where(x => x.FieldType == typeof(TEVID))
+        .Select(x => (TEVID)x.GetValue(null))
+        .Where(s => s.Code > 10000 && s.Code <= 29999)
+        .ToDictionary(s => s.Code, s => s); // Dictionary<int, TEVID>
 
             List<string> list = new List<string>();
-            foreach (var sVID in sVIDList)
+
+            if (requestList.Count == 0)
             {
-                if (sVID.Code > 10000 && sVID.Code <= 22000)
+                foreach (var svid in sVIDDict.Values)
                 {
-                    string info = Convert.ToString(sVID.Value);//SVID Values
-                    if (requestList.Count == 0)
+                    list.Add(Convert.ToString(svid.Value));
+                }
+            }
+            else
+            {
+                foreach (var code in requestList)
+                {
+                    if (sVIDDict.TryGetValue(code, out var svid))
                     {
-                        list.Add(info);
-                    }
-                    else
-                    if (requestList.Contains(sVID.Code))
-                    {
-                        list.Add(info);
+                        list.Add(Convert.ToString(svid.Value));
                     }
                 }
             }
+
             return list;
         }
 
@@ -1397,7 +1577,7 @@ namespace NDispWin
         public static void GAR(string attribute)
         {
             ReceivedXMLMapData = false;
-            Send(nameof(StreamFunc.GAR) + $"{attribute}");// SubstrateID
+            Send(nameof(StreamFunc.GAR) + "," + $"{attribute}");// SubstrateID
         }
 
         static string currentXmlString = "";
@@ -1479,7 +1659,9 @@ namespace NDispWin
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message.ToString());
+                Msg MsgBox = new Msg();
+                MsgBox.Show(Messages.E142_INVALID_MAPDATA_XML_FORMAT, ex.Message);
+                //MessageBox.Show(ex.Message.ToString());
             }
             return true;
         }

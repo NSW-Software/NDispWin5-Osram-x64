@@ -28,7 +28,6 @@ X-12.	Unusual weight spike during weight check -> not occure after
 13.	Why there is still height variation after individual height scanning. May need your hardware team to plug in the external laser height system to verify the actual Z position vs compensate height. 
 /-14. Different speed for the lines -> Added Speed2, 3 Ratio
 
-DOT, CLINE
 
 6/8 Osram items:
 //- Model list, Auto prevent update number.
@@ -46,6 +45,48 @@ Ver 6.1.7.0 - KN - 20250810 - Gitted
 - [Refactor] Refactor GROUP_DISP to support HPC3, customized for OsramPg
 - [Improve] frmDispProg set and check isDirty to prompt save
 - [BugFix] Corrected Model Auto value.
+
+Ver 6.1.6.6 - JAY - 20250711 -Gitted
+[Feature] SecsGem
+- TFSecsgem.cs, GDefine.cs
+> SWAP the OP_START_RUN event and OP_LOT_START event
+> Add rxPPGData null checking
+> Add comma for RequestPP_PPR
+
+- frmSecsGem, DispProg.cs
+> Add E142_Map_On condition to end input map
+
+Ver 6.1.6.2 - JH - 20250706 -Gitted
+[Feature] SecsGem
+- TFSecsgem.cs
+> Modify PPS and send back event according to condition
+> Modify upload and download PP through read xml content in the file written by gemtaro
+
+Ver 6.1.6.1 - JH - 20250630 -Gitted
+[Feature] SecsGem 
+  - DispProg.cs
+  > Update Map_Update_Content and send MAP_UPDATE CEID, Check Scanned SubstrateID in Set Substrate and prompt Alarm if not tally
+  - frmAuto.cs
+  > Added DataGrid for Set substrate info
+  - TaskDisp.cs
+  > Prompt SubstrateID scan time out in Read ID
+  - ErrCode.cs
+  > Add ALID for E142
+  - frmSecsGem.cs
+  > Add ECID for E142 & Set Substrate
+  > Update OperatorID(Badge No)when request mapping
+  - TEEvent.cs
+  > Add Get & Set for new VID
+  - TFSecsGem.cs
+  > Modify ECS case
+  > Modify PPS case to read binary recipe data
+  > Add DPS ( delete program Set ), already deleted in gemtaro hence here reply event only
+  > Modify GAD case for request mapping and add SAR case for Set substrate info
+  > Add PPverification to verify PP error if any
+  > Modify GetVID function to reply according to sequence received
+  > Prompt invalid data input alarm if fail to decode map
+
+
 Ver 6.1.6.1 - KN - 20250619 - Gitted
 - [Changes] Finalization of DOT_ZPATH UI
 - [Feature] Update Program Display to include current net vol.
@@ -62,6 +103,17 @@ Ver 6.1.5.16 - KN - 20250612 - Gitted
   - [Feature] Support HPC2 for purge stage
   - [Enhance] Refactor ZDOT_PATH for full backsuck and sync
   - [Feature] Added TaskDisp.EZTouchDetectMethod.Lift for Encoder Z stage.
+
+  Ver 6.1.5.14 - JH - 20250617 - Gitted
+  [Feature] SecsGem 
+  - frm_Main.cs 
+  > added Event_Terminal EventHandler to trigger SECSGEM form when received S10F1
+  - TEEvent.cs
+  > Added events and Vids for substrate map and info
+  - TFSecsGem.cs
+  > trigger main page event handler when received terminal msg
+  > added TRID for Trace data
+
 Ver 6.1.5.13 - JH - 20250610 - Gitted
   [Feature] SecsGem 
   - frm_Auto.cs 
