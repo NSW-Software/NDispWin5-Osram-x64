@@ -1395,7 +1395,7 @@
             // label11
             // 
             this.label11.AccessibleDescription = "Gantry Status";
-            this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label11.AutoEllipsis = true;
             this.label11.BackColor = System.Drawing.SystemColors.Control;
@@ -1411,7 +1411,7 @@
             // 
             // lbl_GantrySt
             // 
-            this.lbl_GantrySt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.lbl_GantrySt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lbl_GantrySt.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lbl_GantrySt.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -1951,5 +1951,8 @@
         private System.Windows.Forms.Label label32;
         private System.Windows.Forms.TabPage tpPanelList;
         private System.Windows.Forms.DataGridView dgvPanelList;
+        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.DataGridView dgvSubstrateStatus;
+        private System.Windows.Forms.Label label33;
     }
 }
