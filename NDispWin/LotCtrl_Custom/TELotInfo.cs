@@ -78,7 +78,7 @@ namespace NDispWin
             public static string F6Value = "";
             public static string F7Value = "";
             public static string F8Value = "";
-
+            
             public static int LoadRecipeIndex = 0;
 
             public static string SetupFile = GDefine.AppPath + @"\\Osram_LotEntrySetup.csv";
@@ -96,6 +96,15 @@ namespace NDispWin
                     W.WriteLine("Field6Name" + "," + F6Name);
                     W.WriteLine("Field7Name" + "," + F7Name);
                     W.WriteLine("Field8Name" + "," + F8Name);
+                    W.WriteLine("RecipeName" + "," + RecipeName);
+                    W.WriteLine("LotID" + "," + LotNumber);
+                    W.WriteLine("MaterialNumber" + "," + ElevenSeries);
+                    W.WriteLine("Operation" + "," + Operation);
+                    W.WriteLine("OperatorID" + "," + sOperatorID);
+                    foreach (var kvp in TFSecsGem.SubstrateStatus)
+                    {
+                        W.WriteLine($"SubstrateStatus,{kvp.Key},{kvp.Value}");
+                    }
                 }
                 finally
                 {
@@ -143,6 +152,37 @@ namespace NDispWin
                         {
                             F8Name = line[1].Trim();
                             continue;
+                        }
+                        if (line[0].StartsWith("RecipeName"))
+                        {
+                            RecipeName = line[1].Trim();
+                            continue;
+                        }
+                        if (line[0].StartsWith("LotID"))
+                        {
+                            LotNumber = line[1].Trim();
+                            continue;
+                        }
+                        if (line[0].StartsWith("MaterialNumber"))
+                        {
+                            ElevenSeries = line[1].Trim();
+                            continue;
+                        }
+                        if (line[0].StartsWith("Operation"))
+                        {
+                            Operation = line[1].Trim();
+                            continue;
+                        }
+                        if (line[0].StartsWith("OperatorID"))
+                        {
+                            sOperatorID = line[1].Trim();
+                            continue;
+                        }
+                        if (line[0].StartsWith("SubstrateStatus"))
+                        {
+                            var key = line[1].Trim();
+                            var value = line[2].Trim();
+                            TFSecsGem.SubstrateStatus[key] = value;
                         }
                     }
                 }

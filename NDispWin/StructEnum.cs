@@ -470,7 +470,7 @@ namespace NDispWin
     }
         #endregion
 
-    internal enum EMapBin
+    public enum EMapBin
     {
         None = 0, BinNG = 100,
         MapOK = 1, MapNG = 101,

@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
 using System.IO;
+using System.Windows.Forms;
+using System.Threading;
 
 namespace NDispWin
 {
@@ -37,6 +39,7 @@ namespace NDispWin
             Log.AddToEventLog(this.Code, this.Name, paraName + " " + paraValue);
             //GDefine.sgc2.SendEvent(this.Code + "," + this.Name + "," + paraName + "," + paraValue);
             TFSecsGem.Send($"{nameof(StreamFunc.ERS)},{this.Code},{this.Name},{paraName},{paraValue}");
+            Thread.Sleep(1000);
         }
         public void Set()
         {
@@ -718,6 +721,14 @@ namespace NDispWin
                         return Convert.ToInt32(TFSecsGem.Set_Substrate);
                     case nameof(VID.E142_Map_On):
                         return Convert.ToInt32(TFSecsGem.E142_Map_On);
+                    case nameof(VID.Pass_Bincode):
+                        return TFSecsGem.Pass_Bincode;
+                    case nameof(VID.Fail_Bincode):
+                        return TFSecsGem.Fail_Bincode;
+                    case nameof(VID.NULL_Bincode):
+                        return TFSecsGem.Null_Bincode;
+                    case nameof(VID.Unprocessed_Bincode):
+                        return TFSecsGem.UnProcessed_Bincode;
                         #endregion
                 }
                 return 0;
@@ -1202,7 +1213,10 @@ namespace NDispWin
         public static TEVID TEMPCTRL4TOL = new TEVID(31004, "Temperature Control Tol 4.", 0, 10, 0, "DegC");
         public static TEVID SET_SUBSTRATE = new TEVID(31101, "Set Substrate Info On Off.", 0, 1, 0, "");
         public static TEVID E142_Map_On = new TEVID(31102, "Ë142 Mapping On Off.", 0, 1, 0, "");
-
+        public static TEVID Pass_Bincode = new TEVID(31103, "Pass Bincode.", 0000, 4999, 0000, "");
+        public static TEVID Fail_Bincode = new TEVID(31104, "Fail Bincode.", 5000, 9999, 5000, "");
+        public static TEVID NULL_Bincode = new TEVID(31105, "NULL Bincode.");
+        public static TEVID Unprocessed_Bincode = new TEVID(31106, "Unprocessed Bincode.");
         #endregion
     }
 

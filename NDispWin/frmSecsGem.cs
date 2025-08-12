@@ -344,7 +344,9 @@ namespace NDispWin
             {
                 string xmlString = "";
                 TFSecsGem.EncodeMap(rtbBinCodes.Text, ref xmlString);
-                TFSecsGem.Send($"{nameof(StreamFunc.ERS)},MapData,{xmlString}");
+                //TFSecsGem.Send($"{nameof(StreamFunc.ERS)},MapData,{xmlString}");
+                TFSecsGem.Map_Update_Content = xmlString;
+                Event.SECSGEM_MAP_UPDATED.Set();
             }
 
             rtbInfo.Clear();
@@ -378,6 +380,11 @@ namespace NDispWin
             {
                 TFSecsGem.E142_Map_On = "0";
             }
+        }
+
+        private void btnBinCode_Click(object sender, EventArgs e)
+        {
+            new frmBinCode(TFSecsGem.BinCodes).ShowDialog();
         }
     }
 }

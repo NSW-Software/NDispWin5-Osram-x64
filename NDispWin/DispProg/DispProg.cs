@@ -11340,17 +11340,21 @@ namespace NDispWin
                         {
                             case TaskDisp.EInputMapProtocol.OSRAM_E142:
                                 {
+                                    if (TFSecsGem.E142_Map_On == "0") break;
                                     string xmlString = "";
                                     string s = TFSecsGem.EncodeBinCodeStrings();
                                     TFSecsGem.EncodeMap(s, ref xmlString);
-                                    TFSecsGem.Send($"{nameof(StreamFunc.ERS)},MapData,{xmlString}");
+                                    //TFSecsGem.Send($"{nameof(StreamFunc.ERS)},MapData,{xmlString}");
                                     TFSecsGem.Map_Update_Content = xmlString;
                                     Event.SECSGEM_MAP_UPDATED.Set();
+                                    Thread.Sleep(3000);
                                     break;
                                 }
                         }
+                        
                         Event.SUBSTRATE_END.Set();
                         TFSecsGem.SubstrateStatus[TFSecsGem.SubstrateID] = "COMPLETE";
+                        LotInfo2.Osram.SaveSetup();
                         BdReady = true;
                         Define_Run.UpdateProcessStatus_BdReady();  
 
@@ -23153,7 +23157,7 @@ namespace NDispWin
                             }
                         case TaskDisp.EInputMapProtocol.OSRAM_E142:
                             {
-                                if (TFSecsGem.E142_Map_On == "0") return true;
+                                if (TFSecsGem.E142_Map_On == "0") break;
                                 TFSecsGem.GAR(FrameNo);
 
                                 int t = Environment.TickCount;
@@ -23344,6 +23348,7 @@ namespace NDispWin
                     switch (TaskDisp.InputMap_Protocol)
                     {
                         default:
+                        case TaskDisp.EInputMapProtocol.OSRAM_E142:
                         case TaskDisp.EInputMapProtocol.None:
                             break;
                         case TaskDisp.EInputMapProtocol.OSRAM_eMos:
@@ -23378,30 +23383,30 @@ namespace NDispWin
                                 Task_InputMap.OsramEMos.WriteETVFile(MaterialNr + "-" + FrameNo, map3, new Size(rt_Layouts[0].TColCount, rt_Layouts[0].TRowCount));
                                 break;
                             }
-                        case TaskDisp.EInputMapProtocol.OSRAM_E142:
-                            {
+                        //case TaskDisp.EInputMapProtocol.OSRAM_E142:
+                        //    {
 
 
-                                for (int i = 0; i < rt_Layouts[rt_LayoutID].TUCount; i++)
-                                {
-                                    int iCol = 0;
-                                    int iRow = 0;
-                                    rt_Layouts[rt_LayoutID].UnitNoGetRC(i, ref iCol, ref iRow);
+                        //        for (int i = 0; i < rt_Layouts[rt_LayoutID].TUCount; i++)
+                        //        {
+                        //            int iCol = 0;
+                        //            int iRow = 0;
+                        //            rt_Layouts[rt_LayoutID].UnitNoGetRC(i, ref iCol, ref iRow);
 
-                                    int iColM = rt_Layouts[rt_LayoutID].TColCount - 1 - iCol;
+                        //            int iColM = rt_Layouts[rt_LayoutID].TColCount - 1 - iCol;
 
-                                    try
-                                    {
-                                        Map.Bin[i] = (EMapBin)GDefine.sgc2.map[iColM, iRow];
-                                    }
-                                    catch
-                                    {
-                                        Map.Bin[i] = EMapBin.None;
-                                    }
-                                }
+                        //            try
+                        //            {
+                        //                Map.Bin[i] = (EMapBin)GDefine.sgc2.map[iColM, iRow];
+                        //            }
+                        //            catch
+                        //            {
+                        //                Map.Bin[i] = EMapBin.None;
+                        //            }
+                        //        }
 
-                                break;
-                            }
+                        //        break;
+                        //    }
                     }
 
                     if (TaskDisp.Preference == TaskDisp.EPreference.Unisem && TaskDisp.SECSGEMProtocol == TaskDisp.ESECSGEMProtocol.SECSGEMConnect2 && GDefine.sgc2.EnableStripMapE142)

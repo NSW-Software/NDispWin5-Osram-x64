@@ -211,6 +211,12 @@
     <Compile Include="DispProg\frmCmdSelect.Designer.cs">
       <DependentUpon>frmCmdSelect.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmBinCode.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmBinCode.Designer.cs">
+      <DependentUpon>frmBinCode.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmCLEditor.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -14,6 +14,9 @@ using Automation.BDaq;
 using System.Xml.Linq;
 using System.Drawing;
 using static NDispWin.Intf;
+using System.ComponentModel;
+using System.Globalization;
+using static System.Windows.Forms.AxHost;
 
 namespace NDispWin
 {
@@ -318,6 +321,15 @@ namespace NDispWin
         LoadFail,
         EquipmentBusy
     }
+    public enum EPPChangeStatus
+    {
+        CreatedByHost,
+        ChangedByHost,
+        DeletedByHost,
+        CreatedByEquip,
+        ChangedByEquip,
+        DeletedByEquip,
+    }
 
     class TEStreamFunc
     {
@@ -418,7 +430,7 @@ namespace NDispWin
         public static EControlState ControlState = EControlState.EquipmentLocal;
         public static EControlState PrevControlState = EControlState.EquipmentLocal;
         public static EPPError PPError;
-        public static string PPChangeStatus = "Success";
+        public static EPPChangeStatus PPChangeStatus = EPPChangeStatus.CreatedByHost;
         public static string PPFormat = "Unformatted";
 
         public static string RxTerminalMessage = "";
@@ -428,6 +440,10 @@ namespace NDispWin
         public static string ChangedECValue = "";
         public static string Set_Substrate = "0";
         public static string E142_Map_On = "0";
+        public static string Pass_Bincode = "0000";
+        public static string Fail_Bincode = "5000";
+        public static string Null_Bincode = "FFFF";
+        public static string UnProcessed_Bincode = "AAAA";
 
         public static string Map_Update_Content = "";
         public static TClient2 client = new TClient2();
@@ -861,11 +877,15 @@ namespace NDispWin
                                     Send(nameof(StreamFunc.PPA) + ",Success");
                                     if (isCreated)
                                     {
-                                        Event.SECSGEM_PP_CREATE.Set();
+                                        Thread.Sleep(1000);
+                                        //Event.SECSGEM_PP_CREATE.Set();
+                                        PPChangeStatus = EPPChangeStatus.CreatedByHost;
+                                        Event.SECSGEM_PP_CHANGE.Set();
                                         isCreated = false;
                                     }
                                     else
                                     {
+                                        PPChangeStatus = EPPChangeStatus.ChangedByHost;
                                         Event.SECSGEM_PP_CHANGE.Set();
                                     }
                                     
@@ -915,7 +935,9 @@ namespace NDispWin
                         break;
                     case nameof(StreamFunc.DPS):
                         {
-                            Event.SECSGEM_PP_DELETE.Set();
+                            //Event.SECSGEM_PP_DELETE.Set();
+                            PPChangeStatus = EPPChangeStatus.DeletedByHost;
+                            Event.SECSGEM_PP_CHANGE.Set();
                         }
                         break;
                     #endregion
@@ -984,6 +1006,7 @@ namespace NDispWin
                             Send(nameof(StreamFunc.SAD) + ",SUCCESS.," + rxSplitData[1] + "," + rxSplitData[2] + "," + SID);
                             Event.SECSGEM_E142_SUBSTRATE_INFO.Set();
                         }
+                        LotInfo2.Osram.SaveSetup();
                         break;
 
 
@@ -1000,7 +1023,7 @@ namespace NDispWin
                             string fileName = Path.Combine(GDefine.RecipeDir.FullName + rxSplitData[2] + GDefine.RecipeExt);
                             if (!FileExistsCaseSensitive(fileName))
                             {
-                                PPChangeStatus = "Recipe not found.";
+                                //PPChangeStatus = "Recipe not found.";
                                 Send($"{data0},RECIPE NOT FOUND.");
                                 PPError = EPPError.RecipeNotFound;
                                 Event.SECSGEM_PP_VERIFICATION.Set();
@@ -1010,7 +1033,7 @@ namespace NDispWin
                             bool rdy = GDefine.Status == EStatus.Ready || GDefine.Status == EStatus.Stop || GDefine.Status == EStatus.EndStop;
                             if (!rdy || DispProg.TR_IsBusy())
                             {
-                                PPChangeStatus = "Equipment is busy.";
+                                //PPChangeStatus = "Equipment is busy.";
                                 Send($"{data0},EQUIPMENT IS BUSY.");
 
                                 PPError = EPPError.EquipmentBusy;
@@ -1020,7 +1043,7 @@ namespace NDispWin
 
                             if (!DispProg.loadXML2(fileName, true))
                             {
-                                PPChangeStatus = "Load fail.";
+                                //PPChangeStatus = "Load fail.";
                                 Send($"{data0},LOAD FAIL.");
 
                                 PPError = EPPError.LoadFail;
@@ -1035,10 +1058,11 @@ namespace NDispWin
                             LotInfo2.Osram.Operation = rxSplitData[10];
                             LotInfo2.sOperatorID = rxSplitData[8];
 
-                            PPChangeStatus = "Success";
+                            PPChangeStatus = EPPChangeStatus.ChangedByHost;
                             Send($"{data0},SUCCESS");
                             Thread.Sleep(100);
                             Event.SECSGEM_PP_SELECTED.Set("FileName", fileName);
+                            LotInfo2.Osram.SaveSetup();
                             break;
                         }
                     case "START":
@@ -1418,17 +1442,25 @@ namespace NDispWin
         {
             string ppid = recipeName;
             rxPPGData?.Clear();
-            Send(nameof(StreamFunc.PPI) + $",{ppid},{ppid.Length}");
+
+            var fileName = GDefine.RecipeDir.FullName + ppid + ".xml";
+            var fileInfo = new FileInfo(fileName);
+            if (fileInfo.Exists)
+            {
+                long fileLength = fileInfo.Length;
+                Send(nameof(StreamFunc.PPI) + $",{ppid},{fileLength}");
+            }
+            else return;
 
             int t = Environment.TickCount + Timeout;
             while (true)//wait PPG
             {
-                if (rxPPGData?.Count > 1) break;
+                if (rxPPGData?.Count >= 1) break;
                 Thread.Sleep(0);
                 if (Environment.TickCount >= t) return;
             }
 
-            var fileName = GDefine.RecipeDir.FullName + ppid + ".xml";
+            //var fileName = GDefine.RecipeDir.FullName + ppid + ".xml";
 
             if (File.Exists(fileName))
             {
@@ -1473,28 +1505,31 @@ namespace NDispWin
                 string fullFilename = GDefine.ProgPath + "\\" + ppid + "." + GDefine.ProgExt;
                 if (!File.Exists(fullFilename))
                 {
+                    Directory.CreateDirectory(fullFilename);
                     isCreated = true;
                 }
                 if (File.Exists(filePath))
                 {
                     ppbody = File.ReadAllText(filePath);
                 }
-                StringBuilder xmlbuilder = new StringBuilder();
-                for (int i = 0; i < ppbody.Length; i += 8)
-                {
-                    string byteString = ppbody.Substring(i, 8);
-                    char character = (char)Convert.ToByte(byteString, 2);
-                    xmlbuilder.Append(character);
-                }
-                string xmlcontent = xmlbuilder.ToString();
+                //StringBuilder xmlbuilder = new StringBuilder();
+                //for (int i = 0; i < ppbody.Length; i += 8)
+                //{
+                //    string byteString = ppbody.Substring(i, 8);
+                //    char character = (char)Convert.ToByte(byteString, 2);
+                //    xmlbuilder.Append(character);
+                //}
+                //string xmlcontent = xmlbuilder.ToString();
+
                 slim.EnterWriteLock();
                 try
                 {
-                    using (StreamWriter writer = new StreamWriter(file))
-                    {
-                        writer.Write(xmlcontent);
-                        //a.Close();
-                    }
+                    //using (StreamWriter writer = new StreamWriter(file))
+                    //{
+                    //    writer.Write(xmlcontent);
+                    //    //a.Close();
+                    //}
+                    File.WriteAllText(file, ppbody);
                 }
                 finally
                 {
@@ -1693,13 +1728,14 @@ namespace NDispWin
                 }
             }
 
+            var codeMap = BinCodes.Where(item => item.BinState != null).ToDictionary(item => item.BinState, item => item.Value);
             string binCodesStrings = "";
-            for (int r = 0; r < iRow; r++)
+            for (int r = 0; r <= iRow; r++)
             {
-                for (int c = 0; c < iCol; c++)
+                string line = "";
+                for (int c = 0; c <= iCol; c++)
                 {
                     int bin = map[c, r];
-                    string binCode = "AAAA";
 
                     //if (bin < 100) binCode = "0A0F";//Unprocessed
                     //                                //None = 0, BinNG = 100,
@@ -1708,19 +1744,22 @@ namespace NDispWin
                     //                                //HeightOK = 3, HeightNG = 103,
                     //                                //UnitMarkOK = 4, UnitMarkNG = 104,
                     //                                //VVIOK = 6, VVING = 106,
-                    if (bin >= 100 && bin < 200) binCode = "0000";//Complete = 200
-                                                                  //if (bin == (int)EMapBin.VVING/*106*/) binCode = "0F0F";//VVING = 106
-                                                                  //if (bin == 200) binCode = "AAAA";//Complete = 200
-                                                                  //if (bin == 210) binCode = "0C0F";//InMapNG = 210,
-                                                                  //if (bin == 220) binCode = "0AFF";//Bypass = 220,
-                                                                  //if (bin == 255) binCode = "0A0F";//PreMapNG = 255
-
-                    binCodesStrings = binCodesStrings + binCode;
+                    // (bin == (int)EMapBin.Complete) 
+                    //    binCode = "0000";//Complete = 200
+                    //if (bin == (int)EMapBin.InMapNG) 
+                    //    binCode = "5000";             //if (bin == (int)EMapBin.VVING/*106*/) binCode = "0F0F";//VVING = 106
+                    //if (bin == 200) binCode = "AAAA";//Complete = 200
+                    //if (bin == 210) binCode = "0C0F";//InMapNG = 210,
+                    //if (bin == 220) binCode = "0AFF";//Bypass = 220,
+                    //if (bin == 255) binCode = "0A0F";//PreMapNG = 255
+                    if (!codeMap.TryGetValue((EMapBin)bin, out var binCode)) binCode = "AAAA";
+                    //binCodesStrings = binCodesStrings + binCode;
+                    line = binCode + line;
                 }
-                binCodesStrings = binCodesStrings + $"\n";
+                binCodesStrings = binCodesStrings + line + $"\n";
             }
 
-            return "";
+            return binCodesStrings;
         }
 
         public static bool EncodeMap(string binCodesString, ref string xmlString)
@@ -1735,7 +1774,17 @@ namespace NDispWin
                 var substrate = doc.Descendants(ns + "Substrate").FirstOrDefault();
                 if (substrate != null)
                 {
-                    substrate.SetAttributeValue("SubstrateId", "FO");
+                    substrate.SetAttributeValue("SubstrateId", $"{SubstrateID}");
+                }
+
+                var codeDict = BinCodes.Where(item => item.BinState != null).ToDictionary(item => item.BinState, item => item.Value);
+                foreach (var def in doc.Descendants(ns + "BinDefinition"))
+                {                  
+                    bool pick = (bool)def.Attribute("Pick");
+                    var mapBin = pick ? EMapBin.Complete : EMapBin.InMapNG;
+
+                    if (codeDict.TryGetValue(mapBin, out var newCode))
+                        def.SetAttributeValue("BinCode", newCode);
                 }
 
                 string[] lines = binCodesString.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
@@ -1761,6 +1810,43 @@ namespace NDispWin
 
             return true;
         }
+
+        public static BindingList<BinCodeItem> BinCodes { get; set; } = new BindingList<BinCodeItem>(new List<BinCodeItem>
+        {
+            new BinCodeItem(EMapBin.Complete, Pass_Bincode),
+            new BinCodeItem(EMapBin.InMapNG, Fail_Bincode),
+            //new BinCodeItem(EMapBin.None, "AAAA"),
+
+        });
     }
+    public class BinCodeItem
+    {
+        public object BinState { get; set; }
+
+        private string _value;
+
+        public string Value
+        {
+            get => _value;
+            set
+            {
+                _value = value;
+            }
+        }
+
+
+        public BinCodeItem() { }
+
+        public BinCodeItem(EMapBin binstate, string val)
+        {
+            BinState = binstate;
+            Value = val;
+        }
+
+        public static List<object> BinStates { get; } = new[] { Enum.GetValues(typeof(EMapBin)).Cast<object>() }.SelectMany(x => x).ToList();
+
+    }
+
+
 }
 

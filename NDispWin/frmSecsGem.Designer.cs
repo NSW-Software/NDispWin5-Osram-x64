@@ -65,6 +65,7 @@ namespace NDispWin
             this.label3 = new System.Windows.Forms.Label();
             this.btnUpload = new System.Windows.Forms.Button();
             this.btnDownload = new System.Windows.Forms.Button();
+            this.btnBinCode = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -122,7 +123,7 @@ namespace NDispWin
             this.cbxProcessState.FormattingEnabled = true;
             this.cbxProcessState.Location = new System.Drawing.Point(116, 94);
             this.cbxProcessState.Name = "cbxProcessState";
-            this.cbxProcessState.Size = new System.Drawing.Size(157, 22);
+            this.cbxProcessState.Size = new System.Drawing.Size(157, 26);
             this.cbxProcessState.TabIndex = 66;
             this.cbxProcessState.SelectionChangeCommitted += new System.EventHandler(this.cbxProcessState_SelectionChangeCommitted);
             // 
@@ -131,7 +132,7 @@ namespace NDispWin
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(18, 97);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(82, 14);
+            this.label1.Size = new System.Drawing.Size(97, 18);
             this.label1.TabIndex = 67;
             this.label1.Text = "Process State";
             // 
@@ -164,7 +165,7 @@ namespace NDispWin
             this.groupBox1.Controls.Add(this.btnUploadPP);
             this.groupBox1.Location = new System.Drawing.Point(12, 199);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(509, 68);
+            this.groupBox1.Size = new System.Drawing.Size(509, 72);
             this.groupBox1.TabIndex = 70;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Process Recipe Management";
@@ -173,7 +174,7 @@ namespace NDispWin
             // 
             this.tbPP.Location = new System.Drawing.Point(6, 21);
             this.tbPP.Name = "tbPP";
-            this.tbPP.Size = new System.Drawing.Size(283, 22);
+            this.tbPP.Size = new System.Drawing.Size(283, 26);
             this.tbPP.TabIndex = 0;
             // 
             // groupBox2
@@ -193,7 +194,7 @@ namespace NDispWin
             // 
             this.tbAlarmCode.Location = new System.Drawing.Point(47, 27);
             this.tbAlarmCode.Name = "tbAlarmCode";
-            this.tbAlarmCode.Size = new System.Drawing.Size(80, 22);
+            this.tbAlarmCode.Size = new System.Drawing.Size(80, 26);
             this.tbAlarmCode.TabIndex = 72;
             // 
             // label2
@@ -201,7 +202,7 @@ namespace NDispWin
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(6, 30);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(35, 14);
+            this.label2.Size = new System.Drawing.Size(41, 18);
             this.label2.TabIndex = 71;
             this.label2.Text = "Code";
             // 
@@ -235,7 +236,7 @@ namespace NDispWin
             this.groupBox3.Controls.Add(this.btnSendTerminalMessage);
             this.groupBox3.Location = new System.Drawing.Point(12, 357);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(509, 156);
+            this.groupBox3.Size = new System.Drawing.Size(509, 160);
             this.groupBox3.TabIndex = 72;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Terminal Message";
@@ -299,6 +300,7 @@ namespace NDispWin
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.btnBinCode);
             this.groupBox4.Controls.Add(this.cbE142);
             this.groupBox4.Controls.Add(this.tbBadgeNo);
             this.groupBox4.Controls.Add(this.label4);
@@ -322,7 +324,7 @@ namespace NDispWin
             this.cbE142.AutoSize = true;
             this.cbE142.Location = new System.Drawing.Point(9, 15);
             this.cbE142.Name = "cbE142";
-            this.cbE142.Size = new System.Drawing.Size(54, 18);
+            this.cbE142.Size = new System.Drawing.Size(62, 22);
             this.cbE142.TabIndex = 83;
             this.cbE142.Text = "E142";
             this.cbE142.UseVisualStyleBackColor = true;
@@ -332,7 +334,7 @@ namespace NDispWin
             // 
             this.tbBadgeNo.Location = new System.Drawing.Point(88, 40);
             this.tbBadgeNo.Name = "tbBadgeNo";
-            this.tbBadgeNo.Size = new System.Drawing.Size(128, 22);
+            this.tbBadgeNo.Size = new System.Drawing.Size(128, 26);
             this.tbBadgeNo.TabIndex = 82;
             // 
             // label4
@@ -340,7 +342,7 @@ namespace NDispWin
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(6, 43);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(60, 14);
+            this.label4.Size = new System.Drawing.Size(72, 18);
             this.label4.TabIndex = 81;
             this.label4.Text = "Badge No";
             // 
@@ -349,7 +351,7 @@ namespace NDispWin
             this.cbSetSubstrate.AutoSize = true;
             this.cbSetSubstrate.Location = new System.Drawing.Point(89, 15);
             this.cbSetSubstrate.Name = "cbSetSubstrate";
-            this.cbSetSubstrate.Size = new System.Drawing.Size(102, 18);
+            this.cbSetSubstrate.Size = new System.Drawing.Size(118, 22);
             this.cbSetSubstrate.TabIndex = 80;
             this.cbSetSubstrate.Text = "Set Substrate";
             this.cbSetSubstrate.UseVisualStyleBackColor = true;
@@ -360,7 +362,7 @@ namespace NDispWin
             this.cbLocal.AutoSize = true;
             this.cbLocal.Location = new System.Drawing.Point(294, 29);
             this.cbLocal.Name = "cbLocal";
-            this.cbLocal.Size = new System.Drawing.Size(53, 18);
+            this.cbLocal.Size = new System.Drawing.Size(62, 22);
             this.cbLocal.TabIndex = 79;
             this.cbLocal.Text = "Local";
             this.cbLocal.UseVisualStyleBackColor = true;
@@ -378,7 +380,7 @@ namespace NDispWin
             // 
             this.tbSubstrateID.Location = new System.Drawing.Point(88, 68);
             this.tbSubstrateID.Name = "tbSubstrateID";
-            this.tbSubstrateID.Size = new System.Drawing.Size(128, 22);
+            this.tbSubstrateID.Size = new System.Drawing.Size(128, 26);
             this.tbSubstrateID.TabIndex = 72;
             // 
             // rtbInfo
@@ -395,7 +397,7 @@ namespace NDispWin
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(6, 71);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(76, 14);
+            this.label3.Size = new System.Drawing.Size(91, 18);
             this.label3.TabIndex = 71;
             this.label3.Text = "Subsrtate ID";
             // 
@@ -418,6 +420,16 @@ namespace NDispWin
             this.btnDownload.Text = "Download";
             this.btnDownload.UseVisualStyleBackColor = true;
             this.btnDownload.Click += new System.EventHandler(this.btnDownload_Click);
+            // 
+            // btnBinCode
+            // 
+            this.btnBinCode.Location = new System.Drawing.Point(216, 15);
+            this.btnBinCode.Name = "btnBinCode";
+            this.btnBinCode.Size = new System.Drawing.Size(72, 32);
+            this.btnBinCode.TabIndex = 84;
+            this.btnBinCode.Text = "BinCode";
+            this.btnBinCode.UseVisualStyleBackColor = true;
+            this.btnBinCode.Click += new System.EventHandler(this.btnBinCode_Click);
             // 
             // frmSecsGem
             // 
@@ -490,5 +502,6 @@ namespace NDispWin
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.CheckBox cbE142;
         private System.Windows.Forms.TextBox tbBadgeNo;
+        private System.Windows.Forms.Button btnBinCode;
     }
 }

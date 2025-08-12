@@ -31,6 +31,35 @@ X-12.	Unusual weight spike during weight check -> not occure after
 DOT, CLINE
 
 DOT, CLINE
+ver 6.1.7.0 - JAY - 20250807 -Gitted
+[Feature] SecsGem
+- DispProg.cs
+> Add E142_Map_on checking for input / output map and 3s delay for upload map.
+> Add LotInfo save after upload map.
+> Refactor Execute for Osram_E142 to do nothing.
+- TELotInfo.cs
+> Refactor SaveSetup for save the lot info.
+> Refactor LoadSetup for load lot info after sw restart.
+- frm_Auto.cs
+> Refactor condition of lot end from complete to COMPLETE.
++ frmBinCode.cs
+> For user to configure the pass bincode and fail bincode.
+- frmSECSGEM.cs
+> Add BinCode button for user to open frmBinCode.
+> Refactor Upload button for testing upload map.
+- StructEnum.cs
+> Refactor EMapbin from internal to public.
+- TEEvent.cs
+> Add 1s delay after event set.
+> Add ECID pass bincode, fail bincode, null bincode and unprocessed bincode.
+- TFSecsGem.cs
+> Add new string pass bincode, fail bincode, null bincode and unprocessed bincode.
+> Add SaveSetup for lot info after get substrate info and ppselect.
+> Refactor UploadPP_PPI_PPS for upload recipe from equipment.
+> Refactor RequesrPP_PPR for request recipe to host
+> Refactor EncodeBinCodeStrings and EncodeMap to upload the correct mapping.
+> Add new class BinCodeItem and BindingList BinCodes for configurable bincode.
+
 Ver 6.1.6.6 - JAY - 20250711 -Gitted
 [Feature] SecsGem
 - TFSecsgem.cs, GDefine.cs

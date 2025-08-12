@@ -930,7 +930,7 @@ namespace NDispWin
                                 GDefine.Status = EStatus.Stop;
                                 Define_Run.TR_StopRun();
                                 Event.OP_FINISH_RUN.Set();
-                                if(TFSecsGem.SubstrateStatus.Values.All(s => s == "Complete"))
+                                if(TFSecsGem.SubstrateStatus.Values.All(s => s == "COMPLETE"))
                                 {
                                     Event.OP_LOT_END.Set("LotInfo", $"{LotInfo2.sOperatorID},{LotInfo2.LotNumber},{LotInfo2.Osram.ElevenSeries},{LotInfo2.Osram.DAStartNumber}");
                                     Msg MsgBox = new Msg();
