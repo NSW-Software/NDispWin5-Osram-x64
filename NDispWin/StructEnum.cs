@@ -1292,7 +1292,10 @@ namespace NDispWin
         {
             get
             {
-                return (int)DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.LineStartV];
+                if (DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.LineStartV] == 0)
+                    return Math.Min(TaskGantry.GXAxis.Para.StartV, 100);//limit speed, safety purpose
+                else
+                    return DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.LineStartV];
             }
             set
             {
@@ -1304,7 +1307,10 @@ namespace NDispWin
         {
             get
             {
-                return (int)DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.LineSpeed];
+                if (DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.LineSpeed] == 0)
+                    return Math.Min(TaskGantry.GXAxis.Para.FastV, 500);//limit speed, safety purpose
+                else
+                    return DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.LineSpeed];
             }
             set
             {
@@ -1317,7 +1323,7 @@ namespace NDispWin
         {
             get
             {
-                return (int)DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.LineSpd2];
+                return DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.LineSpd2];
             }
             set
             {
@@ -1330,7 +1336,10 @@ namespace NDispWin
         {
             get
             {
-                return (int)DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.LineAccel];
+                if (DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.LineAccel] == 0)
+                    return LineAccel = TaskGantry.GXAxis.Para.Accel;
+                else
+                    return DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.LineAccel];
             }
             set
             {
@@ -1369,9 +1378,51 @@ namespace NDispWin
             }
         }
 
-        public double RetStartV = 0;
-        public double RetSpeed = 0;
-        public double RetAccel = 0;
+        //public double RetStartV = 0;
+        public double RetStartV
+        {
+            get
+            {
+                if (DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.RetStartV] == 0)
+                    return TaskGantry.GZAxis.Para.StartV;
+                else
+                    return DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.RetStartV];
+            }
+            set
+            {
+                DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.RetStartV] = value;
+            }
+        }
+        //public double RetSpeed = 0;
+        public double RetSpeed
+        {
+            get
+            {
+                if (DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.RetSpeed] == 0)
+                    return RetSpeed = TaskGantry.GZAxis.Para.FastV;
+                else
+                    return DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.RetSpeed];
+            }
+            set
+            {
+                DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.RetSpeed] = value;
+            }
+        }
+        //public double RetAccel = 0;
+        public double RetAccel
+        {
+            get
+            {
+                if (DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.RetAccel] == 0)
+                    return TaskGantry.GZAxis.Para.Accel;
+                else
+                    return DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.RetAccel];
+            }
+            set
+            {
+                DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.RetAccel] = value;
+            }
+        }
         //public double RetGap = 0;
         public double RetGap
         {
@@ -1386,9 +1437,51 @@ namespace NDispWin
         }
         public int RetWait = 0;
 
-        public double UpStartV = 0;
-        public double UpSpeed = 0;
-        public double UpAccel = 0;
+        //public double UpStartV = 0;
+        public double UpStartV
+        {
+            get
+            {
+                if (DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.UpStartV] == 0)
+                    return TaskGantry.GZAxis.Para.StartV;
+                else
+                    return DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.UpStartV];
+            }
+            set
+            {
+                DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.UpStartV] = value;
+            }
+        }
+        //public double UpSpeed = 0;
+        public double UpSpeed
+        {
+            get
+            {
+                if (DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.UpSpeed] == 0)
+                    return UpSpeed = TaskGantry.GZAxis.Para.FastV;
+                else
+                    return UpSpeed = DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.UpSpeed];
+            }
+            set
+            {
+                DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.UpSpeed] = value;
+            }
+        }
+        //public double UpAccel = 0;
+        public double UpAccel
+        {
+            get
+            {
+                if (DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.UpAccel] == 0)
+                    return UpAccel = TaskGantry.GZAxis.Para.Accel;
+                else
+                    return UpAccel = DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.UpAccel];
+            }
+            set
+            {
+                DispProg.ModelList.Model[modelNo].Para[(int)TModelList.EModel.UpAccel] = value;
+            }
+        }
         //public double UpGap = 0;
         public double UpGap
         {
@@ -1453,21 +1546,21 @@ namespace NDispWin
                 else
                     Pump2Speed = ModelList.Model[ModelNo].Para[(int)TModelList.EModel.Pump2Speed];
 
-                if (ModelList.Model[ModelNo].Para[(int)TModelList.EModel.LineStartV] == 0)
-                    LineStartV = TaskGantry.GXAxis.Para.StartV;
-                else
-                    LineStartV = ModelList.Model[ModelNo].Para[(int)TModelList.EModel.LineStartV];
+                //if (ModelList.Model[ModelNo].Para[(int)TModelList.EModel.LineStartV] == 0)
+                //    LineStartV = TaskGantry.GXAxis.Para.StartV;
+                //else
+                LineStartV = ModelList.Model[ModelNo].Para[(int)TModelList.EModel.LineStartV];
 
                 LineSpeedAct = ModelList.Model[ModelNo].Para[(int)TModelList.EModel.LineSpeed];
-                if (ModelList.Model[ModelNo].Para[(int)TModelList.EModel.LineSpeed] == 0)
-                    LineSpeed = TaskGantry.GXAxis.Para.FastV;
-                else
-                    LineSpeed = ModelList.Model[ModelNo].Para[(int)TModelList.EModel.LineSpeed];
+                //if (ModelList.Model[ModelNo].Para[(int)TModelList.EModel.LineSpeed] == 0)
+                //    LineSpeed = TaskGantry.GXAxis.Para.FastV;
+                //else
+                LineSpeed = ModelList.Model[ModelNo].Para[(int)TModelList.EModel.LineSpeed];
 
                 //if (ModelList.Model[ModelNo].Para[(int)TModelList.EModel.LineSpeed2] == 0)
                 //    LineSpeed2 = LineSpeed;
                 //else
-                    LineSpeed2 = ModelList.Model[ModelNo].Para[(int)TModelList.EModel.LineSpd2];
+                LineSpeed2 = ModelList.Model[ModelNo].Para[(int)TModelList.EModel.LineSpd2];
 
                 if (ModelList.Model[ModelNo].Para[(int)TModelList.EModel.LineAccel] == 0)
                     LineAccel = TaskGantry.GXAxis.Para.Accel;
@@ -1487,37 +1580,37 @@ namespace NDispWin
                 EndDelay = (int)ModelList.Model[ModelNo].Para[(int)TModelList.EModel.EndDelay];
                 PostWait = (int)ModelList.Model[ModelNo].Para[(int)TModelList.EModel.PostWait];
 
-                if (ModelList.Model[ModelNo].Para[(int)TModelList.EModel.RetStartV] == 0)
-                    RetStartV = TaskGantry.GZAxis.Para.StartV;
-                else
+                //if (ModelList.Model[ModelNo].Para[(int)TModelList.EModel.RetStartV] == 0)
+                //    RetStartV = TaskGantry.GZAxis.Para.StartV;
+                //else
                     RetStartV = ModelList.Model[ModelNo].Para[(int)TModelList.EModel.RetStartV];
 
-                if (ModelList.Model[ModelNo].Para[(int)TModelList.EModel.RetSpeed] == 0)
-                    RetSpeed = TaskGantry.GZAxis.Para.FastV;
-                else
+                //if (ModelList.Model[ModelNo].Para[(int)TModelList.EModel.RetSpeed] == 0)
+                //    RetSpeed = TaskGantry.GZAxis.Para.FastV;
+                //else
                     RetSpeed = ModelList.Model[ModelNo].Para[(int)TModelList.EModel.RetSpeed];
 
-                if (ModelList.Model[ModelNo].Para[(int)TModelList.EModel.RetAccel] == 0)
-                    RetAccel = TaskGantry.GZAxis.Para.Accel;
-                else
+                //if (ModelList.Model[ModelNo].Para[(int)TModelList.EModel.RetAccel] == 0)
+                //    RetAccel = TaskGantry.GZAxis.Para.Accel;
+                //else
                     RetAccel = ModelList.Model[ModelNo].Para[(int)TModelList.EModel.RetAccel];
 
                 RetGap = ModelList.Model[ModelNo].Para[(int)TModelList.EModel.RetGap];
                 RetWait = (int)ModelList.Model[ModelNo].Para[(int)TModelList.EModel.RetWait];
 
-                if (ModelList.Model[ModelNo].Para[(int)TModelList.EModel.UpStartV] == 0)
-                    UpStartV = TaskGantry.GZAxis.Para.StartV;
-                else
+                //if (ModelList.Model[ModelNo].Para[(int)TModelList.EModel.UpStartV] == 0)
+                //    UpStartV = TaskGantry.GZAxis.Para.StartV;
+                //else
                     UpStartV = ModelList.Model[ModelNo].Para[(int)TModelList.EModel.UpStartV];
 
-                if (ModelList.Model[ModelNo].Para[(int)TModelList.EModel.UpSpeed] == 0)
-                    UpSpeed = TaskGantry.GZAxis.Para.FastV;
-                else
+                //if (ModelList.Model[ModelNo].Para[(int)TModelList.EModel.UpSpeed] == 0)
+                //    UpSpeed = TaskGantry.GZAxis.Para.FastV;
+                //else
                     UpSpeed = ModelList.Model[ModelNo].Para[(int)TModelList.EModel.UpSpeed];
 
-                if (ModelList.Model[ModelNo].Para[(int)TModelList.EModel.UpAccel] == 0)
-                    UpAccel = TaskGantry.GZAxis.Para.Accel;
-                else
+                //if (ModelList.Model[ModelNo].Para[(int)TModelList.EModel.UpAccel] == 0)
+                //    UpAccel = TaskGantry.GZAxis.Para.Accel;
+                //else
                     UpAccel = ModelList.Model[ModelNo].Para[(int)TModelList.EModel.UpAccel];
 
                 UpGap = ModelList.Model[ModelNo].Para[(int)TModelList.EModel.UpGap];

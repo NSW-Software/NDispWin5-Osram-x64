@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Emgu.CV;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace NDispWin
@@ -346,36 +347,48 @@ namespace NDispWin
         }
         #endregion
 
+        CancellationTokenSource cts = new CancellationTokenSource();
         private async void btn_Capture_Click(object sender, EventArgs e)
         {
-            Enabled = false;
+            //Enabled = false;
+            this.Enable(false);
+            btnStop.Enable(true);
+
             int ImageID = CmdLine.ID;
             int t = 0;
 
             TaskVision.frmMVCGenTLCamera.SelectCamera(CmdLine.IPara[1]);
+            TaskVision.BdCaptureLightRGB = TaskVision.CurrentLightRGBA;
+
+            double X0 = DispProg.Origin(DispProg.rt_StationNo).X + CmdLine.X[0];
+            double Y0 = DispProg.Origin(DispProg.rt_StationNo).Y + CmdLine.Y[0];
+            double X1 = DispProg.Origin(DispProg.rt_StationNo).X + CmdLine.X[1];
+            double Y1 = DispProg.Origin(DispProg.rt_StationNo).Y + CmdLine.Y[1];
 
             try
             {
-                await Task.Run(() =>
+                if (CmdLine.IPara[3] == 1)
                 {
-                    TaskVision.BdCaptureLightRGB = TaskVision.CurrentLightRGBA;
-
-                    double X0 = DispProg.Origin(DispProg.rt_StationNo).X + CmdLine.X[0];
-                    double Y0 = DispProg.Origin(DispProg.rt_StationNo).Y + CmdLine.Y[0];
-                    double X1 = DispProg.Origin(DispProg.rt_StationNo).X + CmdLine.X[1];
-                    double Y1 = DispProg.Origin(DispProg.rt_StationNo).Y + CmdLine.Y[1];
-
-                    if (CmdLine.IPara[3] == 0)
+                    await Task.Run(() =>
                     {
-                        t = GDefine.GetTickCount();
-                        if (!DispProg.DoBdCapture(CmdLine, ImageID, X0, Y0, X1, Y1)) return;
-                    }
-                    if (CmdLine.IPara[3] == 1)
-                    {
+                        //if (CmdLine.IPara[3] == 0)
+                        //{
+                        //    t = GDefine.GetTickCount();
+                        //    if (!DispProg.DoBdCapture(CmdLine, ImageID, X0, Y0, X1, Y1)) return;
+                        //}
+                        //if (CmdLine.IPara[3] == 1)
+                        //{
                         t = GDefine.GetTickCount();
                         DispProg.DoLineCapture(CmdLine, X0, Y0, X1, Y1);
-                    }
-                });
+                        //}
+                    });
+                }
+                if (CmdLine.IPara[3] == 0)
+                {
+                    t = GDefine.GetTickCount();
+                    var task = Task.Run(() => DispProg.DoBdCapture(CmdLine, ImageID, X0, Y0, X1, Y1, cts.Token));
+                    await task;
+                }
             }
             catch (Exception Ex)
             {
@@ -385,7 +398,8 @@ namespace NDispWin
             }
             finally
             {
-                Enabled = true;
+                this.Enable(true);
+                //Enabled = true;
             }
 
             if (TaskVision.frmMVCGenTLCamera.Visible) TaskVision.genTLCamera[CmdLine.IPara[1]].StartGrab();
@@ -438,6 +452,11 @@ namespace NDispWin
             CmdLine.IPara[10] = scanReso;
 
             UpdateDisplay();
+        }
+
+        private void btnStop_Click(object sender, EventArgs e)
+        {
+            cts.Cancel();
         }
     }
 }

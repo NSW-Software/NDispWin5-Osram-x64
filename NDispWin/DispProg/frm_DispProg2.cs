@@ -565,7 +565,6 @@ namespace NDispWin
                         Para = ID + " " + "M" + CmdLine.Line[i].IPara[0].ToString() + " ";
                         if (CmdLine.Line[i].IPara[1] > 0)
                             Para = Para + "Weight " + CmdLine.Line[i].DPara[1].ToString("f3") + " mg";
-
                         break;
                     #endregion
                     case DispProg.ECmd.PAR_LINES:
@@ -590,10 +589,11 @@ namespace NDispWin
                             if (CmdLine.Line[i].IPara[2] > 0) Cmd = Cmd + "*";
                             ID = "H" + CmdLine.Line[i].ID.ToString() + "";
                             Para = ID + " ";
-                            if (CmdLine.Line[i].IPara[4] > 0)
-                            {
-                                Para = Para + $"Def Vol1,2: {CmdLine.Line[i].DPara[18]:f3},{CmdLine.Line[i].DPara[19]:f3} ";
-                            }
+                            //if (CmdLine.Line[i].IPara[4] > 0)
+                            //{
+                            //    Para = Para + $"Def Vol1,2: {CmdLine.Line[i].DPara[18]:f3},{CmdLine.Line[i].DPara[19]:f3} ";
+                            //}
+                            Para = Para + $"Current Nett Vol {(TFPump.PP4.DispAmounts[0] - TFPump.PP4.BSuckAmounts[0]):f3},{(TFPump.PP4.DispAmounts[1] - TFPump.PP4.BSuckAmounts[1]):f3}";
                             break;
                         }
                     case DispProg.ECmd.MOVE:
@@ -1096,17 +1096,26 @@ namespace NDispWin
                 frmMonCamera.TopMost = true;
                 frmMonCamera.Show();
             }
+
+            tsbtn_MasterAlign.Visible = TaskDisp.Option_EnableRealTimeFineTune;
+            tsbtnMasterAlignClear.Visible = TaskDisp.Option_EnableRealTimeFineTune;
         }
         private void frm_DispCore_DispProg_Activated(object sender, EventArgs e)
         {
         }
+
+        bool isDirty = false;
         private void frmDispProg_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Msg MsgBox = new Msg();
-            EMsgRes MsgRes = MsgBox.Show(Messages.SAVE_RECIPE, "Closing Program Window.", EMsgBtn.smbYes | EMsgBtn.smbNo);
-            if (MsgRes == EMsgRes.smrYes)
+            if (isDirty)
             {
-                Save();
+                Msg MsgBox = new Msg();
+                EMsgRes MsgRes = MsgBox.Show(Messages.SAVE_RECIPE, "Closing Program Window.", EMsgBtn.smbYes | EMsgBtn.smbNo);
+                if (MsgRes == EMsgRes.smrYes)
+                {
+                    isDirty = false;
+                    Save();
+                }
             }
 
             frm_Layout.Close();
@@ -1215,6 +1224,8 @@ namespace NDispWin
         }
         private void tsbtn_SetZ_Click(object sender, EventArgs e)
         {
+            isDirty = true;
+
             frm_ProgressReport frm = new frm_ProgressReport();
             frm.Message = "Set ProductZ?";
             if (frm.ShowDialog() == DialogResult.OK)
@@ -1239,6 +1250,8 @@ namespace NDispWin
         }
         private void tsbtn_SetOrigin_Click(object sender, EventArgs e)
         {
+            isDirty = true;
+
             frm_ProgressReport frm = new frm_ProgressReport();
             frm.Message = "Set Origin?";
             if (frm.ShowDialog() == DialogResult.OK)
@@ -1351,11 +1364,15 @@ namespace NDispWin
         #region Program Load/Save
         private async void ts_ProgNew_Click(object sender, EventArgs e)
         {
-            Msg MsgBox = new Msg();
-            EMsgRes MsgRes = MsgBox.Show(Messages.SAVE_RECIPE, "Creating new recipe.", EMsgBtn.smbYes | EMsgBtn.smbNo);
-            if (MsgRes == EMsgRes.smrYes)
+            if (isDirty)
             {
-                Save();
+                Msg MsgBox = new Msg();
+                EMsgRes MsgRes = MsgBox.Show(Messages.SAVE_RECIPE, "Creating new recipe.", EMsgBtn.smbYes | EMsgBtn.smbNo);
+                if (MsgRes == EMsgRes.smrYes)
+                {
+                    Save();
+                    isDirty = false;
+                }
             }
 
             frm_ProgressReport frm = new frm_ProgressReport();
@@ -1380,11 +1397,15 @@ namespace NDispWin
         frm_ProgressReport frm1 = new frm_ProgressReport();
         private async void ts_ProgOpen_Click(object sender, EventArgs e)
         {
-            Msg MsgBox = new Msg();
-            EMsgRes MsgRes = MsgBox.Show(Messages.SAVE_RECIPE, "Open new recipe.", EMsgBtn.smbYes | EMsgBtn.smbNo);
-            if (MsgRes == EMsgRes.smrYes)
+            if (isDirty)
             {
-                Save();
+                Msg MsgBox = new Msg();
+                EMsgRes MsgRes = MsgBox.Show(Messages.SAVE_RECIPE, "Open new recipe.", EMsgBtn.smbYes | EMsgBtn.smbNo);
+                if (MsgRes == EMsgRes.smrYes)
+                {
+                    Save();
+                    isDirty = false;
+                }
             }
 
             OpenFileDialog ofd = new OpenFileDialog();
@@ -1531,6 +1552,7 @@ namespace NDispWin
         }
         private void ts_ProgModel_Click(object sender, EventArgs e)
         {
+            isDirty = true;
             //btn_Dummy.Focus();
             frm_Setting.Visible = false;
 
@@ -2667,6 +2689,8 @@ namespace NDispWin
         }
         private void tsbtn_Lock_Click(object sender, EventArgs e)
         {
+            isDirty = true;
+
             b_ProgEdit = !b_ProgEdit;
             UpdateDisplay();
         }

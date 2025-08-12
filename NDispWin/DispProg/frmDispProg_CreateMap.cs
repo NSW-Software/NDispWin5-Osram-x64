@@ -22,8 +22,11 @@ namespace NDispWin
         private bool readOnly = false;
         private bool showSelectBox = false;
         private bool showHandles = true;
+
         enum EMode { None, Pattern, Outline };
         private EMode Mode = EMode.None;
+
+        enum EDetect { White, Black };
 
         public frm_DispCore_DispProg_CreateMap()
         {
@@ -55,6 +58,8 @@ namespace NDispWin
             this.selectBox.AddHandle(new HandleResizeSE());
             this.selectBox.AddHandle(new HandleResizeSW());
             this.selectBox.OnBoxChanged += new EventHandler(selectBox_OnBoxChanged);
+
+            cbDetect.DataSource = Enum.GetNames(typeof(EDetect));
         }
 
         private void EnableControl(bool Enable, Button Button1, Button Button2)
@@ -83,7 +88,6 @@ namespace NDispWin
         {
             EnableControl(true, btn_Learn, btn_Learn);
         }
-
         private void SetSelected(object sender, bool Selected)
         {
             if (Selected)
@@ -113,16 +117,10 @@ namespace NDispWin
 
             lbl_Thld.Text = CmdLine.IPara[10].ToString();
             lbl_MinPixel.Text = (CmdLine.DPara[10] * 100).ToString("f1");
+            if (CmdLine.IPara[11] > 0) CmdLine.IPara[11] = 1;
+            cbDetect.SelectedIndex = CmdLine.IPara[11];
+
             gbox_BinarySettings.Visible = CmdLine.IPara[2] == (int)ECMMethod.Binary;
-            lbl_Ref.Text = (DispProg.rt_RefWhitePixelPcnt * 100).ToString("f1") + ", " +
-                (DispProg.rt_MinWhitePixelPcnt * 100).ToString("f1") + ", " +
-                (DispProg.rt_MaxWhitePixelPcnt * 100).ToString("f1");
-            lbl_OKMinMax.Text = DispProg.rt_GenMap_OKCount.ToString() + ", " +
-                (DispProg.rt_OKMinWhitePixelPcnt * 100).ToString("f1") + ", " +
-                (DispProg.rt_OKMaxWhitePixelPcnt * 100).ToString("f1");
-            lbl_NGMinMax.Text = DispProg.rt_GenMap_NGCount.ToString() + ", " +
-                (DispProg.rt_NGMinWhitePixelPcnt * 100).ToString("f1") + ", " +
-                (DispProg.rt_NGMaxWhitePixelPcnt * 100).ToString("f1");
 
             lbl_OKYield.Text = (CmdLine.DPara[4] * 100).ToString();
             lbl_CurrentOKYield.Text = (((double)DispProg.rt_GenMap_OKCount / (DispProg.rt_GenMap_OKCount + DispProg.rt_GenMap_NGCount)) * 100).ToString("f1");
@@ -184,6 +182,9 @@ namespace NDispWin
             }
         }
 
+        Emgu.CV.Image<Emgu.CV.Structure.Gray, byte> LocalImgG = null;
+        Emgu.CV.Image<Emgu.CV.Structure.Gray, byte> TempLocalImgG = null;
+        Emgu.CV.Image<Emgu.CV.Structure.Bgr, byte> LocalImgC = null;
         private void frmDispProg_CreateMap_Load(object sender, EventArgs e)
         {
             GControl.UpdateFormControl(this);
@@ -196,34 +197,23 @@ namespace NDispWin
             SelectImage();
             UpdateLayout();
 
-            ViewZoom();
+            //ViewZoom();
+            ViewMag0();
             UpdateDisplay();
         }
-
         private void frmDispProg_CreateMap_FormClosing(object sender, FormClosingEventArgs e)
         {
-
+            if (LocalImgG != null) LocalImgG.Dispose();
+            if (TempLocalImgG != null) TempLocalImgG.Dispose();
+            if (LocalImgC != null) LocalImgC.Dispose();
         }
-
         private void frmDispProg_CreateMap_FormClosed(object sender, FormClosedEventArgs e)
         {
             frm_DispProg2.Done = true;
         }
-
         private void frmDispProg_CreateMap_VisibleChanged(object sender, EventArgs e)
         {
-            //if (!Visible) return;
-
-            //CmdLine = DispProg.Script[ProgNo].CmdList.Line[LineNo];
-            //this.Text = "Command - " + Enum.GetName(typeof(DispProg.ECmd), CmdLine.Cmd).ToString();
-
-            //UpdateDisplay();
         }
-
-        Emgu.CV.Image<Emgu.CV.Structure.Gray, byte> LocalImgG = null;
-        Emgu.CV.Image<Emgu.CV.Structure.Gray, byte> TempLocalImgG = null;
-        Emgu.CV.Image<Emgu.CV.Structure.Bgr, byte> LocalImgC = null;
-
 
         #region Para
         private void lbl_LayoutID_Click(object sender, EventArgs e)
@@ -323,19 +313,16 @@ namespace NDispWin
                 Invalidate();
             }
         }
-
         void pbox_Image_MouseUp(object sender, MouseEventArgs e)
         {
             if (readOnly) return;
             selectBox.OnMouseUp(e);
         }
-
         void pbox_Image_MouseDown(object sender, MouseEventArgs e)
         {
             if (readOnly) return;
             selectBox.OnMouseDown(e);
         }
-
         void pbox_Image_MouseMove(object sender, MouseEventArgs e)
         {
             if (readOnly) return;
@@ -345,7 +332,6 @@ namespace NDispWin
         {
             Cursor = Cursors.Default;
         }
-
         public event EventHandler SelectionChanged;
         void selectBox_OnBoxChanged(object sender, EventArgs e)
         {
@@ -722,78 +708,6 @@ namespace NDispWin
         }
         #endregion
 
-        static int PyrRatio = 0;
-        private void RefreshImage()
-        {
-            if (LocalImgG != null)
-            {
-                //LocalImgC = TempLocalImgG.Convert<Emgu.CV.Structure.Bgr, byte>();
-
-                //Rectangle Rect = new Rectangle();
-                //Rect.X = (int)CmdLine.X[0];
-                //Rect.Y = (int)CmdLine.Y[0];
-                //Rect.Width = (int)CmdLine.X[1];
-                //Rect.Height = (int)CmdLine.Y[1];
-                //GrabberNET.VisUtils.DrawRect(LocalImgC, Rect, Color.Lime);
-
-                //Rect.X = (int)(CmdLine.X[0] + CmdLine.X[2]);
-                //Rect.Y = (int)(CmdLine.Y[0] + CmdLine.Y[2]);
-                //GrabberNET.VisUtils.DrawRect(LocalImgC, Rect, Color.Lime);
-
-                //Rect.X = (int)(CmdLine.X[0] + (CmdLine.X[1] / 2));
-                //Rect.Y = (int)(CmdLine.Y[0] + (CmdLine.Y[1] / 2));
-                //Rect.Width = (int)(CmdLine.X[2]);
-                //Rect.Height = (int)(CmdLine.Y[2]);
-                //GrabberNET.VisUtils.DrawRect(LocalImgC, Rect, Color.Yellow);
-
-                //pbox_Image.Image = LocalImgC.ToBitmap();
-
-                LocalImgC = TempLocalImgG.Convert<Emgu.CV.Structure.Bgr, byte>();
-                if (PyrRatio > 0)
-                    for (int i = 0; i < PyrRatio; i++)
-                    {
-
-
-                        LocalImgC = LocalImgC.PyrUp();
-                    }
-                if (PyrRatio < 0)
-                    for (int i = 0; i > PyrRatio; i--)
-                    {
-
-
-                        LocalImgC = LocalImgC.PyrDown();
-                    }
-
-
-                //Rectangle Rect = new Rectangle();
-                //Rect.X = (int)CmdLine.X[0];
-                //Rect.Y = (int)CmdLine.Y[0];
-                //Rect.Width = (int)CmdLine.X[1];
-                //Rect.Height = (int)CmdLine.Y[1];
-                //GrabberNET.VisUtils.DrawRect(LocalImgC, Rect, Color.Lime);
-
-                //Rect.X = (int)(CmdLine.X[0] + CmdLine.X[2]);
-                //Rect.Y = (int)(CmdLine.Y[0] + CmdLine.Y[2]);
-                //GrabberNET.VisUtils.DrawRect(LocalImgC, Rect, Color.Lime);
-
-                //Rect.X = (int)(CmdLine.X[0] + (CmdLine.X[1] / 2));
-                //Rect.Y = (int)(CmdLine.Y[0] + (CmdLine.Y[1] / 2));
-                //Rect.Width = (int)(CmdLine.X[2]);
-                //Rect.Height = (int)(CmdLine.Y[2]);
-                //GrabberNET.VisUtils.DrawRect(LocalImgC, Rect, Color.Yellow);
-
-                pbox_Image.Image = LocalImgC.ToBitmap();
-            }
-            else
-            {
-                Emgu.CV.Image<Emgu.CV.Structure.Bgr, byte> _Img = null;
-                _Img = new Emgu.CV.Image<Emgu.CV.Structure.Bgr, byte>(pbox_Image.Width, pbox_Image.Height);
-                VisUtils.DrawText(_Img, new Point(5, 5), "No Image", 10, Color.Red);
-                pbox_Image.Image = _Img.ToBitmap();
-                _Img.Dispose();
-            }
-        }
-
         #region Tab - Advance
         private void btn_LoadImage_Click(object sender, EventArgs e)
         {
@@ -862,7 +776,8 @@ namespace NDispWin
                 lbl_ResultMin.Text = SMin.ToString();
                 lbl_ResultMax.Text = SMax.ToString();
 
-                ViewZoom();
+                //ViewZoom();
+                ViewMag0();
                 pbox_Image.Image = LocalImgC.ToBitmap();
             }
             catch (Exception Ex)
@@ -901,6 +816,7 @@ namespace NDispWin
             if (ImgMode == EImageMode.Raw)
             {
                 TempLocalImgG = LocalImgG.Clone();
+                LocalImgC = TempLocalImgG.Convert<Emgu.CV.Structure.Bgr, byte>();
             }
             else
             {
@@ -912,21 +828,23 @@ namespace NDispWin
                     case ECMMethod.Pattern:
                         {
                             TempLocalImgG = LocalImgG.Clone();
+                            LocalImgC = TempLocalImgG.Convert<Emgu.CV.Structure.Bgr, byte>();
                             break;
                         }
                     case ECMMethod.Binary:
                         {
                             TempLocalImgG = LocalImgG.ThresholdBinary(new Emgu.CV.Structure.Gray(CmdLine.IPara[10]), new Emgu.CV.Structure.Gray(255));
+                            LocalImgC = TempLocalImgG.Convert<Emgu.CV.Structure.Bgr, byte>();
                             break;
                         }
                 }
             }
-            RefreshImage();
+                RefreshImage();
         }
 
         private void btn_Pattern_Click(object sender, EventArgs e)
         {
-            ViewMag0();
+            //ViewMag0();
 
             Mode = EMode.Pattern;
             UpdateDisplay();
@@ -957,7 +875,7 @@ namespace NDispWin
             Mode = EMode.Outline;
             UpdateDisplay();
 
-            ViewMag0();
+            //ViewMag0();
 
             EnableControl(false, btn_ModeOK, btn_ModeCancel);
 
@@ -985,7 +903,7 @@ namespace NDispWin
             showHandles = true;
             RefreshImage();
 
-            SetScrollPos();
+            //SetScrollPos();
         }
 
         private void btn_ModeOK_Click(object sender, EventArgs e)
@@ -1005,15 +923,6 @@ namespace NDispWin
 
                         VisUtils.Learn(LocalImgG, TaskVision.CreateMapTemplate, SearchRegion, PatternRegion);
 
-                        //if (CmdLine.X[0] + CmdLine.X[1] / 2 + CmdLine.X[2] > LocalImgG.Width)
-                        //{
-                        //    CmdLine.X[2] = LocalImgG.Width - CmdLine.X[0] - CmdLine.X[1];
-                        //}
-
-                        //if (CmdLine.Y[0] + CmdLine.Y[1] / 2 + CmdLine.Y[2] > LocalImgG.Height)
-                        //{
-                        //    CmdLine.Y[2] = LocalImgG.Height - CmdLine.Y[0] - CmdLine.Y[1];
-                        //}
                         pbox_CreateMapTemplate.Image = TaskVision.CreateMapTemplate.Image.ToBitmap();
 
                         Log.OnAction("Change", CmdName + ", Pattern", Old, PatternRegion);
@@ -1034,7 +943,6 @@ namespace NDispWin
             Mode = EMode.None;
             showSelectBox = false;
 
-            ViewZoom();
             RefreshImage();
 
             EnableControl(true, btn_ModeOK, btn_ModeCancel);
@@ -1045,7 +953,6 @@ namespace NDispWin
             Mode = EMode.None;
             showSelectBox = false;
 
-            ViewZoom();
             RefreshImage();
 
             EnableControl(true, btn_ModeOK, btn_ModeCancel);
@@ -1055,91 +962,70 @@ namespace NDispWin
         EMapBin[] MapBin = new EMapBin[TLayout.MAX_UNITS];
         private void btn_Test_Click(object sender, EventArgs e)
         {
-            LocalImgC = TempLocalImgG.Convert<Emgu.CV.Structure.Bgr, byte>();// GrabberNET.VisProc.Convert(TempLocalImgG);
-
-            ECMMethod Method = (ECMMethod)CmdLine.IPara[2];
-            switch (Method)
+            try
             {
-                case ECMMethod.Pattern:
-                    {
-                        DispProg.CreateMatchMap(CmdLine, LocalImgG, MatchResults);
-                        DispProg.ResetMaps();
-                        DispProg.GenerateMap(CmdLine, InLayout, MatchResults, ref MapBin);
-                        break;
-                    }
-                case ECMMethod.Binary:
-                    {
-                        DispProg.ResetMaps();
-                        DispProg.GenerateMap(CmdLine, InLayout, LocalImgG, ref MapBin);
-                        break;
-                    }
+                LocalImgC = TempLocalImgG.Convert<Emgu.CV.Structure.Bgr, byte>();// GrabberNET.VisProc.Convert(TempLocalImgG);
+
+                ECMMethod Method = (ECMMethod)CmdLine.IPara[2];
+                switch (Method)
+                {
+                    case ECMMethod.Pattern:
+                        {
+                            DispProg.CreateMatchMap(CmdLine, LocalImgG, MatchResults);
+                            DispProg.ResetMaps();
+                            DispProg.GenerateMap(CmdLine, InLayout, MatchResults, ref MapBin);
+                            break;
+                        }
+                    case ECMMethod.Binary:
+                        {
+                            DispProg.ResetMaps();
+                            DispProg.GenerateMap(CmdLine, InLayout, LocalImgG, ref MapBin);
+                            break;
+                        }
+                }
+
+                for (int i = 0; i < InLayout.TUCount; i++)
+                {
+                    Rectangle R = new Rectangle();
+                    R.X = (int)DispProg.rt_MapX[i];
+                    R.Y = (int)DispProg.rt_MapY[i];
+                    R.Width = (int)CmdLine.X[1];
+                    R.Height = (int)CmdLine.Y[1];
+
+                    Color C = new Color();
+                    if (MapBin[i] == EMapBin.MapOK) C = Color.Lime;
+                    else
+                        if (MapBin[i] == EMapBin.PreMapNG) C = Color.Orange;
+                    else
+                        C = Color.Red;
+
+                    VisUtils.DrawRect(LocalImgC, R, C);
+                }
+
+                RefreshImage();
+
+                switch (Method)
+                {
+                    case ECMMethod.Pattern:
+                        {
+                            break;
+                        }
+                    case ECMMethod.Binary:
+                        {
+                            string s = "";
+                            s += $"OK Pix, Min:{DispProg.rt_OKDetectPixelPcntMin * 100:f1}%, Max:{DispProg.rt_OKDetectPixelPcntMax * 100:f1}%\n";
+                            s += $"NG Pix, Min:{DispProg.rt_NGDetectPixelPcntMin * 100:f1}%, Max:{DispProg.rt_NGDetectPixelPcntMax * 100:f1}%\n";
+                            s += $"Result OK:{DispProg.rt_GenMap_OKCount}, NG:{DispProg.rt_GenMap_NGCount}, Total:{DispProg.rt_GenMap_OKCount + DispProg.rt_GenMap_NGCount}\n";
+                            rtbResult.Text = s;
+                            break;
+                        }
+                }
             }
-
-            for (int i = 0; i < InLayout.TUCount; i++)
-            {
-                Rectangle R = new Rectangle();
-                R.X = (int)DispProg.rt_MapX[i];
-                R.Y = (int)DispProg.rt_MapY[i];
-                R.Width = (int)CmdLine.X[1];
-                R.Height = (int)CmdLine.Y[1];
-
-                Color C = new Color();
-                if (MapBin[i] == EMapBin.MapOK) C = Color.Lime;
-                else
-                    if (MapBin[i] == EMapBin.PreMapNG) C = Color.Orange;
-                else
-                    C = Color.Red;
-
-                VisUtils.DrawRect(LocalImgC, R, C);
-            }
-
-            ViewZoom();
-            pbox_Image.Image = LocalImgC.ToBitmap();
+            catch { };
 
             UpdateDisplay();
         }
 
-        private void lbl_Score_Click(object sender, EventArgs e)
-        {
-            int i = (int)(CmdLine.DPara[0] * 100);
-            UC.AdjustExec(CmdName + ", Score (%)", ref i, 0, 99);
-            CmdLine.DPara[0] = (double)i / 100;
-            UpdateDisplay();
-        }
-
-        private void btn_Auto_Click(object sender, EventArgs e)
-        {
-            LocalImgC = TempLocalImgG.Convert<Emgu.CV.Structure.Bgr, byte>();// GrabberNET.VisProc.Convert(TempLocalImgG);
-
-            ECMMethod Method = (ECMMethod)CmdLine.IPara[2];
-            switch (Method)
-            {
-                case ECMMethod.Pattern:
-                    {
-                        DispProg.CreateMatchMap(CmdLine, LocalImgG, MatchResults);
-                        DispProg.ResetMaps();
-                        DispProg.GenerateMap(CmdLine, InLayout, MatchResults, ref MapBin);
-                        break;
-                    }
-                case ECMMethod.Binary:
-                    {
-                        DispProg.ResetMaps();
-                        DispProg.GenerateMap(CmdLine, InLayout, LocalImgG, ref MapBin);
-
-                        CmdLine.DPara[10] = (DispProg.rt_MinWhitePixelPcnt * 0.8);
-                        break;
-                    }
-            }
-            UpdateDisplay();
-        }
-
-        private void lbl_MinPixel_Click(object sender, EventArgs e)
-        {
-            double i = (int)(CmdLine.DPara[10] * 100);
-            UC.AdjustExec(CmdName + ", MinPixel", ref i, 1, 100);
-            CmdLine.DPara[10] = (double)i / 100;
-            UpdateDisplay();
-        }
         private void lbl_Thld_Click(object sender, EventArgs e)
         {
             UC.AdjustExec(CmdName + ", Threshold (0-255)", ref CmdLine.IPara[10], 0, 255);
@@ -1179,6 +1065,61 @@ namespace NDispWin
                 UpdateDisplay();
             }
         }
+
+        private void cbDetect_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            int old = CmdLine.IPara[11];
+            CmdLine.IPara[11] = cbDetect.SelectedIndex;
+            Log.OnAction("Change", CmdName + " Detect", old, CmdLine.IPara[11]);
+        }
+
+        private void lbl_MinPixel_Click(object sender, EventArgs e)
+        {
+            double i = (int)(CmdLine.DPara[10] * 100);
+            UC.AdjustExec(CmdName + ", MinPixel", ref i, 1, 100);
+            CmdLine.DPara[10] = (double)i / 100;
+            UpdateDisplay();
+        }
+        private void btn_Auto_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                LocalImgC = TempLocalImgG.Convert<Emgu.CV.Structure.Bgr, byte>();// GrabberNET.VisProc.Convert(TempLocalImgG);
+
+                ECMMethod Method = (ECMMethod)CmdLine.IPara[2];
+                switch (Method)
+                {
+                    case ECMMethod.Pattern:
+                        {
+                            DispProg.CreateMatchMap(CmdLine, LocalImgG, MatchResults);
+                            DispProg.ResetMaps();
+                            DispProg.GenerateMap(CmdLine, InLayout, MatchResults, ref MapBin);
+                            break;
+                        }
+                    case ECMMethod.Binary:
+                        {
+                            DispProg.ResetMaps();
+                            DispProg.GenerateMap(CmdLine, InLayout, LocalImgG, ref MapBin);
+
+                            CmdLine.DPara[10] = (DispProg.rt_DetectPixelPcntMin * 0.8);
+                            break;
+                        }
+                }
+            }
+            catch
+            {
+
+            }
+            UpdateDisplay();
+        }
+
+        private void lbl_Score_Click(object sender, EventArgs e)
+        {
+            int i = (int)(CmdLine.DPara[0] * 100);
+            UC.AdjustExec(CmdName + ", Score (%)", ref i, 0, 99);
+            CmdLine.DPara[0] = (double)i / 100;
+            UpdateDisplay();
+        }
         #endregion
 
         #region Tab - Judgement
@@ -1191,27 +1132,36 @@ namespace NDispWin
         }
         #endregion
 
-        private void ViewZoom()
+        static int PyrRatio = 0;
+        private void RefreshImage()
         {
-            double Ratio = 0;
-
-            pbox_Image.Dock = DockStyle.Fill;
-            pbox_Image.SizeMode = PictureBoxSizeMode.Zoom;
-
-            try
+            if (LocalImgG != null)
             {
-                double RatioX = (double)pnl_Image.Width / (double)LocalImgG.Width;
-                double RatioY = (double)pnl_Image.Height / (double)LocalImgG.Height;
-                Ratio = RatioX < RatioY ? RatioX : RatioY;
+                Emgu.CV.Image<Emgu.CV.Structure.Bgr, byte> _Img = null;
+                _Img = LocalImgC.Clone();
+                if (PyrRatio > 0)
+                    for (int i = 0; i < PyrRatio; i++)
+                    {
+                        _Img = _Img.PyrUp();
+                    }
+                if (PyrRatio < 0)
+                    for (int i = 0; i > PyrRatio; i--)
+                    {
+                        _Img = _Img.PyrDown();
+                    }
 
-                int NewWidth = Convert.ToInt32(LocalImgG.Width * Ratio);
-                int NewHeight = Convert.ToInt32(LocalImgG.Height * Ratio);
-
-                int PosX = Convert.ToInt32(pnl_Image.Width - ((double)NewWidth / 2));
-                int PosY = Convert.ToInt32(pnl_Image.Height - ((double)NewHeight / 2));
+                pbox_Image.Image = _Img.ToBitmap();
             }
-            catch { };
+            else
+            {
+                Emgu.CV.Image<Emgu.CV.Structure.Bgr, byte> _Img = null;
+                _Img = new Emgu.CV.Image<Emgu.CV.Structure.Bgr, byte>(pbox_Image.Width, pbox_Image.Height);
+                VisUtils.DrawText(_Img, new Point(5, 5), "No Image", 10, Color.Red);
+                pbox_Image.Image = _Img.ToBitmap();
+                _Img.Dispose();
+            }
         }
+
         private void ViewMag0()
         {
             RectangleF RectF = SelectionRectF;
@@ -1219,71 +1169,37 @@ namespace NDispWin
             SelectionRectF = RectF;
             RefreshImage();
 
+            pbox_Image.Location = new Point(0, 0);
             pbox_Image.Dock = DockStyle.None;
             pbox_Image.SizeMode = PictureBoxSizeMode.AutoSize;
-
-            pnl_Image.AutoScrollPosition = new Point(0, 0);
         }
         private void ViewMagN()
         {
-            //if (PyrRatio <= -2) return;
-            if (LocalImgC.Width / 2 < 200 || LocalImgC.Height / 2 < 200) return;
+            if (pbox_Image.Image.Width < 200 || pbox_Image.Image.Height < 200) return;
 
             RectangleF RectF = SelectionRectF;
             PyrRatio--;
             SelectionRectF = RectF;
             RefreshImage();
 
+            pbox_Image.Location = new Point(0, 0);
             pbox_Image.Dock = DockStyle.None;
             pbox_Image.SizeMode = PictureBoxSizeMode.AutoSize;
-
-            SetScrollPos();
         }
         private void ViewMagP()
         {
-            //if (PyrRatio >= 3) return;
-            if (LocalImgC.Width * 2 > 10000 || LocalImgC.Height * 2 > 10000) return;
-            
+            if (pbox_Image.Image.Width > 10000 || pbox_Image.Image.Height > 10000) return;
+
             RectangleF RectF = SelectionRectF;
             PyrRatio++;
             SelectionRectF = RectF;
             RefreshImage();
 
+            pbox_Image.Location = new Point(0, 0);
             pbox_Image.Dock = DockStyle.None;
             pbox_Image.SizeMode = PictureBoxSizeMode.AutoSize;
-
-            SetScrollPos();
-        }
-        private void SetScrollPos()
-        {
-            int HScrollLen = pnl_Image.HorizontalScroll.Maximum - pnl_Image.HorizontalScroll.LargeChange;
-            int VScrollLen = pnl_Image.VerticalScroll.Maximum - pnl_Image.VerticalScroll.LargeChange;
-
-            double PosX = 0;
-            double PosY = 0;
-
-            switch (Mode)
-            {
-                case EMode.Pattern:
-                    PosX = (double)selectBox.Rect.X / pbox_Image.Width;
-                    PosY = (double)selectBox.Rect.Y / pbox_Image.Height;
-                    break;
-                case EMode.Outline:
-                    PosX = (double)(selectBox.Rect.X + selectBox.Rect.Width) / pbox_Image.Width;
-                    PosY = (double)(selectBox.Rect.Y + selectBox.Rect.Height) / pbox_Image.Height;
-                    break;
-            }
-
-            int HScrollPos = (int)(PosX * HScrollLen);
-            int VScrollPos = (int)(PosY * VScrollLen);
-
-            pnl_Image.AutoScrollPosition = new Point(HScrollPos, VScrollPos);
         }
 
-        private void lbl_Zoom_Click(object sender, EventArgs e)
-        {
-            ViewZoom();
-        }
         private void lbl_Mag1_Click(object sender, EventArgs e)
         {
             ViewMag0();
@@ -1298,8 +1214,8 @@ namespace NDispWin
         }
         private void lbl_Center_Click(object sender, EventArgs e)
         {
-            pnl_Image.AutoScrollPosition = new Point((pnl_Image.HorizontalScroll.Maximum - pnl_Image.HorizontalScroll.LargeChange) / 2,
-            (pnl_Image.VerticalScroll.Maximum - pnl_Image.VerticalScroll.LargeChange) / 2);
+            pnlImage.AutoScrollPosition = new Point((pnlImage.HorizontalScroll.Maximum - pnlImage.HorizontalScroll.LargeChange) / 2,
+            (pnlImage.VerticalScroll.Maximum - pnlImage.VerticalScroll.LargeChange) / 2);
         }
 
         private void btn_OK_Click(object sender, EventArgs e)
@@ -1321,6 +1237,9 @@ namespace NDispWin
             Close();
         }
 
+        private void btn_GenMap_Click(object sender, EventArgs e)
+        {
 
+        }
     }
 }

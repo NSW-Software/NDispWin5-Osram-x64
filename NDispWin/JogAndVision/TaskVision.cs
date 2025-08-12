@@ -52,7 +52,7 @@ namespace NDispWin
         }
         public static void DrawRect(Image<Bgr, byte> ImageC, Rectangle Rect, Color Color)
         {
-            CvInvoke.Rectangle(ImageC, new Rectangle(new Point(Rect.Left, Rect.Top), new Size(Rect.Width, Rect.Height)), new MCvScalar(Color.B, Color.G, Color.R), 1, LineType.EightConnected, 0);
+            CvInvoke.Rectangle(ImageC, new Rectangle(new Point(Rect.Left, Rect.Top), new Size(Rect.Width, Rect.Height)), new MCvScalar(Color.B, Color.G, Color.R), 2, LineType.EightConnected, 0);
         }
         public static void DrawCircle(Image<Bgr, byte> ImageC, Point Pt, int Radius, Color Color)
         {

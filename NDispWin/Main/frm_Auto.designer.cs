@@ -92,6 +92,7 @@
             this.lbl_DB_DispOfst = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.btnResetProgram = new System.Windows.Forms.Button();
             this.label13 = new System.Windows.Forms.Label();
@@ -1081,6 +1082,7 @@
             // groupBox1
             // 
             this.groupBox1.AutoSize = true;
+            this.groupBox1.Controls.Add(this.richTextBox1);
             this.groupBox1.Controls.Add(this.label12);
             this.groupBox1.Controls.Add(this.btnResetProgram);
             this.groupBox1.Controls.Add(this.label13);
@@ -1098,6 +1100,16 @@
             this.groupBox1.TabIndex = 328;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Program";
+            // 
+            // richTextBox1
+            // 
+            this.richTextBox1.BackColor = System.Drawing.SystemColors.Control;
+            this.richTextBox1.ForeColor = System.Drawing.Color.Navy;
+            this.richTextBox1.Location = new System.Drawing.Point(7, 196);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(223, 86);
+            this.richTextBox1.TabIndex = 79;
+            this.richTextBox1.Text = "";
             // 
             // label12
             // 
@@ -1383,7 +1395,7 @@
             // label11
             // 
             this.label11.AccessibleDescription = "Gantry Status";
-            this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label11.AutoEllipsis = true;
             this.label11.BackColor = System.Drawing.SystemColors.Control;
@@ -1399,7 +1411,7 @@
             // 
             // lbl_GantrySt
             // 
-            this.lbl_GantrySt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.lbl_GantrySt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lbl_GantrySt.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lbl_GantrySt.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -1616,35 +1628,6 @@
             this.label8.TabIndex = 0;
             this.label8.Text = "PPID";
             // 
-            // tpPanelList
-            // 
-            this.tpPanelList.AccessibleDescription = "Panel List";
-            this.tpPanelList.BackColor = System.Drawing.SystemColors.Control;
-            this.tpPanelList.Controls.Add(this.dgvPanelList);
-            this.tpPanelList.Location = new System.Drawing.Point(4, 44);
-            this.tpPanelList.Name = "tpPanelList";
-            this.tpPanelList.Padding = new System.Windows.Forms.Padding(3);
-            this.tpPanelList.Size = new System.Drawing.Size(840, 625);
-            this.tpPanelList.TabIndex = 9;
-            this.tpPanelList.Text = "Panel List";
-            // 
-            // dgvPanelList
-            // 
-            this.dgvPanelList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvPanelList.BackgroundColor = System.Drawing.SystemColors.Control;
-            this.dgvPanelList.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvPanelList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvPanelList.ColumnHeadersVisible = false;
-            this.dgvPanelList.Dock = System.Windows.Forms.DockStyle.Top;
-            this.dgvPanelList.Location = new System.Drawing.Point(3, 3);
-            this.dgvPanelList.Name = "dgvPanelList";
-            this.dgvPanelList.RowHeadersVisible = false;
-            this.dgvPanelList.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            this.dgvPanelList.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.dgvPanelList.ShowEditingIcon = false;
-            this.dgvPanelList.Size = new System.Drawing.Size(834, 394);
-            this.dgvPanelList.TabIndex = 333;
-            // 
             // panel4
             // 
             this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
@@ -1763,14 +1746,34 @@
             this.tmr_1s.Interval = 1000;
             this.tmr_1s.Tick += new System.EventHandler(this.tmr_1s_Tick);
             // 
-            // label33
+            // tpPanelList
             // 
-            this.label33.AutoSize = true;
-            this.label33.Location = new System.Drawing.Point(318, 21);
-            this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(109, 14);
-            this.label33.TabIndex = 321;
-            this.label33.Text = "Set Substrate Info";
+            this.tpPanelList.AccessibleDescription = "Panel List";
+            this.tpPanelList.BackColor = System.Drawing.SystemColors.Control;
+            this.tpPanelList.Controls.Add(this.dgvPanelList);
+            this.tpPanelList.Location = new System.Drawing.Point(4, 44);
+            this.tpPanelList.Name = "tpPanelList";
+            this.tpPanelList.Padding = new System.Windows.Forms.Padding(3);
+            this.tpPanelList.Size = new System.Drawing.Size(840, 917);
+            this.tpPanelList.TabIndex = 9;
+            this.tpPanelList.Text = "Panel List";
+            // 
+            // dgvPanelList
+            // 
+            this.dgvPanelList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvPanelList.BackgroundColor = System.Drawing.SystemColors.Control;
+            this.dgvPanelList.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvPanelList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvPanelList.ColumnHeadersVisible = false;
+            this.dgvPanelList.Dock = System.Windows.Forms.DockStyle.Top;
+            this.dgvPanelList.Location = new System.Drawing.Point(3, 3);
+            this.dgvPanelList.Name = "dgvPanelList";
+            this.dgvPanelList.RowHeadersVisible = false;
+            this.dgvPanelList.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.dgvPanelList.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.dgvPanelList.ShowEditingIcon = false;
+            this.dgvPanelList.Size = new System.Drawing.Size(834, 394);
+            this.dgvPanelList.TabIndex = 333;
             // 
             // frm_Auto
             // 
@@ -1948,6 +1951,7 @@
         private System.Windows.Forms.Label label32;
         private System.Windows.Forms.TabPage tpPanelList;
         private System.Windows.Forms.DataGridView dgvPanelList;
+        private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.DataGridView dgvSubstrateStatus;
         private System.Windows.Forms.Label label33;
     }

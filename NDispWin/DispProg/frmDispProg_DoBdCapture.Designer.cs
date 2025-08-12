@@ -90,6 +90,7 @@
             this.lblScanResolution = new System.Windows.Forms.Label();
             this.label31 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.btnStop = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pbox_Image)).BeginInit();
             this.panel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -573,7 +574,7 @@
             this.combox_Path.FormattingEnabled = true;
             this.combox_Path.Location = new System.Drawing.Point(79, 21);
             this.combox_Path.Name = "combox_Path";
-            this.combox_Path.Size = new System.Drawing.Size(144, 26);
+            this.combox_Path.Size = new System.Drawing.Size(144, 22);
             this.combox_Path.TabIndex = 148;
             this.combox_Path.SelectionChangeCommitted += new System.EventHandler(this.combox_Path_SelectionChangeCommitted);
             // 
@@ -629,13 +630,14 @@
             this.combox_ScanMode.FormattingEnabled = true;
             this.combox_ScanMode.Location = new System.Drawing.Point(153, 6);
             this.combox_ScanMode.Name = "combox_ScanMode";
-            this.combox_ScanMode.Size = new System.Drawing.Size(70, 26);
+            this.combox_ScanMode.Size = new System.Drawing.Size(70, 22);
             this.combox_ScanMode.TabIndex = 135;
             this.combox_ScanMode.SelectionChangeCommitted += new System.EventHandler(this.combox_ScanMode_SelectionChangeCommitted);
             // 
             // panel1
             // 
             this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.panel1.Controls.Add(this.btnStop);
             this.panel1.Controls.Add(this.lbl_Status);
             this.panel1.Controls.Add(this.btn_Capture);
             this.panel1.Controls.Add(this.btn_Cancel);
@@ -648,9 +650,9 @@
             // lbl_Status
             // 
             this.lbl_Status.AutoSize = true;
-            this.lbl_Status.Location = new System.Drawing.Point(82, 14);
+            this.lbl_Status.Location = new System.Drawing.Point(158, 13);
             this.lbl_Status.Name = "lbl_Status";
-            this.lbl_Status.Size = new System.Drawing.Size(13, 18);
+            this.lbl_Status.Size = new System.Drawing.Size(11, 14);
             this.lbl_Status.TabIndex = 112;
             this.lbl_Status.Text = "-";
             // 
@@ -684,10 +686,10 @@
             this.tabPage1.Controls.Add(this.btn_GotoStartPos);
             this.tabPage1.Controls.Add(this.btn_SetEndPos);
             this.tabPage1.Controls.Add(this.lbl_StartXY);
-            this.tabPage1.Location = new System.Drawing.Point(4, 27);
+            this.tabPage1.Location = new System.Drawing.Point(4, 23);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(573, 173);
+            this.tabPage1.Size = new System.Drawing.Size(573, 177);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Basic";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -702,10 +704,10 @@
             this.tabPage2.Controls.Add(this.groupBox1);
             this.tabPage2.Controls.Add(this.label31);
             this.tabPage2.Controls.Add(this.combox_ScanMode);
-            this.tabPage2.Location = new System.Drawing.Point(4, 27);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(573, 173);
+            this.tabPage2.Size = new System.Drawing.Size(573, 178);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Scan";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -769,7 +771,7 @@
             this.cbxRotate.FormattingEnabled = true;
             this.cbxRotate.Location = new System.Drawing.Point(152, 75);
             this.cbxRotate.Name = "cbxRotate";
-            this.cbxRotate.Size = new System.Drawing.Size(70, 26);
+            this.cbxRotate.Size = new System.Drawing.Size(70, 22);
             this.cbxRotate.TabIndex = 150;
             this.cbxRotate.SelectionChangeCommitted += new System.EventHandler(this.cbxRotate_SelectionChangeCommitted);
             // 
@@ -852,13 +854,25 @@
             this.tabPage3.Controls.Add(this.lbl_Accel);
             this.tabPage3.Controls.Add(this.label21);
             this.tabPage3.Controls.Add(this.lbl_StartV);
-            this.tabPage3.Location = new System.Drawing.Point(4, 25);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(573, 175);
+            this.tabPage3.Size = new System.Drawing.Size(573, 178);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Motion";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // btnStop
+            // 
+            this.btnStop.AccessibleDescription = "Stop";
+            this.btnStop.Location = new System.Drawing.Point(78, 2);
+            this.btnStop.Margin = new System.Windows.Forms.Padding(2);
+            this.btnStop.Name = "btnStop";
+            this.btnStop.Size = new System.Drawing.Size(75, 36);
+            this.btnStop.TabIndex = 113;
+            this.btnStop.Text = "Stop";
+            this.btnStop.UseVisualStyleBackColor = true;
+            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
             // 
             // frm_DispCore_DispProg_DoBdCapture
             // 
@@ -956,5 +970,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label31;
         private System.Windows.Forms.Label lblScanResolution;
+        private System.Windows.Forms.Button btnStop;
     }
 }

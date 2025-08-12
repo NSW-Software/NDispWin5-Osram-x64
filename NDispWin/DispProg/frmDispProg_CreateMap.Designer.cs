@@ -42,7 +42,7 @@
             this.btn_Outline = new System.Windows.Forms.Button();
             this.btn_ModeOK = new System.Windows.Forms.Button();
             this.btn_ModeCancel = new System.Windows.Forms.Button();
-            this.pnl_Image = new System.Windows.Forms.Panel();
+            this.pnlImage = new System.Windows.Forms.Panel();
             this.gbox_Advance = new System.Windows.Forms.GroupBox();
             this.btn_SizeZoom = new System.Windows.Forms.Button();
             this.btn_SizeActual = new System.Windows.Forms.Button();
@@ -51,15 +51,17 @@
             this.tpage_Basic = new System.Windows.Forms.TabPage();
             this.gbox_PatternSettings = new System.Windows.Forms.GroupBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.lbl_Score = new System.Windows.Forms.Label();
-            this.gbox_BinarySettings = new System.Windows.Forms.GroupBox();
-            this.btn_Auto = new System.Windows.Forms.Button();
             this.lbl_NGMinMax = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.lbl_OKMinMax = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.lbl_Ref = new System.Windows.Forms.Label();
+            this.lbl_Score = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.lbl_Ref = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.lbl_OKMinMax = new System.Windows.Forms.Label();
+            this.gbox_BinarySettings = new System.Windows.Forms.GroupBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.cbDetect = new System.Windows.Forms.ComboBox();
+            this.btn_Auto = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.lbl_MinPixel = new System.Windows.Forms.Label();
             this.btn_ThldP = new System.Windows.Forms.Button();
@@ -67,6 +69,7 @@
             this.lbl_Thld = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.rtbResult = new System.Windows.Forms.RichTextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.btn_ImgMode = new System.Windows.Forms.Button();
             this.lbl_Mode = new System.Windows.Forms.Label();
@@ -86,15 +89,16 @@
             this.btn_Match = new System.Windows.Forms.Button();
             this.btn_Learn = new System.Windows.Forms.Button();
             this.btn_GenMap = new System.Windows.Forms.Button();
-            this.panel4 = new System.Windows.Forms.Panel();
+            this.pnlZoom = new System.Windows.Forms.Panel();
             this.lbl_Center = new System.Windows.Forms.Label();
-            this.lbl_Zoom = new System.Windows.Forms.Label();
             this.lbl_Mag1 = new System.Windows.Forms.Label();
             this.lbl_MagN = new System.Windows.Forms.Label();
             this.lbl_MagP = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.pnlTop = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.pbox_Image)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbox_CreateMapTemplate)).BeginInit();
-            this.pnl_Image.SuspendLayout();
+            this.pnlImage.SuspendLayout();
             this.gbox_Advance.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tpage_Basic.SuspendLayout();
@@ -104,14 +108,16 @@
             this.tpage_Judgement.SuspendLayout();
             this.tpage_Advance.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.panel4.SuspendLayout();
+            this.pnlZoom.SuspendLayout();
+            this.panel2.SuspendLayout();
+            this.pnlTop.SuspendLayout();
             this.SuspendLayout();
             // 
             // lbl_ImageID
             // 
             this.lbl_ImageID.BackColor = System.Drawing.Color.White;
             this.lbl_ImageID.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_ImageID.Location = new System.Drawing.Point(268, 4);
+            this.lbl_ImageID.Location = new System.Drawing.Point(266, 2);
             this.lbl_ImageID.Margin = new System.Windows.Forms.Padding(2);
             this.lbl_ImageID.Name = "lbl_ImageID";
             this.lbl_ImageID.Size = new System.Drawing.Size(60, 23);
@@ -123,7 +129,7 @@
             // l_lbl_ImageID
             // 
             this.l_lbl_ImageID.AccessibleDescription = "Image ID";
-            this.l_lbl_ImageID.Location = new System.Drawing.Point(189, 4);
+            this.l_lbl_ImageID.Location = new System.Drawing.Point(187, 2);
             this.l_lbl_ImageID.Margin = new System.Windows.Forms.Padding(2);
             this.l_lbl_ImageID.Name = "l_lbl_ImageID";
             this.l_lbl_ImageID.Size = new System.Drawing.Size(75, 23);
@@ -133,17 +139,16 @@
             // 
             // pbox_Image
             // 
-            this.pbox_Image.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbox_Image.Location = new System.Drawing.Point(0, 0);
+            this.pbox_Image.Location = new System.Drawing.Point(127, 68);
             this.pbox_Image.Margin = new System.Windows.Forms.Padding(0);
             this.pbox_Image.Name = "pbox_Image";
-            this.pbox_Image.Size = new System.Drawing.Size(852, 399);
+            this.pbox_Image.Size = new System.Drawing.Size(605, 272);
             this.pbox_Image.TabIndex = 116;
             this.pbox_Image.TabStop = false;
+            this.pbox_Image.Paint += new System.Windows.Forms.PaintEventHandler(this.pbox_Image_Paint);
+            this.pbox_Image.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pbox_Image_MouseDown);
             this.pbox_Image.MouseLeave += new System.EventHandler(this.pbox_Image_MouseLeave);
             this.pbox_Image.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pbox_Image_MouseMove);
-            this.pbox_Image.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pbox_Image_MouseDown);
-            this.pbox_Image.Paint += new System.Windows.Forms.PaintEventHandler(this.pbox_Image_Paint);
             this.pbox_Image.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pbox_Image_MouseUp);
             // 
             // btn_LoadImage
@@ -181,7 +186,8 @@
             // btn_OK
             // 
             this.btn_OK.AccessibleDescription = "OK";
-            this.btn_OK.Location = new System.Drawing.Point(700, 665);
+            this.btn_OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_OK.Location = new System.Drawing.Point(1129, 3);
             this.btn_OK.Name = "btn_OK";
             this.btn_OK.Size = new System.Drawing.Size(75, 30);
             this.btn_OK.TabIndex = 165;
@@ -192,7 +198,8 @@
             // btn_Cancel
             // 
             this.btn_Cancel.AccessibleDescription = "Cancel";
-            this.btn_Cancel.Location = new System.Drawing.Point(781, 665);
+            this.btn_Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_Cancel.Location = new System.Drawing.Point(1210, 3);
             this.btn_Cancel.Name = "btn_Cancel";
             this.btn_Cancel.Size = new System.Drawing.Size(75, 30);
             this.btn_Cancel.TabIndex = 166;
@@ -204,7 +211,7 @@
             // 
             this.lbl_LayoutID.BackColor = System.Drawing.Color.White;
             this.lbl_LayoutID.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_LayoutID.Location = new System.Drawing.Point(83, 4);
+            this.lbl_LayoutID.Location = new System.Drawing.Point(81, 2);
             this.lbl_LayoutID.Margin = new System.Windows.Forms.Padding(2);
             this.lbl_LayoutID.Name = "lbl_LayoutID";
             this.lbl_LayoutID.Size = new System.Drawing.Size(76, 23);
@@ -216,7 +223,7 @@
             // label20
             // 
             this.label20.AccessibleDescription = "Layout ID";
-            this.label20.Location = new System.Drawing.Point(4, 4);
+            this.label20.Location = new System.Drawing.Point(2, 2);
             this.label20.Margin = new System.Windows.Forms.Padding(2);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(75, 23);
@@ -272,16 +279,17 @@
             this.btn_ModeCancel.UseVisualStyleBackColor = true;
             this.btn_ModeCancel.Click += new System.EventHandler(this.btn_ModeCancel_Click);
             // 
-            // pnl_Image
+            // pnlImage
             // 
-            this.pnl_Image.AutoScroll = true;
-            this.pnl_Image.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pnl_Image.Controls.Add(this.pbox_Image);
-            this.pnl_Image.Location = new System.Drawing.Point(4, 31);
-            this.pnl_Image.Margin = new System.Windows.Forms.Padding(2);
-            this.pnl_Image.Name = "pnl_Image";
-            this.pnl_Image.Size = new System.Drawing.Size(852, 399);
-            this.pnl_Image.TabIndex = 181;
+            this.pnlImage.AutoScroll = true;
+            this.pnlImage.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pnlImage.Controls.Add(this.pbox_Image);
+            this.pnlImage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlImage.Location = new System.Drawing.Point(2, 32);
+            this.pnlImage.Margin = new System.Windows.Forms.Padding(2);
+            this.pnlImage.Name = "pnlImage";
+            this.pnlImage.Size = new System.Drawing.Size(1288, 442);
+            this.pnlImage.TabIndex = 181;
             // 
             // gbox_Advance
             // 
@@ -339,12 +347,13 @@
             this.tabControl1.Controls.Add(this.tpage_Basic);
             this.tabControl1.Controls.Add(this.tpage_Judgement);
             this.tabControl1.Controls.Add(this.tpage_Advance);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.tabControl1.ItemSize = new System.Drawing.Size(100, 30);
-            this.tabControl1.Location = new System.Drawing.Point(4, 464);
+            this.tabControl1.Location = new System.Drawing.Point(2, 497);
             this.tabControl1.Margin = new System.Windows.Forms.Padding(2);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(851, 199);
+            this.tabControl1.Size = new System.Drawing.Size(1288, 199);
             this.tabControl1.TabIndex = 117;
             // 
             // tpage_Basic
@@ -356,7 +365,7 @@
             this.tpage_Basic.Location = new System.Drawing.Point(4, 34);
             this.tpage_Basic.Name = "tpage_Basic";
             this.tpage_Basic.Padding = new System.Windows.Forms.Padding(3);
-            this.tpage_Basic.Size = new System.Drawing.Size(843, 161);
+            this.tpage_Basic.Size = new System.Drawing.Size(1280, 161);
             this.tpage_Basic.TabIndex = 0;
             this.tpage_Basic.Text = "Basic";
             this.tpage_Basic.UseVisualStyleBackColor = true;
@@ -366,10 +375,16 @@
             this.gbox_PatternSettings.AccessibleDescription = "Settings";
             this.gbox_PatternSettings.AutoSize = true;
             this.gbox_PatternSettings.Controls.Add(this.label4);
+            this.gbox_PatternSettings.Controls.Add(this.lbl_NGMinMax);
             this.gbox_PatternSettings.Controls.Add(this.pbox_CreateMapTemplate);
             this.gbox_PatternSettings.Controls.Add(this.lbl_Score);
+            this.gbox_PatternSettings.Controls.Add(this.label5);
+            this.gbox_PatternSettings.Controls.Add(this.label10);
+            this.gbox_PatternSettings.Controls.Add(this.lbl_Ref);
+            this.gbox_PatternSettings.Controls.Add(this.label8);
+            this.gbox_PatternSettings.Controls.Add(this.lbl_OKMinMax);
             this.gbox_PatternSettings.Dock = System.Windows.Forms.DockStyle.Left;
-            this.gbox_PatternSettings.Location = new System.Drawing.Point(602, 3);
+            this.gbox_PatternSettings.Location = new System.Drawing.Point(603, 3);
             this.gbox_PatternSettings.Name = "gbox_PatternSettings";
             this.gbox_PatternSettings.Size = new System.Drawing.Size(353, 155);
             this.gbox_PatternSettings.TabIndex = 197;
@@ -387,6 +402,18 @@
             this.label4.Text = "Score";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // lbl_NGMinMax
+            // 
+            this.lbl_NGMinMax.BackColor = System.Drawing.SystemColors.Control;
+            this.lbl_NGMinMax.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lbl_NGMinMax.Location = new System.Drawing.Point(160, 124);
+            this.lbl_NGMinMax.Margin = new System.Windows.Forms.Padding(2);
+            this.lbl_NGMinMax.Name = "lbl_NGMinMax";
+            this.lbl_NGMinMax.Size = new System.Drawing.Size(148, 23);
+            this.lbl_NGMinMax.TabIndex = 201;
+            this.lbl_NGMinMax.Text = "label7";
+            this.lbl_NGMinMax.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // lbl_Score
             // 
             this.lbl_Score.BackColor = System.Drawing.Color.White;
@@ -400,17 +427,69 @@
             this.lbl_Score.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lbl_Score.Click += new System.EventHandler(this.lbl_Score_Click);
             // 
+            // label5
+            // 
+            this.label5.AccessibleDescription = "Ref, Min, Max";
+            this.label5.Location = new System.Drawing.Point(36, 70);
+            this.label5.Margin = new System.Windows.Forms.Padding(2);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(120, 23);
+            this.label5.TabIndex = 196;
+            this.label5.Text = "Ref, Min, Max";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label10
+            // 
+            this.label10.AccessibleDescription = "NG Qty, Min, Max";
+            this.label10.Location = new System.Drawing.Point(36, 124);
+            this.label10.Margin = new System.Windows.Forms.Padding(2);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(120, 23);
+            this.label10.TabIndex = 200;
+            this.label10.Text = "NG Qty Min, Max";
+            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lbl_Ref
+            // 
+            this.lbl_Ref.BackColor = System.Drawing.SystemColors.Control;
+            this.lbl_Ref.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lbl_Ref.Location = new System.Drawing.Point(160, 70);
+            this.lbl_Ref.Margin = new System.Windows.Forms.Padding(2);
+            this.lbl_Ref.Name = "lbl_Ref";
+            this.lbl_Ref.Size = new System.Drawing.Size(148, 23);
+            this.lbl_Ref.TabIndex = 197;
+            this.lbl_Ref.Text = "label7";
+            this.lbl_Ref.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label8
+            // 
+            this.label8.AccessibleDescription = "OK Qty, Min, Max";
+            this.label8.Location = new System.Drawing.Point(36, 97);
+            this.label8.Margin = new System.Windows.Forms.Padding(2);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(120, 23);
+            this.label8.TabIndex = 198;
+            this.label8.Text = "OK Qty, Min, Max";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lbl_OKMinMax
+            // 
+            this.lbl_OKMinMax.BackColor = System.Drawing.SystemColors.Control;
+            this.lbl_OKMinMax.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lbl_OKMinMax.Location = new System.Drawing.Point(160, 97);
+            this.lbl_OKMinMax.Margin = new System.Windows.Forms.Padding(2);
+            this.lbl_OKMinMax.Name = "lbl_OKMinMax";
+            this.lbl_OKMinMax.Size = new System.Drawing.Size(148, 23);
+            this.lbl_OKMinMax.TabIndex = 199;
+            this.lbl_OKMinMax.Text = "label7";
+            this.lbl_OKMinMax.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // gbox_BinarySettings
             // 
             this.gbox_BinarySettings.AccessibleDescription = "Settings";
-            this.gbox_BinarySettings.AutoSize = true;
+            this.gbox_BinarySettings.Controls.Add(this.label7);
+            this.gbox_BinarySettings.Controls.Add(this.cbDetect);
             this.gbox_BinarySettings.Controls.Add(this.btn_Auto);
-            this.gbox_BinarySettings.Controls.Add(this.lbl_NGMinMax);
-            this.gbox_BinarySettings.Controls.Add(this.label10);
-            this.gbox_BinarySettings.Controls.Add(this.lbl_OKMinMax);
-            this.gbox_BinarySettings.Controls.Add(this.label8);
-            this.gbox_BinarySettings.Controls.Add(this.lbl_Ref);
-            this.gbox_BinarySettings.Controls.Add(this.label5);
             this.gbox_BinarySettings.Controls.Add(this.label3);
             this.gbox_BinarySettings.Controls.Add(this.lbl_MinPixel);
             this.gbox_BinarySettings.Controls.Add(this.btn_ThldP);
@@ -420,96 +499,47 @@
             this.gbox_BinarySettings.Dock = System.Windows.Forms.DockStyle.Left;
             this.gbox_BinarySettings.Location = new System.Drawing.Point(320, 3);
             this.gbox_BinarySettings.Name = "gbox_BinarySettings";
-            this.gbox_BinarySettings.Size = new System.Drawing.Size(282, 155);
+            this.gbox_BinarySettings.Size = new System.Drawing.Size(283, 155);
             this.gbox_BinarySettings.TabIndex = 195;
             this.gbox_BinarySettings.TabStop = false;
             this.gbox_BinarySettings.Text = "Settings";
             // 
+            // label7
+            // 
+            this.label7.AccessibleDescription = "Detect";
+            this.label7.Location = new System.Drawing.Point(4, 46);
+            this.label7.Margin = new System.Windows.Forms.Padding(2);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(120, 23);
+            this.label7.TabIndex = 205;
+            this.label7.Text = "Detect";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // cbDetect
+            // 
+            this.cbDetect.FormattingEnabled = true;
+            this.cbDetect.Location = new System.Drawing.Point(129, 46);
+            this.cbDetect.Name = "cbDetect";
+            this.cbDetect.Size = new System.Drawing.Size(110, 22);
+            this.cbDetect.TabIndex = 204;
+            this.cbDetect.SelectionChangeCommitted += new System.EventHandler(this.cbDetect_SelectionChangeCommitted);
+            // 
             // btn_Auto
             // 
             this.btn_Auto.AccessibleDescription = "Auto";
-            this.btn_Auto.Location = new System.Drawing.Point(193, 20);
+            this.btn_Auto.Location = new System.Drawing.Point(193, 70);
             this.btn_Auto.Margin = new System.Windows.Forms.Padding(2);
             this.btn_Auto.Name = "btn_Auto";
-            this.btn_Auto.Size = new System.Drawing.Size(84, 23);
+            this.btn_Auto.Size = new System.Drawing.Size(46, 23);
             this.btn_Auto.TabIndex = 202;
             this.btn_Auto.Text = "Auto";
             this.btn_Auto.UseVisualStyleBackColor = true;
             this.btn_Auto.Click += new System.EventHandler(this.btn_Auto_Click);
             // 
-            // lbl_NGMinMax
-            // 
-            this.lbl_NGMinMax.BackColor = System.Drawing.SystemColors.Control;
-            this.lbl_NGMinMax.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_NGMinMax.Location = new System.Drawing.Point(129, 128);
-            this.lbl_NGMinMax.Margin = new System.Windows.Forms.Padding(2);
-            this.lbl_NGMinMax.Name = "lbl_NGMinMax";
-            this.lbl_NGMinMax.Size = new System.Drawing.Size(148, 23);
-            this.lbl_NGMinMax.TabIndex = 201;
-            this.lbl_NGMinMax.Text = "label7";
-            this.lbl_NGMinMax.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label10
-            // 
-            this.label10.AccessibleDescription = "NG Qty, Min, Max";
-            this.label10.Location = new System.Drawing.Point(5, 128);
-            this.label10.Margin = new System.Windows.Forms.Padding(2);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(120, 23);
-            this.label10.TabIndex = 200;
-            this.label10.Text = "NG Qty Min, Max";
-            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lbl_OKMinMax
-            // 
-            this.lbl_OKMinMax.BackColor = System.Drawing.SystemColors.Control;
-            this.lbl_OKMinMax.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_OKMinMax.Location = new System.Drawing.Point(129, 101);
-            this.lbl_OKMinMax.Margin = new System.Windows.Forms.Padding(2);
-            this.lbl_OKMinMax.Name = "lbl_OKMinMax";
-            this.lbl_OKMinMax.Size = new System.Drawing.Size(148, 23);
-            this.lbl_OKMinMax.TabIndex = 199;
-            this.lbl_OKMinMax.Text = "label7";
-            this.lbl_OKMinMax.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label8
-            // 
-            this.label8.AccessibleDescription = "OK Qty, Min, Max";
-            this.label8.Location = new System.Drawing.Point(5, 101);
-            this.label8.Margin = new System.Windows.Forms.Padding(2);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(120, 23);
-            this.label8.TabIndex = 198;
-            this.label8.Text = "OK Qty, Min, Max";
-            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lbl_Ref
-            // 
-            this.lbl_Ref.BackColor = System.Drawing.SystemColors.Control;
-            this.lbl_Ref.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_Ref.Location = new System.Drawing.Point(129, 74);
-            this.lbl_Ref.Margin = new System.Windows.Forms.Padding(2);
-            this.lbl_Ref.Name = "lbl_Ref";
-            this.lbl_Ref.Size = new System.Drawing.Size(148, 23);
-            this.lbl_Ref.TabIndex = 197;
-            this.lbl_Ref.Text = "label7";
-            this.lbl_Ref.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label5
-            // 
-            this.label5.AccessibleDescription = "Ref, Min, Max";
-            this.label5.Location = new System.Drawing.Point(5, 74);
-            this.label5.Margin = new System.Windows.Forms.Padding(2);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(120, 23);
-            this.label5.TabIndex = 196;
-            this.label5.Text = "Ref, Min, Max";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
             // label3
             // 
             this.label3.AccessibleDescription = "Min White Pix (%)";
-            this.label3.Location = new System.Drawing.Point(5, 20);
+            this.label3.Location = new System.Drawing.Point(5, 70);
             this.label3.Margin = new System.Windows.Forms.Padding(2);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(120, 23);
@@ -521,7 +551,7 @@
             // 
             this.lbl_MinPixel.BackColor = System.Drawing.Color.White;
             this.lbl_MinPixel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_MinPixel.Location = new System.Drawing.Point(129, 20);
+            this.lbl_MinPixel.Location = new System.Drawing.Point(129, 70);
             this.lbl_MinPixel.Margin = new System.Windows.Forms.Padding(2);
             this.lbl_MinPixel.Name = "lbl_MinPixel";
             this.lbl_MinPixel.Size = new System.Drawing.Size(60, 23);
@@ -533,7 +563,7 @@
             // btn_ThldP
             // 
             this.btn_ThldP.AccessibleDescription = "";
-            this.btn_ThldP.Location = new System.Drawing.Point(237, 47);
+            this.btn_ThldP.Location = new System.Drawing.Point(237, 18);
             this.btn_ThldP.Margin = new System.Windows.Forms.Padding(2);
             this.btn_ThldP.Name = "btn_ThldP";
             this.btn_ThldP.Size = new System.Drawing.Size(40, 23);
@@ -545,7 +575,7 @@
             // btn_ThldM
             // 
             this.btn_ThldM.AccessibleDescription = "";
-            this.btn_ThldM.Location = new System.Drawing.Point(193, 47);
+            this.btn_ThldM.Location = new System.Drawing.Point(193, 18);
             this.btn_ThldM.Margin = new System.Windows.Forms.Padding(2);
             this.btn_ThldM.Name = "btn_ThldM";
             this.btn_ThldM.Size = new System.Drawing.Size(40, 23);
@@ -558,7 +588,7 @@
             // 
             this.lbl_Thld.BackColor = System.Drawing.Color.White;
             this.lbl_Thld.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_Thld.Location = new System.Drawing.Point(129, 47);
+            this.lbl_Thld.Location = new System.Drawing.Point(129, 18);
             this.lbl_Thld.Margin = new System.Windows.Forms.Padding(2);
             this.lbl_Thld.Name = "lbl_Thld";
             this.lbl_Thld.Size = new System.Drawing.Size(60, 23);
@@ -570,7 +600,7 @@
             // label1
             // 
             this.label1.AccessibleDescription = "Thld (0..255)";
-            this.label1.Location = new System.Drawing.Point(5, 47);
+            this.label1.Location = new System.Drawing.Point(5, 18);
             this.label1.Margin = new System.Windows.Forms.Padding(2);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(120, 23);
@@ -581,6 +611,7 @@
             // panel1
             // 
             this.panel1.AutoSize = true;
+            this.panel1.Controls.Add(this.rtbResult);
             this.panel1.Controls.Add(this.btn_Test);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.btn_ImgMode);
@@ -594,6 +625,16 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(317, 155);
             this.panel1.TabIndex = 196;
+            // 
+            // rtbResult
+            // 
+            this.rtbResult.BackColor = System.Drawing.SystemColors.Control;
+            this.rtbResult.ForeColor = System.Drawing.Color.Navy;
+            this.rtbResult.Location = new System.Drawing.Point(3, 68);
+            this.rtbResult.Name = "rtbResult";
+            this.rtbResult.Size = new System.Drawing.Size(231, 79);
+            this.rtbResult.TabIndex = 195;
+            this.rtbResult.Text = "";
             // 
             // label2
             // 
@@ -639,7 +680,7 @@
             this.tpage_Judgement.Location = new System.Drawing.Point(4, 34);
             this.tpage_Judgement.Name = "tpage_Judgement";
             this.tpage_Judgement.Padding = new System.Windows.Forms.Padding(3);
-            this.tpage_Judgement.Size = new System.Drawing.Size(843, 161);
+            this.tpage_Judgement.Size = new System.Drawing.Size(1280, 161);
             this.tpage_Judgement.TabIndex = 2;
             this.tpage_Judgement.Text = "Judgement";
             this.tpage_Judgement.UseVisualStyleBackColor = true;
@@ -688,7 +729,7 @@
             this.tpage_Advance.Location = new System.Drawing.Point(4, 34);
             this.tpage_Advance.Name = "tpage_Advance";
             this.tpage_Advance.Padding = new System.Windows.Forms.Padding(3);
-            this.tpage_Advance.Size = new System.Drawing.Size(843, 161);
+            this.tpage_Advance.Size = new System.Drawing.Size(1280, 161);
             this.tpage_Advance.TabIndex = 1;
             this.tpage_Advance.Text = "Advance";
             this.tpage_Advance.UseVisualStyleBackColor = true;
@@ -806,6 +847,7 @@
             this.btn_Match.Text = "Match";
             this.btn_Match.UseVisualStyleBackColor = true;
             this.btn_Match.Visible = false;
+            this.btn_Match.Click += new System.EventHandler(this.btn_Match_Click);
             // 
             // btn_Learn
             // 
@@ -817,6 +859,7 @@
             this.btn_Learn.Text = "Learn";
             this.btn_Learn.UseVisualStyleBackColor = true;
             this.btn_Learn.Visible = false;
+            this.btn_Learn.Click += new System.EventHandler(this.btn_Learn_Click);
             // 
             // btn_GenMap
             // 
@@ -829,19 +872,20 @@
             this.btn_GenMap.Text = "GenMap";
             this.btn_GenMap.UseVisualStyleBackColor = true;
             this.btn_GenMap.Visible = false;
+            this.btn_GenMap.Click += new System.EventHandler(this.btn_GenMap_Click);
             // 
-            // panel4
+            // pnlZoom
             // 
-            this.panel4.Controls.Add(this.lbl_Center);
-            this.panel4.Controls.Add(this.lbl_Zoom);
-            this.panel4.Controls.Add(this.lbl_Mag1);
-            this.panel4.Controls.Add(this.lbl_MagN);
-            this.panel4.Controls.Add(this.lbl_MagP);
-            this.panel4.Location = new System.Drawing.Point(4, 434);
-            this.panel4.Margin = new System.Windows.Forms.Padding(2);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(852, 23);
-            this.panel4.TabIndex = 182;
+            this.pnlZoom.Controls.Add(this.lbl_Center);
+            this.pnlZoom.Controls.Add(this.lbl_Mag1);
+            this.pnlZoom.Controls.Add(this.lbl_MagN);
+            this.pnlZoom.Controls.Add(this.lbl_MagP);
+            this.pnlZoom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pnlZoom.Location = new System.Drawing.Point(2, 474);
+            this.pnlZoom.Margin = new System.Windows.Forms.Padding(2);
+            this.pnlZoom.Name = "pnlZoom";
+            this.pnlZoom.Size = new System.Drawing.Size(1288, 23);
+            this.pnlZoom.TabIndex = 182;
             // 
             // lbl_Center
             // 
@@ -856,29 +900,16 @@
             this.lbl_Center.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lbl_Center.Click += new System.EventHandler(this.lbl_Center_Click);
             // 
-            // lbl_Zoom
-            // 
-            this.lbl_Zoom.AccessibleDescription = "";
-            this.lbl_Zoom.BackColor = System.Drawing.SystemColors.Control;
-            this.lbl_Zoom.Location = new System.Drawing.Point(0, 0);
-            this.lbl_Zoom.Margin = new System.Windows.Forms.Padding(0);
-            this.lbl_Zoom.Name = "lbl_Zoom";
-            this.lbl_Zoom.Size = new System.Drawing.Size(50, 23);
-            this.lbl_Zoom.TabIndex = 193;
-            this.lbl_Zoom.Text = "Zoom";
-            this.lbl_Zoom.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lbl_Zoom.Click += new System.EventHandler(this.lbl_Zoom_Click);
-            // 
             // lbl_Mag1
             // 
             this.lbl_Mag1.AccessibleDescription = "1";
             this.lbl_Mag1.BackColor = System.Drawing.SystemColors.Control;
-            this.lbl_Mag1.Location = new System.Drawing.Point(50, 0);
+            this.lbl_Mag1.Location = new System.Drawing.Point(100, 0);
             this.lbl_Mag1.Margin = new System.Windows.Forms.Padding(0);
             this.lbl_Mag1.Name = "lbl_Mag1";
             this.lbl_Mag1.Size = new System.Drawing.Size(50, 23);
             this.lbl_Mag1.TabIndex = 192;
-            this.lbl_Mag1.Text = "1";
+            this.lbl_Mag1.Text = "ZA";
             this.lbl_Mag1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lbl_Mag1.Click += new System.EventHandler(this.lbl_Mag1_Click);
             // 
@@ -886,12 +917,12 @@
             // 
             this.lbl_MagN.AccessibleDescription = "";
             this.lbl_MagN.BackColor = System.Drawing.SystemColors.Control;
-            this.lbl_MagN.Location = new System.Drawing.Point(100, 0);
+            this.lbl_MagN.Location = new System.Drawing.Point(50, 0);
             this.lbl_MagN.Margin = new System.Windows.Forms.Padding(0);
             this.lbl_MagN.Name = "lbl_MagN";
             this.lbl_MagN.Size = new System.Drawing.Size(50, 23);
             this.lbl_MagN.TabIndex = 191;
-            this.lbl_MagN.Text = "-";
+            this.lbl_MagN.Text = "Z-";
             this.lbl_MagN.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lbl_MagN.Click += new System.EventHandler(this.lbl_MagN_Click);
             // 
@@ -904,38 +935,57 @@
             this.lbl_MagP.Name = "lbl_MagP";
             this.lbl_MagP.Size = new System.Drawing.Size(50, 23);
             this.lbl_MagP.TabIndex = 190;
-            this.lbl_MagP.Text = "+";
+            this.lbl_MagP.Text = "Z+";
             this.lbl_MagP.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lbl_MagP.Click += new System.EventHandler(this.lbl_MagP_Click);
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.btn_Cancel);
+            this.panel2.Controls.Add(this.btn_OK);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel2.Location = new System.Drawing.Point(2, 696);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(1288, 36);
+            this.panel2.TabIndex = 183;
+            // 
+            // pnlTop
+            // 
+            this.pnlTop.Controls.Add(this.label20);
+            this.pnlTop.Controls.Add(this.l_lbl_ImageID);
+            this.pnlTop.Controls.Add(this.lbl_ImageID);
+            this.pnlTop.Controls.Add(this.lbl_LayoutID);
+            this.pnlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlTop.Location = new System.Drawing.Point(2, 2);
+            this.pnlTop.Name = "pnlTop";
+            this.pnlTop.Size = new System.Drawing.Size(1288, 30);
+            this.pnlTop.TabIndex = 184;
             // 
             // frm_DispCore_DispProg_CreateMap
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(859, 764);
+            this.ClientSize = new System.Drawing.Size(1292, 734);
             this.ControlBox = false;
-            this.Controls.Add(this.panel4);
-            this.Controls.Add(this.btn_OK);
+            this.Controls.Add(this.pnlImage);
+            this.Controls.Add(this.pnlTop);
+            this.Controls.Add(this.pnlZoom);
             this.Controls.Add(this.tabControl1);
-            this.Controls.Add(this.pnl_Image);
-            this.Controls.Add(this.lbl_LayoutID);
-            this.Controls.Add(this.label20);
-            this.Controls.Add(this.btn_Cancel);
-            this.Controls.Add(this.lbl_ImageID);
-            this.Controls.Add(this.l_lbl_ImageID);
+            this.Controls.Add(this.panel2);
             this.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ForeColor = System.Drawing.Color.Navy;
+            this.MinimumSize = new System.Drawing.Size(880, 750);
             this.Name = "frm_DispCore_DispProg_CreateMap";
             this.Padding = new System.Windows.Forms.Padding(2);
             this.Text = "frmDispProg_CreateMap";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmDispProg_CreateMap_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmDispProg_CreateMap_FormClosed);
             this.Load += new System.EventHandler(this.frmDispProg_CreateMap_Load);
             this.VisibleChanged += new System.EventHandler(this.frmDispProg_CreateMap_VisibleChanged);
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmDispProg_CreateMap_FormClosed);
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmDispProg_CreateMap_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.pbox_Image)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbox_CreateMapTemplate)).EndInit();
-            this.pnl_Image.ResumeLayout(false);
+            this.pnlImage.ResumeLayout(false);
             this.gbox_Advance.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.tpage_Basic.ResumeLayout(false);
@@ -947,7 +997,9 @@
             this.tpage_Advance.ResumeLayout(false);
             this.tpage_Advance.PerformLayout();
             this.groupBox1.ResumeLayout(false);
-            this.panel4.ResumeLayout(false);
+            this.pnlZoom.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            this.pnlTop.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -968,7 +1020,7 @@
         private System.Windows.Forms.Button btn_Outline;
         private System.Windows.Forms.Button btn_ModeOK;
         private System.Windows.Forms.Button btn_ModeCancel;
-        private System.Windows.Forms.Panel pnl_Image;
+        private System.Windows.Forms.Panel pnlImage;
         private System.Windows.Forms.GroupBox gbox_Advance;
         private System.Windows.Forms.Button btn_Test;
         private System.Windows.Forms.TabControl tabControl1;
@@ -1011,12 +1063,16 @@
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Label lbl_OKYield;
         private System.Windows.Forms.Label lbl_CurrentOKYield;
-        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.Panel pnlZoom;
         private System.Windows.Forms.Label lbl_Center;
-        private System.Windows.Forms.Label lbl_Zoom;
         private System.Windows.Forms.Label lbl_Mag1;
         private System.Windows.Forms.Label lbl_MagN;
         private System.Windows.Forms.Label lbl_MagP;
         private System.Windows.Forms.Button btn_Auto;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel pnlTop;
+        private System.Windows.Forms.RichTextBox rtbResult;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.ComboBox cbDetect;
     }
 }

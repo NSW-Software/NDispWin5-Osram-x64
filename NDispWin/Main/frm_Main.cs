@@ -97,9 +97,7 @@ namespace NDispWin
                 Event.APP_INFO.Set("OS,App", $"32bit,{IntPtr.Size * 8}");
                 SetDllDirectory(@"C:\Program Files\Point Grey Research\FlyCapture2\bin");
                 SetDllDirectory(@"C:\Program Files\Point Grey Research\Spinnaker\bin\vs2015");
-
                 SetDllDirectory(@"C:\Program Files (x86)\Euresys\Open eVision 2.5\Bin32");
-
                 SetDllDirectory(@"C:\Program Files\FLIR Systems\Spinnaker\bin\vs2015");
             }
 
@@ -165,6 +163,13 @@ namespace NDispWin
         }
         private void StartUp()
         {
+            //try
+            //{
+            //    //  do not removed, remove will call fail initialiazation of Open_eVision
+            //    Euresys.Open_eVision_2_5.EImageBW8 m_Source = new Euresys.Open_eVision_2_5.EImageBW8();
+            //}
+            //catch { };
+
             //try
             //{
             //    //  do not removed, remove will call fail initialiazation of Open_eVision

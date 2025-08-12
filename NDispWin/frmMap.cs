@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Threading;
 using Emgu.CV;
+using System.IO;
 
 namespace NDispWin
 {
@@ -699,6 +700,66 @@ namespace NDispWin
         {
             bMapEdit = !bMapEdit;
             UpdateDisplay();
+        }
+
+        private void lblLoadMap_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "csv Files (*.csv)|*.csv|Text Files (*.txt)|*.txt|All files (*.*)|*.*";
+
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                string filePath = ofd.FileName;
+
+                //Osram eMos csv file format
+                //Map starts Top Left, 
+                //No.,Position - X,Position - Y,GESAMTB,3450_BIN,3450
+                //1,1,1,1,0,1
+                //2,2,1,1,0,1
+                //3,3,1,1,0,1
+                //4,4,1,1,0,1
+                //5,5,1,1,0,1
+                //6,6,1,1,0,1
+                //...
+                //16,16,1,1,0,1
+                //17,17,1,1,0,1
+                //18,18,1,0,PREVIOUS FAILED, PREVIOUS FAILED
+                //19,19,1,1,0,1
+
+                var lookup = File.ReadAllLines(filePath)
+                                 .Skip(1) // skip header
+                                 .Select(line => line.Split(','))
+                                 .ToDictionary(
+                                     parts => (X: int.Parse(parts[1]), Y: int.Parse(parts[2])),
+                                     parts => int.Parse(parts[3])
+                                 );
+
+                for (int i = 0; i < LocalLayout[LayoutNo].TUCount; i++)
+                {
+                    int totalRow = LocalLayout[LayoutNo].URowCount;
+                    int totalCol = LocalLayout[LayoutNo].UColCount;
+
+                    Point cr = new Point(0, 0);
+                    LocalLayout[LayoutNo].UnitNoGetRC(i, ref cr);
+
+                    if (DispProg.Map.CurrMap[LayoutNo].Bin[i] == EMapBin.PreMapNG) continue;
+
+                    if (lookup.TryGetValue((totalCol - cr.X, cr.Y + 1), out int d))
+                    {
+                        if (d == 1)
+                            DispProg.Map.CurrMap[LayoutNo].Bin[i] = EMapBin.Bypass;
+                        else
+                            DispProg.Map.CurrMap[LayoutNo].Bin[i] = EMapBin.None;
+                    }
+                    else
+                    {
+                        DispProg.Map.CurrMap[LayoutNo].Bin[i] = EMapBin.None;
+                    }
+                }
+
+                UpdateDisplay();
+                pbox_Map.Refresh();
+            }
         }
     }
 }
