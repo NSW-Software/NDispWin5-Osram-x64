@@ -444,7 +444,7 @@ namespace NDispWin
         public static string Fail_Bincode = "5000";
         public static string Null_Bincode = "FFFF";
         public static string UnProcessed_Bincode = "AAAA";
-
+      
         public static string Map_Update_Content = "";
         public static TClient2 client = new TClient2();
         public static void Start()
@@ -678,7 +678,7 @@ namespace NDispWin
                                         Send($"ERS1,5020,{ChangedECID},{ChangedECValue}");
                                     }
                                 }
-
+                                Save();
                             }
                             catch
                             {
@@ -805,15 +805,32 @@ namespace NDispWin
                     case nameof(StreamFunc.VID):
                         {
                             List<int> requestList = new List<int>();
-                            foreach (string d in rxSplitData)
+                            string requestId = "";
+                            int reqIdx = -1;
+                            for (int i = 0; i < rxSplitData.Length - 1; i++)
                             {
-                                if (int.TryParse(d, out int vid))
+                                if (rxSplitData[i] == "REQID")
                                 {
-                                    requestList.Add(vid);
+                                    requestId = rxSplitData[i + 1];
+                                    reqIdx = i;
+                                    break;
                                 }
                             }
+                            int limit = reqIdx >= 0 ? reqIdx : Math.Max(0, rxSplitData.Length - 2);
+                            for (int i = 0; i < limit; i++)
+                            {
+                                if (int.TryParse(rxSplitData[i], out int vid))
+                                    requestList.Add(vid);
+                            }
+                            //foreach (string d in rxSplitData)
+                            //{
+                            //    if (int.TryParse(d, out int vid))
+                            //    {
+                            //        requestList.Add(vid);
+                            //    }
+                            //}
                             List<string> responseList = VID_GetList(requestList);
-                            Send($"{nameof(StreamFunc.VID)},{string.Join(",", responseList)}");
+                            Send($"{nameof(StreamFunc.VID)},{string.Join(",", responseList)},REQID,{requestId}");
                             break;
                         }
                     #endregion
@@ -1548,11 +1565,14 @@ namespace NDispWin
                     Send(nameof(StreamFunc.PPA) + ",Success");
                     if (isCreated)
                     {
-                        Event.SECSGEM_PP_CREATE.Set();
+                        PPChangeStatus = EPPChangeStatus.CreatedByEquip;
+                        Event.SECSGEM_PP_CHANGE.Set();
+                        //Event.SECSGEM_PP_CREATE.Set();
                         isCreated = false;
                     }
                     else
                     {
+                        PPChangeStatus = EPPChangeStatus.ChangedByEquip;
                         Event.SECSGEM_PP_CHANGE.Set();
                     }
 
@@ -1682,6 +1702,11 @@ namespace NDispWin
                                     map[c, r] = 0;
                                     break;
                                 }
+                            case string a when a.StartsWith("C"):
+                                {
+                                    map[c, r] = 200;
+                                    break;
+                                }
                             default:
                                 map[c, r] = 210;
                                 break;
@@ -1708,7 +1733,7 @@ namespace NDispWin
             return DecodeMap(xmlString, ref substrateID, ref binCodeDefinitions, ref binCodes);
         }
 
-        public static string EncodeBinCodeStrings()
+        public static string EncodeBinCodeStrings(bool save = false)
         {
             int iCol = 0;
             int iRow = 0;
@@ -1736,7 +1761,7 @@ namespace NDispWin
                 for (int c = 0; c <= iCol; c++)
                 {
                     int bin = map[c, r];
-
+                    string binCode="";
                     //if (bin < 100) binCode = "0A0F";//Unprocessed
                     //                                //None = 0, BinNG = 100,
                     //                                //MapOK = 1, MapNG = 101,
@@ -1752,7 +1777,17 @@ namespace NDispWin
                     //if (bin == 210) binCode = "0C0F";//InMapNG = 210,
                     //if (bin == 220) binCode = "0AFF";//Bypass = 220,
                     //if (bin == 255) binCode = "0A0F";//PreMapNG = 255
-                    if (!codeMap.TryGetValue((EMapBin)bin, out var binCode)) binCode = "AAAA";
+                    if (save)
+                    {
+                        if (bin == 200) binCode = "CCCC";
+                        if (bin == 210) binCode = "5000";
+                        if (bin == 3 || bin == 0) binCode = "0000";
+                    }
+                    else
+                    {
+                        if (!codeMap.TryGetValue((EMapBin)bin, out binCode)) binCode = "AAAA";
+                    }
+
                     //binCodesStrings = binCodesStrings + binCode;
                     line = binCode + line;
                 }
@@ -1801,7 +1836,7 @@ namespace NDispWin
                 }
 
                 xmlString = doc.ToString();
-                currentXmlString = "";
+                //currentXmlString = "";
             }
             catch (Exception ex)
             {
@@ -1818,6 +1853,74 @@ namespace NDispWin
             //new BinCodeItem(EMapBin.None, "AAAA"),
 
         });
+
+        public static void Load()
+        {
+            NSW.Net.IniFile IniFile = new NSW.Net.IniFile();
+
+            string Filename = GDefine.SetupPath + "\\SECSGEM.Setup.ini";
+            IniFile.Create(Filename);
+
+            Set_Substrate = IniFile.ReadString("SECSGEM", "Set_Substrate", "0");
+            E142_Map_On = IniFile.ReadString("SECSGEM", "E142_Map_On", "0");
+            OnlineOffline = (EOnlineOffline) IniFile.ReadInteger("SECSGEM", "OnlineOffline", 1);
+            LocalRemote = (ELocalRemote)IniFile.ReadInteger("SECSGEM", "LocalRemote", 1);
+        }
+        public static void Save()
+        {
+            NSW.Net.IniFile IniFile = new NSW.Net.IniFile();
+
+            string Filename = GDefine.SetupPath + "\\SECSGEM.Setup.ini";
+            IniFile.Create(Filename);
+
+            IniFile.WriteString("SECSGEM", "Set_Substrate", Set_Substrate);
+            IniFile.WriteString("SECSGEM", "E142_Map_On", E142_Map_On);
+            IniFile.WriteInteger("SECSGEM", "OnlineOffline", (int)OnlineOffline);
+            IniFile.WriteInteger("SECSGEM", "LocalRemote", (int)LocalRemote);
+        }
+        public static void SaveMapping(string doc)
+        {
+            try
+            {
+                string Filename = GDefine.DataPath + $"\\StripMap\\{SubstrateID}.xml";
+                File.WriteAllText(Filename, doc.ToString());
+            }
+            catch
+            {
+                Log.SecsGem.WriteByMonthDay($"MAP_SAVE_ERROR {SubstrateID} ");
+            }
+            Log.SecsGem.WriteByMonthDay($"MAP_SAVE_SUCCESS {SubstrateID} ");
+        }
+        public static bool LoadMapping()
+        {
+            try
+            {
+                string Filename = GDefine.DataPath + $"\\StripMap\\{SubstrateID}.xml";
+
+                // Check if file exists first
+                if (!File.Exists(Filename))
+                {
+                    Log.SecsGem.WriteByMonthDay($"MAP_LOAD_ERROR {SubstrateID} - File not found");
+                    return false;
+                }
+
+                var doc = XDocument.Load(Filename);
+                if (!DecodeMap(doc.ToString()))
+                {
+                    Log.SecsGem.WriteByMonthDay($"MAP_DECODE_ERROR {SubstrateID}");
+                    return false;
+                }
+
+                File.Delete(Filename);
+                Log.SecsGem.WriteByMonthDay($"MAP_LOAD_SUCCESS {SubstrateID}");
+                return true;
+            }
+            catch
+            {
+                Log.SecsGem.WriteByMonthDay($"MAP_LOAD_ERROR {SubstrateID} ");
+                return false;
+            }
+        }
     }
     public class BinCodeItem
     {

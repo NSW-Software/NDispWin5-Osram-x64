@@ -289,7 +289,7 @@ namespace NDispWin
             {
                 GDefineN.Save();
                 GDefineN.SaveAppData();
-
+                TFSecsGem.Save();
                 TCTwrLight.SetStatus(TwrLight.Idle);
                 if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)
                 {
@@ -664,5 +664,5 @@ namespace NDispWin
             }
         }
 
+        }
     }
-}

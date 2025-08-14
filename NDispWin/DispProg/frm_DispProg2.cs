@@ -1386,7 +1386,10 @@ namespace NDispWin
                 {
                     DispProg.NewScript();
                     GDefine.ProgRecipeName = "new";
-                    Event.SECSGEM_PP_CREATE.Set();
+
+                    TFSecsGem.PPChangeStatus = EPPChangeStatus.CreatedByEquip;
+                    Event.SECSGEM_PP_CHANGE.Set();
+                    //Event.SECSGEM_PP_CREATE.Set();
                 });
             }
 
@@ -1478,6 +1481,7 @@ namespace NDispWin
                     await Task.Factory.StartNew(() =>
                     {
                         Save();
+                        TFSecsGem.PPChangeStatus = EPPChangeStatus.ChangedByEquip;
                         Event.SECSGEM_PP_CHANGE.Set();
                     });
                 }
@@ -1524,6 +1528,7 @@ namespace NDispWin
                     DispProg.Save(sfd.FileName);
                     frm1.Done = true;
 
+                    TFSecsGem.PPChangeStatus = EPPChangeStatus.CreatedByEquip;
                     Event.SECSGEM_PP_CHANGE.Set();
                 });
             }

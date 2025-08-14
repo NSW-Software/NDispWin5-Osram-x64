@@ -507,6 +507,7 @@ namespace NDispWin
                 TaskVision.LoadSetup();
                 TaskLaser.LoadSetup();
                 TaskOption.LoadOption();
+                TFSecsGem.Load();
             }
             public static void Save()
             {
@@ -514,6 +515,7 @@ namespace NDispWin
                 TaskVision.SaveSetup();
                 TaskLaser.SaveSetup();
                 TaskOption.SaveOption();
+                TFSecsGem.Save();
             }
         }
 

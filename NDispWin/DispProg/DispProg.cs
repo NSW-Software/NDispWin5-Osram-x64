@@ -2956,6 +2956,23 @@ namespace NDispWin
                 for (int i = MAX_SCRIPT - 1; i >= 0; i--)                {
                     DispProg.Script[i].Pause();
                 }
+
+                switch (TaskDisp.InputMap_Protocol)
+                {
+                    case TaskDisp.EInputMapProtocol.OSRAM_E142:
+                        {
+                            if (TFSecsGem.E142_Map_On == "0") break;
+                            string xmlString = "";
+                            string s = TFSecsGem.EncodeBinCodeStrings(true);
+                            TFSecsGem.EncodeMap(s, ref xmlString);
+                            //TFSecsGem.Send($"{nameof(StreamFunc.ERS)},MapData,{xmlString}");
+                            //TFSecsGem.Map_Update_Content = xmlString;
+                            //Event.SECSGEM_MAP_UPDATED.Set();
+                            TFSecsGem.SaveMapping(xmlString);
+                            //Thread.Sleep(1000);
+                            break;
+                        }
+                }
             }
             catch (Exception Ex)
             {
@@ -11347,7 +11364,7 @@ namespace NDispWin
                                     //TFSecsGem.Send($"{nameof(StreamFunc.ERS)},MapData,{xmlString}");
                                     TFSecsGem.Map_Update_Content = xmlString;
                                     Event.SECSGEM_MAP_UPDATED.Set();
-                                    Thread.Sleep(3000);
+                                    Thread.Sleep(1000);
                                     break;
                                 }
                         }
@@ -22780,6 +22797,7 @@ namespace NDispWin
 
                                 Log.Board.WriteByMonthDay("READ_ID Manual Entry: " + frm.ID);
                                 Event.MANUAL_ID_ENTRY.Set("ID", frm.ID);
+                                TFSecsGem.SubstrateID = frm.ID;
                                 TCTwrLight.SetStatus(TwrLight.Idle);//IO.SetState(EMcState.Idle);
                                 break;
                             case DialogResult.Retry:
@@ -23134,8 +23152,9 @@ namespace NDispWin
                         case TaskDisp.EInputMapProtocol.OSRAM_E142:
                             {
                                 if (TFSecsGem.E142_Map_On == "0") break;
-                                TFSecsGem.GAR(FrameNo);
+                                if (TFSecsGem.LoadMapping()) break;
 
+                                TFSecsGem.GAR(FrameNo);
                                 int t = Environment.TickCount;
                                 while (!TFSecsGem.ReceivedXMLMapData)
                                 {

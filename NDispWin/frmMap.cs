@@ -749,11 +749,11 @@ namespace NDispWin
                         if (d == 1)
                             DispProg.Map.CurrMap[LayoutNo].Bin[i] = EMapBin.Bypass;
                         else
-                            DispProg.Map.CurrMap[LayoutNo].Bin[i] = EMapBin.None;
+                            DispProg.Map.CurrMap[LayoutNo].Bin[i] = EMapBin.InMapNG;
                     }
                     else
                     {
-                        DispProg.Map.CurrMap[LayoutNo].Bin[i] = EMapBin.None;
+                        DispProg.Map.CurrMap[LayoutNo].Bin[i] = EMapBin.InMapNG;
                     }
                 }
 
