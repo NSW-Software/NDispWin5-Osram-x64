@@ -28,6 +28,17 @@ X-12.	Unusual weight spike during weight check -> not occure after
 13.	Why there is still height variation after individual height scanning. May need your hardware team to plug in the external laser height system to verify the actual Z position vs compensate height. 
 /-14. Different speed for the lines -> Added Speed2, 3 Ratio
 
+ver 6.1.8.18 - JAY - 20250817 -Gitted
+[Feature] SecsGem
+- frm_Main.cs
+> Modify Secsgem connect sequence before load the config.
+- TEEvent.cs
+> Assign TEVID Value set to bincode
+> Modify Null and Unprocessed bincode define, min, max value
+- TFSecsGem.cs
+> Modify ECNR_GetList svid.def to svid.Value
+> Refactor RequestPP_PPR timeout and delay
+
 ver 6.1.8.13 - JAY - 20250814 -Gitted
 [Feature] SecsGem
 - DispProg.cs

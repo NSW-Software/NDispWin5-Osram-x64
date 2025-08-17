@@ -1324,7 +1324,7 @@ namespace NDispWin
             {
                 foreach (var svid in sVIDDict.Values)
                 {
-                    string info = $"{svid.Code:d5},{svid.Desc},{svid.Min},{svid.Max},{svid.Def},{svid.Units}"; // ECID, ECNAME, ECMIN, ECMAX, ECDEF, UNITS
+                    string info = $"{svid.Code:d5},{svid.Desc},{svid.Min},{svid.Max},{svid.Value},{svid.Units}"; // ECID, ECNAME, ECMIN, ECMAX, ECDEF, UNITS (change svid.Def to svid.Value)
                     list.Add(info);
                 }
             }
@@ -1334,7 +1334,7 @@ namespace NDispWin
                 {
                     if (sVIDDict.TryGetValue(code, out var svid))
                     {
-                        string info = $"{svid.Code:d5},{svid.Desc},{svid.Min},{svid.Max},{svid.Def},{svid.Units}"; // ECID, ECNAME, ECMIN, ECMAX, ECDEF, UNITS
+                        string info = $"{svid.Code:d5},{svid.Desc},{svid.Min},{svid.Max},{svid.Value},{svid.Units}"; // ECID, ECNAME, ECMIN, ECMAX, ECDEF, UNITS (change svid.Def to svid.Value)
                         list.Add(info);
                     }
                 }
@@ -1504,11 +1504,11 @@ namespace NDispWin
             rxPPDData?.Clear();
             Send(nameof(StreamFunc.PPR) + $",{recipeName}");
 
-            int t = Environment.TickCount + Timeout;
+            int t = Environment.TickCount + Timeout; //30000;
             while (true)//wait PPD
             {
                 if (rxPPDData?.Count >= 3) break;
-                Thread.Sleep(0);
+                Thread.Sleep(1);
                 if (Environment.TickCount >= t) return;
             }
 
