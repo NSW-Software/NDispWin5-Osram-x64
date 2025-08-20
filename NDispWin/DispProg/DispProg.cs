@@ -10512,8 +10512,9 @@ namespace NDispWin
                                     }
 
                                     bool enableInputMap = ActiveLine.IPara[0] > 0;
+                                    //bool enableFlipX = ActiveLine.IPara[1] > 0;
                                     TaskDisp.InputMap_Enabled = enableInputMap;
-
+                                    //TFSecsGem.StripMapDnloadFlip = enableFlipX ? EStripMapFlip.FlipX : EStripMapFlip.Normal;
                                     if (rt_Singulated)//  Lumileds singulated mode - only one unit in map
                                     {
                                         TMap map = new TMap(Map.CurrMap[rt_LayoutID]);

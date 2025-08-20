@@ -330,6 +330,7 @@ namespace NDispWin
         ChangedByEquip,
         DeletedByEquip,
     }
+    public enum EStripMapFlip { Normal, FlipX};
 
     class TEStreamFunc
     {
@@ -534,6 +535,8 @@ namespace NDispWin
         public static string rxE142XmlData;
         public static Dictionary<string, string> SubstrateStatus = new Dictionary<string, string>();
         public static string SubstrateID;
+        public static EStripMapFlip StripMapDnloadFlip = EStripMapFlip.Normal;
+
         private static void OnFrameEndReceivedEvent()
         {
             string rxRawData = "";
@@ -860,14 +863,15 @@ namespace NDispWin
                                 {
                                     ppbody = File.ReadAllText(filePath);
                                 }
-                                StringBuilder xmlbuilder = new StringBuilder();
-                                for(int i = 0; i< ppbody.Length; i += 8)
-                                {
-                                    string byteString = ppbody.Substring(i, 8);
-                                    char character = (char)Convert.ToByte(byteString,2);
-                                    xmlbuilder.Append(character);
-                                }
-                                string xmlcontent = xmlbuilder.ToString();
+                                //StringBuilder xmlbuilder = new StringBuilder();
+                                //for(int i = 0; i< ppbody.Length; i += 8)
+                                //{
+                                //    string byteString = ppbody.Substring(i, 8);
+                                //    char character = (char)Convert.ToByte(byteString,2);
+                                //    xmlbuilder.Append(character);
+                                //}
+                                //string xmlcontent = xmlbuilder.ToString();
+                                string xmlcontent = ppbody;
                                 slim.EnterWriteLock();
                                 try
                                 {
@@ -1493,7 +1497,7 @@ namespace NDispWin
                     string binarychar = Convert.ToString(c, 2).PadLeft(8, '0');
                     binaryBuilder.Append(binarychar);
                 }
-                string filepath = @"D:\GemTaro__\READFILE\PPSData.txt";
+                string filepath = @"C:\GemTaro\READFILE\PPSData.txt";
                 string binaryString = binaryBuilder.ToString();
                 File.WriteAllText(filepath, binaryString);
                 Send(nameof(StreamFunc.PPS) + $",{ppid},{filepath}");
@@ -1504,7 +1508,7 @@ namespace NDispWin
             rxPPDData?.Clear();
             Send(nameof(StreamFunc.PPR) + $",{recipeName}");
 
-            int t = Environment.TickCount + Timeout; //30000;
+            int t = Environment.TickCount + /*Timeout*/30000; //30000;
             while (true)//wait PPD
             {
                 if (rxPPDData?.Count >= 3) break;
@@ -1686,11 +1690,34 @@ namespace NDispWin
                 string[,] dnLoadMap = new string[400, 400];
                 int[,] map = new int[400, 400];
 
+                //switch (StripMapDnloadFlip)
+                //{
+                //    default:
+                //    case EStripMapFlip.Normal:
+                //        for (int r = 0; r < cr.Y; r++)
+                //            for (int c = 0; c < cr.X; c++)
+                //            {
+                //                dnLoadMap[c, r] = binCodes[r].Substring(c * 4, 4);
+                //            }
+                //        break;
+                //    case EStripMapFlip.FlipX:
+                //        for (int r = 0; r < cr.Y; r++)
+                //            for (int c = 0; c < cr.X; c++)
+                //            {
+                //                dnLoadMap[c, r] = binCodes[r].Substring((cr.X - c - 1) * 4, 4);
+                //            }
+                //        break;
+                //}
+                for (int r = 0; r < cr.Y; r++)
+                    for (int c = 0; c < cr.X; c++)
+                    {
+                        dnLoadMap[c, r] = binCodes[r].Substring((cr.X - c - 1) * 4, 4);
+                    }
                 for (int r = 0; r < cr.Y; r++)
                 {
                     for (int c = 0; c < cr.X; c++)
                     {
-                        dnLoadMap[c, r] = binCodes[r].Substring(c * 4, 4);
+                        //dnLoadMap[c, r] = binCodes[r].Substring(c * 4, 4);
                         switch (dnLoadMap[c, r])
                         {
                             case string s when s.StartsWith("0"):
@@ -1716,6 +1743,36 @@ namespace NDispWin
                         DispProg.Map.CurrMap[0].Bin[unitNo] = (EMapBin)map[c, r];
                     }
                 }
+                //for (int r = 0; r < cr.Y; r++)
+                //{
+                //    for (int c = 0; c < cr.X; c++)
+                //    {
+                //        dnLoadMap[c, r] = binCodes[r].Substring(c * 4, 4);
+                //        switch (dnLoadMap[c, r])
+                //        {
+                //            case string s when s.StartsWith("0"):
+                //            case string t when t.StartsWith("1"):
+                //            case string u when u.StartsWith("2"):
+                //            case string v when v.StartsWith("3"):
+                //            case string w when w.StartsWith("4"):
+                //                {
+                //                    map[c, r] = 0;
+                //                    break;
+                //                }
+                //            case string a when a.StartsWith("C"):
+                //                {
+                //                    map[c, r] = 200;
+                //                    break;
+                //                }
+                //            default:
+                //                map[c, r] = 210;
+                //                break;
+                //        }
+                //        int unitNo = 0;
+                //        DispProg.rt_Layouts[0].RCGetUnitNo(ref unitNo, c, r);
+                //        DispProg.Map.CurrMap[0].Bin[unitNo] = (EMapBin)map[c, r];
+                //    }
+                //}
             }
             catch (Exception ex)
             {
@@ -1741,8 +1798,8 @@ namespace NDispWin
             for (int i = 0; i < DispProg.rt_Layouts[0].TUCount; i++)
             {
                 DispProg.rt_Layouts[0].UnitNoGetRC(i, ref iCol, ref iRow);
-                int iColM = DispProg.rt_Layouts[0].TColCount - 1 - iCol;
-
+                //int iColM = DispProg.rt_Layouts[0].TColCount - 1 - iCol;
+                int iColM = iCol;
                 try
                 {
                     map[iColM, iRow] = (int)DispProg.Map.CurrMap[0].Bin[i];
@@ -1752,7 +1809,11 @@ namespace NDispWin
 
                 }
             }
-
+            //for (int r = 0; r < cr.Y; r++)
+            //    for (int c = 0; c < cr.X; c++)
+            //    {
+            //        dnLoadMap[c, r] = binCodes[r].Substring((cr.X - c - 1) * 4, 4);
+            //    }
             var codeMap = BinCodes.Where(item => item.BinState != null).ToDictionary(item => item.BinState, item => item.Value);
             string binCodesStrings = "";
             for (int r = 0; r <= iRow; r++)
@@ -1840,7 +1901,7 @@ namespace NDispWin
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message.ToString());
+                //MessageBox.Show(ex.Message.ToString());
             }
 
             return true;

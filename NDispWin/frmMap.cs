@@ -747,9 +747,9 @@ namespace NDispWin
                     if (lookup.TryGetValue((totalCol - cr.X, cr.Y + 1), out int d))
                     {
                         if (d == 1)
-                            DispProg.Map.CurrMap[LayoutNo].Bin[i] = EMapBin.Bypass;
-                        else
                             DispProg.Map.CurrMap[LayoutNo].Bin[i] = EMapBin.InMapNG;
+                        else
+                            DispProg.Map.CurrMap[LayoutNo].Bin[i] = EMapBin.MapOK;
                     }
                     else
                     {

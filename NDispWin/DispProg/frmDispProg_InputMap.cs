@@ -60,6 +60,8 @@ namespace NDispWin
                 lbl_Protocol.Text = "";
 
             cbox_Enabled.Checked = CmdLine.IPara[0] > 0;//TaskDisp.InputMap_Enabled;
+
+            //cBox_FlipX.Checked = CmdLine.IPara[1] > 0;
         }
 
         private string CmdName
@@ -434,6 +436,13 @@ namespace NDispWin
                 MessageBox.Show(Ex.Message.ToString());
                 return;
             }
+        }
+
+        private void cBox_FlipX_CheckedChanged(object sender, EventArgs e)
+        {
+            CmdLine.IPara[1] = CmdLine.IPara[1] > 0 ? 0 : 1;
+            TFSecsGem.StripMapDnloadFlip = CmdLine.IPara[1] == 0 ? EStripMapFlip.Normal : EStripMapFlip.FlipX;
+            UpdateDisplay();
         }
     }
 }

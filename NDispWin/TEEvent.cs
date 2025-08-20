@@ -39,7 +39,7 @@ namespace NDispWin
             Log.AddToEventLog(this.Code, this.Name, paraName + " " + paraValue);
             //GDefine.sgc2.SendEvent(this.Code + "," + this.Name + "," + paraName + "," + paraValue);
             TFSecsGem.Send($"{nameof(StreamFunc.ERS)},{this.Code},{this.Name},{paraName},{paraValue}");
-            Thread.Sleep(1000);
+            //Thread.Sleep(1000);
         }
         public void Set()
         {
