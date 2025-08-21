@@ -919,6 +919,7 @@ namespace NDispWin
                         Cmd = Indent + Enum.GetName(typeof(DispProg.ECmd), CmdLine.Line[i].Cmd);
                         ID = "[" + CmdLine.Line[i].ID.ToString() + "] ";
                         Para = Para + (CmdLine.Line[i].IPara[0] > 0 ? "" : "[Disabled] ");
+                        //Para = Para + (CmdLine.Line[i].IPara[1] > 0 ? "[FlipX]" : "[Normal] ");
                         Para = Para + ID + TaskDisp.InputMap_Protocol.ToString();
                         break;
                     #endregion

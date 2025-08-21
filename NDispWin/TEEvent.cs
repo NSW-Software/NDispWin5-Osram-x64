@@ -39,7 +39,7 @@ namespace NDispWin
             Log.AddToEventLog(this.Code, this.Name, paraName + " " + paraValue);
             //GDefine.sgc2.SendEvent(this.Code + "," + this.Name + "," + paraName + "," + paraValue);
             TFSecsGem.Send($"{nameof(StreamFunc.ERS)},{this.Code},{this.Name},{paraName},{paraValue}");
-            Thread.Sleep(1000);
+            //Thread.Sleep(1000);
         }
         public void Set()
         {
@@ -1025,6 +1025,26 @@ namespace NDispWin
                             TFSecsGem.E142_Map_On = value;
                         }
                         break;
+                    case nameof(VID.Pass_Bincode):
+                        {
+                            TFSecsGem.Pass_Bincode = value;
+                        }
+                        break;
+                    case nameof(VID.Fail_Bincode):
+                        {
+                            TFSecsGem.Fail_Bincode = value;
+                        }
+                        break;
+                    case nameof(VID.Unprocessed_Bincode):
+                        {
+                            TFSecsGem.UnProcessed_Bincode = value;
+                        }
+                        break;
+                    case nameof(VID.NULL_Bincode):
+                        {
+                            TFSecsGem.Null_Bincode = value;
+                        }
+                        break;
                         #endregion
                 }
             }
@@ -1215,8 +1235,8 @@ namespace NDispWin
         public static TEVID E142_Map_On = new TEVID(31102, "Ë142 Mapping On Off.", 0, 1, 0, "");
         public static TEVID Pass_Bincode = new TEVID(31103, "Pass Bincode.", 0000, 4999, 0000, "");
         public static TEVID Fail_Bincode = new TEVID(31104, "Fail Bincode.", 5000, 9999, 5000, "");
-        public static TEVID NULL_Bincode = new TEVID(31105, "NULL Bincode.");
-        public static TEVID Unprocessed_Bincode = new TEVID(31106, "Unprocessed Bincode.");
+        public static TEVID NULL_Bincode = new TEVID(31105, "NULL Bincode.", 0, 65535, 0xFFFF, "");
+        public static TEVID Unprocessed_Bincode = new TEVID(31106, "Unprocessed Bincode.", 0, 65535, 0xAAAA, "");
         #endregion
     }
 

@@ -206,6 +206,13 @@ namespace NDispWin
                 catch { };
             }
 
+            try
+            {
+                if (GDefine.sgc2.EnableSECSGEMConnect2) GDefine.sgc2.Connect();
+                TFSecsGem.Connect();
+            }
+            catch { }
+
             TCTwrLight.SetStatus(TwrLight.Idle);
 
             AccessConfig.Setup.Load();
@@ -264,12 +271,7 @@ namespace NDispWin
                 Enabled = true;
             }
 
-            try
-            {
-                if (GDefine.sgc2.EnableSECSGEMConnect2) GDefine.sgc2.Connect();
-                TFSecsGem.Connect();
-            }
-            catch { }
+
         }
         private bool Shutdown()
         {

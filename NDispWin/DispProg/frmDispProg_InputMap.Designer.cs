@@ -51,6 +51,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tpage_Lumileds_SS_Map = new System.Windows.Forms.TabPage();
+            this.cbSingulated = new System.Windows.Forms.CheckBox();
             this.tpage_TD_COB = new System.Windows.Forms.TabPage();
             this.label4 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -79,7 +80,6 @@
             this.pnlMap = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.cbSingulated = new System.Windows.Forms.CheckBox();
             this.panel4.SuspendLayout();
             this.pnl_Layout.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbox_Layout)).BeginInit();
@@ -258,7 +258,7 @@
             this.tbox_InputMap_FrameNo.ContextMenuStrip = this.cms_PopUp;
             this.tbox_InputMap_FrameNo.Location = new System.Drawing.Point(85, 34);
             this.tbox_InputMap_FrameNo.Name = "tbox_InputMap_FrameNo";
-            this.tbox_InputMap_FrameNo.Size = new System.Drawing.Size(217, 26);
+            this.tbox_InputMap_FrameNo.Size = new System.Drawing.Size(217, 22);
             this.tbox_InputMap_FrameNo.TabIndex = 215;
             this.tbox_InputMap_FrameNo.TextChanged += new System.EventHandler(this.tbox_InputMap_FrameNo_TextChanged);
             // 
@@ -269,13 +269,13 @@
             this.pasteToolStripMenuItem,
             this.copyToolStripMenuItem});
             this.cms_PopUp.Name = "cms_PopUp";
-            this.cms_PopUp.Size = new System.Drawing.Size(164, 52);
+            this.cms_PopUp.Size = new System.Drawing.Size(145, 48);
             // 
             // pasteToolStripMenuItem
             // 
             this.pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
             this.pasteToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(163, 24);
+            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.pasteToolStripMenuItem.Text = "Paste";
             this.pasteToolStripMenuItem.Click += new System.EventHandler(this.pasteToolStripMenuItem_Click);
             // 
@@ -283,7 +283,7 @@
             // 
             this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
             this.copyToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.copyToolStripMenuItem.Size = new System.Drawing.Size(163, 24);
+            this.copyToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.copyToolStripMenuItem.Text = "Copy";
             this.copyToolStripMenuItem.Click += new System.EventHandler(this.copyToolStripMenuItem_Click);
             // 
@@ -292,7 +292,7 @@
             this.tbox_InputMap_LotNo.ContextMenuStrip = this.cms_PopUp;
             this.tbox_InputMap_LotNo.Location = new System.Drawing.Point(85, 6);
             this.tbox_InputMap_LotNo.Name = "tbox_InputMap_LotNo";
-            this.tbox_InputMap_LotNo.Size = new System.Drawing.Size(217, 26);
+            this.tbox_InputMap_LotNo.Size = new System.Drawing.Size(217, 22);
             this.tbox_InputMap_LotNo.TabIndex = 216;
             this.tbox_InputMap_LotNo.MouseUp += new System.Windows.Forms.MouseEventHandler(this.tbox_InputMap_LotNo_MouseUp);
             // 
@@ -339,13 +339,23 @@
             this.tpage_Lumileds_SS_Map.Controls.Add(this.label10);
             this.tpage_Lumileds_SS_Map.Controls.Add(this.tbox_InputMap_FrameNo);
             this.tpage_Lumileds_SS_Map.Controls.Add(this.tbox_InputMap_LotNo);
-            this.tpage_Lumileds_SS_Map.Location = new System.Drawing.Point(4, 27);
+            this.tpage_Lumileds_SS_Map.Location = new System.Drawing.Point(4, 23);
             this.tpage_Lumileds_SS_Map.Name = "tpage_Lumileds_SS_Map";
             this.tpage_Lumileds_SS_Map.Padding = new System.Windows.Forms.Padding(3);
-            this.tpage_Lumileds_SS_Map.Size = new System.Drawing.Size(632, 94);
+            this.tpage_Lumileds_SS_Map.Size = new System.Drawing.Size(632, 98);
             this.tpage_Lumileds_SS_Map.TabIndex = 0;
             this.tpage_Lumileds_SS_Map.Text = "Test - Lumileds_SS_Map";
             this.tpage_Lumileds_SS_Map.UseVisualStyleBackColor = true;
+            // 
+            // cbSingulated
+            // 
+            this.cbSingulated.AutoSize = true;
+            this.cbSingulated.Location = new System.Drawing.Point(393, 8);
+            this.cbSingulated.Name = "cbSingulated";
+            this.cbSingulated.Size = new System.Drawing.Size(83, 18);
+            this.cbSingulated.TabIndex = 217;
+            this.cbSingulated.Text = "Singulated";
+            this.cbSingulated.UseVisualStyleBackColor = true;
             // 
             // tpage_TD_COB
             // 
@@ -357,10 +367,10 @@
             this.tpage_TD_COB.Controls.Add(this.btn_UnDispensed);
             this.tpage_TD_COB.Controls.Add(this.btn_Dispensed);
             this.tpage_TD_COB.Controls.Add(this.btn_Query);
-            this.tpage_TD_COB.Location = new System.Drawing.Point(4, 25);
+            this.tpage_TD_COB.Location = new System.Drawing.Point(4, 22);
             this.tpage_TD_COB.Name = "tpage_TD_COB";
             this.tpage_TD_COB.Padding = new System.Windows.Forms.Padding(3);
-            this.tpage_TD_COB.Size = new System.Drawing.Size(632, 96);
+            this.tpage_TD_COB.Size = new System.Drawing.Size(632, 99);
             this.tpage_TD_COB.TabIndex = 1;
             this.tpage_TD_COB.Text = "Test - TD_COB";
             this.tpage_TD_COB.UseVisualStyleBackColor = true;
@@ -391,7 +401,7 @@
             // 
             this.tbox_UnitNo.Location = new System.Drawing.Point(110, 32);
             this.tbox_UnitNo.Name = "tbox_UnitNo";
-            this.tbox_UnitNo.Size = new System.Drawing.Size(74, 26);
+            this.tbox_UnitNo.Size = new System.Drawing.Size(74, 22);
             this.tbox_UnitNo.TabIndex = 218;
             // 
             // label1
@@ -410,7 +420,7 @@
             this.tbox_SubstrateID.ContextMenuStrip = this.cms_PopUp;
             this.tbox_SubstrateID.Location = new System.Drawing.Point(110, 6);
             this.tbox_SubstrateID.Name = "tbox_SubstrateID";
-            this.tbox_SubstrateID.Size = new System.Drawing.Size(261, 26);
+            this.tbox_SubstrateID.Size = new System.Drawing.Size(261, 22);
             this.tbox_SubstrateID.TabIndex = 217;
             // 
             // btn_UnDispensed
@@ -449,10 +459,10 @@
             this.tpUnisemE142.Controls.Add(this.tbxStripId);
             this.tpUnisemE142.Controls.Add(this.btnUpload);
             this.tpUnisemE142.Controls.Add(this.btnDownload);
-            this.tpUnisemE142.Location = new System.Drawing.Point(4, 25);
+            this.tpUnisemE142.Location = new System.Drawing.Point(4, 22);
             this.tpUnisemE142.Name = "tpUnisemE142";
             this.tpUnisemE142.Padding = new System.Windows.Forms.Padding(3);
-            this.tpUnisemE142.Size = new System.Drawing.Size(632, 96);
+            this.tpUnisemE142.Size = new System.Drawing.Size(632, 99);
             this.tpUnisemE142.TabIndex = 2;
             this.tpUnisemE142.Text = "Unisem E142";
             this.tpUnisemE142.UseVisualStyleBackColor = true;
@@ -473,7 +483,7 @@
             this.tbxStripId.ContextMenuStrip = this.cms_PopUp;
             this.tbxStripId.Location = new System.Drawing.Point(110, 22);
             this.tbxStripId.Name = "tbxStripId";
-            this.tbxStripId.Size = new System.Drawing.Size(184, 26);
+            this.tbxStripId.Size = new System.Drawing.Size(184, 22);
             this.tbxStripId.TabIndex = 219;
             // 
             // btnUpload
@@ -506,10 +516,10 @@
             this.tpageEMos.Controls.Add(this.label8);
             this.tpageEMos.Controls.Add(this.tboxEMosFrameNo);
             this.tpageEMos.Controls.Add(this.tboxEMosMaterialNr);
-            this.tpageEMos.Location = new System.Drawing.Point(4, 25);
+            this.tpageEMos.Location = new System.Drawing.Point(4, 22);
             this.tpageEMos.Name = "tpageEMos";
             this.tpageEMos.Padding = new System.Windows.Forms.Padding(3);
-            this.tpageEMos.Size = new System.Drawing.Size(632, 96);
+            this.tpageEMos.Size = new System.Drawing.Size(632, 99);
             this.tpageEMos.TabIndex = 3;
             this.tpageEMos.Text = "Test - EMos";
             this.tpageEMos.UseVisualStyleBackColor = true;
@@ -519,7 +529,7 @@
             this.cbEMosRework.AutoSize = true;
             this.cbEMosRework.Location = new System.Drawing.Point(308, 66);
             this.cbEMosRework.Name = "cbEMosRework";
-            this.cbEMosRework.Size = new System.Drawing.Size(77, 22);
+            this.cbEMosRework.Size = new System.Drawing.Size(67, 18);
             this.cbEMosRework.TabIndex = 224;
             this.cbEMosRework.Text = "Rework";
             this.cbEMosRework.UseVisualStyleBackColor = true;
@@ -539,7 +549,7 @@
             // 
             this.tboxEMosLotNo.Location = new System.Drawing.Point(85, 6);
             this.tboxEMosLotNo.Name = "tboxEMosLotNo";
-            this.tboxEMosLotNo.Size = new System.Drawing.Size(217, 26);
+            this.tboxEMosLotNo.Size = new System.Drawing.Size(217, 22);
             this.tboxEMosLotNo.TabIndex = 223;
             // 
             // label7
@@ -580,14 +590,14 @@
             // 
             this.tboxEMosFrameNo.Location = new System.Drawing.Point(85, 34);
             this.tboxEMosFrameNo.Name = "tboxEMosFrameNo";
-            this.tboxEMosFrameNo.Size = new System.Drawing.Size(217, 26);
+            this.tboxEMosFrameNo.Size = new System.Drawing.Size(217, 22);
             this.tboxEMosFrameNo.TabIndex = 220;
             // 
             // tboxEMosMaterialNr
             // 
             this.tboxEMosMaterialNr.Location = new System.Drawing.Point(85, 62);
             this.tboxEMosMaterialNr.Name = "tboxEMosMaterialNr";
-            this.tboxEMosMaterialNr.Size = new System.Drawing.Size(217, 26);
+            this.tboxEMosMaterialNr.Size = new System.Drawing.Size(217, 22);
             this.tboxEMosMaterialNr.TabIndex = 221;
             // 
             // cbox_Enabled
@@ -595,7 +605,7 @@
             this.cbox_Enabled.AutoSize = true;
             this.cbox_Enabled.Location = new System.Drawing.Point(160, 5);
             this.cbox_Enabled.Name = "cbox_Enabled";
-            this.cbox_Enabled.Size = new System.Drawing.Size(72, 22);
+            this.cbox_Enabled.Size = new System.Drawing.Size(62, 18);
             this.cbox_Enabled.TabIndex = 219;
             this.cbox_Enabled.Text = "Enable";
             this.cbox_Enabled.UseVisualStyleBackColor = true;
@@ -607,7 +617,7 @@
             this.lbl_Protocol.Location = new System.Drawing.Point(240, 2);
             this.lbl_Protocol.Margin = new System.Windows.Forms.Padding(2);
             this.lbl_Protocol.Name = "lbl_Protocol";
-            this.lbl_Protocol.Size = new System.Drawing.Size(371, 23);
+            this.lbl_Protocol.Size = new System.Drawing.Size(385, 23);
             this.lbl_Protocol.TabIndex = 220;
             this.lbl_Protocol.Text = "lbl_Protocol";
             this.lbl_Protocol.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -645,16 +655,6 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(640, 34);
             this.panel3.TabIndex = 223;
-            // 
-            // cbSingulated
-            // 
-            this.cbSingulated.AutoSize = true;
-            this.cbSingulated.Location = new System.Drawing.Point(393, 8);
-            this.cbSingulated.Name = "cbSingulated";
-            this.cbSingulated.Size = new System.Drawing.Size(95, 22);
-            this.cbSingulated.TabIndex = 217;
-            this.cbSingulated.Text = "Singulated";
-            this.cbSingulated.UseVisualStyleBackColor = true;
             // 
             // frm_DispCore_DispProg_InputMap
             // 

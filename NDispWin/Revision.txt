@@ -32,6 +32,50 @@ ver 6.1.8.39 - KN - 20250815 - Gitted
 [BugFix] Fix LoadMap feature.
 [Changes] Minor reporting format change
 
+ver 6.1.8.36 JH - 20250821 -Gitted
+[Feature] SecsGem
+- DispProg.cs
+> Remove skip mapping when E142 Map off 
+> Add Set_Substrate condition to avoid invalid Substrate ID
+> Skip Input Map ID checking for board without substrate id
+> Input Map for OSRAM_E142 ask user to choose either input map, continue without input map or stop
+- TaskMHS.cs
+> During Pusher continuously send fail, if user stop will send lot end event and prompt lot end message
+-TFSecsGem.cs
+> PPS case convert PPbody to binary
+> manual request PP convert read PPBody from binary to xml
+> Decode mapping, Encode bin code string add cases for PreMap NG and InMap NG
+> Encode mapping hardcode for loading mapping without substrate ID
+> Change substrate ID to Default if E142 Map Off 
+
+ver 6.1.8.26 - JAY - 20250820 -Gitted
+[Feature] SecsGem
+- TEEvent.cs
+> Remove thread.sleep from set method to avoid delay
+- TFSecsGem.cs
+> Refactor PPS for xmlcontent writer
+> Modify UploadPP filepath to C drive
+> Modify RequestPP timeout to 30s
+> Add StiripMapDnloadFlip for flipX and refactor the decode map for flip
+> Modify EncodeBinCodeStrings for flip back the mapping
+- DispProg.cs, frmDispProg_InputMap.cs, frm_DispProg2.cs
+> Add some comments for flipX settings and save
+- frmMap.cs
+> Refactor loadmap EMapBin map state
+
+ver 6.1.8.18 - JAY - 20250817 -Gitted
+[Feature] SecsGem
+- frm_Main.cs
+> Modify Secsgem connect sequence before load the config.
+- TEEvent.cs
+> Assign TEVID Value set to bincode
+> Modify Null and Unprocessed bincode define, min, max value
+- TFSecsGem.cs
+> Modify ECNR_GetList svid.def to svid.Value
+> Refactor RequestPP_PPR timeout and delay
+
+
+
 ver 6.1.8.13 - JAY - 20250814 -Gitted
 [Feature] SecsGem
 - DispProg.cs
