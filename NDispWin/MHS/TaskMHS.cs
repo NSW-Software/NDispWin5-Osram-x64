@@ -9178,7 +9178,9 @@ namespace NDispWin
                                     default:
                                         TaskConv.Status = TaskConv.EConvStatus.Stop;
                                         TaskConv.StopInput = true;
+                                        Event.OP_LOT_END.Set("LotInfo", $"{LotInfo2.sOperatorID},{LotInfo2.LotNumber},{LotInfo2.Osram.ElevenSeries},{LotInfo2.Osram.DAStartNumber}");
                                         SendRetry = 0;
+                                        MsgBox.Show(Messages.LOT_END_IN_MAGAZINE_EMPTY);
                                         goto _End;
                                 }
                             }

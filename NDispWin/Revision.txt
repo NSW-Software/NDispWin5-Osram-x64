@@ -28,6 +28,22 @@ X-12.	Unusual weight spike during weight check -> not occure after
 13.	Why there is still height variation after individual height scanning. May need your hardware team to plug in the external laser height system to verify the actual Z position vs compensate height. 
 /-14. Different speed for the lines -> Added Speed2, 3 Ratio
 
+ver 6.1.8.36 JH - 20250821 -Gitted
+[Feature] SecsGem
+- DispProg.cs
+> Remove skip mapping when E142 Map off 
+> Add Set_Substrate condition to avoid invalid Substrate ID
+> Skip Input Map ID checking for board without substrate id
+> Input Map for OSRAM_E142 ask user to choose either input map, continue without input map or stop
+- TaskMHS.cs
+> During Pusher continuously send fail, if user stop will send lot end event and prompt lot end message
+-TFSecsGem.cs
+> PPS case convert PPbody to binary
+> manual request PP convert read PPBody from binary to xml
+> Decode mapping, Encode bin code string add cases for PreMap NG and InMap NG
+> Encode mapping hardcode for loading mapping without substrate ID
+> Change substrate ID to Default if E142 Map Off 
+
 ver 6.1.8.26 - JAY - 20250820 -Gitted
 [Feature] SecsGem
 - TEEvent.cs

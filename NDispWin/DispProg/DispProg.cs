@@ -2956,12 +2956,11 @@ namespace NDispWin
                 for (int i = MAX_SCRIPT - 1; i >= 0; i--)                {
                     DispProg.Script[i].Pause();
                 }
-
+                //TaskDisp.InputMap_Protocol = TaskDisp.EInputMapProtocol.OSRAM_E142;
                 switch (TaskDisp.InputMap_Protocol)
                 {
                     case TaskDisp.EInputMapProtocol.OSRAM_E142:
                         {
-                            if (TFSecsGem.E142_Map_On == "0") break;
                             string xmlString = "";
                             string s = TFSecsGem.EncodeBinCodeStrings(true);
                             TFSecsGem.EncodeMap(s, ref xmlString);
@@ -11357,8 +11356,7 @@ namespace NDispWin
                         switch (TaskDisp.InputMap_Protocol)
                         {
                             case TaskDisp.EInputMapProtocol.OSRAM_E142:
-                                {
-                                    if (TFSecsGem.E142_Map_On == "0") break;
+                                {                                  
                                     string xmlString = "";
                                     string s = TFSecsGem.EncodeBinCodeStrings();
                                     TFSecsGem.EncodeMap(s, ref xmlString);
@@ -11369,10 +11367,13 @@ namespace NDispWin
                                     break;
                                 }
                         }
+                        if(TFSecsGem.Set_Substrate == "1")
+                        {
+                            Event.SUBSTRATE_END.Set();
+                            TFSecsGem.SubstrateStatus[TFSecsGem.SubstrateID] = "COMPLETE";
+                            LotInfo2.Osram.SaveSetup();
+                        }
                         
-                        Event.SUBSTRATE_END.Set();
-                        TFSecsGem.SubstrateStatus[TFSecsGem.SubstrateID] = "COMPLETE";
-                        LotInfo2.Osram.SaveSetup();
                         BdReady = true;
                         Define_Run.UpdateProcessStatus_BdReady();  
 
@@ -22941,7 +22942,7 @@ namespace NDispWin
 
                 try
                 {
-                    if (FrameNo == "")
+                    if (FrameNo == "" && TFSecsGem.E142_Map_On != "0")
                     {
                         Msg MsgBox = new Msg();
                         EMsgRes Res = MsgBox.Show("INPUT_MAP Invalid ID.@OK - Continue without ID.@STOP - Stop Process.", "", TEMessage.EType.Error, EMsgBtn.smbOK_Stop);
@@ -23152,8 +23153,37 @@ namespace NDispWin
                             }
                         case TaskDisp.EInputMapProtocol.OSRAM_E142:
                             {
-                                if (TFSecsGem.E142_Map_On == "0") break;
-                                if (TFSecsGem.LoadMapping()) break;
+                                if (TFSecsGem.E142_Map_On == "0")
+                                {
+                                    string Filename = GDefine.DataPath + $"\\StripMap\\Default.xml";
+                                    if (File.Exists(Filename))
+                                    {
+                                        Msg MsgBox = new Msg();
+                                        EMsgRes Res = MsgBox.Show("Confirm Input Map?" +
+                                            "@OK - Input Map." +
+                                            "@Retry - Continue without Input Map." +
+                                            "@Stop - Stop Process.", "", TEMessage.EType.Error, EMsgBtn.smbOK_Retry_Stop);
+                                        switch (Res)
+                                        {
+                                            case EMsgRes.smrOK:
+                                                TFSecsGem.LoadMapping();
+                                                return true;
+                                            case EMsgRes.smrRetry:
+                                                File.Delete(Filename);
+                                                return true;
+                                            default:
+                                                return false;       
+                                        }
+                                    }break;
+                                    
+
+                                }
+                                else 
+                                {
+                                    TFSecsGem.LoadMapping();
+                                }
+                                
+                                
 
                                 TFSecsGem.GAR(FrameNo);
                                 int t = Environment.TickCount;

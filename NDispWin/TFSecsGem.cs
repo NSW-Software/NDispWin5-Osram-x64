@@ -863,15 +863,15 @@ namespace NDispWin
                                 {
                                     ppbody = File.ReadAllText(filePath);
                                 }
-                                //StringBuilder xmlbuilder = new StringBuilder();
-                                //for(int i = 0; i< ppbody.Length; i += 8)
-                                //{
-                                //    string byteString = ppbody.Substring(i, 8);
-                                //    char character = (char)Convert.ToByte(byteString,2);
-                                //    xmlbuilder.Append(character);
-                                //}
-                                //string xmlcontent = xmlbuilder.ToString();
-                                string xmlcontent = ppbody;
+                                StringBuilder xmlbuilder = new StringBuilder();
+                                for (int i = 0; i < ppbody.Length; i += 8)
+                                {
+                                    string byteString = ppbody.Substring(i, 8);
+                                    char character = (char)Convert.ToByte(byteString, 2);
+                                    xmlbuilder.Append(character);
+                                }
+                                string xmlcontent = xmlbuilder.ToString();
+                                //string xmlcontent = ppbody;
                                 slim.EnterWriteLock();
                                 try
                                 {
@@ -1533,24 +1533,24 @@ namespace NDispWin
                 {
                     ppbody = File.ReadAllText(filePath);
                 }
-                //StringBuilder xmlbuilder = new StringBuilder();
-                //for (int i = 0; i < ppbody.Length; i += 8)
-                //{
-                //    string byteString = ppbody.Substring(i, 8);
-                //    char character = (char)Convert.ToByte(byteString, 2);
-                //    xmlbuilder.Append(character);
-                //}
-                //string xmlcontent = xmlbuilder.ToString();
+                StringBuilder xmlbuilder = new StringBuilder();
+                for (int i = 0; i < ppbody.Length; i += 8)
+                {
+                    string byteString = ppbody.Substring(i, 8);
+                    char character = (char)Convert.ToByte(byteString, 2);
+                    xmlbuilder.Append(character);
+                }
+                string xmlcontent = xmlbuilder.ToString();
 
                 slim.EnterWriteLock();
                 try
                 {
-                    //using (StreamWriter writer = new StreamWriter(file))
-                    //{
-                    //    writer.Write(xmlcontent);
-                    //    //a.Close();
-                    //}
-                    File.WriteAllText(file, ppbody);
+                    using (StreamWriter writer = new StreamWriter(file))
+                    {
+                        writer.Write(xmlcontent);
+                        //a.Close();
+                    }
+                    //File.WriteAllText(file, ppbody);
                 }
                 finally
                 {
@@ -1734,6 +1734,16 @@ namespace NDispWin
                                     map[c, r] = 200;
                                     break;
                                 }
+                            case string b when b.StartsWith("A"):
+                                {
+                                    map[c, r] = 255;
+                                    break;
+                                }
+                            case string n when n.StartsWith("N"):
+                                {
+                                    map[c, r] = 220;
+                                    break;
+                                }
                             default:
                                 map[c, r] = 210;
                                 break;
@@ -1843,6 +1853,8 @@ namespace NDispWin
                         if (bin == 200) binCode = "CCCC";
                         if (bin == 210) binCode = "5000";
                         if (bin == 3 || bin == 0) binCode = "0000";
+                        if (bin == 255) binCode = "AAAA";
+                        if (bin == 220) binCode = "NNNN";
                     }
                     else
                     {
@@ -1865,39 +1877,135 @@ namespace NDispWin
 
             try
             {
-                doc = XDocument.Parse(currentXmlString);
-
-                var substrate = doc.Descendants(ns + "Substrate").FirstOrDefault();
-                if (substrate != null)
+                if (TFSecsGem.E142_Map_On == "0")
                 {
-                    substrate.SetAttributeValue("SubstrateId", $"{SubstrateID}");
+                    #region Header
+                    doc = new XDocument(
+    new XElement(ns + "MapData",
+        new XElement(ns + "Layouts",
+            new XElement(ns + "Layout",
+                new XAttribute("DefaultUnits", "mm"),
+                new XAttribute("LayoutId", "SubstrateLayout"),
+                new XAttribute("TopLevel", "true"),
+                new XElement(ns + "Dimension", new XAttribute("X", 1), new XAttribute("Y", 1)),
+                new XElement(ns + "ChildLayouts",
+                    new XElement(ns + "ChildLayout", new XAttribute("LayoutId", "UnitLayout"))
+                )
+            ),
+            new XElement(ns + "Layout",
+                new XAttribute("DefaultUnits", "mm"),
+                new XAttribute("LayoutId", "UnitLayout"),
+                new XElement(ns + "Dimension", new XAttribute("X", 62), new XAttribute("Y", 52))
+            )
+        ),
+        new XElement(ns + "Substrates",
+            new XElement(ns + "Substrate",
+                new XAttribute("SubstrateId", "Default"),
+                new XAttribute("SubstrateType", "Strip")
+            )
+        ),
+        new XElement(ns + "SubstrateMaps",
+            new XElement(ns + "SubstrateMap",
+                new XAttribute("SubstrateId", "Default"),
+                new XAttribute("SubstrateType", "Strip"),
+                new XAttribute("AxisDirection", "DownRight"),
+                new XAttribute("OriginLocation", "UpperLeft"),
+                new XAttribute("Orientation", "0"),
+                new XAttribute("LayoutSpecifier", "SubstrateLayout/UnitLayout"),
+                new XElement(ns + "Overlay",
+                    new XAttribute("MapVersion", "1"),
+                    new XAttribute("MapName", "PanelMap"),
+                    new XElement(ns + "BinCodeMap",
+                        new XAttribute("MapType", "2DArray"),
+                        new XAttribute("BinType", "Integer2"),
+                        new XAttribute("NullBin", "FFFF"),
+
+                        // BinDefinitions stay fixed
+                        new XElement(ns + "BinDefinitions",
+                            new XElement(ns + "BinDefinition",
+                                new XAttribute("Pick", "true"),
+                                new XAttribute("BinDescription", "Tested Ok"),
+                                new XAttribute("BinQuality", "Good"),
+                                new XAttribute("BinCount", "3218"),
+                                new XAttribute("BinCode", "0000")
+                            ),
+                            new XElement(ns + "BinDefinition",
+                                new XAttribute("Pick", "false"),
+                                new XAttribute("BinDescription", "Tested Failed"),
+                                new XAttribute("BinQuality", "Bad"),
+                                new XAttribute("BinCount", "6"),
+                                new XAttribute("BinCode", "5000")
+                            )
+                        ),
+
+                        // BinCode values will be added later
+                        new XElement(ns + "BinCode")
+                    )
+                )
+            )
+        )
+    )
+);
+                    #endregion
+
+                    // Example: replace BinCode lines only
+                    string[] alines = binCodesString.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+                    // Locate <BinCodeMap>
+                    var binCodeMap = doc.Descendants(ns + "BinCodeMap").FirstOrDefault();
+                    if (binCodeMap != null)
+                    {
+                        // Remove old <BinCode>
+                        binCodeMap.Elements(ns + "BinCode").Remove();
+
+                        // Add new BinCode values
+                        foreach (var line in alines)
+                        {
+                            binCodeMap.Add(new XElement(ns + "BinCode", line));
+                        }
+                    }
+
+                    // Output XML string
+                    xmlString = doc.ToString();
                 }
 
-                var codeDict = BinCodes.Where(item => item.BinState != null).ToDictionary(item => item.BinState, item => item.Value);
-                foreach (var def in doc.Descendants(ns + "BinDefinition"))
-                {                  
-                    bool pick = (bool)def.Attribute("Pick");
-                    var mapBin = pick ? EMapBin.Complete : EMapBin.InMapNG;
-
-                    if (codeDict.TryGetValue(mapBin, out var newCode))
-                        def.SetAttributeValue("BinCode", newCode);
-                }
-
-                string[] lines = binCodesString.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
-
-                // Locate the <BinCodeMap> node
-                var binCodes = doc.Descendants(ns + "BinCodeMap").FirstOrDefault();
-                // Remove existing BinCode elements
-                binCodes.Elements(ns + "BinCode").Remove();
-
-                foreach (string line in lines)
+                else
                 {
-                    // Add new BinCode elements
-                    binCodes.Add(new XElement(ns + "BinCode", line));
+                    doc = XDocument.Parse(currentXmlString);
+
+                    var substrate = doc.Descendants(ns + "Substrate").FirstOrDefault();
+                    if (substrate != null)
+                    {
+                        substrate.SetAttributeValue("SubstrateId", $"{SubstrateID}");
+                    }
+
+                    var codeDict = BinCodes.Where(item => item.BinState != null).ToDictionary(item => item.BinState, item => item.Value);
+                    foreach (var def in doc.Descendants(ns + "BinDefinition"))
+                    {
+                        bool pick = (bool)def.Attribute("Pick");
+                        var mapBin = pick ? EMapBin.Complete : EMapBin.InMapNG;
+
+                        if (codeDict.TryGetValue(mapBin, out var newCode))
+                            def.SetAttributeValue("BinCode", newCode);
+                    }
+
+                    string[] lines = binCodesString.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+                    // Locate the <BinCodeMap> node
+                    var binCodes = doc.Descendants(ns + "BinCodeMap").FirstOrDefault();
+                    // Remove existing BinCode elements
+                    binCodes.Elements(ns + "BinCode").Remove();
+
+                    foreach (string line in lines)
+                    {
+                        // Add new BinCode elements
+                        binCodes.Add(new XElement(ns + "BinCode", line));
+                    }
+
+                    xmlString = doc.ToString();
+                    //currentXmlString = "";
                 }
 
-                xmlString = doc.ToString();
-                //currentXmlString = "";
             }
             catch (Exception ex)
             {
@@ -1943,6 +2051,7 @@ namespace NDispWin
         {
             try
             {
+                if (TFSecsGem.E142_Map_On == "0") { SubstrateID = "Default"; }
                 string Filename = GDefine.DataPath + $"\\StripMap\\{SubstrateID}.xml";
                 File.WriteAllText(Filename, doc.ToString());
             }
@@ -1956,6 +2065,7 @@ namespace NDispWin
         {
             try
             {
+                if (TFSecsGem.E142_Map_On == "0") { SubstrateID = "Default"; }
                 string Filename = GDefine.DataPath + $"\\StripMap\\{SubstrateID}.xml";
 
                 // Check if file exists first
