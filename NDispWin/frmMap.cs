@@ -713,6 +713,8 @@ namespace NDispWin
 
                 //Osram eMos csv file format
                 //Map starts Top Left, 
+                //Disp only GESAMTB = 1
+                //
                 //No.,Position - X,Position - Y,GESAMTB,3450_BIN,3450
                 //1,1,1,1,0,1
                 //2,2,1,1,0,1
@@ -747,9 +749,9 @@ namespace NDispWin
                     if (lookup.TryGetValue((totalCol - cr.X, cr.Y + 1), out int d))
                     {
                         if (d == 1)
-                            DispProg.Map.CurrMap[LayoutNo].Bin[i] = EMapBin.Bypass;
-                        else
                             DispProg.Map.CurrMap[LayoutNo].Bin[i] = EMapBin.InMapNG;
+                        else
+                            DispProg.Map.CurrMap[LayoutNo].Bin[i] = EMapBin.MapOK;
                     }
                     else
                     {

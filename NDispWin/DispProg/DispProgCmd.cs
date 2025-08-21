@@ -2155,7 +2155,7 @@ namespace NDispWin
                     string str = $"{Line.Cmd}\t";
                     str += $"DispGap={Model.DispGap:f3}\t";
                     str += $"C,R={DispProg.RunTime.Head_CR[0].X},{DispProg.RunTime.Head_CR[0].Y}\t";
-                    str += $"X,Y,Z={GXY.X:f3},{GXY.Y:f3},{gz1:f3} XE,YE,ZE ={gx},{gy},{ gz1}\t";
+                    str += $"X,Y,Z={GXY.X:f3},{GXY.Y:f3},{gz1:f3} XE,YE,ZE ={gx:f3},{gy:f3},{ gz1:f3}\t";
 
                     if (DispProg.Head_Operation == TaskDisp.EHeadOperation.Sync)
                     {
