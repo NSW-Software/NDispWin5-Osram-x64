@@ -89,9 +89,17 @@ namespace NDispWin
             this.label9 = new System.Windows.Forms.Label();
             this.lblAmount = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.lblProfile = new System.Windows.Forms.Label();
+            this.tbEndSegRatio = new System.Windows.Forms.TextBox();
+            this.gbProfile = new System.Windows.Forms.GroupBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.tbStartSegRatio = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.gbox_Pos.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.gbProfile.SuspendLayout();
             this.SuspendLayout();
             // 
             // btn_Cancel
@@ -873,13 +881,97 @@ namespace NDispWin
             this.label5.Size = new System.Drawing.Size(38, 23);
             this.label5.TabIndex = 164;
             this.label5.Text = "Unit";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label2
+            // 
+            this.label2.AccessibleDescription = "";
+            this.label2.Location = new System.Drawing.Point(277, 4);
+            this.label2.Margin = new System.Windows.Forms.Padding(2);
+            this.label2.Name = "label2";
+            this.label2.Padding = new System.Windows.Forms.Padding(3);
+            this.label2.Size = new System.Drawing.Size(75, 23);
+            this.label2.TabIndex = 166;
+            this.label2.Text = "Profile";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblProfile
+            // 
+            this.lblProfile.BackColor = System.Drawing.SystemColors.Window;
+            this.lblProfile.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblProfile.Location = new System.Drawing.Point(356, 4);
+            this.lblProfile.Margin = new System.Windows.Forms.Padding(2);
+            this.lblProfile.Name = "lblProfile";
+            this.lblProfile.Padding = new System.Windows.Forms.Padding(3);
+            this.lblProfile.Size = new System.Drawing.Size(75, 23);
+            this.lblProfile.TabIndex = 165;
+            this.lblProfile.Text = "0";
+            this.lblProfile.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblProfile.Click += new System.EventHandler(this.lblProfile_Click);
+            // 
+            // tbEndSegRatio
+            // 
+            this.tbEndSegRatio.Location = new System.Drawing.Point(108, 49);
+            this.tbEndSegRatio.Name = "tbEndSegRatio";
+            this.tbEndSegRatio.Size = new System.Drawing.Size(313, 22);
+            this.tbEndSegRatio.TabIndex = 167;
+            this.tbEndSegRatio.Text = "1,0.5,0.2,0,-0.5";
+            // 
+            // gbProfile
+            // 
+            this.gbProfile.AutoSize = true;
+            this.gbProfile.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.gbProfile.Controls.Add(this.label11);
+            this.gbProfile.Controls.Add(this.tbStartSegRatio);
+            this.gbProfile.Controls.Add(this.label7);
+            this.gbProfile.Controls.Add(this.tbEndSegRatio);
+            this.gbProfile.Location = new System.Drawing.Point(8, 559);
+            this.gbProfile.Name = "gbProfile";
+            this.gbProfile.Size = new System.Drawing.Size(427, 92);
+            this.gbProfile.TabIndex = 168;
+            this.gbProfile.TabStop = false;
+            this.gbProfile.Text = "Profile1";
+            // 
+            // label11
+            // 
+            this.label11.AccessibleDescription = "Start Seg Ratio";
+            this.label11.Location = new System.Drawing.Point(4, 20);
+            this.label11.Margin = new System.Windows.Forms.Padding(2);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(93, 23);
+            this.label11.TabIndex = 170;
+            this.label11.Text = "Start Seg Ratio";
+            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tbStartSegRatio
+            // 
+            this.tbStartSegRatio.Location = new System.Drawing.Point(108, 21);
+            this.tbStartSegRatio.Name = "tbStartSegRatio";
+            this.tbStartSegRatio.Size = new System.Drawing.Size(313, 22);
+            this.tbStartSegRatio.TabIndex = 169;
+            this.tbStartSegRatio.Text = "1,0.5,0.2,0,-0.5";
+            // 
+            // label7
+            // 
+            this.label7.AccessibleDescription = "End Seg Ratio";
+            this.label7.Location = new System.Drawing.Point(5, 48);
+            this.label7.Margin = new System.Windows.Forms.Padding(2);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(93, 23);
+            this.label7.TabIndex = 168;
+            this.label7.Text = "End Seg Ratio";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // frmDispProg_ParallelLines
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(449, 572);
+            this.AutoSize = true;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.ClientSize = new System.Drawing.Size(449, 669);
             this.ControlBox = false;
+            this.Controls.Add(this.gbProfile);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.lblProfile);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.lblAmount);
             this.Controls.Add(this.gbox_Pos);
@@ -911,6 +1003,8 @@ namespace NDispWin
             this.gbox_Pos.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.gbProfile.ResumeLayout(false);
+            this.gbProfile.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -978,5 +1072,12 @@ namespace NDispWin
         private System.Windows.Forms.Label lblXY2;
         private System.Windows.Forms.Label lblAmount;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblProfile;
+        private System.Windows.Forms.TextBox tbEndSegRatio;
+        private System.Windows.Forms.GroupBox gbProfile;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TextBox tbStartSegRatio;
     }
 }

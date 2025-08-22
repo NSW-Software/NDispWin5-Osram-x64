@@ -17,6 +17,24 @@ namespace NDispWin
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            // Add global handlers so even unhandled exceptions show a MessageBox
+            Application.ThreadException += (s, e) =>
+            {
+                Log.AddToEventLog("Unhandled Error (Non-UI Thread)" + e.Exception.Message);
+                MessageBox.Show(e.Exception.Message, "Unhandled Error (UI Thread)",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            };
+
+            AppDomain.CurrentDomain.UnhandledException += (s, e) =>
+            {
+                if (e.ExceptionObject is Exception ex)
+                {
+                    Log.AddToEventLog("Unhandled Error (Non-UI Thread)" + ex.Message);
+                    MessageBox.Show(ex.Message, "Unhandled Error (Non-UI Thread)",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            };
+
             bool AppCreated;
 
             System.Threading.Mutex AppMutex = new

@@ -1104,6 +1104,8 @@ namespace NDispWin
         {
             GDefine.Status = EStatus.Busy;
 
+            int profMode = Line.IPara[9];
+
             try
             {
                 TModelPara Model = new TModelPara(DispProg.ModelList, Line.IPara[0]);
@@ -1251,8 +1253,6 @@ namespace NDispWin
 
                 //Calculate the lead lag relative pos
                 double lineLength = Math.Sqrt(Math.Pow(relLineEndXY.X, 2) + Math.Pow(relLineEndXY.Y, 2));
-                //TPos2 relLeadXY = new TPos2(leadLength / lineLength * relLineEndXY.X, leadLength / lineLength * relLineEndXY.Y);
-                //TPos2 relLagXY = new TPos2(lagLength / lineLength * relLineEndXY.X, lagLength / lineLength * relLineEndXY.Y);
 
                 TPos2 relStartOfstXY = new TPos2(startOfst / lineLength * relLineEndXY.X, startOfst / lineLength * relLineEndXY.Y);
                 TPos2 relEndOfstXY = new TPos2(endOfst / lineLength * relLineEndXY.X, endOfst / lineLength * relLineEndXY.Y);
@@ -1265,7 +1265,6 @@ namespace NDispWin
 
                 #region Move abs Start Pos + lead length, move head2 to position
                 if (!TaskGantry.SetMotionParamGXY()) goto _Error;
-                //TPos2 GXY = new TPos2(absStart[0].X - relLeadXY.X + relStartOfstXY.X, absStart[0].Y - relLeadXY.Y + relStartOfstXY.Y);
                 TPos2 GXY = new TPos2(absStart.X + relStartOfstXY.X, absStart.Y + relStartOfstXY.Y);
                 if (RunMode == ERunMode.Normal || RunMode == ERunMode.Dry)
                 {
@@ -1278,8 +1277,6 @@ namespace NDispWin
                 {
                     if (bHeadRun[1])
                     {
-                        //GX2Y2.X = GX2Y2.X - TaskDisp.Head2_DefDistX + (absStart[1].X - absStart[0].X) + TaskDisp.Head2_XOffset;
-                        //GX2Y2.Y = GX2Y2.Y + (absStart[1].Y - absStart[0].Y) + TaskDisp.Head2_YOffset;
                         if (!TaskGantry.SetMotionParamGX2Y2()) goto _Error;
                         if (!TaskGantry.MoveAbsGX2Y2(GX2Y2.X, GX2Y2.Y, false)) goto _Error;
                     }
@@ -1347,9 +1344,6 @@ namespace NDispWin
                             #region Start Disp and StartDelay
                             CControl2.TAxis[] Axis = new CControl2.TAxis[] { TaskGantry.GXAxis, TaskGantry.GYAxis, TaskGantry.GZAxis, TaskGantry.GZ2Axis, TaskGantry.PAAxis, TaskGantry.PBAxis };
                             CommonControl.P1245.PathFree(Axis);
-                            //CControl2.TOutput[] Output = null;
-                            //DispProg.Outputs(bHeadRun, ref Output);
-                            //CommonControl.P1245.PathAddDO(Axis, Output, disp && RunMode == ERunMode.Normal);
                             CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.GPDELAY, true, Model.DnWait, 0, null, null);
                             #endregion
 
@@ -1357,10 +1351,9 @@ namespace NDispWin
                             double LineSpeed = Model.LineSpeed;
 
                             int useWeight = Line.IPara[4];
-                            //if (useWeight)
                             switch (useWeight)
                             {
-                                case 1:
+                                case 1://Weight Mode
                                     {
                                         double LineMass = Line.DPara[21];
                                         double FLineMass = Line.DPara[20] > 0 ? Line.DPara[20] : Line.DPara[21];
@@ -1395,7 +1388,7 @@ namespace NDispWin
                                         if (LineSpeed > 150) throw new Exception("Auto Line Speed over 150mm/s. Run Aborted.");
                                         break;
                                     }
-                                case 2:
+                                case 2://Volume Mode
                                     {
                                         double LineVol = Line.DPara[21];
                                         double FLineVol = Line.DPara[20] > 0 ? Line.DPara[20] : Line.DPara[21];
@@ -1434,35 +1427,145 @@ namespace NDispWin
 
                             if (RunMode == ERunMode.Normal || RunMode == ERunMode.Dry)
                             {
-                                double nettDispVol = DispProg.PP_HeadA_DispBaseVol + DispProg.PP_HeadA_BackSuckVol;
-                                double pp = -TFPump.PP4.LengthConversion(nettDispVol);
-
-                                double startDispVol = (pp - (-startVolume)) * startLength / lineLength;
-                                double fallDispVol = (pp - (-startVolume)) * endLength / lineLength;
-                                double constDispVol = pp - startDispVol - fallDispVol - (-startVolume);
-                                //double dd = startDispVol + constDispVol + fallDispVol + (-startVolume);
-                                if (!endDispense)
+                                switch (profMode)
                                 {
-                                    startDispVol = (pp - (- startVolume)) * startLength / (lineLength - endLength);
-                                    constDispVol = pp - startDispVol - (-startVolume);
-                                    fallDispVol = 0;
-                                    //dd = startDispVol + constDispVol + (-startVolume);
-                                }
-                                Log.AddToEventLog($"PP Dist {pp:f4} {startDispVol:f4}+{constDispVol:f4}+{fallDispVol:f4}+{-startVolume:f4}");
+                                    case 0:
+                                    default:
+                                        {
+                                            double nettDispVol = DispProg.PP_HeadA_DispBaseVol + DispProg.PP_HeadA_BackSuckVol;
+                                            double pp = -TFPump.PP4.LengthConversion(nettDispVol);
 
-                                if (RunMode == ERunMode.Dry)
-                                {
-                                    startVolume = 0;
-                                    startDispVol = 0;
-                                    constDispVol = 0;
-                                    fallDispVol = 0;
-                                }
+                                            double startDispVol = (pp - (-startVolume)) * startLength / lineLength;
+                                            double fallDispVol = (pp - (-startVolume)) * endLength / lineLength;
+                                            double constDispVol = pp - startDispVol - fallDispVol - (-startVolume);
+                                            if (!endDispense)
+                                            {
+                                                startDispVol = (pp - (-startVolume)) * startLength / (lineLength - endLength);
+                                                constDispVol = pp - startDispVol - (-startVolume);
+                                                fallDispVol = 0;
+                                                //dd = startDispVol + constDispVol + (-startVolume);
+                                            }
+                                            Log.AddToEventLog($"PP Dist {pp:f4} {startDispVol:f4}+{constDispVol:f4}+{fallDispVol:f4}+{-startVolume:f4}");
 
-                                double sLineSpeed = TFPump.PP4.DispSpeed;
-                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, sLineSpeed, 0, new double[6] { 0, 0, 0, 0, -startVolume, 0 }, null);
-                                if (startLength > 0) CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, LineSpeed, 0, new double[6] { relStartXY.X, relStartXY.Y, Model.DispGap - startGap, 0, startDispVol, 0 }, null);
-                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, LineSpeed, LineSpeed, new double[6] { relConstXY.X + relEndOfstXY.X, relConstXY.Y + relEndOfstXY.Y, relEndZ, 0, constDispVol, 0 }, null);
-                                if (endLength > 0) CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, LineSpeed, 0, new double[6] { relEndXY.X, relEndXY.Y, endGap - Model.DispGap, 0, fallDispVol, 0 }, null);
+                                            if (RunMode == ERunMode.Dry)
+                                            {
+                                                startVolume = 0;
+                                                startDispVol = 0;
+                                                constDispVol = 0;
+                                                fallDispVol = 0;
+                                            }
+
+                                            double sLineSpeed = TFPump.PP4.DispSpeed;
+                                            CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, sLineSpeed, 0, new double[6] { 0, 0, 0, 0, -startVolume, 0 }, null);
+                                            if (startLength > 0) CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, LineSpeed, 0, new double[6] { relStartXY.X, relStartXY.Y, Model.DispGap - startGap, 0, startDispVol, 0 }, null);
+                                            CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, LineSpeed, LineSpeed, new double[6] { relConstXY.X + relEndOfstXY.X, relConstXY.Y + relEndOfstXY.Y, relEndZ, 0, constDispVol, 0 }, null);
+                                            if (endLength > 0) CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, LineSpeed, 0, new double[6] { relEndXY.X, relEndXY.Y, endGap - Model.DispGap, 0, fallDispVol, 0 }, null);
+
+                                            break;
+                                        }
+                                    case 1:
+                                        {
+                                            double nettDispVol = DispProg.PP_HeadA_DispBaseVol;// + DispProg.PP_HeadA_BackSuckVol;
+                                            double dispLen = TFPump.PP4.LengthConversion(nettDispVol);
+
+                                            //double startDispVol = (dispLen - startVolume) * startLength / lineLength;
+                                            //double fallDispVol = (dispLen - startVolume) * endLength / lineLength;
+                                            ////if (!endDispense) fallDispVol = 0;
+                                            //double constDispVol = dispLen - startVolume - startDispVol - fallDispVol;
+                                            //if (!endDispense)
+                                            //{
+                                            //    startDispVol = (dispLen - startVolume) * startLength / (lineLength - endLength);
+                                            //    constDispVol = dispLen - startVolume - startDispVol;
+                                            //    fallDispVol = 0;
+                                            //}
+
+                                            double segVol = dispLen / lineLength * 0.5;//distributed volume/segment
+
+                                            double[] riseSegVolRatio = new double[10];
+                                            Array.Copy(Line.DPara, 30, riseSegVolRatio, 0, 10);
+                                            double[] riseSegVol = new double[10];
+
+                                            double[] fallSegVolRatio = new double[10];
+                                            Array.Copy(Line.DPara, 40, fallSegVolRatio, 0, 10);
+                                            double[] fallSegVol = new double[10];
+
+                                            for (int i = 0; i < 10; i++)
+                                            {
+                                                riseSegVol[i] = segVol * riseSegVolRatio[i];
+                                                fallSegVol[i] = segVol * fallSegVolRatio[i];
+                                            }
+
+                                            double constDispVol = dispLen - startVolume - riseSegVol.Sum() - fallSegVol.Sum();
+
+                                            //Log.AddToEventLog($"PP Dist {dispLen:f4}={startVolume:f4}+{startDispVol:f4}+{constDispVol:f4}+{fallDispVol:f4}");
+
+                                            if (RunMode == ERunMode.Dry)
+                                            {
+                                                startVolume = 0;
+                                                //startDispVol = 0;
+                                                constDispVol = 0;
+                                                //fallDispVol = 0;
+
+                                                for (int i = 0; i < 10; i++)
+                                                {
+                                                    riseSegVol[i] = 0;
+                                                    fallSegVol[i] = 0;
+                                                }
+                                            }
+
+                                            double pumpSpeed = TFPump.PP4.DispSpeed;
+                                            double[] segRiseSpeed = new double[11];
+                                            double[] segFallSpeed = new double[11];
+                                            double[] segStartGap = new double[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+                                            double[] segEndGap = new double[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+                                            //PointD[] segRiseDist = new PointD[10] { new PointD(0, 0), new PointD(0, 0), new PointD(0, 0), new PointD(0, 0), new PointD(0, 0), new PointD(0, 0), new PointD(0, 0), new PointD(0, 0), new PointD(0, 0), new PointD(0, 0) }
+                                            //PointD[] segFallDist = new PointD[10] { new PointD(0, 0), new PointD(0, 0), new PointD(0, 0), new PointD(0, 0), new PointD(0, 0), new PointD(0, 0), new PointD(0, 0), new PointD(0, 0), new PointD(0, 0), new PointD(0, 0) }
+                                            double segDist = 0.5;
+                                            PointD segRiseDist = new PointD(relLineEndXY.X*(segDist /lineLength), relLineEndXY.Y * (segDist / lineLength));
+                                            PointD segFallDist = new PointD(relLineEndXY.X * (segDist / lineLength), relLineEndXY.Y * (segDist / lineLength));
+
+                                            segStartGap[0] = startGap / 2;
+                                            segStartGap[1] = startGap / 2;
+                                            segStartGap[8] = endGap / 2;
+                                            segStartGap[9] = endGap / 2;
+
+                                            for (int i = 0; i < 11; i++)
+                                            {
+                                                double inc = (LineSpeed - pumpSpeed) / 10;
+                                                segRiseSpeed[i] = pumpSpeed + (inc * i);
+                                            }
+                                            for (int i = 0; i < 11; i++)
+                                            {
+                                                double inc = (pumpSpeed - LineSpeed) / 10;
+                                                segFallSpeed[i] = LineSpeed + (inc * i);
+                                            }
+
+
+                                            constLineLength = lineLength - segDist * 20;// startLength - endLength;
+                                            //TPos2 relStartXY = new TPos2(startLength / lineLength * relLineEndXY.X, startLength / lineLength * relLineEndXY.Y);
+                                            //TPos2 relEndXY = new TPos2(endLength / lineLength * relLineEndXY.X, endLength / lineLength * relLineEndXY.Y);
+                                            relConstXY = new TPos2(constLineLength / lineLength * relLineEndXY.X, constLineLength / lineLength * relLineEndXY.Y);
+
+
+
+                                            CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, pumpSpeed, 0, new double[6] { 0, 0, 0, 0, -startVolume, 0 }, null);
+
+                                            //if (startLength > 0)
+                                            for (int i = 0; i < 10; i++)
+                                            {
+                                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, segRiseSpeed[i + 1], segRiseSpeed[i], new double[6] { segRiseDist.X, segRiseDist.Y, /*Model.DispGap - segStartGap[i]*/0, 0, -riseSegVol[i], 0 }, null);
+                                            }
+
+                                            CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, LineSpeed, LineSpeed, new double[6] { relConstXY.X/* + relEndOfstXY.X*/, relConstXY.Y/* + relEndOfstXY.Y*/, /*relEndZ*/0, 0, -constDispVol, 0 }, null);
+
+                                            //if (endLength > 0) 
+                                            for (int i = 0; i < 10; i++)
+                                            {
+                                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, segFallSpeed[i + 1], segFallSpeed[i], new double[6] { segFallDist.X, segFallDist.Y, /*segEndGap[i] - Model.DispGap*/0, 0, -fallSegVol[i], 0 }, null);
+                                            }
+                                            break;
+                                        }
+                                }
                             }
                             else
                             {

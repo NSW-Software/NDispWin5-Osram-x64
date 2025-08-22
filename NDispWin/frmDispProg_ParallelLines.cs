@@ -36,6 +36,7 @@ namespace NDispWin
             s = Enum.GetName(typeof(EAmount), CmdLine.IPara[4]);
             lblAmount.Text = Text = $"{CmdLine.IPara[4]}-" + s;
             cbDispense.Checked = CmdLine.IPara[2] > 0;
+            lblProfile.Text = $"{CmdLine.IPara[9]}";
 
             switch (CmdLine.IPara[4])
             {
@@ -102,6 +103,24 @@ namespace NDispWin
             lblCutTailSpeed.Text = CmdLine.DPara[11].ToString("f3");
             lblCutTailHeight.Text = CmdLine.DPara[12].ToString("f3");
             lblCutTailType.Text = CmdLine.DPara[13].ToString("f0");
+
+            gbProfile.Visible = CmdLine.IPara[9] == 1;
+
+            string start = "";
+            for (int i = 30; i < 40; i++)
+            {
+                start += $"{CmdLine.DPara[i]:f1}";
+                if (i < 39) start += ",";
+            }
+            tbStartSegRatio.Text = start;
+
+            string end = "";
+            for (int i = 40; i < 50; i++)
+            {
+                end += $"{CmdLine.DPara[i]:f1}";
+                if (i < 49) end += ",";
+            }
+            tbEndSegRatio.Text = end;
         }
 
         private string CmdName
@@ -133,6 +152,16 @@ namespace NDispWin
 
         private void btn_OK_Click(object sender, EventArgs e)
         {
+            string startSeg = tbStartSegRatio.Text;
+            double[] startSegArr = startSeg.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(s => double.Parse(s)).ToArray();
+            Array.Copy(startSegArr, 0, CmdLine.DPara, 30, 10);
+
+            string endSeg = tbEndSegRatio.Text;
+            double[] endSegArr = endSeg.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(s => double.Parse(s)).ToArray();
+            Array.Copy(endSegArr, 0, CmdLine.DPara, 40, 10);
+
             DispProg.Script[ProgNo].CmdList.Line[LineNo].Copy(CmdLine);
             frm_DispProg2.Done = true;
             Log.OnAction("OK", CmdName);
@@ -483,6 +512,12 @@ namespace NDispWin
         private void lblAmount_Click(object sender, EventArgs e)
         {
             UC.AdjustExec(CmdName + ", Amount", ref CmdLine.IPara[4], EAmount.None);
+            UpdateDisplay();
+        }
+
+        private void lblProfile_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec(CmdName + ", Profile", ref CmdLine.IPara[9], 0, 9);
             UpdateDisplay();
         }
     }

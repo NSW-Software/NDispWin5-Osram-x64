@@ -454,11 +454,13 @@ namespace NDispWin
             PAR_LINES = 461,
             /* Parameters
             ID              nil
-            IPara[0..9]     [ModelNo, .1., Disp, VHType, UseWeight, Reverse, EndDisp, .7., .8., .9.]
+            IPara[0..9]     [ModelNo, .1., Disp, VHType, UseWeight, Reverse, EndDisp, .7., .8., ProfMode]
             IPara[10..19]   [.10., IndFirstLine, IndLastLine, .13., .14., .15., .16., .17., .18., .19.]
-            DPara[0..9]     [LeadLen, LagLen, RelLeadHeight, RelLagHeight, AddLineTime, .5., StartOfst, EndOfst, StartVolume, .9.]
+            DPara[0..9]     [StartLen, EndLen, RelStartGap, RelEndGap, LineTimeRatio, .5., StartOfst, EndOfst, StartVolume, .9.]
             DPara[10..19]   [CutTailLength, Speed, Height, Type, ..]
             DPara[20..29]   [FirstLineMass, LineMass, LastLineMass, ..]
+            DPara[30..39]   [StartSegRatio..]
+            DPara[40..49]   [EndSegRatio..]
             X[0..99]        [XStart, XFirstStart, XLastStart, ..]
             Y[0..99]        [YStart, YFirstStart, YLastStart, ..]
             */

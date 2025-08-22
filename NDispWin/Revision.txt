@@ -9,25 +9,16 @@ Todo
 - Improve Reticle Window Adjust
 - PurgeStage Dry Mode do not dispsense
 
-
-DOT, CLINE add support
-
-
-1.	Machine delay for 3-5s after scanning, before start dispensing. Possible to improve?
-W 2.	To display 45 panels status on Auto page. Zakwan/Shahid to update template. Pending Zakwan/Osram
+OsKm
 3.	How to verify the new line speed during auto mode. Possible to display during auto mode?
-4.	First unit insufficient amount.
-5.	Activate dot and line/cline function
-/-6.	To display the volume for pump1 and pump2 at weigh check UI
-/-7.	Right location to enter volume for engineering (manual mode) -> Enter at ZPath Default Volume
 8.	Volume become higher after material refill 
 9.	Frequency of software hang very high. Camera Offset, select units layout, key parameter…  
-/-10.	Dry run function not working, pump still dispense when turn on dry run mode 
-X-11.	Least square height compensation not working. Software need to do something and hardware need to ensure best condition. -> Software comp is accurate
-X-12.	Unusual weight spike during weight check -> not occure after
-13.	Why there is still height variation after individual height scanning. May need your hardware team to plug in the external laser height system to verify the actual Z position vs compensate height. 
-/-14. Different speed for the lines -> Added Speed2, 3 Ratio
 
+
+
+ver 6.1.8.45 - KN - 20250822 - Gitted - Merge
+- [Feature] Add PAR_LINES Profile - In Progress
+- [Feature] Add global handlers to Program.cs so even unhandled exceptions show a MessageBox
 
 ver 6.1.8.40 - KN - 20250822 - Gitted
 - Merge changes
