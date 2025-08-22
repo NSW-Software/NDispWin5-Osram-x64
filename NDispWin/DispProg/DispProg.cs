@@ -11362,7 +11362,7 @@ namespace NDispWin
                                     TFSecsGem.EncodeMap(s, ref xmlString);
                                     //TFSecsGem.Send($"{nameof(StreamFunc.ERS)},MapData,{xmlString}");
                                     TFSecsGem.Map_Update_Content = xmlString;
-                                    Event.SECSGEM_MAP_UPDATED.Set();
+                                    if(TFSecsGem.E142_Map_On == "1") { Event.SECSGEM_MAP_UPDATED.Set(); } // Skip update map event if E142 Map Off
                                     Thread.Sleep(1000);
                                     break;
                                 }

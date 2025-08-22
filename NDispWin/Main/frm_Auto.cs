@@ -1013,6 +1013,16 @@ namespace NDispWin
             DefineSafety.DoorLock = false;
 
             EnableControl(true);
+
+            if(TFSecsGem.E142_Map_On == "0")
+            {
+                string xmlString = "";
+                string s = TFSecsGem.EncodeBinCodeStrings(true);
+                TFSecsGem.EncodeMap(s, ref xmlString);
+                TFSecsGem.SaveMapping(xmlString);
+            }
+            
+
         }
         private async void AutoRun_ManualLoad()
         {
