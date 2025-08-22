@@ -14,6 +14,23 @@ OsKm
 8.	Volume become higher after material refill 
 9.	Frequency of software hang very high. Camera Offset, select units layout, key parameter…  
 
+ver 6.1.8.44 JH - 20250822 -Gitted
+[Feature] SecsGem
+- Auto.cs
+> Change variable name for map update from s to b due to s is used
+
+ver 6.1.8.43 JH - 20250822 -Gitted
+[Feature] SecsGem
+- Auto.cs
+> Edit to save Mapping for both E142 on and off
+
+ver 6.1.8.42 JH - 20250822 -Gitted
+[Feature] SecsGem
+- DispProg.cs
+> Skip update map event if E142 Map Off
+- Auto.cs
+> Save Mapping data after autorun false to ensure map data accurate
+
 
 
 ver 6.1.8.45 - KN - 20250822 - Gitted - Merge
