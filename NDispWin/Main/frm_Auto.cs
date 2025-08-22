@@ -1015,8 +1015,8 @@ namespace NDispWin
             EnableControl(true);
 
             string xmlString = "";
-            string s = TFSecsGem.EncodeBinCodeStrings(true);
-            TFSecsGem.EncodeMap(s, ref xmlString);
+            string b = TFSecsGem.EncodeBinCodeStrings(true);
+            TFSecsGem.EncodeMap(b, ref xmlString);
             TFSecsGem.SaveMapping(xmlString);
 
 
