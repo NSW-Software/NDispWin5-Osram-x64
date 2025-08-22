@@ -713,6 +713,8 @@ namespace NDispWin
 
                 //Osram eMos csv file format
                 //Map starts Top Left, 
+                //Disp only GESAMTB = 1
+                //
                 //No.,Position - X,Position - Y,GESAMTB,3450_BIN,3450
                 //1,1,1,1,0,1
                 //2,2,1,1,0,1
