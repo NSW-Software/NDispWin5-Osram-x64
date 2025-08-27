@@ -746,16 +746,39 @@ namespace NDispWin
 
                     if (DispProg.Map.CurrMap[LayoutNo].Bin[i] == EMapBin.PreMapNG) continue;
 
-                    if (lookup.TryGetValue((totalCol - cr.X, cr.Y + 1), out int d))
+                    switch (DispProg.rt_Layouts[0].MapOrigin)
                     {
-                        if (d == 1)
-                            DispProg.Map.CurrMap[LayoutNo].Bin[i] = EMapBin.InMapNG;
-                        else
-                            DispProg.Map.CurrMap[LayoutNo].Bin[i] = EMapBin.MapOK;
-                    }
-                    else
-                    {
-                        DispProg.Map.CurrMap[LayoutNo].Bin[i] = EMapBin.InMapNG;
+                        case TLayout.EMapOrigin.Left:
+                        default:
+                            {
+                                if (lookup.TryGetValue((cr.X + 1, cr.Y + 1), out int d))
+                                {
+                                    if (d == 1)
+                                        DispProg.Map.CurrMap[LayoutNo].Bin[i] = EMapBin.InMapNG;
+                                    else
+                                        DispProg.Map.CurrMap[LayoutNo].Bin[i] = EMapBin.MapOK;
+                                }
+                                else
+                                {
+                                    DispProg.Map.CurrMap[LayoutNo].Bin[i] = EMapBin.InMapNG;
+                                }
+                                break;
+                            }
+                        case TLayout.EMapOrigin.Right:
+                            {
+                                if (lookup.TryGetValue((totalCol - cr.X, cr.Y + 1), out int d))
+                                {
+                                    if (d == 1)
+                                        DispProg.Map.CurrMap[LayoutNo].Bin[i] = EMapBin.InMapNG;
+                                    else
+                                        DispProg.Map.CurrMap[LayoutNo].Bin[i] = EMapBin.MapOK;
+                                }
+                                else
+                                {
+                                    DispProg.Map.CurrMap[LayoutNo].Bin[i] = EMapBin.InMapNG;
+                                }
+                                break;
+                            }
                     }
                 }
 
