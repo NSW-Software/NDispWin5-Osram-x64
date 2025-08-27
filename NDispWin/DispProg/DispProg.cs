@@ -458,9 +458,9 @@ namespace NDispWin
             IPara[10..19]   [.10., IndFirstLine, IndLastLine, .13., .14., .15., .16., .17., .18., .19.]
             DPara[0..9]     [StartLen, EndLen, RelStartGap, RelEndGap, LineTimeRatio, .5., StartOfst, EndOfst, StartVolume, .9.]
             DPara[10..19]   [CutTailLength, Speed, Height, Type, ..]
-            DPara[20..29]   [FirstLineMass, LineMass, LastLineMass, ..]
-            DPara[30..39]   [StartSegRatio..]
-            DPara[40..49]   [EndSegRatio..]
+            DPara[20..29]   [FirstLineMass, LineMass, LastLineMass, .23., .24., SegCount, SegSize, .RiseGap., .FallGap., .29.]
+            DPara[50..59]   [StartSegRatio..]
+            DPara[60..69]   [EndSegRatio..]
             X[0..99]        [XStart, XFirstStart, XLastStart, ..]
             Y[0..99]        [YStart, YFirstStart, YLastStart, ..]
             */
