@@ -918,7 +918,6 @@ namespace NDispWin
             this.lblProfile.TabIndex = 165;
             this.lblProfile.Text = "0";
             this.lblProfile.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.lblProfile.Click += new System.EventHandler(this.lblProfile_Click);
             // 
             // gbProfile1
             // 
@@ -1051,6 +1050,7 @@ namespace NDispWin
             this.rtbRiseRatio.Size = new System.Drawing.Size(75, 148);
             this.rtbRiseRatio.TabIndex = 173;
             this.rtbRiseRatio.Text = "1\n2\n3\n4\n5\n6\n7\n8\n9\n0";
+            this.rtbRiseRatio.TextChanged += new System.EventHandler(this.rtbRiseRatio_TextChanged);
             // 
             // label20
             // 
