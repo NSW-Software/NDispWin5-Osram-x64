@@ -22,10 +22,12 @@ namespace NDispWin
             InitializeComponent();
             GControl.LogForm(this);
             AutoSize = true;
+            gbProfile1.Location = gbProfile0.Location;
         }
 
         private void UpdateDisplay()
         {
+            #region Common
             lblHeadNo.Text = CmdLine.ID.ToString();
             lblModelNo.Text = CmdLine.IPara[0].ToString();
 
@@ -36,6 +38,9 @@ namespace NDispWin
             s = Enum.GetName(typeof(EAmount), CmdLine.IPara[4]);
             lblAmount.Text = Text = $"{CmdLine.IPara[4]}-" + s;
             cbDispense.Checked = CmdLine.IPara[2] > 0;
+            lblProfile.Text = $"{CmdLine.IPara[9]}";
+            gbProfile1.Visible = CmdLine.IPara[9] == 1;
+            gbProfile0.Visible = CmdLine.IPara[9] == 0;
 
             switch (CmdLine.IPara[4])
             {
@@ -43,7 +48,9 @@ namespace NDispWin
                 case 1: lblUnit.Text = "Weight (mg)"; break;
                 case 2: lblUnit.Text = "Volume (ul)"; break;
             }
+            #endregion
 
+            #region Profile0
             lblStartLength.Text = $"{CmdLine.DPara[0]:f3}";
             llEndLength.Text = $"{CmdLine.DPara[1]:f3}";
 
@@ -59,10 +66,12 @@ namespace NDispWin
 
             lblStartVolume.Text = $"{CmdLine.DPara[8]:f3}";
             cbEndDisp.Checked = CmdLine.IPara[6] > 0;
+            #endregion
 
+            #region Position and Weight
             lblXY0.Text = $"{CmdLine.X[0]:f3},{CmdLine.Y[0]:f3}";
-            lblXY1.Text = CmdLine.IPara[11] > 0 ? $"{CmdLine.X[1]:f3},{CmdLine.Y[1]:f3}": "";
-            lblXY2.Text = CmdLine.IPara[12] > 0 ? $"{CmdLine.X[2]:f3},{CmdLine.Y[2]:f3}": "";
+            lblXY1.Text = CmdLine.IPara[11] > 0 ? $"{CmdLine.X[1]:f3},{CmdLine.Y[1]:f3}" : "";
+            lblXY2.Text = CmdLine.IPara[12] > 0 ? $"{CmdLine.X[2]:f3},{CmdLine.Y[2]:f3}" : "";
             double[] endPt = new double[] { 0, 0 };
             {
                 TLayout layout = new TLayout();
@@ -93,15 +102,37 @@ namespace NDispWin
             cbFirstLine.Checked = CmdLine.IPara[11] > 0;
             cbLastLine.Checked = CmdLine.IPara[12] > 0;
 
-            //gbxWeight.Visible = CmdLine.IPara[4] > 0;
             lblLineWeight.Text = $"{CmdLine.DPara[21]:f3}";
-            lblFirstLineWeight.Text = CmdLine.DPara[20] > 0 ? $"{CmdLine.DPara[20]:f3}": $"({CmdLine.DPara[21]:f3})";
+            lblFirstLineWeight.Text = CmdLine.DPara[20] > 0 ? $"{CmdLine.DPara[20]:f3}" : $"({CmdLine.DPara[21]:f3})";
             lblLastLineWeight.Text = CmdLine.DPara[22] > 0 ? $"{CmdLine.DPara[22]:f3}" : $"({CmdLine.DPara[21]:f3})";
+            #endregion
 
+            #region Profile1
+            lblSegCount.Text = $"{(int)CmdLine.DPara[25]}";
+            lblSegSize.Text = $"{CmdLine.DPara[26]:f3}";
+
+            lblStartVol2.Text = $"{CmdLine.DPara[8]:f3}";
+
+            lblRiseGap.Text = $"{CmdLine.DPara[27]:f3}";
+            lblFallGap.Text = $"{CmdLine.DPara[28]:f3}";
+
+            string rise = "";
+            string fall = "";
+            for (int i = 0; i < (int)CmdLine.DPara[25]; i++)
+            {
+                rise += $"{CmdLine.DPara[i + 50]:f1}\r\n";
+                fall += $"{CmdLine.DPara[i + 60]:f1}\r\n";
+            }
+            rtbRiseRatio.Text = rise;
+            rtbFallRatio.Text = fall;
+            #endregion
+
+            #region Cut-Tail
             lblCutTailLength.Text = CmdLine.DPara[10].ToString("f3");
             lblCutTailSpeed.Text = CmdLine.DPara[11].ToString("f3");
             lblCutTailHeight.Text = CmdLine.DPara[12].ToString("f3");
             lblCutTailType.Text = CmdLine.DPara[13].ToString("f0");
+            #endregion
         }
 
         private string CmdName
@@ -133,6 +164,16 @@ namespace NDispWin
 
         private void btn_OK_Click(object sender, EventArgs e)
         {
+            string startSeg = rtbRiseRatio.Text;
+            double[] startSegArr = startSeg.Split(new[] { ',', '\n' }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(s => double.Parse(s)).ToArray();
+            Array.Copy(startSegArr, 0, CmdLine.DPara, 50, startSegArr.Length);
+
+            string endSeg = rtbFallRatio.Text;
+            double[] endSegArr = endSeg.Split(new[] { ',', '\n' }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(s => double.Parse(s)).ToArray();
+            Array.Copy(endSegArr, 0, CmdLine.DPara, 60, endSegArr.Length);
+
             DispProg.Script[ProgNo].CmdList.Line[LineNo].Copy(CmdLine);
             frm_DispProg2.Done = true;
             Log.OnAction("OK", CmdName);
@@ -483,6 +524,42 @@ namespace NDispWin
         private void lblAmount_Click(object sender, EventArgs e)
         {
             UC.AdjustExec(CmdName + ", Amount", ref CmdLine.IPara[4], EAmount.None);
+            UpdateDisplay();
+        }
+
+        private void lblProfile_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec(CmdName + ", Profile", ref CmdLine.IPara[9], 0, 9);
+            UpdateDisplay();
+        }
+
+        private void lblSegCount_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec(CmdName + ", SegCount", ref CmdLine.DPara[25], 1, 10);
+            UpdateDisplay();
+        }
+
+        private void lblSegSize_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec(CmdName + ", SegSize", ref CmdLine.DPara[26], 0.050, 5);
+            UpdateDisplay();
+        }
+
+        private void lblRiseGap_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec(CmdName + ", RiseGap", ref CmdLine.DPara[27], 0, 5);
+            UpdateDisplay();
+        }
+
+        private void lblFallGap_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec(CmdName + ", FallGap", ref CmdLine.DPara[28], 0, 5);
+            UpdateDisplay();
+        }
+
+        private void lblStartVol2_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec(CmdName + ", StartVolume", ref CmdLine.DPara[8], 0, 1);
             UpdateDisplay();
         }
     }

@@ -454,11 +454,13 @@ namespace NDispWin
             PAR_LINES = 461,
             /* Parameters
             ID              nil
-            IPara[0..9]     [ModelNo, .1., Disp, VHType, UseWeight, Reverse, EndDisp, .7., .8., .9.]
+            IPara[0..9]     [ModelNo, .1., Disp, VHType, UseWeight, Reverse, EndDisp, .7., .8., ProfMode]
             IPara[10..19]   [.10., IndFirstLine, IndLastLine, .13., .14., .15., .16., .17., .18., .19.]
-            DPara[0..9]     [LeadLen, LagLen, RelLeadHeight, RelLagHeight, AddLineTime, .5., StartOfst, EndOfst, StartVolume, .9.]
+            DPara[0..9]     [StartLen, EndLen, RelStartGap, RelEndGap, LineTimeRatio, .5., StartOfst, EndOfst, StartVolume, .9.]
             DPara[10..19]   [CutTailLength, Speed, Height, Type, ..]
-            DPara[20..29]   [FirstLineMass, LineMass, LastLineMass, ..]
+            DPara[20..29]   [FirstLineMass, LineMass, LastLineMass, .23., .24., SegCount, SegSize, .RiseGap., .FallGap., .29.]
+            DPara[50..59]   [StartSegRatio..]
+            DPara[60..69]   [EndSegRatio..]
             X[0..99]        [XStart, XFirstStart, XLastStart, ..]
             Y[0..99]        [YStart, YFirstStart, YLastStart, ..]
             */
@@ -11362,7 +11364,7 @@ namespace NDispWin
                                     TFSecsGem.EncodeMap(s, ref xmlString);
                                     //TFSecsGem.Send($"{nameof(StreamFunc.ERS)},MapData,{xmlString}");
                                     TFSecsGem.Map_Update_Content = xmlString;
-                                    Event.SECSGEM_MAP_UPDATED.Set();
+                                    if(TFSecsGem.E142_Map_On == "1") { Event.SECSGEM_MAP_UPDATED.Set(); } // Skip update map event if E142 Map Off
                                     Thread.Sleep(1000);
                                     break;
                                 }
