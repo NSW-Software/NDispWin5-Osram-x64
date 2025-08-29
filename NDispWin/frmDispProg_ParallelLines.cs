@@ -530,5 +530,11 @@ namespace NDispWin
         {
 
         }
+
+        private void lblProfile_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec(CmdName + ", Profile", ref CmdLine.IPara[9], 0, 9);
+            UpdateDisplay();
+        }
     }
 }

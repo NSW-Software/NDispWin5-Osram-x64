@@ -918,6 +918,7 @@ namespace NDispWin
             this.lblProfile.TabIndex = 165;
             this.lblProfile.Text = "0";
             this.lblProfile.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblProfile.Click += new System.EventHandler(this.lblProfile_Click);
             // 
             // gbProfile1
             // 

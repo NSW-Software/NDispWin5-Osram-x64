@@ -1708,11 +1708,36 @@ namespace NDispWin
                 //            }
                 //        break;
                 //}
-                for (int r = 0; r < cr.Y; r++)
-                    for (int c = 0; c < cr.X; c++)
-                    {
-                        dnLoadMap[c, r] = binCodes[r].Substring((cr.X - c - 1) * 4, 4);
-                    }
+
+                //Added auto flip X map according to Layout[0]
+                //for (int r = 0; r < cr.Y; r++)
+                //    for (int c = 0; c < cr.X; c++)
+                //    {
+                //        dnLoadMap[c, r] = binCodes[r].Substring((cr.X - c - 1) * 4, 4);
+                //    }
+                switch (DispProg.rt_Layouts[0].MapOrigin)
+                {
+                    case TLayout.EMapOrigin.Left:
+                    default:
+                        {
+                            for (int r = 0; r < cr.Y; r++)
+                                for (int c = 0; c < cr.X; c++)
+                                {
+                                    dnLoadMap[c, r] = binCodes[r].Substring(c * 4, 4);
+                                }
+                            break;
+                        }
+                    case TLayout.EMapOrigin.Right:
+                        {
+                            for (int r = 0; r < cr.Y; r++)
+                                for (int c = 0; c < cr.X; c++)
+                                {
+                                    dnLoadMap[c, r] = binCodes[r].Substring((cr.X - c - 1) * 4, 4);
+                                }
+                            break;
+                        }
+                }
+
                 for (int r = 0; r < cr.Y; r++)
                 {
                     for (int c = 0; c < cr.X; c++)

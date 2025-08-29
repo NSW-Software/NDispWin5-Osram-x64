@@ -14,8 +14,9 @@ OsKm
 8.	Volume become higher after material refill 
 9.	Frequency of software hang very high. Camera Offset, select units layout, key parameter…  
 
-ver 6.1.8.46 - KN - 
+ver 6.1.8.47 - KN 20250829 - Gitted
 [Feature] Complete PAR_LINES.Profile1 
+[Feature] Added auto FlipX for frmMap and TFSecsGem according to TLayout[0]
 
 ver 6.1.8.44 JH - 20250822 -Gitted
 [Feature] SecsGem
