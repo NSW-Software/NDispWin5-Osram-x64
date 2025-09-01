@@ -1709,7 +1709,7 @@ namespace NDispWin
                 //        break;
                 //}
 
-                //Added auto flip X map according to Layout[0]
+                //Auto FlipX
                 //for (int r = 0; r < cr.Y; r++)
                 //    for (int c = 0; c < cr.X; c++)
                 //    {

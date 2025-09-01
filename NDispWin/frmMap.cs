@@ -777,10 +777,10 @@ namespace NDispWin
                                 {
                                     DispProg.Map.CurrMap[LayoutNo].Bin[i] = EMapBin.InMapNG;
                                 }
-                                break;
-                            }
-                    }
+                    break;
                 }
+            }
+        }
 
                 UpdateDisplay();
                 pbox_Map.Refresh();

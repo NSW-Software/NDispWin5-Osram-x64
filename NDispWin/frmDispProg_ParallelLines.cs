@@ -22,6 +22,8 @@ namespace NDispWin
             InitializeComponent();
             GControl.LogForm(this);
             AutoSize = true;
+
+            gbProfile1.Location = gbProfile0.Location;
         }
 
         private void UpdateDisplay()
@@ -36,6 +38,10 @@ namespace NDispWin
             s = Enum.GetName(typeof(EAmount), CmdLine.IPara[4]);
             lblAmount.Text = Text = $"{CmdLine.IPara[4]}-" + s;
             cbDispense.Checked = CmdLine.IPara[2] > 0;
+
+            lblProfile.Text = $"{CmdLine.IPara[9]}";
+            gbProfile0.Visible = CmdLine.IPara[9] == 0;
+            gbProfile1.Visible = CmdLine.IPara[9] == 1;
 
             switch (CmdLine.IPara[4])
             {
@@ -97,6 +103,26 @@ namespace NDispWin
             lblLineWeight.Text = $"{CmdLine.DPara[21]:f3}";
             lblFirstLineWeight.Text = CmdLine.DPara[20] > 0 ? $"{CmdLine.DPara[20]:f3}": $"({CmdLine.DPara[21]:f3})";
             lblLastLineWeight.Text = CmdLine.DPara[22] > 0 ? $"{CmdLine.DPara[22]:f3}" : $"({CmdLine.DPara[21]:f3})";
+
+            lblSegCount.Text = $"{(int)CmdLine.DPara[25]}";
+            lblSegSize.Text = $"{CmdLine.DPara[26]:f3}";
+            lblStartVol2.Text = $"{CmdLine.DPara[8]:f3}";
+            lblRiseGap.Text = $"{CmdLine.DPara[27]:f2}";
+            lblFallGap.Text = $"{CmdLine.DPara[28]:f2}";
+
+            if (CmdLine.DPara[23] == 0) CmdLine.DPara[23] = 50;
+            lblMaxSpeed.Text = $"{CmdLine.DPara[23]:f2}";
+            lblStartEndOfst.Text = $"{CmdLine.DPara[9]:f3}";
+
+            string sRise = "";
+            string sFall = "";
+            for (int i = 0; i<10; i++)
+            {
+                sRise += $"{CmdLine.DPara[i + 50]:f2}\n";
+                sFall += $"{CmdLine.DPara[i + 60]:f2}\n";
+            }
+            rtbRiseRatio.Text = sRise;
+            rtbFallRatio.Text = sFall;
 
             lblCutTailLength.Text = CmdLine.DPara[10].ToString("f3");
             lblCutTailSpeed.Text = CmdLine.DPara[11].ToString("f3");
@@ -534,6 +560,18 @@ namespace NDispWin
         private void lblProfile_Click(object sender, EventArgs e)
         {
             UC.AdjustExec(CmdName + ", Profile", ref CmdLine.IPara[9], 0, 9);
+            UpdateDisplay();
+        }
+
+        private void lblMaxSpeed_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec(CmdName + ", Max Line Speed", ref CmdLine.DPara[23], 5, 150);
+            UpdateDisplay();
+        }
+
+        private void lblStartEndOfst_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec(CmdName + ", StartEndOffset", ref CmdLine.DPara[9], -0.5, 0.5);
             UpdateDisplay();
         }
     }

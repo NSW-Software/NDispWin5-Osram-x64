@@ -106,6 +106,10 @@ namespace NDispWin
             this.lblSegSize = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
             this.lblSegCount = new System.Windows.Forms.Label();
+            this.lblMaxSpeed = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
+            this.lblStartEndOfst = new System.Windows.Forms.Label();
+            this.label25 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.gbox_Pos.SuspendLayout();
             this.gbProfile0.SuspendLayout();
@@ -923,6 +927,10 @@ namespace NDispWin
             // gbProfile1
             // 
             this.gbProfile1.AutoSize = true;
+            this.gbProfile1.Controls.Add(this.lblStartEndOfst);
+            this.gbProfile1.Controls.Add(this.label25);
+            this.gbProfile1.Controls.Add(this.lblMaxSpeed);
+            this.gbProfile1.Controls.Add(this.label21);
             this.gbProfile1.Controls.Add(this.lblStartVol2);
             this.gbProfile1.Controls.Add(this.label11);
             this.gbProfile1.Controls.Add(this.lblFallGap);
@@ -938,7 +946,7 @@ namespace NDispWin
             this.gbProfile1.Location = new System.Drawing.Point(442, 245);
             this.gbProfile1.Name = "gbProfile1";
             this.gbProfile1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.gbProfile1.Size = new System.Drawing.Size(428, 218);
+            this.gbProfile1.Size = new System.Drawing.Size(428, 223);
             this.gbProfile1.TabIndex = 168;
             this.gbProfile1.TabStop = false;
             this.gbProfile1.Text = "Profile1";
@@ -947,7 +955,7 @@ namespace NDispWin
             // 
             this.lblStartVol2.BackColor = System.Drawing.SystemColors.Window;
             this.lblStartVol2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblStartVol2.Location = new System.Drawing.Point(134, 73);
+            this.lblStartVol2.Location = new System.Drawing.Point(146, 73);
             this.lblStartVol2.Margin = new System.Windows.Forms.Padding(2);
             this.lblStartVol2.Name = "lblStartVol2";
             this.lblStartVol2.Size = new System.Drawing.Size(75, 23);
@@ -971,7 +979,7 @@ namespace NDispWin
             // 
             this.lblFallGap.BackColor = System.Drawing.SystemColors.Window;
             this.lblFallGap.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblFallGap.Location = new System.Drawing.Point(134, 136);
+            this.lblFallGap.Location = new System.Drawing.Point(146, 127);
             this.lblFallGap.Margin = new System.Windows.Forms.Padding(2);
             this.lblFallGap.Name = "lblFallGap";
             this.lblFallGap.Size = new System.Drawing.Size(75, 23);
@@ -984,7 +992,7 @@ namespace NDispWin
             // 
             this.lblRiseGap.BackColor = System.Drawing.SystemColors.Window;
             this.lblRiseGap.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblRiseGap.Location = new System.Drawing.Point(134, 109);
+            this.lblRiseGap.Location = new System.Drawing.Point(146, 100);
             this.lblRiseGap.Margin = new System.Windows.Forms.Padding(2);
             this.lblRiseGap.Name = "lblRiseGap";
             this.lblRiseGap.Size = new System.Drawing.Size(75, 23);
@@ -1020,7 +1028,7 @@ namespace NDispWin
             // label29
             // 
             this.label29.AccessibleDescription = "";
-            this.label29.Location = new System.Drawing.Point(5, 136);
+            this.label29.Location = new System.Drawing.Point(5, 127);
             this.label29.Margin = new System.Windows.Forms.Padding(2);
             this.label29.Name = "label29";
             this.label29.Size = new System.Drawing.Size(112, 23);
@@ -1056,7 +1064,7 @@ namespace NDispWin
             // label20
             // 
             this.label20.AccessibleDescription = "";
-            this.label20.Location = new System.Drawing.Point(5, 109);
+            this.label20.Location = new System.Drawing.Point(5, 100);
             this.label20.Margin = new System.Windows.Forms.Padding(2);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(112, 23);
@@ -1079,7 +1087,7 @@ namespace NDispWin
             // 
             this.lblSegSize.BackColor = System.Drawing.SystemColors.Window;
             this.lblSegSize.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblSegSize.Location = new System.Drawing.Point(134, 46);
+            this.lblSegSize.Location = new System.Drawing.Point(146, 46);
             this.lblSegSize.Margin = new System.Windows.Forms.Padding(2);
             this.lblSegSize.Name = "lblSegSize";
             this.lblSegSize.Size = new System.Drawing.Size(75, 23);
@@ -1103,7 +1111,7 @@ namespace NDispWin
             // 
             this.lblSegCount.BackColor = System.Drawing.SystemColors.Window;
             this.lblSegCount.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblSegCount.Location = new System.Drawing.Point(134, 20);
+            this.lblSegCount.Location = new System.Drawing.Point(146, 20);
             this.lblSegCount.Margin = new System.Windows.Forms.Padding(2);
             this.lblSegCount.Name = "lblSegCount";
             this.lblSegCount.Size = new System.Drawing.Size(75, 23);
@@ -1111,6 +1119,54 @@ namespace NDispWin
             this.lblSegCount.Text = "-999.999";
             this.lblSegCount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.lblSegCount.Click += new System.EventHandler(this.lblSegCount_Click);
+            // 
+            // lblMaxSpeed
+            // 
+            this.lblMaxSpeed.BackColor = System.Drawing.SystemColors.Window;
+            this.lblMaxSpeed.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblMaxSpeed.Location = new System.Drawing.Point(146, 156);
+            this.lblMaxSpeed.Margin = new System.Windows.Forms.Padding(2);
+            this.lblMaxSpeed.Name = "lblMaxSpeed";
+            this.lblMaxSpeed.Size = new System.Drawing.Size(75, 23);
+            this.lblMaxSpeed.TabIndex = 185;
+            this.lblMaxSpeed.Text = "-999.999";
+            this.lblMaxSpeed.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblMaxSpeed.Click += new System.EventHandler(this.lblMaxSpeed_Click);
+            // 
+            // label21
+            // 
+            this.label21.AccessibleDescription = "";
+            this.label21.Location = new System.Drawing.Point(5, 156);
+            this.label21.Margin = new System.Windows.Forms.Padding(2);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(142, 23);
+            this.label21.TabIndex = 184;
+            this.label21.Text = "Max Line Speed (mm/s)";
+            this.label21.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblStartEndOfst
+            // 
+            this.lblStartEndOfst.BackColor = System.Drawing.SystemColors.Window;
+            this.lblStartEndOfst.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblStartEndOfst.Location = new System.Drawing.Point(146, 183);
+            this.lblStartEndOfst.Margin = new System.Windows.Forms.Padding(2);
+            this.lblStartEndOfst.Name = "lblStartEndOfst";
+            this.lblStartEndOfst.Size = new System.Drawing.Size(75, 23);
+            this.lblStartEndOfst.TabIndex = 187;
+            this.lblStartEndOfst.Text = "-999.999";
+            this.lblStartEndOfst.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblStartEndOfst.Click += new System.EventHandler(this.lblStartEndOfst_Click);
+            // 
+            // label25
+            // 
+            this.label25.AccessibleDescription = "";
+            this.label25.Location = new System.Drawing.Point(5, 183);
+            this.label25.Margin = new System.Windows.Forms.Padding(2);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(142, 23);
+            this.label25.TabIndex = 186;
+            this.label25.Text = "StartEnd Offset (mm)";
+            this.label25.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // frmDispProg_ParallelLines
             // 
@@ -1241,5 +1297,9 @@ namespace NDispWin
         private System.Windows.Forms.Label label29;
         private System.Windows.Forms.Label lblStartVol2;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label lblStartEndOfst;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.Label lblMaxSpeed;
+        private System.Windows.Forms.Label label21;
     }
 }

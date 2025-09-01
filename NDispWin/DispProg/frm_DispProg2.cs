@@ -571,8 +571,8 @@ namespace NDispWin
                         #region
                         Cmd = Indent + Enum.GetName(typeof(DispProg.ECmd), CmdLine.Line[i].Cmd);
                         if (CmdLine.Line[i].IPara[2] > 0) Cmd = Cmd + "*";
-                        ID = "";
-                        Para = ID + " " + Enum.GetName(typeof(EVHType), CmdLine.Line[i].IPara[3]) + " ";
+                        ID = "H" + CmdLine.Line[i].ID.ToString() + " ";
+                        Para = ID  + "M" + CmdLine.Line[i].IPara[0].ToString() + " " + $"Prof{CmdLine.Line[i].IPara[9]} " + Enum.GetName(typeof(EVHType), CmdLine.Line[i].IPara[3]) + " ";
                         Para = Para + (CmdLine.Line[i].IPara[5] > 0 ? "R " : " ");
                         if (CmdLine.Line[i].IPara[4] > 0)
                         {
@@ -1491,6 +1491,8 @@ namespace NDispWin
                     frm1.Close();
                 }
             }
+
+            isDirty = false; 
         }
         private async void SaveAs()
         {

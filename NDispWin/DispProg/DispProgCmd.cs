@@ -1133,14 +1133,18 @@ namespace NDispWin
                     double segSize = Line.DPara[26];
                 double riseGap = Line.DPara[27];
                 double fallGap = Line.DPara[28];
+                double maxSpeed = Line.DPara[23];
+                double startEndOfst = Line.DPara[9];
+
                 if (profMode == 1)
                 {
+                    speedAdjust = 0;
                     startLength = 0;
                     endLength = 0;
                     startGap = 0;
                     endGap = 0;
-                    startOfst = 0;
-                    endOfst = 0;
+                    startOfst = startEndOfst;
+                    endOfst = startEndOfst;
                }
 
                 bool[] bHeadRun = new bool[2] { false, false };
@@ -1267,7 +1271,7 @@ namespace NDispWin
                 double relEndZ = absEndZ[0] - absZ[0];
 
                 //Calculate the lead lag relative pos
-                double lineLength = Math.Sqrt(Math.Pow(relLineEndXY.X, 2) + Math.Pow(relLineEndXY.Y, 2));
+                double lineLength = Math.Sqrt(Math.Pow(relLineEndXY.X, 2) + Math.Pow(relLineEndXY.Y, 2)) - startOfst - endOfst;
 
                 TPos2 relStartOfstXY = new TPos2(startOfst / lineLength * relLineEndXY.X, startOfst / lineLength * relLineEndXY.Y);
                 TPos2 relEndOfstXY = new TPos2(endOfst / lineLength * relLineEndXY.X, endOfst / lineLength * relLineEndXY.Y);
@@ -1479,6 +1483,8 @@ namespace NDispWin
                                         }
                                     case 1:
                                         {
+                                            LineSpeed = Math.Min(LineSpeed, maxSpeed);
+
                                             double nettDispVol = DispProg.PP_HeadA_DispBaseVol;// + DispProg.PP_HeadA_BackSuckVol;
                                             double dispLen = TFPump.PP4.LengthConversion(nettDispVol);
 
@@ -1539,22 +1545,22 @@ namespace NDispWin
                                                 sSegFallSpeed += $"{segFallSpeed[i]:f3},";
                                             }
 
-                                            constLineLength = lineLength - (segSize * segCount *2);
+                                            constLineLength = lineLength - (segSize * (segCount - 1) *2);
                                             relConstXY = new TPos2(constLineLength / lineLength * relLineEndXY.X, constLineLength / lineLength * relLineEndXY.Y);
 
-                                            Log.AddToEventLog($"Profile1,SegCount={(int)segCount},SegSize={segSize:f3},PPDist=[StartVol={startVolume}Rise={sRiseSegVol}Const={constDispVol}Fall={sFallSegVol}],Speed=[Rise={sSegRiseSpeed}Const={LineSpeed}Fall={sSegFallSpeed}]");
+                                            Log.AddToEventLog($"Profile1,SegCount={(int)segCount}, SegSize={segSize:f3}, PPDist=[StartVol={startVolume}, Rise={sRiseSegVol}, Const={constDispVol:f3}, Fall={sFallSegVol}], Speed=[Rise={sSegRiseSpeed}, Const={LineSpeed:f3}, Fall={sSegFallSpeed}]");
 
+                                            CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, Model.DnSpeed, 0, new double[6] { 0, 0, -riseGap, 0, 0, 0 }, null);
                                             CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.GPDELAY, false, Model.DnWait, 0, null, null);
-                                            CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, pumpSpeed, 0, new double[6] { 0, 0, -riseGap, 0, 0, 0 }, null);
                                             CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, pumpSpeed, 0, new double[6] { 0, 0, 0, 0, -startVolume, 0 }, null);
-                                            for (int i = 0; i < segCount; i++)
+                                            for (int i = 0; i < segCount - 1; i++)
                                             {
                                                 CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, segRiseSpeed[i + 1], segRiseSpeed[i], new double[6] { relSegRiseDist.X, relSegRiseDist.Y, relRiseGap, 0, -riseSegVol[i], 0 }, null);
                                             }
                                             CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, LineSpeed, LineSpeed, new double[6] { relConstXY.X, relConstXY.Y, 0, 0, -constDispVol, 0 }, null);
-                                            for (int i = segCount; i > 0; i--)
+                                            for (int i = segCount - 1; i > 0; i--)
                                             {
-                                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, segFallSpeed[segCount - 1], segFallSpeed[segCount], new double[6] { relSegFallDist.X, relSegFallDist.Y, -relFallGap, 0, -fallSegVol[i], 0 }, null);
+                                                CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, segFallSpeed[i + 1], segFallSpeed[i], new double[6] { relSegFallDist.X, relSegFallDist.Y, -relFallGap, 0, -fallSegVol[i], 0 }, null);
                                             }
                                             break;
                                         }
