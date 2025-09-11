@@ -1276,6 +1276,15 @@ namespace NDispWin
                 TPos2 relStartOfstXY = new TPos2(startOfst / lineLength * relLineEndXY.X, startOfst / lineLength * relLineEndXY.Y);
                 TPos2 relEndOfstXY = new TPos2(endOfst / lineLength * relLineEndXY.X, endOfst / lineLength * relLineEndXY.Y);
 
+
+                if (profMode == 1)
+                {
+                    absStart = new TPos2(absStart.X + relStartOfstXY.X, absStart.Y + relStartOfstXY.Y);
+                    absEnd = new TPos2(absEnd.X - relEndOfstXY.X, absEnd.Y - relEndOfstXY.Y);
+                    relLineEndXY = new TPos2(absEnd.X - absStart.X, absEnd.Y - absStart.Y);
+                    lineLength = Math.Sqrt(Math.Pow(relLineEndXY.X, 2) + Math.Pow(relLineEndXY.Y, 2));
+                }
+
                 //Calc the Rise and Fall relative pos
                 double constLineLength = lineLength - startLength - endLength;
                 TPos2 relStartXY = new TPos2(startLength / lineLength * relLineEndXY.X, startLength / lineLength * relLineEndXY.Y);
@@ -1284,7 +1293,14 @@ namespace NDispWin
 
                 #region Move abs Start Pos + lead length, move head2 to position
                 if (!TaskGantry.SetMotionParamGXY()) goto _Error;
+
+                //if (profMode == 0)
                 TPos2 GXY = new TPos2(absStart.X + relStartOfstXY.X, absStart.Y + relStartOfstXY.Y);
+                if (profMode == 1)
+                {
+                    GXY = new TPos2(absStart.X, absStart.Y);
+                }
+
                 if (RunMode == ERunMode.Normal || RunMode == ERunMode.Dry)
                 {
                     GXY.X += TaskDisp.Head_Ofst[0].X;
@@ -1506,8 +1522,8 @@ namespace NDispWin
                                             {
                                                 riseSegVol[i] = segVol * riseSegVolRatio[i];
                                                 fallSegVol[i] = segVol * fallSegVolRatio[i];
-                                                sRiseSegVol += $"{riseSegVol[i]:f3},";
-                                                sFallSegVol += $"{fallSegVol[i]:f3},";
+                                                sRiseSegVol += $"{riseSegVol[i]:f4},";
+                                                sFallSegVol += $"{fallSegVol[i]:f4},";
                                             }
 
                                             double constDispVol = dispLen - startVolume - riseSegVol.Sum() - fallSegVol.Sum();
@@ -1548,7 +1564,7 @@ namespace NDispWin
                                             constLineLength = lineLength - (segSize * (segCount - 1) *2);
                                             relConstXY = new TPos2(constLineLength / lineLength * relLineEndXY.X, constLineLength / lineLength * relLineEndXY.Y);
 
-                                            Log.AddToEventLog($"Profile1,SegCount={(int)segCount}, SegSize={segSize:f3}, PPDist=[StartVol={startVolume}, Rise={sRiseSegVol}, Const={constDispVol:f3}, Fall={sFallSegVol}], Speed=[Rise={sSegRiseSpeed}, Const={LineSpeed:f3}, Fall={sSegFallSpeed}]");
+                                            Log.AddToEventLog($"Profile1,SegCount={(int)segCount}, SegSize={segSize:f3}, PPDist=[StartVol={startVolume}, Rise={sRiseSegVol}, Const={constDispVol:f4}, Fall={sFallSegVol}], Speed=[Rise={sSegRiseSpeed}, Const={LineSpeed:f3}, Fall={sSegFallSpeed}]");
 
                                             CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, Model.DnSpeed, 0, new double[6] { 0, 0, -riseGap, 0, 0, 0 }, null);
                                             CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.GPDELAY, false, Model.DnWait, 0, null, null);

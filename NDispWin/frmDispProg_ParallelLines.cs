@@ -146,6 +146,19 @@ namespace NDispWin
             CmdLine.Copy(DispProg.Script[ProgNo].CmdList.Line[LineNo]);
             this.Text = CmdName;
 
+            double dR = 0;
+            double dF = 0;
+            for (int i = 0; i < 10; i++)
+            {
+                dR += CmdLine.DPara[i + 50];
+                dF += CmdLine.DPara[i + 60];
+            }
+            for (int i = 0; i < 10; i++)
+            {
+                if (dR == 0) CmdLine.DPara[i + 50] = 1.0;
+                if (dF == 0) CmdLine.DPara[i + 60] = 1.0;
+            }
+
             UpdateDisplay();
         }
         private void frmDispProg_ParallelLines_FormClosing(object sender, FormClosingEventArgs e)

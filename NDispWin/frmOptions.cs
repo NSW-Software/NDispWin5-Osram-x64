@@ -589,5 +589,10 @@ namespace NDispWin
             frmSecsGem frm = new frmSecsGem();
             frm.ShowDialog();
         }
+
+        private void cbEnableDoorLock_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

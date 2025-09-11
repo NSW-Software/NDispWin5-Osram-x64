@@ -14,6 +14,10 @@ OsKm
 8.	Volume become higher after material refill 
 9.	Frequency of software hang very high. Camera Offset, select units layout, key parameter…  
 
+ver 6.1.8.49 - KN 20250904
+[Feature] Added LoadNextRecipe for file name ending _1 .. _n (not tested)
+[Feature] Functional Profile1
+[Feature] Hardcode Enable Door Sensor and Door Lock. Req Harin/EHS
 
 ver 6.1.8.48 - KN 20250829 - Gitted
 [Feature] Functional Profile1

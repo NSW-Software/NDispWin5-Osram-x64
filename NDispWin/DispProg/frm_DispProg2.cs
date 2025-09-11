@@ -1545,6 +1545,43 @@ namespace NDispWin
         private void ts_ProgSaveAs_Click(object sender, EventArgs e)
         {
             SaveAs();
+            //load next recipe
+            {
+                //bool seqRecipe = GDefine.ProgRecipeName.Substring(GDefine.ProgRecipeName.Length - 2, 1).StartsWith("_");
+                //string recipeNoStr = GDefine.ProgRecipeName.Substring(GDefine.ProgRecipeName.Length - 1, 1);
+                //string recipeName = GDefine.ProgRecipeName.Substring(0, GDefine.ProgRecipeName.Length - 2);
+
+                //if (seqRecipe && int.TryParse(recipeNoStr, out int recipeNo))
+                //{
+                //    recipeNo++;
+
+                //    string recipeNameFullName = GDefine.RecipeDir.FullName + recipeName + "_" + $"{recipeNo}" + GDefine.RecipeExt;
+
+                //    if (File.Exists(recipeNameFullName))
+                //    {
+                //        DispProg.Load(recipeNameFullName, false);
+                //    }
+                //}
+            }
+
+            //load first recipe
+            {
+                //bool seqRecipe = GDefine.ProgRecipeName.Substring(GDefine.ProgRecipeName.Length - 2, 1).StartsWith("_");
+                //string recipeNoStr = GDefine.ProgRecipeName.Substring(GDefine.ProgRecipeName.Length - 1, 1);
+                //string recipeName = GDefine.ProgRecipeName.Substring(0, GDefine.ProgRecipeName.Length - 2);
+
+                //if (seqRecipe && int.TryParse(recipeNoStr, out int recipeNo))
+                //{
+                //    if (recipeNo == 1) return;
+
+                //    string recipeNameFullName = GDefine.RecipeDir.FullName + recipeName + "_" + $"{1}" + GDefine.RecipeExt;
+
+                //    if (File.Exists(recipeNameFullName))
+                //    {
+                //        DispProg.Load(recipeNameFullName, false);
+                //    }
+                //}
+            }
         }
         private void ts_ProgManage_Click(object sender, EventArgs e)
         {

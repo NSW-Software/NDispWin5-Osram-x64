@@ -108,6 +108,7 @@ namespace NDispWin
                 double Y = DispProg.Origin(ERunStationNo.Station1).Y + CmdLine.Y[0];
                 DispProg.Read_ID(CmdLine, X, Y);
 
+
                 lbl_Result.Text = DispProg.rt_Read_IDs[CmdLine.ID, 0];
             }
             catch (Exception Ex)
