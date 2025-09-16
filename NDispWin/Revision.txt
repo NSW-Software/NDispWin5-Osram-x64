@@ -9,11 +9,9 @@ Todo
 - Improve Reticle Window Adjust
 - PurgeStage Dry Mode do not dispsense
 
-OsKm
-3.	How to verify the new line speed during auto mode. Possible to display during auto mode?
-8.	Volume become higher after material refill 
-9.	Frequency of software hang very high. Camera Offset, select units layout, key parameter…  
-
+ver 6.1.8.49 - KN 20250829 - Gitted
+[Feature] Added DOT_ZPATH Set/Goto Refrence - not tested
+[Feature] Added DOT_ZPATH Master TL and BR - not tested
 
 ver 6.1.8.48 - KN 20250829 - Gitted
 [Feature] Functional Profile1

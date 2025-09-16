@@ -35,8 +35,17 @@ namespace NDispWin
 
             cbDispense.Checked = CmdLine.IPara[2] > 0;
 
+            lblReference.Text = $"{CmdLine.A[2]:f3},{CmdLine.B[2]:f3}";
+
             lblPointTL.Text = $"{CmdLine.X[0]:f3},{CmdLine.Y[0]:f3}";
             lblPointBR.Text = $"{CmdLine.X[1]:f3},{CmdLine.Y[1]:f3}";
+            if (cbMaster.Checked)
+            {
+                lblPointTL.Text = $"{CmdLine.A[0]:f3},{CmdLine.B[0]:f3}";
+                lblPointBR.Text = $"{CmdLine.A[1]:f3},{CmdLine.B[1]:f3}";
+            }
+
+            lblMasterTol.Text = $"{CmdLine.DPara[4]:f3}";
 
             //cbxType.SelectedIndex = CmdLine.IPara[3];
             //lbkStartLength.Visible = CmdLine.IPara[3] == 1;
@@ -150,23 +159,90 @@ namespace NDispWin
 
             UpdateDisplay();
         }
-        private void cbEnableWeight_Click(object sender, EventArgs e)
-        {
 
+        private void btnSetRefXY_Click(object sender, EventArgs e)
+        {
+            double x = TaskGantry.GXPos();
+            double y = TaskGantry.GYPos();
+            DispProg.InvTranslate(0, ref x, ref y);
+
+            NSW.Net.Point2D Old = new NSW.Net.Point2D(CmdLine.A[2], CmdLine.B[2]);
+            CmdLine.A[2] = x - (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X);
+            CmdLine.B[2] = y - (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y);
+            NSW.Net.Point2D New = new NSW.Net.Point2D(CmdLine.A[2], CmdLine.B[2]);
+            Log.OnSet(CmdName + ", Ref XY", Old, New);
+
+            UpdateDisplay();
+        }
+        private void btnGotoRefXY_Click(object sender, EventArgs e)
+        {
+            double x = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + CmdLine.A[2];
+            double y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.B[2];
+            DispProg.Translate(0, ref x, ref y);
+
+            if (!TaskDisp.TaskMoveGZZ2Up()) return;
+            if (!TaskGantry.SetMotionParamGXY()) return;
+            if (!TaskGantry.MoveAbsGXY(x, y)) return;
+        }
+
+        private bool CheckInMasterTol(PointD point)
+        {
+            double tol = CmdLine.DPara[4];
+            PointD xm = new PointD(CmdLine.A[0] - tol, CmdLine.A[0] + tol);
+            PointD ym = new PointD(CmdLine.B[0] - tol, CmdLine.B[0] + tol);
+
+            if (tol > 0 && point.X < xm.X && point.X > xm.Y)
+            {
+                Msg MsgBox = new Msg();
+                MsgBox.Show("TL Position X is out of Master Pos Tolerance.");
+                return false;
+            }
+            if (tol > 0 && point.Y < ym.X && point.Y > ym.Y)
+            {
+                Msg MsgBox = new Msg();
+                MsgBox.Show("TL Position Y is out of Master Pos Tolerance.");
+                return false;
+            }
+
+            return true;
         }
 
         private void btnSetPtTL_Click(object sender, EventArgs e)
         {
-            NSW.Net.Point2D Old = new NSW.Net.Point2D(CmdLine.X[0], CmdLine.Y[0]);
+            NSW.Net.Point2D old = new NSW.Net.Point2D(CmdLine.X[0], CmdLine.Y[0]);
 
             double X = TaskGantry.GXPos();
             double Y = TaskGantry.GYPos();
             DispProg.InvTranslate(0, ref X, ref Y);
 
-            CmdLine.X[0] = X - (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X);
-            CmdLine.Y[0] = Y - (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y);
+            double x = X - (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X);
+            double y = Y - (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y);
+            //double tol = CmdLine.DPara[4];
+            //PointD xm = new PointD(CmdLine.A[0] - tol, CmdLine.A[0] + tol);
+            //PointD ym = new PointD(CmdLine.B[0] - tol, CmdLine.B[0] + tol);
 
-            Log.OnSet(CmdName + ", Set Point TL", Old, new NSW.Net.Point2D(CmdLine.X[0], CmdLine.Y[0]));
+            if (!cbMaster.Checked)
+            {
+                if (CheckInMasterTol(new PointD(x, y)))
+                {
+                    CmdLine.X[0] = x;
+                    CmdLine.Y[0] = y;
+                    Log.OnSet(CmdName + ", Set Point TL", old, new NSW.Net.Point2D(CmdLine.X[0], CmdLine.Y[0]));
+                }
+            }
+
+            if (cbMaster.Checked)
+            {
+                CmdLine.X[0] = x;
+                CmdLine.Y[0] = y;
+
+                old = new NSW.Net.Point2D(CmdLine.A[0], CmdLine.B[0]);
+
+                CmdLine.A[0] = CmdLine.X[0];
+                CmdLine.B[0] = CmdLine.Y[0];
+
+                Log.OnSet(CmdName + ", Set Point Master TL", old, new NSW.Net.Point2D(CmdLine.A[0], CmdLine.B[0]));
+            }
 
             UpdateDisplay();
         }
@@ -174,6 +250,13 @@ namespace NDispWin
         {
             double X = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + CmdLine.X[0];
             double Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.Y[0];
+
+            if (cbMaster.Checked)
+            {
+                X = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + CmdLine.A[0];
+                Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.B[0];
+            }
+
             DispProg.Translate(0, ref X, ref Y);
 
             if (!TaskDisp.TaskMoveGZZ2Up()) return;
@@ -184,14 +267,39 @@ namespace NDispWin
         private void lblPointTL_Click(object sender, EventArgs e)
         {
             frm_DispCore_EditXY frm = new frm_DispCore_EditXY();
-            frm.ParamName = LineNo.ToString() + " Point TL, Start XY";
-            frm.ValueX = CmdLine.X[0];
-            frm.ValueY = CmdLine.Y[0];
 
-            if (frm.ShowDialog() == DialogResult.OK)
+            if (!cbMaster.Checked)
             {
-                CmdLine.X[0] = frm.ValueX;
-                CmdLine.Y[0] = frm.ValueY;
+                NSW.Net.Point2D old = new NSW.Net.Point2D(CmdLine.X[0], CmdLine.Y[0]);
+
+                frm.ParamName = LineNo.ToString() + " Point TL, XY";
+                frm.ValueX = CmdLine.X[0];
+                frm.ValueY = CmdLine.Y[0];
+
+                if (frm.ShowDialog() == DialogResult.OK)
+                {
+                    if (CheckInMasterTol(new PointD(frm.ValueX, frm.ValueY)))
+                    {
+                        CmdLine.X[0] = frm.ValueX;
+                        CmdLine.Y[0] = frm.ValueY;
+                        Log.OnSet(CmdName + ", Set Point TL", old, new NSW.Net.Point2D(CmdLine.X[0], CmdLine.Y[0]));
+                    }
+                }
+            }
+            else
+            {
+                frm.ParamName = LineNo.ToString() + " Master Point TL, XY";
+                frm.ValueX = CmdLine.A[0];
+                frm.ValueY = CmdLine.B[0];
+
+                if (frm.ShowDialog() == DialogResult.OK)
+                {
+                    CmdLine.X[0] = frm.ValueX;
+                    CmdLine.Y[0] = frm.ValueY;
+
+                    CmdLine.A[0] = frm.ValueX;
+                    CmdLine.B[0] = frm.ValueY;
+                }
             }
 
             UpdateDisplay();
@@ -199,16 +307,40 @@ namespace NDispWin
 
         private void btnSetPtBR_Click(object sender, EventArgs e)
         {
-            NSW.Net.Point2D Old = new NSW.Net.Point2D(CmdLine.X[1], CmdLine.Y[1]);
+            NSW.Net.Point2D old = new NSW.Net.Point2D(CmdLine.X[1], CmdLine.Y[1]);
 
             double X = TaskGantry.GXPos();
             double Y = TaskGantry.GYPos();
             DispProg.InvTranslate(0, ref X, ref Y);
 
-            CmdLine.X[1] = X - (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X);
-            CmdLine.Y[1] = Y - (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y);
+            double x = X - (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X);
+            double y = Y - (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y);
+            double tol = CmdLine.DPara[4];
+            PointD xm = new PointD(CmdLine.A[1] - tol, CmdLine.A[1] + tol);
+            PointD ym = new PointD(CmdLine.B[1] - tol, CmdLine.B[1] + tol);
 
-            Log.OnSet(CmdName + ", Set Point BR", Old, new NSW.Net.Point2D(CmdLine.X[1], CmdLine.Y[1]));
+            if (!cbMaster.Checked)
+            {
+                if (CheckInMasterTol(new PointD(x, y)))
+                {
+                    CmdLine.X[1] = x;
+                    CmdLine.Y[1] = y;
+                    Log.OnSet(CmdName + ", Set Point BR", old, new NSW.Net.Point2D(CmdLine.X[1], CmdLine.Y[1]));
+                }
+            }
+
+            if (cbMaster.Checked)
+            {
+                CmdLine.X[1] = x;
+                CmdLine.Y[1] = y;
+
+                old = new NSW.Net.Point2D(CmdLine.A[1], CmdLine.B[1]);
+
+                CmdLine.A[1] = CmdLine.X[1];
+                CmdLine.B[1] = CmdLine.Y[1];
+
+                Log.OnSet(CmdName + ", Set Point Master BR", old, new NSW.Net.Point2D(CmdLine.A[1], CmdLine.B[1]));
+            }
 
             UpdateDisplay();
         }
@@ -216,6 +348,12 @@ namespace NDispWin
         {
             double X = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + CmdLine.X[1];
             double Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.Y[1];
+
+            if (cbMaster.Checked)
+            {
+                X = (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X) + CmdLine.A[1];
+                Y = (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y) + CmdLine.B[1];
+            }
 
             DispProg.Translate(0, ref X, ref Y);
 
@@ -227,16 +365,47 @@ namespace NDispWin
         private void lblPointBR_Click(object sender, EventArgs e)
         {
             frm_DispCore_EditXY frm = new frm_DispCore_EditXY();
-            frm.ParamName = LineNo.ToString() + " Point BR, End XY";
-            frm.ValueX = CmdLine.X[1];
-            frm.ValueY = CmdLine.Y[1];
 
-            if (frm.ShowDialog() == DialogResult.OK)
+            if (!cbMaster.Checked)
             {
-                CmdLine.X[1] = frm.ValueX;
-                CmdLine.Y[1] = frm.ValueY;
-            }
+                NSW.Net.Point2D old = new NSW.Net.Point2D(CmdLine.X[1], CmdLine.Y[1]);
 
+                frm.ParamName = LineNo.ToString() + " Point BR, XY";
+                frm.ValueX = CmdLine.X[1];
+                frm.ValueY = CmdLine.Y[1];
+
+                if (frm.ShowDialog() == DialogResult.OK)
+                {
+                    if (CheckInMasterTol(new PointD(frm.ValueX, frm.ValueY)))
+                    {
+                        CmdLine.X[1] = frm.ValueX;
+                        CmdLine.Y[1] = frm.ValueY;
+                        Log.OnSet(CmdName + ", Set Point BR", old, new NSW.Net.Point2D(CmdLine.X[1], CmdLine.Y[1]));
+                    }
+                }
+            }
+            else
+            {
+                frm.ParamName = LineNo.ToString() + " Master Point BR, XY";
+                frm.ValueX = CmdLine.A[1];
+                frm.ValueY = CmdLine.B[1];
+
+                if (frm.ShowDialog() == DialogResult.OK)
+                {
+                    CmdLine.A[1] = frm.ValueX;
+                    CmdLine.B[1] = frm.ValueY;
+                }
+            }
+            UpdateDisplay();
+        }
+
+        private void cbMaster_Click(object sender, EventArgs e)
+        {
+            UpdateDisplay();
+        }
+        private void lblMasterTol_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec(CmdName + ", Master Tol", ref CmdLine.DPara[4], 0, 5);
             UpdateDisplay();
         }
 
@@ -305,6 +474,11 @@ namespace NDispWin
 
             UpdateDisplay();
         }
+        private void lblSpeed2Ratio_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec(CmdName + ", Speed2Ratio", ref CmdLine.DPara[14], 0.1, 10);
+            UpdateDisplay();
+        }
         private void lblSpeedF_Click(object sender, EventArgs e)
         {
             int modelNo = CmdLine.IPara[0];
@@ -336,16 +510,6 @@ namespace NDispWin
             int postWait = Model.PostWait;
             UC.AdjustExec(CmdName + ", PostWait", ref postWait, 0, 50000);
             Model.PostWait = postWait;
-
-            UpdateDisplay();
-        }
-
-        private void checkBox1_Click(object sender, EventArgs e)
-        {
-            if (CmdLine.IPara[9] > 0)
-                CmdLine.IPara[9] = 0;
-            else
-                CmdLine.IPara[9] = 1;
 
             UpdateDisplay();
         }
@@ -385,62 +549,18 @@ namespace NDispWin
             UC.AdjustExec(CmdName + ", Head2DefNettVolume", ref CmdLine.DPara[19], 0, 100);
             UpdateDisplay();
         }
-        //private void lblHead2Volume_Click(object sender, EventArgs e)
-        //{
-        //    double d = TFPump.PP4.DispAmounts[1] - TFPump.PP4.BSuckAmounts[1];
-        //    if (UC.AdjustExec("PP PA Net Disp Amount", ref d, 0.001, 1300))
-        //        TFPump.PP4.DispAmounts = new double[] { TFPump.PP4.DispAmounts[0], d + TFPump.PP4.BSuckAmounts[1] };
-        //    UpdateDisplay();
-        //}
-        //private void lblHead1Volume_Click(object sender, EventArgs e)
-        //{
-        //    double d = TFPump.PP4.DispAmounts[0] - TFPump.PP4.BSuckAmounts[0];
-        //    if (UC.AdjustExec("PP PB Net Disp Amount", ref d, 0.001, 1300))
-        //        TFPump.PP4.DispAmounts = new double[] { d + TFPump.PP4.BSuckAmounts[0], TFPump.PP4.DispAmounts[1] };
-        //    UpdateDisplay();
-        //}
-
-        private void lblSpeed2Ratio_Click(object sender, EventArgs e)
-        {
-            UC.AdjustExec(CmdName + ", Speed2Ratio", ref CmdLine.DPara[14], 0.1, 10);
-            UpdateDisplay();
-        }
-
-        //private void cbTailOff_Click(object sender, EventArgs e)
-        //{
-        //    CmdLine.IPara[4] = CmdLine.IPara[4] > 0 ? 0 : 1;
-
-        //    bool enabled = CmdLine.IPara[4] > 0;
-        //    Log.OnSet(CmdName + ", TailOff", !enabled, enabled);
-
-        //    UpdateDisplay();
-        //}
-        //private void cbSquare_CheckedChanged(object sender, EventArgs e)
-        //{
-        //}
-        //private void cbSquare_Click(object sender, EventArgs e)
-        //{
-        //    CmdLine.IPara[5] = CmdLine.IPara[5] > 0 ? 0 : 1;
-
-        //    bool enabled = CmdLine.IPara[5] > 0;
-        //    Log.OnSet(CmdName + ", Square", !enabled, enabled);
-
-        //    UpdateDisplay();
-        //}
-
-        private void lblBackSuck2_Click(object sender, EventArgs e)
-        {
-            double d = TFPump.PP4.BSuckAmounts[1];
-            if (UC.AdjustExec("PP PA Backsuck Amount", ref d, 0, 1300))
-                TFPump.PP4.BSuckAmounts = new double[] { TFPump.PP4.BSuckAmounts[1], d };
-            UpdateDisplay();
-        }
-
         private void lblBackSuck1_Click(object sender, EventArgs e)
         {
             double d = TFPump.PP4.BSuckAmounts[0];
             if (UC.AdjustExec("PP PB Backsuck Amount", ref d, 0, 1300))
                 TFPump.PP4.BSuckAmounts = new double[] { d, TFPump.PP4.BSuckAmounts[1] };
+            UpdateDisplay();
+        }
+        private void lblBackSuck2_Click(object sender, EventArgs e)
+        {
+            double d = TFPump.PP4.BSuckAmounts[1];
+            if (UC.AdjustExec("PP PA Backsuck Amount", ref d, 0, 1300))
+                TFPump.PP4.BSuckAmounts = new double[] { TFPump.PP4.BSuckAmounts[1], d };
             UpdateDisplay();
         }
     }

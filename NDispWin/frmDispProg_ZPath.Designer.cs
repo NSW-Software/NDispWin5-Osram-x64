@@ -30,6 +30,9 @@ namespace NDispWin
         private void InitializeComponent()
         {
             this.gbox_Pos = new System.Windows.Forms.GroupBox();
+            this.lbl_MasterTol = new System.Windows.Forms.Label();
+            this.cbMaster = new System.Windows.Forms.CheckBox();
+            this.lblMasterTol = new System.Windows.Forms.Label();
             this.lblPointTL = new System.Windows.Forms.Label();
             this.pbZPathDot = new System.Windows.Forms.PictureBox();
             this.btnSetPtTL = new System.Windows.Forms.Button();
@@ -84,9 +87,14 @@ namespace NDispWin
             this.label8 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.lblSpeed2Ratio = new System.Windows.Forms.Label();
+            this.lblReference = new System.Windows.Forms.Label();
+            this.btnSetRefXY = new System.Windows.Forms.Button();
+            this.btnGotoRefXY = new System.Windows.Forms.Button();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.gbox_Pos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbZPathDot)).BeginInit();
             this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // gbox_Pos
@@ -94,6 +102,9 @@ namespace NDispWin
             this.gbox_Pos.AccessibleDescription = "Position";
             this.gbox_Pos.AutoSize = true;
             this.gbox_Pos.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.gbox_Pos.Controls.Add(this.lbl_MasterTol);
+            this.gbox_Pos.Controls.Add(this.cbMaster);
+            this.gbox_Pos.Controls.Add(this.lblMasterTol);
             this.gbox_Pos.Controls.Add(this.lblPointTL);
             this.gbox_Pos.Controls.Add(this.pbZPathDot);
             this.gbox_Pos.Controls.Add(this.btnSetPtTL);
@@ -101,13 +112,48 @@ namespace NDispWin
             this.gbox_Pos.Controls.Add(this.btnGotoPtBR);
             this.gbox_Pos.Controls.Add(this.btnGotoPtTL);
             this.gbox_Pos.Controls.Add(this.lblPointBR);
-            this.gbox_Pos.Location = new System.Drawing.Point(8, 63);
+            this.gbox_Pos.Location = new System.Drawing.Point(8, 79);
             this.gbox_Pos.Name = "gbox_Pos";
             this.gbox_Pos.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.gbox_Pos.Size = new System.Drawing.Size(267, 312);
+            this.gbox_Pos.Size = new System.Drawing.Size(267, 341);
             this.gbox_Pos.TabIndex = 174;
             this.gbox_Pos.TabStop = false;
             this.gbox_Pos.Text = "Position";
+            // 
+            // lbl_MasterTol
+            // 
+            this.lbl_MasterTol.AccessibleDescription = "";
+            this.lbl_MasterTol.Location = new System.Drawing.Point(78, 301);
+            this.lbl_MasterTol.Margin = new System.Windows.Forms.Padding(2);
+            this.lbl_MasterTol.Name = "lbl_MasterTol";
+            this.lbl_MasterTol.Size = new System.Drawing.Size(103, 23);
+            this.lbl_MasterTol.TabIndex = 204;
+            this.lbl_MasterTol.Text = "Master Tol (mm)";
+            this.lbl_MasterTol.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // cbMaster
+            // 
+            this.cbMaster.AutoSize = true;
+            this.cbMaster.Location = new System.Drawing.Point(6, 304);
+            this.cbMaster.Name = "cbMaster";
+            this.cbMaster.Size = new System.Drawing.Size(62, 18);
+            this.cbMaster.TabIndex = 204;
+            this.cbMaster.Text = "Master";
+            this.cbMaster.UseVisualStyleBackColor = true;
+            this.cbMaster.Click += new System.EventHandler(this.cbMaster_Click);
+            // 
+            // lblMasterTol
+            // 
+            this.lblMasterTol.BackColor = System.Drawing.SystemColors.Window;
+            this.lblMasterTol.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblMasterTol.Location = new System.Drawing.Point(185, 301);
+            this.lblMasterTol.Margin = new System.Windows.Forms.Padding(2);
+            this.lblMasterTol.Name = "lblMasterTol";
+            this.lblMasterTol.Size = new System.Drawing.Size(75, 23);
+            this.lblMasterTol.TabIndex = 205;
+            this.lblMasterTol.Text = "0.500";
+            this.lblMasterTol.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblMasterTol.Click += new System.EventHandler(this.lblMasterTol_Click);
             // 
             // lblPointTL
             // 
@@ -197,7 +243,7 @@ namespace NDispWin
             // 
             this.lblStartGap.BackColor = System.Drawing.SystemColors.Window;
             this.lblStartGap.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblStartGap.Location = new System.Drawing.Point(411, 63);
+            this.lblStartGap.Location = new System.Drawing.Point(410, 95);
             this.lblStartGap.Margin = new System.Windows.Forms.Padding(2);
             this.lblStartGap.Name = "lblStartGap";
             this.lblStartGap.Size = new System.Drawing.Size(75, 23);
@@ -209,7 +255,7 @@ namespace NDispWin
             // lbkStartGap
             // 
             this.lbkStartGap.AccessibleDescription = "";
-            this.lbkStartGap.Location = new System.Drawing.Point(281, 63);
+            this.lbkStartGap.Location = new System.Drawing.Point(280, 95);
             this.lbkStartGap.Margin = new System.Windows.Forms.Padding(2);
             this.lbkStartGap.Name = "lbkStartGap";
             this.lbkStartGap.Size = new System.Drawing.Size(126, 23);
@@ -221,7 +267,7 @@ namespace NDispWin
             // 
             this.lblDispGap.BackColor = System.Drawing.SystemColors.Window;
             this.lblDispGap.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblDispGap.Location = new System.Drawing.Point(411, 90);
+            this.lblDispGap.Location = new System.Drawing.Point(410, 122);
             this.lblDispGap.Margin = new System.Windows.Forms.Padding(2);
             this.lblDispGap.Name = "lblDispGap";
             this.lblDispGap.Size = new System.Drawing.Size(75, 23);
@@ -233,7 +279,7 @@ namespace NDispWin
             // label14
             // 
             this.label14.AccessibleDescription = "";
-            this.label14.Location = new System.Drawing.Point(281, 239);
+            this.label14.Location = new System.Drawing.Point(280, 271);
             this.label14.Margin = new System.Windows.Forms.Padding(2);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(126, 23);
@@ -245,7 +291,7 @@ namespace NDispWin
             // 
             this.lblSpeed1.BackColor = System.Drawing.SystemColors.Window;
             this.lblSpeed1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblSpeed1.Location = new System.Drawing.Point(411, 239);
+            this.lblSpeed1.Location = new System.Drawing.Point(410, 271);
             this.lblSpeed1.Margin = new System.Windows.Forms.Padding(2);
             this.lblSpeed1.Name = "lblSpeed1";
             this.lblSpeed1.Size = new System.Drawing.Size(75, 23);
@@ -333,7 +379,7 @@ namespace NDispWin
             // btn_Cancel
             // 
             this.btn_Cancel.AccessibleDescription = "Cancel";
-            this.btn_Cancel.Location = new System.Drawing.Point(411, 580);
+            this.btn_Cancel.Location = new System.Drawing.Point(411, 575);
             this.btn_Cancel.Margin = new System.Windows.Forms.Padding(2);
             this.btn_Cancel.Name = "btn_Cancel";
             this.btn_Cancel.Padding = new System.Windows.Forms.Padding(3);
@@ -346,7 +392,7 @@ namespace NDispWin
             // btn_OK
             // 
             this.btn_OK.AccessibleDescription = "OK";
-            this.btn_OK.Location = new System.Drawing.Point(332, 580);
+            this.btn_OK.Location = new System.Drawing.Point(332, 575);
             this.btn_OK.Margin = new System.Windows.Forms.Padding(2);
             this.btn_OK.Name = "btn_OK";
             this.btn_OK.Padding = new System.Windows.Forms.Padding(3);
@@ -360,7 +406,7 @@ namespace NDispWin
             // 
             this.lblSpeedF.BackColor = System.Drawing.SystemColors.Window;
             this.lblSpeedF.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblSpeedF.Location = new System.Drawing.Point(411, 293);
+            this.lblSpeedF.Location = new System.Drawing.Point(410, 325);
             this.lblSpeedF.Margin = new System.Windows.Forms.Padding(2);
             this.lblSpeedF.Name = "lblSpeedF";
             this.lblSpeedF.Size = new System.Drawing.Size(75, 23);
@@ -372,7 +418,7 @@ namespace NDispWin
             // label21
             // 
             this.label21.AccessibleDescription = "";
-            this.label21.Location = new System.Drawing.Point(281, 293);
+            this.label21.Location = new System.Drawing.Point(280, 325);
             this.label21.Margin = new System.Windows.Forms.Padding(2);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(126, 23);
@@ -383,7 +429,7 @@ namespace NDispWin
             // label7
             // 
             this.label7.AccessibleDescription = "";
-            this.label7.Location = new System.Drawing.Point(281, 90);
+            this.label7.Location = new System.Drawing.Point(280, 122);
             this.label7.Margin = new System.Windows.Forms.Padding(2);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(126, 23);
@@ -395,7 +441,7 @@ namespace NDispWin
             // 
             this.lblEndGap.BackColor = System.Drawing.SystemColors.Window;
             this.lblEndGap.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblEndGap.Location = new System.Drawing.Point(411, 117);
+            this.lblEndGap.Location = new System.Drawing.Point(410, 149);
             this.lblEndGap.Margin = new System.Windows.Forms.Padding(2);
             this.lblEndGap.Name = "lblEndGap";
             this.lblEndGap.Size = new System.Drawing.Size(75, 23);
@@ -407,7 +453,7 @@ namespace NDispWin
             // label26
             // 
             this.label26.AccessibleDescription = "";
-            this.label26.Location = new System.Drawing.Point(281, 117);
+            this.label26.Location = new System.Drawing.Point(280, 149);
             this.label26.Margin = new System.Windows.Forms.Padding(2);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(126, 23);
@@ -419,7 +465,7 @@ namespace NDispWin
             // 
             this.lblAD.BackColor = System.Drawing.SystemColors.Window;
             this.lblAD.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblAD.Location = new System.Drawing.Point(411, 185);
+            this.lblAD.Location = new System.Drawing.Point(410, 217);
             this.lblAD.Margin = new System.Windows.Forms.Padding(2);
             this.lblAD.Name = "lblAD";
             this.lblAD.Size = new System.Drawing.Size(75, 23);
@@ -431,7 +477,7 @@ namespace NDispWin
             // label27
             // 
             this.label27.AccessibleDescription = "";
-            this.label27.Location = new System.Drawing.Point(281, 185);
+            this.label27.Location = new System.Drawing.Point(280, 217);
             this.label27.Margin = new System.Windows.Forms.Padding(2);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(126, 23);
@@ -442,7 +488,7 @@ namespace NDispWin
             // label3
             // 
             this.label3.AccessibleDescription = "";
-            this.label3.Location = new System.Drawing.Point(281, 212);
+            this.label3.Location = new System.Drawing.Point(280, 244);
             this.label3.Margin = new System.Windows.Forms.Padding(2);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(126, 23);
@@ -455,7 +501,7 @@ namespace NDispWin
             // 
             this.lblInitialSpeed.BackColor = System.Drawing.SystemColors.Window;
             this.lblInitialSpeed.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblInitialSpeed.Location = new System.Drawing.Point(411, 212);
+            this.lblInitialSpeed.Location = new System.Drawing.Point(410, 244);
             this.lblInitialSpeed.Margin = new System.Windows.Forms.Padding(2);
             this.lblInitialSpeed.Name = "lblInitialSpeed";
             this.lblInitialSpeed.Size = new System.Drawing.Size(75, 23);
@@ -468,7 +514,7 @@ namespace NDispWin
             // label5
             // 
             this.label5.AccessibleDescription = "";
-            this.label5.Location = new System.Drawing.Point(280, 335);
+            this.label5.Location = new System.Drawing.Point(279, 367);
             this.label5.Margin = new System.Windows.Forms.Padding(2);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(126, 23);
@@ -479,7 +525,7 @@ namespace NDispWin
             // label9
             // 
             this.label9.AccessibleDescription = "";
-            this.label9.Location = new System.Drawing.Point(280, 362);
+            this.label9.Location = new System.Drawing.Point(279, 394);
             this.label9.Margin = new System.Windows.Forms.Padding(2);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(126, 23);
@@ -491,7 +537,7 @@ namespace NDispWin
             // 
             this.lblDownWait.BackColor = System.Drawing.SystemColors.Window;
             this.lblDownWait.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblDownWait.Location = new System.Drawing.Point(410, 335);
+            this.lblDownWait.Location = new System.Drawing.Point(409, 367);
             this.lblDownWait.Margin = new System.Windows.Forms.Padding(2);
             this.lblDownWait.Name = "lblDownWait";
             this.lblDownWait.Size = new System.Drawing.Size(75, 23);
@@ -504,7 +550,7 @@ namespace NDispWin
             // 
             this.lblPostWait.BackColor = System.Drawing.SystemColors.Window;
             this.lblPostWait.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblPostWait.Location = new System.Drawing.Point(410, 362);
+            this.lblPostWait.Location = new System.Drawing.Point(409, 394);
             this.lblPostWait.Margin = new System.Windows.Forms.Padding(2);
             this.lblPostWait.Name = "lblPostWait";
             this.lblPostWait.Size = new System.Drawing.Size(75, 23);
@@ -565,7 +611,7 @@ namespace NDispWin
             // 
             this.lblRetGap.BackColor = System.Drawing.SystemColors.Window;
             this.lblRetGap.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblRetGap.Location = new System.Drawing.Point(411, 144);
+            this.lblRetGap.Location = new System.Drawing.Point(410, 176);
             this.lblRetGap.Margin = new System.Windows.Forms.Padding(2);
             this.lblRetGap.Name = "lblRetGap";
             this.lblRetGap.Size = new System.Drawing.Size(75, 23);
@@ -577,7 +623,7 @@ namespace NDispWin
             // label6
             // 
             this.label6.AccessibleDescription = "";
-            this.label6.Location = new System.Drawing.Point(281, 144);
+            this.label6.Location = new System.Drawing.Point(280, 176);
             this.label6.Margin = new System.Windows.Forms.Padding(2);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(126, 23);
@@ -628,7 +674,7 @@ namespace NDispWin
             this.groupBox1.Controls.Add(this.lblHead1DefVolume);
             this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.label10);
-            this.groupBox1.Location = new System.Drawing.Point(8, 434);
+            this.groupBox1.Location = new System.Drawing.Point(8, 426);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(478, 144);
             this.groupBox1.TabIndex = 199;
@@ -760,7 +806,7 @@ namespace NDispWin
             // label1
             // 
             this.label1.AccessibleDescription = "";
-            this.label1.Location = new System.Drawing.Point(281, 266);
+            this.label1.Location = new System.Drawing.Point(280, 298);
             this.label1.Margin = new System.Windows.Forms.Padding(2);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(126, 23);
@@ -772,7 +818,7 @@ namespace NDispWin
             // 
             this.lblSpeed2Ratio.BackColor = System.Drawing.SystemColors.Window;
             this.lblSpeed2Ratio.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblSpeed2Ratio.Location = new System.Drawing.Point(411, 266);
+            this.lblSpeed2Ratio.Location = new System.Drawing.Point(410, 298);
             this.lblSpeed2Ratio.Margin = new System.Windows.Forms.Padding(2);
             this.lblSpeed2Ratio.Name = "lblSpeed2Ratio";
             this.lblSpeed2Ratio.Size = new System.Drawing.Size(75, 23);
@@ -781,12 +827,62 @@ namespace NDispWin
             this.lblSpeed2Ratio.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.lblSpeed2Ratio.Click += new System.EventHandler(this.lblSpeed2Ratio_Click);
             // 
+            // lblReference
+            // 
+            this.lblReference.BackColor = System.Drawing.SystemColors.Window;
+            this.lblReference.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblReference.Location = new System.Drawing.Point(5, 20);
+            this.lblReference.Margin = new System.Windows.Forms.Padding(2);
+            this.lblReference.Name = "lblReference";
+            this.lblReference.Size = new System.Drawing.Size(120, 23);
+            this.lblReference.TabIndex = 206;
+            this.lblReference.Text = "-999.999, -999.999";
+            this.lblReference.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // btnSetRefXY
+            // 
+            this.btnSetRefXY.AccessibleDescription = "Set";
+            this.btnSetRefXY.Location = new System.Drawing.Point(129, 16);
+            this.btnSetRefXY.Margin = new System.Windows.Forms.Padding(2);
+            this.btnSetRefXY.Name = "btnSetRefXY";
+            this.btnSetRefXY.Size = new System.Drawing.Size(40, 30);
+            this.btnSetRefXY.TabIndex = 204;
+            this.btnSetRefXY.Text = "Set";
+            this.btnSetRefXY.UseVisualStyleBackColor = true;
+            this.btnSetRefXY.Click += new System.EventHandler(this.btnSetRefXY_Click);
+            // 
+            // btnGotoRefXY
+            // 
+            this.btnGotoRefXY.AccessibleDescription = "Goto";
+            this.btnGotoRefXY.Location = new System.Drawing.Point(173, 16);
+            this.btnGotoRefXY.Margin = new System.Windows.Forms.Padding(2);
+            this.btnGotoRefXY.Name = "btnGotoRefXY";
+            this.btnGotoRefXY.Size = new System.Drawing.Size(50, 30);
+            this.btnGotoRefXY.TabIndex = 205;
+            this.btnGotoRefXY.Text = "Goto";
+            this.btnGotoRefXY.UseVisualStyleBackColor = true;
+            this.btnGotoRefXY.Click += new System.EventHandler(this.btnGotoRefXY_Click);
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.AutoSize = true;
+            this.groupBox2.Controls.Add(this.lblReference);
+            this.groupBox2.Controls.Add(this.btnSetRefXY);
+            this.groupBox2.Controls.Add(this.btnGotoRefXY);
+            this.groupBox2.Location = new System.Drawing.Point(258, 7);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(228, 66);
+            this.groupBox2.TabIndex = 207;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Reference";
+            // 
             // frmDispProg_ZPath
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(492, 623);
             this.ControlBox = false;
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.lblSpeed2Ratio);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.groupBox1);
@@ -829,8 +925,10 @@ namespace NDispWin
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmDispProg_ZPath_FormClosed);
             this.Load += new System.EventHandler(this.frmDispProg_ZPath_Load);
             this.gbox_Pos.ResumeLayout(false);
+            this.gbox_Pos.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbZPathDot)).EndInit();
             this.groupBox1.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -893,5 +991,12 @@ namespace NDispWin
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblSpeed2Ratio;
         private System.Windows.Forms.PictureBox pbZPathDot;
+        private System.Windows.Forms.CheckBox cbMaster;
+        private System.Windows.Forms.Label lbl_MasterTol;
+        private System.Windows.Forms.Label lblMasterTol;
+        private System.Windows.Forms.Label lblReference;
+        private System.Windows.Forms.Button btnSetRefXY;
+        private System.Windows.Forms.Button btnGotoRefXY;
+        private System.Windows.Forms.GroupBox groupBox2;
     }
 }
