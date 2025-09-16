@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.Xml;
 using System.Reflection;
 using Emgu.CV;
+using System.Security.Cryptography;
 
 namespace NDispWin
 {
@@ -2873,7 +2874,7 @@ namespace NDispWin
             }
         }
 
-        public static bool TR_Run()
+        public static bool TR_Run(bool autoRun = false)
         {
             if (Idle.Purging) Idle.StopPurge();
 
@@ -2922,7 +2923,7 @@ namespace NDispWin
                 TaskDisp.TaskMoveGZZ2Up();
 
                 if (!Script[0].IsBusy)
-                    if (!Script[0].Run(RunMode, Origin(rt_StationNo).X, Origin(rt_StationNo).Y, Origin(rt_StationNo).Z, false, false))// goto _Stop;
+                    if (!Script[0].Run(RunMode, Origin(rt_StationNo).X, Origin(rt_StationNo).Y, Origin(rt_StationNo).Z, false, false, autoRun))// goto _Stop;
                     {
                         TR_Pause();
                         return false;
@@ -4376,7 +4377,7 @@ namespace NDispWin
             static bool videoStart = false;
             static bool videoStop = false;
 
-            private bool Run(ERunMode RunMode, double f_origin_x, double f_origin_y, double f_origin_z, double f_flowrate, double f_tweight, bool IsSub)//, bool SyncHead2)
+            private bool Run(ERunMode RunMode, double f_origin_x, double f_origin_y, double f_origin_z, double f_flowrate, double f_tweight, bool IsSub, bool loadNextRecipe = false)//, bool SyncHead2)
             {
                 Idle.Reset();
                 pressVal = new double[] { 0, 0 };
@@ -4661,6 +4662,7 @@ namespace NDispWin
                         goto _Pause;
                 }
 
+             _runNextRecipe:
                 b_Flag_ConsecutiveUnit = false;
 
                 string Msg = "Run";
@@ -11377,9 +11379,20 @@ namespace NDispWin
                             TFSecsGem.SubstrateStatus[TFSecsGem.SubstrateID] = "COMPLETE";
                             LotInfo2.Osram.SaveSetup();
                         }
-                        
+
+                        if (loadNextRecipe)
+                        {
+                            if (LoadNextRecipe())
+                            {
+                                ClearRTDispData();
+                                StartLine = 0;
+                                goto _runNextRecipe;
+                            }
+                        }
+
                         BdReady = true;
-                        Define_Run.UpdateProcessStatus_BdReady();  
+                        Define_Run.UpdateProcessStatus_BdReady();
+                        ClearRTDispData();
 
                         switch (rt_RunRegion)
                         {
@@ -11394,7 +11407,7 @@ namespace NDispWin
                                 break;
                         }
 
-                        ClearRTDispData();
+                        //ClearRTDispData();
                         #endregion
                     }
 
@@ -11512,10 +11525,54 @@ namespace NDispWin
 
                 return false;
             }
-            public bool Run(ERunMode RunMode, double f_origin_x, double f_origin_y, double f_origin_z, bool IsSub, bool SyncHead2)
+            public bool Run(ERunMode RunMode, double f_origin_x, double f_origin_y, double f_origin_z, bool IsSub, bool autoRun = false)//, bool SyncHead2)
             {
-                return Run(RunMode, f_origin_x, f_origin_y, f_origin_z, TaskDisp.FlowRateOld, 0, IsSub);//, SyncHead2);
+                return Run(RunMode, f_origin_x, f_origin_y, f_origin_z, TaskDisp.FlowRateOld, 0, IsSub, autoRun);//, SyncHead2);
             }
+
+            public bool LoadNextRecipe()//Return true if next recipe is found and loaded
+            {
+                bool seqRecipe = GDefine.ProgRecipeName.Substring(GDefine.ProgRecipeName.Length - 2, 1).StartsWith("_");
+                string recipeNoStr = GDefine.ProgRecipeName.Substring(GDefine.ProgRecipeName.Length - 1, 1);
+                string recipeName = GDefine.ProgRecipeName.Substring(0, GDefine.ProgRecipeName.Length - 2);
+
+                if (seqRecipe && int.TryParse(recipeNoStr, out int recipeNo))
+                {
+                    recipeNo++;
+
+                    string recipeNameFullName = GDefine.RecipeDir.FullName + recipeName + "_" + $"{recipeNo}" + GDefine.RecipeExt;
+
+                    if (File.Exists(recipeNameFullName))
+                    {
+                        DispProg.Load(recipeNameFullName, false);
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+            public bool LoadFirstRecipe()//Return true if first recipe is loaded
+            {
+                bool seqRecipe = GDefine.ProgRecipeName.Substring(GDefine.ProgRecipeName.Length - 2, 1).StartsWith("_");
+                string recipeNoStr = GDefine.ProgRecipeName.Substring(GDefine.ProgRecipeName.Length - 1, 1);
+                string recipeName = GDefine.ProgRecipeName.Substring(0, GDefine.ProgRecipeName.Length - 2);
+
+                if (seqRecipe && int.TryParse(recipeNoStr, out int recipeNo))
+                {
+                    if (recipeNo == 1) return false;
+
+                    string recipeNameFullName = GDefine.RecipeDir.FullName + recipeName + "_" + $"{1}" + GDefine.RecipeExt;
+
+                    if (File.Exists(recipeNameFullName))
+                    {
+                        DispProg.Load(recipeNameFullName, false);
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+
 
             enum ELmdsCT_2DMode { Def, Singulated };
 

@@ -65,7 +65,7 @@ namespace NDispWin
 
             this.WindowState = FormWindowState.Maximized;
 
-#if DEBUG
+//#if DEBUG
             try
             {
                 //  do not removed, remove will call fail initialiazation of Open_eVision
@@ -78,7 +78,7 @@ namespace NDispWin
                 Msg MsgBox = new Msg();
                 MsgBox.Show(ex.Message.ToString());
             };
-#endif
+//#endif
 
             bool x64App = true;
             if (Environment.Is64BitOperatingSystem)

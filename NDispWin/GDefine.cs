@@ -200,7 +200,10 @@ namespace NDispWin
             AutoPageShowImage = IniFile.ReadBool("ConfigUI", "AutoPageShowImage", false);
 
             EnableDoorSens = IniFile.ReadBool("Safety", "EnableDoorSens", true);
-            EnableDoorLock = IniFile.ReadBool("Safety", "EnableDoorLock", false);
+            EnableDoorLock = IniFile.ReadBool("Safety", "EnableDoorLock", true);
+            //requeted by OsPen EHS
+            EnableDoorSens = true;
+            EnableDoorLock = true;
 
             EnableEventDebugLog = IniFile.ReadBool("Advance", "EnableEventDebugLog", false);
 
@@ -1154,6 +1157,9 @@ namespace NDispWin
                         {
                             case NDispWin.TaskConv.EProcessStatus.WaitDisp:
                                 DispProg.TR_CancelNoClearMap();//start new dispense
+
+                                DispProg.Script[0].LoadFirstRecipe();
+
                                 NDispWin.TaskConv.Pro.Status = NDispWin.TaskConv.EProcessStatus.InProcess;
                                 break;
                             case NDispWin.TaskConv.EProcessStatus.WaitDisp2:
@@ -1196,7 +1202,7 @@ namespace NDispWin
                     }
                     #endregion
 
-                    if (!DispProg.TR_Run()) b_TR_IsRunning = false;
+                    if (!DispProg.TR_Run(true)) b_TR_IsRunning = false;
 
                     if (GDefine.Status == EStatus.Stop || Intf.Program.BdStatus == EBoardStatus.Stop) TR_StopRun();
 

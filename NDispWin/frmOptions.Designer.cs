@@ -391,6 +391,8 @@
             this.cbEnableDoorLock.TabIndex = 2;
             this.cbEnableDoorLock.Text = "Enable Dispense Door Lock";
             this.cbEnableDoorLock.UseVisualStyleBackColor = true;
+            this.cbEnableDoorLock.Visible = false;
+            this.cbEnableDoorLock.CheckedChanged += new System.EventHandler(this.cbEnableDoorLock_CheckedChanged);
             // 
             // groupBox3
             // 
