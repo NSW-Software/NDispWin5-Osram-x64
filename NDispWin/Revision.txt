@@ -14,6 +14,12 @@ OsKm
 8.	Volume become higher after material refill 
 9.	Frequency of software hang very high. Camera Offset, select units layout, key parameter…  
 
+ver 6.1.8.52 JH - 20250822 -Gitted
+[Feature] SecsGem
+- DispProg.cs
+> debug TR_RUN function arguments
+> set condition for ReadID to avoid set substrate alarm for non E142
+
 ver 6.1.8.50 - KN 20250916 - Gitted
 [Feature] Added DOT_ZPATH Set/Goto Refrence - not tested
 [Feature] Added DOT_ZPATH Master TL and BR - not tested

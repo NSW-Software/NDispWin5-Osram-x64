@@ -2923,7 +2923,7 @@ namespace NDispWin
                 TaskDisp.TaskMoveGZZ2Up();
 
                 if (!Script[0].IsBusy)
-                    if (!Script[0].Run(RunMode, Origin(rt_StationNo).X, Origin(rt_StationNo).Y, Origin(rt_StationNo).Z, false, false, autoRun))// goto _Stop;
+                    if (!Script[0].Run(RunMode, Origin(rt_StationNo).X, Origin(rt_StationNo).Y, Origin(rt_StationNo).Z, false, autoRun))// goto _Stop;
                     {
                         TR_Pause();
                         return false;
@@ -22835,13 +22835,17 @@ namespace NDispWin
                     Log.Board.WriteByMonthDay("READ_ID: " + ID);
                     //Event.READ_ID.Set("ID", ID);
                     Event.SECSGEM_E142_SUBSTRATE_SCANNED.Set();
-                    if (!TFSecsGem.SubstrateStatus.ContainsKey(ID) && ID !="")
+                    if(TFSecsGem.Set_Substrate == "1")
                     {
-                        Msg MsgBox = new Msg();
-                        MsgBox.Show(Messages.E142_SUBSTRATEID_MISMATCH);
-                        goto _Stop;
+                        if (!TFSecsGem.SubstrateStatus.ContainsKey(ID) && ID != "")
+                        {
+                            Msg MsgBox = new Msg();
+                            MsgBox.Show(Messages.E142_SUBSTRATEID_MISMATCH);
+                            goto _Stop;
+                        }
+                        TFSecsGem.SubstrateID = ID;
                     }
-                    TFSecsGem.SubstrateID = ID;
+                    
 
                     if (ID == "")
                     {
