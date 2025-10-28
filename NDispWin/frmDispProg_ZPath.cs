@@ -39,12 +39,11 @@ namespace NDispWin
 
             lblPointTL.Text = $"{CmdLine.X[0]:f3},{CmdLine.Y[0]:f3}";
             lblPointBR.Text = $"{CmdLine.X[1]:f3},{CmdLine.Y[1]:f3}";
-            if (cbMaster.Checked)
-            {
-                lblPointTL.Text = $"{CmdLine.A[0]:f3},{CmdLine.B[0]:f3}";
-                lblPointBR.Text = $"{CmdLine.A[1]:f3},{CmdLine.B[1]:f3}";
-            }
-
+            //if (cbMaster.Checked)
+            //{
+                lblMPointTL.Text = $"M: {CmdLine.A[0]:f3},{CmdLine.B[0]:f3}";
+                lblMPointBR.Text = $"M: {CmdLine.A[1]:f3},{CmdLine.B[1]:f3}";
+            //}
             lblMasterTol.Text = $"{CmdLine.DPara[4]:f3}";
 
             //cbxType.SelectedIndex = CmdLine.IPara[3];
@@ -185,19 +184,19 @@ namespace NDispWin
             if (!TaskGantry.MoveAbsGXY(x, y)) return;
         }
 
-        private bool CheckInMasterTol(PointD point)
+        private bool CheckInMasterTol(PointD point, PointD master, double tol)
         {
-            double tol = CmdLine.DPara[4];
-            PointD xm = new PointD(CmdLine.A[0] - tol, CmdLine.A[0] + tol);
-            PointD ym = new PointD(CmdLine.B[0] - tol, CmdLine.B[0] + tol);
+            //double tol = CmdLine.DPara[4];
+            PointD xm = new PointD(master.X - tol, master.X + tol);
+            PointD ym = new PointD(master.Y - tol, master.Y + tol);
 
-            if (tol > 0 && point.X < xm.X && point.X > xm.Y)
+            if (tol > 0 && (point.X < xm.X || point.X > xm.Y))
             {
                 Msg MsgBox = new Msg();
                 MsgBox.Show("TL Position X is out of Master Pos Tolerance.");
                 return false;
             }
-            if (tol > 0 && point.Y < ym.X && point.Y > ym.Y)
+            if (tol > 0 && (point.Y < ym.X || point.Y > ym.Y))
             {
                 Msg MsgBox = new Msg();
                 MsgBox.Show("TL Position Y is out of Master Pos Tolerance.");
@@ -223,7 +222,7 @@ namespace NDispWin
 
             if (!cbMaster.Checked)
             {
-                if (CheckInMasterTol(new PointD(x, y)))
+                if (CheckInMasterTol(new PointD(x, y), new PointD(CmdLine.A[0], CmdLine.B[0]), CmdLine.DPara[4]))
                 {
                     CmdLine.X[0] = x;
                     CmdLine.Y[0] = y;
@@ -278,7 +277,7 @@ namespace NDispWin
 
                 if (frm.ShowDialog() == DialogResult.OK)
                 {
-                    if (CheckInMasterTol(new PointD(frm.ValueX, frm.ValueY)))
+                    if (CheckInMasterTol(new PointD(frm.ValueX, frm.ValueY), new PointD(CmdLine.A[0], CmdLine.B[0]), CmdLine.DPara[4]))
                     {
                         CmdLine.X[0] = frm.ValueX;
                         CmdLine.Y[0] = frm.ValueY;
@@ -315,13 +314,13 @@ namespace NDispWin
 
             double x = X - (DispProg.Origin(DispProg.rt_StationNo).X + SubOrigin.X);
             double y = Y - (DispProg.Origin(DispProg.rt_StationNo).Y + SubOrigin.Y);
-            double tol = CmdLine.DPara[4];
-            PointD xm = new PointD(CmdLine.A[1] - tol, CmdLine.A[1] + tol);
-            PointD ym = new PointD(CmdLine.B[1] - tol, CmdLine.B[1] + tol);
+            //double tol = CmdLine.DPara[4];
+            //PointD xm = new PointD(CmdLine.A[1] - tol, CmdLine.A[1] + tol);
+            //PointD ym = new PointD(CmdLine.B[1] - tol, CmdLine.B[1] + tol);
 
             if (!cbMaster.Checked)
             {
-                if (CheckInMasterTol(new PointD(x, y)))
+                if (CheckInMasterTol(new PointD(x, y), new PointD(CmdLine.A[0], CmdLine.B[0]), CmdLine.DPara[4]))
                 {
                     CmdLine.X[1] = x;
                     CmdLine.Y[1] = y;
@@ -376,7 +375,7 @@ namespace NDispWin
 
                 if (frm.ShowDialog() == DialogResult.OK)
                 {
-                    if (CheckInMasterTol(new PointD(frm.ValueX, frm.ValueY)))
+                    if (CheckInMasterTol(new PointD(frm.ValueX, frm.ValueY), new PointD(CmdLine.A[1], CmdLine.B[1]), CmdLine.DPara[4]))
                     {
                         CmdLine.X[1] = frm.ValueX;
                         CmdLine.Y[1] = frm.ValueY;

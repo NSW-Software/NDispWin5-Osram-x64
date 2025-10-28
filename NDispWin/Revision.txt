@@ -14,6 +14,9 @@ OsKm
 8.	Volume become higher after material refill 
 9.	Frequency of software hang very high. Camera Offset, select units layout, key parameter…  
 
+ver 6.1.8.53 KN - 20251029 - Gitted
+[BugFix] Fix DOT_ZPATH Set/Goto Master feature
+
 ver 6.1.8.52 JH - 20250822 -Gitted
 [Feature] SecsGem
 - DispProg.cs

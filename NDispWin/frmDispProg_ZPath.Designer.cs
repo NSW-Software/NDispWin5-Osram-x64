@@ -91,6 +91,8 @@ namespace NDispWin
             this.btnSetRefXY = new System.Windows.Forms.Button();
             this.btnGotoRefXY = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.lblMPointTL = new System.Windows.Forms.Label();
+            this.lblMPointBR = new System.Windows.Forms.Label();
             this.gbox_Pos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbZPathDot)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -102,6 +104,8 @@ namespace NDispWin
             this.gbox_Pos.AccessibleDescription = "Position";
             this.gbox_Pos.AutoSize = true;
             this.gbox_Pos.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.gbox_Pos.Controls.Add(this.lblMPointBR);
+            this.gbox_Pos.Controls.Add(this.lblMPointTL);
             this.gbox_Pos.Controls.Add(this.lbl_MasterTol);
             this.gbox_Pos.Controls.Add(this.cbMaster);
             this.gbox_Pos.Controls.Add(this.lblMasterTol);
@@ -115,7 +119,7 @@ namespace NDispWin
             this.gbox_Pos.Location = new System.Drawing.Point(8, 79);
             this.gbox_Pos.Name = "gbox_Pos";
             this.gbox_Pos.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.gbox_Pos.Size = new System.Drawing.Size(267, 341);
+            this.gbox_Pos.Size = new System.Drawing.Size(267, 362);
             this.gbox_Pos.TabIndex = 174;
             this.gbox_Pos.TabStop = false;
             this.gbox_Pos.Text = "Position";
@@ -123,7 +127,7 @@ namespace NDispWin
             // lbl_MasterTol
             // 
             this.lbl_MasterTol.AccessibleDescription = "";
-            this.lbl_MasterTol.Location = new System.Drawing.Point(78, 301);
+            this.lbl_MasterTol.Location = new System.Drawing.Point(79, 322);
             this.lbl_MasterTol.Margin = new System.Windows.Forms.Padding(2);
             this.lbl_MasterTol.Name = "lbl_MasterTol";
             this.lbl_MasterTol.Size = new System.Drawing.Size(103, 23);
@@ -134,7 +138,7 @@ namespace NDispWin
             // cbMaster
             // 
             this.cbMaster.AutoSize = true;
-            this.cbMaster.Location = new System.Drawing.Point(6, 304);
+            this.cbMaster.Location = new System.Drawing.Point(7, 325);
             this.cbMaster.Name = "cbMaster";
             this.cbMaster.Size = new System.Drawing.Size(62, 18);
             this.cbMaster.TabIndex = 204;
@@ -146,7 +150,7 @@ namespace NDispWin
             // 
             this.lblMasterTol.BackColor = System.Drawing.SystemColors.Window;
             this.lblMasterTol.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblMasterTol.Location = new System.Drawing.Point(185, 301);
+            this.lblMasterTol.Location = new System.Drawing.Point(186, 322);
             this.lblMasterTol.Margin = new System.Windows.Forms.Padding(2);
             this.lblMasterTol.Name = "lblMasterTol";
             this.lblMasterTol.Size = new System.Drawing.Size(75, 23);
@@ -159,7 +163,7 @@ namespace NDispWin
             // 
             this.lblPointTL.BackColor = System.Drawing.SystemColors.Window;
             this.lblPointTL.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblPointTL.Location = new System.Drawing.Point(5, 20);
+            this.lblPointTL.Location = new System.Drawing.Point(5, 17);
             this.lblPointTL.Margin = new System.Windows.Forms.Padding(2);
             this.lblPointTL.Name = "lblPointTL";
             this.lblPointTL.Size = new System.Drawing.Size(120, 23);
@@ -171,7 +175,7 @@ namespace NDispWin
             // pbZPathDot
             // 
             this.pbZPathDot.Image = global::NDispWin.Properties.Resources.ZPathDot2;
-            this.pbZPathDot.Location = new System.Drawing.Point(6, 48);
+            this.pbZPathDot.Location = new System.Drawing.Point(6, 62);
             this.pbZPathDot.Name = "pbZPathDot";
             this.pbZPathDot.Size = new System.Drawing.Size(255, 212);
             this.pbZPathDot.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -193,7 +197,7 @@ namespace NDispWin
             // btnSetPtBR
             // 
             this.btnSetPtBR.AccessibleDescription = "Set";
-            this.btnSetPtBR.Location = new System.Drawing.Point(167, 265);
+            this.btnSetPtBR.Location = new System.Drawing.Point(167, 279);
             this.btnSetPtBR.Margin = new System.Windows.Forms.Padding(2);
             this.btnSetPtBR.Name = "btnSetPtBR";
             this.btnSetPtBR.Size = new System.Drawing.Size(40, 30);
@@ -205,7 +209,7 @@ namespace NDispWin
             // btnGotoPtBR
             // 
             this.btnGotoPtBR.AccessibleDescription = "Goto";
-            this.btnGotoPtBR.Location = new System.Drawing.Point(211, 265);
+            this.btnGotoPtBR.Location = new System.Drawing.Point(211, 279);
             this.btnGotoPtBR.Margin = new System.Windows.Forms.Padding(2);
             this.btnGotoPtBR.Name = "btnGotoPtBR";
             this.btnGotoPtBR.Size = new System.Drawing.Size(50, 30);
@@ -230,7 +234,7 @@ namespace NDispWin
             // 
             this.lblPointBR.BackColor = System.Drawing.SystemColors.Window;
             this.lblPointBR.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblPointBR.Location = new System.Drawing.Point(43, 269);
+            this.lblPointBR.Location = new System.Drawing.Point(43, 280);
             this.lblPointBR.Margin = new System.Windows.Forms.Padding(2);
             this.lblPointBR.Name = "lblPointBR";
             this.lblPointBR.Size = new System.Drawing.Size(120, 23);
@@ -379,7 +383,7 @@ namespace NDispWin
             // btn_Cancel
             // 
             this.btn_Cancel.AccessibleDescription = "Cancel";
-            this.btn_Cancel.Location = new System.Drawing.Point(411, 575);
+            this.btn_Cancel.Location = new System.Drawing.Point(411, 596);
             this.btn_Cancel.Margin = new System.Windows.Forms.Padding(2);
             this.btn_Cancel.Name = "btn_Cancel";
             this.btn_Cancel.Padding = new System.Windows.Forms.Padding(3);
@@ -392,7 +396,7 @@ namespace NDispWin
             // btn_OK
             // 
             this.btn_OK.AccessibleDescription = "OK";
-            this.btn_OK.Location = new System.Drawing.Point(332, 575);
+            this.btn_OK.Location = new System.Drawing.Point(332, 596);
             this.btn_OK.Margin = new System.Windows.Forms.Padding(2);
             this.btn_OK.Name = "btn_OK";
             this.btn_OK.Padding = new System.Windows.Forms.Padding(3);
@@ -674,7 +678,7 @@ namespace NDispWin
             this.groupBox1.Controls.Add(this.lblHead1DefVolume);
             this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.label10);
-            this.groupBox1.Location = new System.Drawing.Point(8, 426);
+            this.groupBox1.Location = new System.Drawing.Point(8, 447);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(478, 144);
             this.groupBox1.TabIndex = 199;
@@ -876,11 +880,33 @@ namespace NDispWin
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Reference";
             // 
+            // lblMPointTL
+            // 
+            this.lblMPointTL.AccessibleDescription = "";
+            this.lblMPointTL.Location = new System.Drawing.Point(5, 40);
+            this.lblMPointTL.Margin = new System.Windows.Forms.Padding(2);
+            this.lblMPointTL.Name = "lblMPointTL";
+            this.lblMPointTL.Size = new System.Drawing.Size(120, 14);
+            this.lblMPointTL.TabIndex = 206;
+            this.lblMPointTL.Text = "-999.999, -999.999";
+            this.lblMPointTL.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblMPointBR
+            // 
+            this.lblMPointBR.AccessibleDescription = "";
+            this.lblMPointBR.Location = new System.Drawing.Point(43, 301);
+            this.lblMPointBR.Margin = new System.Windows.Forms.Padding(2);
+            this.lblMPointBR.Name = "lblMPointBR";
+            this.lblMPointBR.Size = new System.Drawing.Size(120, 14);
+            this.lblMPointBR.TabIndex = 207;
+            this.lblMPointBR.Text = "-999.999, -999.999";
+            this.lblMPointBR.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // frmDispProg_ZPath
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(492, 623);
+            this.ClientSize = new System.Drawing.Size(492, 642);
             this.ControlBox = false;
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.lblSpeed2Ratio);
@@ -998,5 +1024,7 @@ namespace NDispWin
         private System.Windows.Forms.Button btnSetRefXY;
         private System.Windows.Forms.Button btnGotoRefXY;
         private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Label lblMPointBR;
+        private System.Windows.Forms.Label lblMPointTL;
     }
 }
