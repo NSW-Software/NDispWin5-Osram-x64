@@ -21,8 +21,8 @@ namespace NDispWin
             Application.ThreadException += (s, e) =>
             {
                 Log.AddToEventLog("Unhandled Error (Non-UI Thread)" + e.Exception.Message);
-                MessageBox.Show(e.Exception.Message, "Unhandled Error (UI Thread)",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //MessageBox.Show(e.Exception.Message, "Unhandled Error (UI Thread)",
+                //    MessageBoxButtons.OK, MessageBoxIcon.Error);
             };
 
             AppDomain.CurrentDomain.UnhandledException += (s, e) =>
@@ -30,8 +30,8 @@ namespace NDispWin
                 if (e.ExceptionObject is Exception ex)
                 {
                     Log.AddToEventLog("Unhandled Error (Non-UI Thread)" + ex.Message);
-                    MessageBox.Show(ex.Message, "Unhandled Error (Non-UI Thread)",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    //MessageBox.Show(ex.Message, "Unhandled Error (Non-UI Thread)",
+                    //    MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             };
 

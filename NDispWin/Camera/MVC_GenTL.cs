@@ -328,8 +328,14 @@ namespace MVC
                                 int stride = stDisplayInfo.nWidth + (stDisplayInfo.nWidth % 4);
 
                                 mImage = new Image<Gray, byte>(stDisplayInfo.nWidth, stDisplayInfo.nHeight, stride, stDisplayInfo.pData);
-                                m_emguBox.Image = mImage;
-                                m_emguBox.Invalidate();
+                                if (m_emguBox != null)
+                                {
+                                    m_emguBox.Image?.Dispose();
+                                    m_emguBox.Image = mImage.Copy();
+                                    m_emguBox.Invalidate();
+                                }
+                                //m_emguBox.Image = mImage;
+                                //m_emguBox.Invalidate();
                             }
                             catch (Exception ex)
                             {

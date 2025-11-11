@@ -877,7 +877,7 @@ namespace NDispWin
             {
                 Define_Run.StopDispTable();
             }
-            TFSecsGem.Eq.ProcessState = EProcessState.Idle;
+            TFSecsGem.Eq.ProcessState = EProcessState.Idle;       
         }
         private void btn_Back_Click(object sender, EventArgs e)
         {
@@ -996,13 +996,21 @@ namespace NDispWin
                 }
             });
 
-            await Task.Run(() =>
+            //await Task.Run(() =>
+            //{
+            //    Task.WaitAll(taskConv, taskDisp);
+            //    convStatus = taskConv.Status;
+            //    dispStatus = taskDisp.Status;
+            //});
+            try
             {
-                Task.WaitAll(taskConv, taskDisp);
+                await Task.WhenAll(taskConv, taskDisp);
+            }
+            finally
+            {
                 convStatus = taskConv.Status;
                 dispStatus = taskDisp.Status;
-            });
-
+            }
             TaskConv.In.Smema_DO_McReady = false;
             TaskConv.Out.Smema_DO_BdReady = false;
 

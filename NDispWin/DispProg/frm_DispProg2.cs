@@ -101,10 +101,10 @@ namespace NDispWin
             lv_Program.Enabled = b_ProgEdit;
 
             //Application.OpenForms[0].Invoke(new Action(() =>
-                Invoke(new Action(() =>
-                {
-                    lv_Program.ForeColor = b_ProgEdit ? Color.Black : Color.DarkGray;
-                }));
+            Invoke(new Action(() =>
+            {
+                lv_Program.ForeColor = b_ProgEdit ? Color.Black : Color.DarkGray;
+            }));
 
             tsbtn_ProgLineAdd.Enabled = b_ProgEdit;
             tsbtn_ProgLineInsert.Enabled = b_ProgEdit;
@@ -2944,7 +2944,7 @@ namespace NDispWin
         {
             DispProg.TR_Run();
             //Intf.CmdSend("MonitorPressureInRange", 0);
-            frm_Main.b_MonitorLowPressure = false;
+            //frm_Main.b_MonitorLowPressure = false;
         }
         private void TaskCycleRun()
         {
@@ -3018,6 +3018,7 @@ namespace NDispWin
             }
             finally
             {
+                frm_Main.b_MonitorLowPressure = false;
                 DefineSafety.DoorLock = false;
                 this.Enable(true);
             }
@@ -3592,6 +3593,16 @@ namespace NDispWin
         {
 
         }
+
+      
+        private Task OnUI(Action action)
+        {
+            var tcs = new TaskCompletionSource<bool>();
+            if (!IsHandleCreated || IsDisposed) { tcs.SetException(new ObjectDisposedException(Name)); return tcs.Task; }
+            BeginInvoke(new Action(() => { try { action(); tcs.SetResult(true); } catch (Exception ex) { tcs.SetException(ex); } }));
+            return tcs.Task;
+        }
+
     }
 }
  
