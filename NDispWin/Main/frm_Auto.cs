@@ -245,7 +245,14 @@ namespace NDispWin
                 InfoPanel_Map.Dispose();
             }
 
+            tmr_DateTime_100?.Dispose();
+            tmr_1s?.Dispose();
+            tmr_TR_Buttons?.Dispose();
+            tmr_Perf?.Dispose();
+
             Event.DEBUG_INFO.Set("Auto Form Close", $"TaskConvStatus={convStatus}, TaskDispStatus={dispStatus}");
+
+            this?.Dispose();
 
             GC.Collect();
         }
@@ -422,193 +429,228 @@ namespace NDispWin
 
             RefreshSubstrateGrid();
         }
+        Mutex mtx_tmr_DateTime = new Mutex();
         private void tmr_DateTime_Tick(object sender, EventArgs e)
         {
-            if (!Visible) return;
+            if (!mtx_tmr_DateTime.WaitOne((int)(tmr_DateTime_100.Interval * 0.1), false)) return;
+            try
+            {
+                if (!Visible) return;
 
-            lbl_DateTime.Text = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss tt");
-            lbl_AccessUser.Text = "[" + NUtils.UserAcc.Active.GroupName + "/" + NUtils.UserAcc.Active.UserName + "]";
+                lbl_DateTime.Text = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss tt");
+                lbl_AccessUser.Text = "[" + NUtils.UserAcc.Active.GroupName + "/" + NUtils.UserAcc.Active.UserName + "]";
 
-            UpdateDisplay();
-            UpdateStatus();
-            UpdateWaitMagStatus();
-            UpdateSecsGem();
+                UpdateDisplay();
+                UpdateStatus();
+                UpdateWaitMagStatus();
+                UpdateSecsGem();
+            }
+            finally { mtx_tmr_DateTime.ReleaseMutex(); }
+            
         }
+        Mutex mtx_tmr_TR_Buttons = new Mutex();
         private void tmr_TR_Buttons_Tick(object sender, EventArgs e)
         {
-            if (!Visible) return;
-
-            if (Define_Run.PromptButtonFocus) return;
-
-            if (Msg.Showing) return;
-
-            if (GDefineN.BtnStartValid())
+            if (!mtx_tmr_TR_Buttons.WaitOne((int)(tmr_TR_Buttons.Interval * 0.1), false)) return;
+            try
             {
-                bool bStart;
-                if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)
-                    bStart = GDefineN.DI_BtnStart;
-                else
-                    bStart = TaskGantry.BtnStart();
+                if (!Visible) return;
 
-                if (bStart)
+                if (Define_Run.PromptButtonFocus) return;
+
+                if (Msg.Showing) return;
+
+                if (GDefineN.BtnStartValid())
                 {
-                    if (btn_Start.Enabled)
-                        btn_Start_Click(sender, e);
-                }
-            }
+                    bool bStart;
+                    if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)
+                        bStart = GDefineN.DI_BtnStart;
+                    else
+                        bStart = TaskGantry.BtnStart();
 
-            if (GDefineN.BtnStopValid())
-            {
-                bool bStop;
-                if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)
-                    bStop = GDefineN.DI_BtnStop;
-                else
-                    bStop = TaskGantry.BtnStop();
-
-                if (!bStop)
-                {
-                    btn_Stop_Click(sender, e);
-                }
-            }
-        }
-        private void tmr_1s_Tick(object sender, EventArgs e)
-        {
-            int value = DispProg.Idle.Idling ? 1 : 0;
-            if (value == 1)
-            {
-                if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)
-                {
-                    if (!DefineSafety.DoorCheck_Disp(false)) return;
-                }
-
-                Define_Run.TR_StopRun();
-                DispProg.Idle.RunPurge();
-            }
-
-            #region Progam
-            lbl_Weight.Text = DispProg.Disp_Weight[0].ToString("f4") + ", " + DispProg.Disp_Weight[1].ToString("f4");
-            lbl_Flowrate.Text = TaskWeight.CurrentCal[0].ToString("f4") + ", " + TaskWeight.CurrentCal[1].ToString("f4");
-            lbl_HeadShotCount.Text = DispProg.Stats.DispCount[0].ToString() + ", " + DispProg.Stats.DispCount[1].ToString();
-
-            lbl_FrameCount.Text = DispProg.Stats.BoardCount.ToString();
-            int t = GDefine.GetTickCount() - DispProg.Stats.StartTime;
-            lbl_Elapsed.Text = ((double)t / 60000).ToString("f1");
-            #endregion
-
-            #region Pump Info
-            double DispA_BaseVol_ul = DispProg.PP_HeadA_DispBaseVol;
-            double DispB_BaseVol_ul = DispProg.PP_HeadB_DispBaseVol;
-            lbl_DA_DispBase.Text = DispA_BaseVol_ul.ToString(TaskDisp.VolumeDisplayDecimalPoint);
-            lbl_DB_DispBase.Text = DispB_BaseVol_ul.ToString(TaskDisp.VolumeDisplayDecimalPoint);
-
-            double DispA_DispAdj_ul = DispProg.PP_HeadA_DispVol_Adj;
-            double DispB_DispAdj_ul = DispProg.PP_HeadB_DispVol_Adj;
-            lbl_DA_DispAdj.Text = DispA_DispAdj_ul.ToString(TaskDisp.VolumeDisplayDecimalPoint);
-            lbl_DB_DispAdj.Text = DispB_DispAdj_ul.ToString(TaskDisp.VolumeDisplayDecimalPoint);
-
-            double DispA_VolOfst = DispProg.rt_Head1VolumeOfst;
-            double DispB_VolOfst = DispProg.rt_Head2VolumeOfst;
-            lbl_DA_DispOfst.Text = DispA_VolOfst.ToString(TaskDisp.VolumeDisplayDecimalPoint);
-            lbl_DB_DispOfst.Text = DispB_VolOfst.ToString(TaskDisp.VolumeDisplayDecimalPoint);
-
-            lbl_DA_BackSuckVol.Text = DispProg.PP_HeadA_BackSuckVol.ToString(TaskDisp.VolumeDisplayDecimalPoint);
-            lbl_DB_BackSuckVol.Text = DispProg.PP_HeadB_BackSuckVol.ToString(TaskDisp.VolumeDisplayDecimalPoint);
-
-            lbl_DA_DispTotal.Text = (DispProg.PP_HeadA_DispBaseVol + DispProg.PP_HeadA_DispVol_Adj + DispProg.rt_Head1VolumeOfst - DispProg.PP_HeadA_BackSuckVol).ToString(TaskDisp.VolumeDisplayDecimalPoint);
-            lbl_DB_DispTotal.Text = (DispProg.PP_HeadB_DispBaseVol + DispProg.PP_HeadB_DispVol_Adj + DispProg.rt_Head2VolumeOfst - DispProg.PP_HeadB_BackSuckVol).ToString(TaskDisp.VolumeDisplayDecimalPoint);
-
-            lblDADispCount.Text = Utils.GetKK(Maint.Unit.Count[0]) + " / " + Utils.GetKK(Maint.Unit.CountLimit[0]);
-            lblDBDispCount.Text = Utils.GetKK(Maint.Unit.Count[1]) + " / " + Utils.GetKK(Maint.Unit.CountLimit[1]);
-            #endregion
-
-            if (TaskDisp.Material_ExpiryPreAlertTime > 0)
-            {
-                if (DateTime.Now > TaskDisp.Material_LifePreAlert_Time && TaskDisp.Material_LifePreAlert_Time != TaskDisp.Material_Life_EndTime)
-                {
-                    btn_Stop_Click(sender, e);
-
-                    TaskDisp.Material_LifePreAlert_Time = TaskDisp.Material_Life_EndTime;
-                    Msg MsgBox = new Msg();
-                    EMsgRes MsgRes = MsgBox.Show(Messages.MATERIAL_EXPIRY_PREALERT, $"Material Expire in {TaskDisp.Material_ExpiryPreAlertTime} minutes.");
-                }
-            }
-
-            if (LotInfo2.LotActive)
-            {
-                if (TaskDisp.VolumeOfst_Protocol == TaskDisp.EVolumeOfstProtocol.OSRAM_ICC) Refresh_OsramICCPanelID(sender, e);
-            }
-        }
-        private void tmr_Perf_Tick(object sender, EventArgs e)
-        {
-            if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)
-            {
-                #region DownTime Stopwatch
-                #region MHS2
-                if (
-                    GDefineN.SystemSt == GDefineN.ESystemSt.Ready &&
-                    (GDefine.Status == EStatus.ErrorInit || NDispWin.TaskConv.Status == NDispWin.TaskConv.EConvStatus.ErrorInit)
-                    )
-                {
-                    lbl_DownTime.Text = GDefineN.UpdateDownTime();
-                }
-                else
-                {
-                    if (DLLDefine.TickCountDowntTime.IsRunning) DLLDefine.TickCountDowntTime.Stop();
-                }
-                #endregion
-                #endregion
-
-                #region Idle Time Stopwatch
-                if (
-                    GDefineN.SystemSt == GDefineN.ESystemSt.Ready &&
-                    !DispProg.TR_IsBusy() &&
-                    (NDispWin.TaskConv.Status == NDispWin.TaskConv.EConvStatus.Ready || NDispWin.TaskConv.Status == NDispWin.TaskConv.EConvStatus.Stop) &&
-                    !Define_Run.TR_IsRunning
-                    )
-                {
-                    lbl_DownTime.Text = GDefineN.UpdateDownTime();
-                }
-                else
-                {
-                    if (DLLDefine.TickCountDowntTime.IsRunning) DLLDefine.TickCountDowntTime.Stop();
-                }
-                #endregion
-            }
-
-            if (GDefine.ConveyorType == GDefine.EConveyorType.TABLE_S320A)
-            {
-                #region
-                if (
-                    GDefineN.SystemSt != GDefineN.ESystemSt.Ready &&
-                    GDefine.Status == EStatus.ErrorInit
-                    )
-                {
-                    lbl_DownTime.Text = GDefineN.UpdateDownTime();
-                }
-                else
-                {
-                    if (DLLDefine.TickCountDowntTime.IsRunning) DLLDefine.TickCountDowntTime.Stop();
-                }
-                if (GDefineN.SystemSt == GDefineN.ESystemSt.Ready && !DispProg.TR_IsBusy())
-                {
-                    lbl_IdleTime.Text = GDefineN.UpdateIdleTime();
-                }
-                else
-                {
-                    if (DLLDefine.TickCountIdleTime.IsRunning)
+                    if (bStart)
                     {
-                        DLLDefine.TickCountIdleTime.Stop();
+                        if (btn_Start.Enabled) btn_Start.PerformClick();
+                            //btn_Start_Click(sender, e);
                     }
                 }
-                #endregion
-            }
 
-            if (Define_Run.TR_IsRunning)
-            {
-                lbl_RunTime.Text = GDefineN.UpdateRunTime(false);
-                if (Msg.Showing)
+                if (GDefineN.BtnStopValid())
                 {
-                    lbl_MTTA.Text = GDefineN.UpdateMTTA();
+                    bool bStop;
+                    if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)
+                        bStop = GDefineN.DI_BtnStop;
+                    else
+                        bStop = TaskGantry.BtnStop();
+
+                    if (!bStop)
+                    {
+                        btn_Stop.PerformClick();
+                        //btn_Stop_Click(sender, e);
+                    }
+                }
+            }
+            finally { mtx_tmr_TR_Buttons.ReleaseMutex(); }
+            
+        }
+        Mutex mtx_tmr_1s = new Mutex();
+        private void tmr_1s_Tick(object sender, EventArgs e)
+        {
+            if (!mtx_tmr_1s.WaitOne((int)(tmr_1s.Interval * 0.1), false)) return;
+            try
+            {
+                int value = DispProg.Idle.Idling ? 1 : 0;
+                if (value == 1)
+                {
+                    if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)
+                    {
+                        if (!DefineSafety.DoorCheck_Disp(false)) return;
+                    }
+
+                    Define_Run.TR_StopRun();
+                    DispProg.Idle.RunPurge();
+                }
+
+                #region Progam
+                lbl_Weight.Text = DispProg.Disp_Weight[0].ToString("f4") + ", " + DispProg.Disp_Weight[1].ToString("f4");
+                lbl_Flowrate.Text = TaskWeight.CurrentCal[0].ToString("f4") + ", " + TaskWeight.CurrentCal[1].ToString("f4");
+                lbl_HeadShotCount.Text = DispProg.Stats.DispCount[0].ToString() + ", " + DispProg.Stats.DispCount[1].ToString();
+
+                lbl_FrameCount.Text = DispProg.Stats.BoardCount.ToString();
+                int t = GDefine.GetTickCount() - DispProg.Stats.StartTime;
+                lbl_Elapsed.Text = ((double)t / 60000).ToString("f1");
+                #endregion
+
+                #region Pump Info
+                double DispA_BaseVol_ul = DispProg.PP_HeadA_DispBaseVol;
+                double DispB_BaseVol_ul = DispProg.PP_HeadB_DispBaseVol;
+                lbl_DA_DispBase.Text = DispA_BaseVol_ul.ToString(TaskDisp.VolumeDisplayDecimalPoint);
+                lbl_DB_DispBase.Text = DispB_BaseVol_ul.ToString(TaskDisp.VolumeDisplayDecimalPoint);
+
+                double DispA_DispAdj_ul = DispProg.PP_HeadA_DispVol_Adj;
+                double DispB_DispAdj_ul = DispProg.PP_HeadB_DispVol_Adj;
+                lbl_DA_DispAdj.Text = DispA_DispAdj_ul.ToString(TaskDisp.VolumeDisplayDecimalPoint);
+                lbl_DB_DispAdj.Text = DispB_DispAdj_ul.ToString(TaskDisp.VolumeDisplayDecimalPoint);
+
+                double DispA_VolOfst = DispProg.rt_Head1VolumeOfst;
+                double DispB_VolOfst = DispProg.rt_Head2VolumeOfst;
+                lbl_DA_DispOfst.Text = DispA_VolOfst.ToString(TaskDisp.VolumeDisplayDecimalPoint);
+                lbl_DB_DispOfst.Text = DispB_VolOfst.ToString(TaskDisp.VolumeDisplayDecimalPoint);
+
+                lbl_DA_BackSuckVol.Text = DispProg.PP_HeadA_BackSuckVol.ToString(TaskDisp.VolumeDisplayDecimalPoint);
+                lbl_DB_BackSuckVol.Text = DispProg.PP_HeadB_BackSuckVol.ToString(TaskDisp.VolumeDisplayDecimalPoint);
+
+                lbl_DA_DispTotal.Text = (DispProg.PP_HeadA_DispBaseVol + DispProg.PP_HeadA_DispVol_Adj + DispProg.rt_Head1VolumeOfst - DispProg.PP_HeadA_BackSuckVol).ToString(TaskDisp.VolumeDisplayDecimalPoint);
+                lbl_DB_DispTotal.Text = (DispProg.PP_HeadB_DispBaseVol + DispProg.PP_HeadB_DispVol_Adj + DispProg.rt_Head2VolumeOfst - DispProg.PP_HeadB_BackSuckVol).ToString(TaskDisp.VolumeDisplayDecimalPoint);
+
+                lblDADispCount.Text = Utils.GetKK(Maint.Unit.Count[0]) + " / " + Utils.GetKK(Maint.Unit.CountLimit[0]);
+                lblDBDispCount.Text = Utils.GetKK(Maint.Unit.Count[1]) + " / " + Utils.GetKK(Maint.Unit.CountLimit[1]);
+                #endregion
+
+                if (TaskDisp.Material_ExpiryPreAlertTime > 0)
+                {
+                    if (DateTime.Now > TaskDisp.Material_LifePreAlert_Time && TaskDisp.Material_LifePreAlert_Time != TaskDisp.Material_Life_EndTime)
+                    {
+                        btn_Stop.PerformClick();
+                        //btn_Stop_Click(sender, e);
+
+                        TaskDisp.Material_LifePreAlert_Time = TaskDisp.Material_Life_EndTime;
+                        Msg MsgBox = new Msg();
+                        EMsgRes MsgRes = MsgBox.Show(Messages.MATERIAL_EXPIRY_PREALERT, $"Material Expire in {TaskDisp.Material_ExpiryPreAlertTime} minutes.");
+                    }
+                }
+
+                if (LotInfo2.LotActive)
+                {
+                    if (TaskDisp.VolumeOfst_Protocol == TaskDisp.EVolumeOfstProtocol.OSRAM_ICC) Refresh_OsramICCPanelID(sender, e);
+                }
+            }
+            finally { mtx_tmr_1s.ReleaseMutex(); }
+            
+        }
+        Mutex mtx_tmr_Perf = new Mutex();
+        private void tmr_Perf_Tick(object sender, EventArgs e)
+        {
+            if (!mtx_tmr_Perf.WaitOne((int)(tmr_Perf.Interval * 0.1), false)) return;
+            try
+            {
+                if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)
+                {
+                    #region DownTime Stopwatch
+                    #region MHS2
+                    if (
+                        GDefineN.SystemSt == GDefineN.ESystemSt.Ready &&
+                        (GDefine.Status == EStatus.ErrorInit || NDispWin.TaskConv.Status == NDispWin.TaskConv.EConvStatus.ErrorInit)
+                        )
+                    {
+                        lbl_DownTime.Text = GDefineN.UpdateDownTime();
+                    }
+                    else
+                    {
+                        if (DLLDefine.TickCountDowntTime.IsRunning) DLLDefine.TickCountDowntTime.Stop();
+                    }
+                    #endregion
+                    #endregion
+
+                    #region Idle Time Stopwatch
+                    if (
+                        GDefineN.SystemSt == GDefineN.ESystemSt.Ready &&
+                        !DispProg.TR_IsBusy() &&
+                        (NDispWin.TaskConv.Status == NDispWin.TaskConv.EConvStatus.Ready || NDispWin.TaskConv.Status == NDispWin.TaskConv.EConvStatus.Stop) &&
+                        !Define_Run.TR_IsRunning
+                        )
+                    {
+                        lbl_DownTime.Text = GDefineN.UpdateDownTime();
+                    }
+                    else
+                    {
+                        if (DLLDefine.TickCountDowntTime.IsRunning) DLLDefine.TickCountDowntTime.Stop();
+                    }
+                    #endregion
+                }
+
+                if (GDefine.ConveyorType == GDefine.EConveyorType.TABLE_S320A)
+                {
+                    #region
+                    if (
+                        GDefineN.SystemSt != GDefineN.ESystemSt.Ready &&
+                        GDefine.Status == EStatus.ErrorInit
+                        )
+                    {
+                        lbl_DownTime.Text = GDefineN.UpdateDownTime();
+                    }
+                    else
+                    {
+                        if (DLLDefine.TickCountDowntTime.IsRunning) DLLDefine.TickCountDowntTime.Stop();
+                    }
+                    if (GDefineN.SystemSt == GDefineN.ESystemSt.Ready && !DispProg.TR_IsBusy())
+                    {
+                        lbl_IdleTime.Text = GDefineN.UpdateIdleTime();
+                    }
+                    else
+                    {
+                        if (DLLDefine.TickCountIdleTime.IsRunning)
+                        {
+                            DLLDefine.TickCountIdleTime.Stop();
+                        }
+                    }
+                    #endregion
+                }
+
+                if (Define_Run.TR_IsRunning)
+                {
+                    lbl_RunTime.Text = GDefineN.UpdateRunTime(false);
+                    if (Msg.Showing)
+                    {
+                        lbl_MTTA.Text = GDefineN.UpdateMTTA();
+                    }
+                    else
+                    {
+                        if (DLLDefine.TickCountMTTATime.IsRunning)
+                        {
+                            DLLDefine.TickCountMTTATime.Stop();
+                        }
+                    }
                 }
                 else
                 {
@@ -618,13 +660,8 @@ namespace NDispWin
                     }
                 }
             }
-            else
-            {
-                if (DLLDefine.TickCountMTTATime.IsRunning)
-                {
-                    DLLDefine.TickCountMTTATime.Stop();
-                }
-            }
+            finally { mtx_tmr_Perf.ReleaseMutex(); }
+            
         }
 
         private void btn_SysInfoReset_Click(object sender, EventArgs e)
@@ -886,148 +923,156 @@ namespace NDispWin
 
         TaskStatus convStatus;
         TaskStatus dispStatus;
+
+        Mutex AutoIsRunning = new Mutex();
         private async void AutoRun()
         {
+            if (!AutoIsRunning.WaitOne(1000, false)) return;
             EnableControl(false);
-
-            var taskGeneral = Task.Run(() =>//Check StopRun conditions
-            {
-                while (Define_Run.TR_IsRunning)
-                {
-                    if (!DefineSafety.DoorCheck_All(false))
-                    {
-                        GDefine.Status = EStatus.Stop;
-                        Define_Run.TR_StopRun();
-                        DefineSafety.DoorCheck_All(true);
-                    }
-
-                    if (GDefineN.LowPressureValid() && !GDefineN.DI_InPressureInRange)
-                    {
-                        GDefine.Status = EStatus.Stop;
-                        Define_Run.TR_StopRun();
-                        Msg MsgBox = new Msg();
-                        MsgBox.Show(Messages.LOW_AIR_PRESSURE);
-                    }
-
-                    if (TaskConv.Pro.Status == TaskConv.EProcessStatus.InProcess &&
-                      TaskConv.Pro.UseVac &&
-                      !TaskConv.Pro.SensVac)
-                    {
-                        GDefine.Status = EStatus.Stop;
-                        Define_Run.TR_StopRun();
-                        Msg MsgBox = new Msg();
-                        MsgBox.Show(Messages.CONV_VACUUM_LOW);
-                    }
-
-                    if (TaskConv.LeftMode == TaskConv.ELeftMode.ElevatorZ)
-                    {
-                        if (TaskElev.Left.WaitMagChange)
-                        {
-                            if (TaskConv.Pre.Status == TaskConv.EProcessStatus.Empty &&
-                                TaskConv.Pro.Status == TaskConv.EProcessStatus.Empty &&
-                                TaskConv.Pos.Status == TaskConv.EProcessStatus.Empty &&
-                                TaskConv.Out.Status == TaskConv.EProcessStatus.Empty)
-                            {
-                                GDefine.Status = EStatus.Stop;
-                                Define_Run.TR_StopRun();
-                                Event.OP_FINISH_RUN.Set();
-                                if(TFSecsGem.SubstrateStatus.Values.All(s => s == "COMPLETE"))
-                                {
-                                    Event.OP_LOT_END.Set("LotInfo", $"{LotInfo2.sOperatorID},{LotInfo2.LotNumber},{LotInfo2.Osram.ElevenSeries},{LotInfo2.Osram.DAStartNumber}");
-                                    Msg MsgBox = new Msg();
-                                    MsgBox.Show(Messages.LOT_END_IN_MAGAZINE_EMPTY);
-                                }
-                                else
-                                {
-                                    Msg MsgBox = new Msg();
-                                    MsgBox.Show("Check Set Substrate Status.");
-                                }
-
-                            }
-                        }
-                    }
-
-                    Thread.Sleep(1000);
-                }
-            });
-
-            var taskConv = Task.Run(() =>
-            {
-                while (Define_Run.TR_IsRunning)
-                {
-                    try
-                    {
-                        if (
-                            (NDispWin.TaskConv.Status == NDispWin.TaskConv.EConvStatus.Stop) ||
-                            (NDispWin.TaskConv.Status == NDispWin.TaskConv.EConvStatus.ErrorInit) ||
-                            (NDispWin.TaskConv.LeftMode == NDispWin.TaskConv.ELeftMode.ElevatorZ && NDispWin.TaskElev.Left.Status == NDispWin.TaskElev.EElevStatus.ErrorInit) ||
-                            (NDispWin.TaskConv.RightMode == NDispWin.TaskConv.ERightMode.ElevatorZ && NDispWin.TaskElev.Right.Status == NDispWin.TaskElev.EElevStatus.ErrorInit)
-                            )
-                        {
-                            Define_Run.TR_StopRun();
-                            return;
-                        }
-
-                        TaskConv.Run();
-                        Thread.Sleep(500);
-                    }
-                    catch
-                    {
-                        Event.DEBUG_INFO.Set("TaskConv.Run", "Exception");
-                        Define_Run.TR_StopRun();
-                    }
-                }
-            });
-
-            var taskDisp = Task.Run(() =>
-            {
-                while (Define_Run.TR_IsRunning)
-                {
-                    try
-                    {
-                        Define_Run.RunDispConv();
-                        Thread.Sleep(100);
-                    }
-                    catch
-                    {
-                        Event.DEBUG_INFO.Set("TaskDisp.Run", "Exception");
-                        Define_Run.TR_StopRun();
-                    }
-                }
-            });
-
-            //await Task.Run(() =>
-            //{
-            //    Task.WaitAll(taskConv, taskDisp);
-            //    convStatus = taskConv.Status;
-            //    dispStatus = taskDisp.Status;
-            //});
             try
             {
-                await Task.WhenAll(taskConv, taskDisp);
+                var taskGeneral = Task.Run(() =>//Check StopRun conditions
+                {
+                    while (Define_Run.TR_IsRunning)
+                    {
+                        if (!DefineSafety.DoorCheck_All(false))
+                        {
+                            GDefine.Status = EStatus.Stop;
+                            Define_Run.TR_StopRun();
+                            DefineSafety.DoorCheck_All(true);
+                        }
+
+                        if (GDefineN.LowPressureValid() && !GDefineN.DI_InPressureInRange)
+                        {
+                            GDefine.Status = EStatus.Stop;
+                            Define_Run.TR_StopRun();
+                            Msg MsgBox = new Msg();
+                            MsgBox.Show(Messages.LOW_AIR_PRESSURE);
+                        }
+
+                        if (TaskConv.Pro.Status == TaskConv.EProcessStatus.InProcess &&
+                          TaskConv.Pro.UseVac &&
+                          !TaskConv.Pro.SensVac)
+                        {
+                            GDefine.Status = EStatus.Stop;
+                            Define_Run.TR_StopRun();
+                            Msg MsgBox = new Msg();
+                            MsgBox.Show(Messages.CONV_VACUUM_LOW);
+                        }
+
+                        if (TaskConv.LeftMode == TaskConv.ELeftMode.ElevatorZ)
+                        {
+                            if (TaskElev.Left.WaitMagChange)
+                            {
+                                if (TaskConv.Pre.Status == TaskConv.EProcessStatus.Empty &&
+                                    TaskConv.Pro.Status == TaskConv.EProcessStatus.Empty &&
+                                    TaskConv.Pos.Status == TaskConv.EProcessStatus.Empty &&
+                                    TaskConv.Out.Status == TaskConv.EProcessStatus.Empty)
+                                {
+                                    GDefine.Status = EStatus.Stop;
+                                    Define_Run.TR_StopRun();
+                                    Event.OP_FINISH_RUN.Set();
+                                    if (TFSecsGem.SubstrateStatus.Values.All(s => s == "COMPLETE"))
+                                    {
+                                        Event.OP_LOT_END.Set("LotInfo", $"{LotInfo2.sOperatorID},{LotInfo2.LotNumber},{LotInfo2.Osram.ElevenSeries},{LotInfo2.Osram.DAStartNumber}");
+                                        Msg MsgBox = new Msg();
+                                        MsgBox.Show(Messages.LOT_END_IN_MAGAZINE_EMPTY);
+                                    }
+                                    else
+                                    {
+                                        Msg MsgBox = new Msg();
+                                        MsgBox.Show("Check Set Substrate Status.");
+                                    }
+
+                                }
+                            }
+                        }
+
+                        Thread.Sleep(1000);
+                    }
+                });
+
+                var taskConv = Task.Run(() =>
+                {
+                    while (Define_Run.TR_IsRunning)
+                    {
+                        try
+                        {
+                            if (
+                                (NDispWin.TaskConv.Status == NDispWin.TaskConv.EConvStatus.Stop) ||
+                                (NDispWin.TaskConv.Status == NDispWin.TaskConv.EConvStatus.ErrorInit) ||
+                                (NDispWin.TaskConv.LeftMode == NDispWin.TaskConv.ELeftMode.ElevatorZ && NDispWin.TaskElev.Left.Status == NDispWin.TaskElev.EElevStatus.ErrorInit) ||
+                                (NDispWin.TaskConv.RightMode == NDispWin.TaskConv.ERightMode.ElevatorZ && NDispWin.TaskElev.Right.Status == NDispWin.TaskElev.EElevStatus.ErrorInit)
+                                )
+                            {
+                                Define_Run.TR_StopRun();
+                                return;
+                            }
+
+                            TaskConv.Run();
+                            Thread.Sleep(500);
+                        }
+                        catch
+                        {
+                            Event.DEBUG_INFO.Set("TaskConv.Run", "Exception");
+                            Define_Run.TR_StopRun();
+                        }
+                    }
+                });
+
+                var taskDisp = Task.Run(() =>
+                {
+                    while (Define_Run.TR_IsRunning)
+                    {
+                        try
+                        {
+                            Define_Run.RunDispConv();
+                            Thread.Sleep(100);
+                        }
+                        catch
+                        {
+                            Event.DEBUG_INFO.Set("TaskDisp.Run", "Exception");
+                            Define_Run.TR_StopRun();
+                        }
+                    }
+                });
+
+                //await Task.Run(() =>
+                //{
+                //    Task.WaitAll(taskConv, taskDisp);
+                //    convStatus = taskConv.Status;
+                //    dispStatus = taskDisp.Status;
+                //});
+                try
+                {
+                    await Task.WhenAll(taskConv, taskDisp);
+                }
+                finally
+                {
+                    convStatus = taskConv.Status;
+                    dispStatus = taskDisp.Status;
+                }   
+                TaskConv.In.Smema_DO_McReady = false;
+                TaskConv.Out.Smema_DO_BdReady = false;
+
+                if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)
+                {
+                    TCTwrLight.SetStatus(TwrLight.Idle);
+                }
+                DefineSafety.DoorLock = false;
+
+                EnableControl(true);
+
+                string xmlString = "";
+                string b = TFSecsGem.EncodeBinCodeStrings(true);
+                TFSecsGem.EncodeMap(b, ref xmlString);
+                TFSecsGem.SaveMapping(xmlString);
             }
             finally
             {
-                convStatus = taskConv.Status;
-                dispStatus = taskDisp.Status;
+                AutoIsRunning.ReleaseMutex();
             }
-            TaskConv.In.Smema_DO_McReady = false;
-            TaskConv.Out.Smema_DO_BdReady = false;
-
-            if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)
-            {
-                TCTwrLight.SetStatus(TwrLight.Idle);
-            }
-            DefineSafety.DoorLock = false;
-
-            EnableControl(true);
-
-            string xmlString = "";
-            string b = TFSecsGem.EncodeBinCodeStrings(true);
-            TFSecsGem.EncodeMap(b, ref xmlString);
-            TFSecsGem.SaveMapping(xmlString);
-
-
+            
         }
         private async void AutoRun_ManualLoad()
         {

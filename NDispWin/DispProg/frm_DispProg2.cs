@@ -1149,7 +1149,9 @@ namespace NDispWin
         }
         private void frm_DispProg2_FormClosed(object sender, FormClosedEventArgs e)
         {
-
+            this?.Dispose();
+            GC.Collect(); 
+            GC.WaitForPendingFinalizers();
         }
         private void frm_DispProg2_Shown(object sender, EventArgs e)
         {
