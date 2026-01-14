@@ -9,17 +9,27 @@ using System.Windows.Forms;
 using System.Threading;
 using System.IO;
 using System.Threading.Tasks;
+using System.Reflection;
 
 namespace NDispWin
 {
     public partial class frm_Auto : Form
     {
 
-        public static EventHandler<EventArgs> Event_AutoRun;
+        public static EventHandler<EventArgs> Event_StartAutoRun;
+        public static EventHandler<EventArgs> Event_StopAutoRun;
 
         public static bool RunAuto()
         {
-            Event_AutoRun?.Invoke(null, new EventArgs());
+            Console.WriteLine($"Event Trigger: {MethodBase.GetCurrentMethod().Name}");
+            Event_StartAutoRun?.Invoke(null, new EventArgs());
+            return true;
+        }
+
+        public static bool StopAuto()
+        {
+            Console.WriteLine($"Event Trigger: {MethodBase.GetCurrentMethod().Name}");
+            Event_StopAutoRun?.Invoke(null, new EventArgs());
             return true;
         }
 
@@ -53,14 +63,75 @@ namespace NDispWin
 
             tsslMonCamera.Visible = GDefine.MCameraType[0] == GDefine.ECameraType.MVSGenTL || GDefine.MCameraType[1] == GDefine.ECameraType.MVSGenTL;
 
-
-            Event_AutoRun += (a, b) =>
+            Event_StartAutoRun -= (a, b) =>
             {
                 if (!IsHandleCreated) return;
                 this.Invoke(new Action(() =>
                 {
+                    if (btn_Start.InvokeRequired)
+                    {
+                        btn_Start.Invoke(new Action(() => btn_Start.PerformClick()));
+                    }
+                    else
+                    {
+                        btn_Start.PerformClick();
+                    }
+                    //AutoRun();
 
-                    AutoRun();
+                }));
+
+            };
+            Event_StopAutoRun -= (a, b) =>
+            {
+                if (!IsHandleCreated) return;
+                this.Invoke(new Action(() =>
+                {
+                    if (btn_Stop.InvokeRequired)
+                    {
+                        btn_Stop.Invoke(new Action(() => btn_Stop.PerformClick()));
+                    }
+                    else
+                    {
+                        btn_Stop.PerformClick();
+                    }
+                    //AutoRun();
+
+                }));
+
+            };
+
+            Event_StartAutoRun += (a, b) =>
+            {
+                if (!IsHandleCreated) return;
+                this.Invoke(new Action(() =>
+                {
+                    if (btn_Start.InvokeRequired)
+                    {
+                        btn_Start.Invoke(new Action(() => btn_Start.PerformClick()));
+                    }
+                    else
+                    {
+                        btn_Start.PerformClick();
+                    }
+                    //AutoRun();
+
+                }));
+
+            };
+            Event_StopAutoRun += (a, b) =>
+            {
+                if (!IsHandleCreated) return;
+                this.Invoke(new Action(() =>
+                {
+                    if (btn_Stop.InvokeRequired)
+                    {
+                        btn_Stop.Invoke(new Action(() => btn_Stop.PerformClick()));
+                    }
+                    else
+                    {
+                        btn_Stop.PerformClick();
+                    }
+                    //AutoRun();
 
                 }));
 
@@ -470,7 +541,7 @@ namespace NDispWin
 
                     if (bStart)
                     {
-                        if (btn_Start.Enabled) btn_Start.PerformClick();
+                        if (btn_Start.Enabled) RunAuto();//btn_Start.PerformClick();
                             //btn_Start_Click(sender, e);
                     }
                 }
@@ -485,7 +556,8 @@ namespace NDispWin
 
                     if (!bStop)
                     {
-                        btn_Stop.PerformClick();
+                        StopAuto();
+                        //btn_Stop.PerformClick();
                         //btn_Stop_Click(sender, e);
                     }
                 }
