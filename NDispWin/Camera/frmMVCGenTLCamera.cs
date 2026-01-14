@@ -118,7 +118,8 @@ namespace NDispWin
         }
         private void frmMVCGenTLCamera_FormClosed(object sender, FormClosedEventArgs e)
         {
-
+            this?.Dispose();
+            GC.Collect();
         }
 
         private void tsbtn_Cam1_Click(object sender, EventArgs e)
