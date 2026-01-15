@@ -1031,7 +1031,7 @@ namespace NDispWin
                 if (!File.Exists(outputFile))
                 {
                     Msg MsgBox = new Msg();
-                    EMsgRes Resp = MsgBox.Show($"Output File: {outputFile} is not found.");
+                    EMsgRes Resp = MsgBox.Show($"Output File(Dispense_Wgt): {outputFile} is not found.");
                     return false;
                 }
 
@@ -1062,12 +1062,12 @@ namespace NDispWin
 
             //Run Pass1
             {
-                string inputFile = $"{TaskDisp.OsramICC_InputPath}\\{e11series}_{dAStartNo}__.xml";
+                string inputFile = $"{TaskDisp.OsramICC_InputPath}\\{e11series}_{dAStartNo}.xml";
 
                 if (!File.Exists(inputFile))
                 {
                     Msg MsgBox = new Msg();
-                    EMsgRes Resp = MsgBox.Show($"Input File: {inputFile} is not found.");
+                    EMsgRes Resp = MsgBox.Show($"Input File(Setting_DC):{inputFile} is not found.");
                     return false;
                 }
 
