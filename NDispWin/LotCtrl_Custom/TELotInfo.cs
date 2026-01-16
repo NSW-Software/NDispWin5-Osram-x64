@@ -113,6 +113,7 @@ namespace NDispWin
             }
             public static void LoadSetup()
             {
+                return;
                 string fName = SetupFile;
 
                 if (!Directory.Exists(Path.GetDirectoryName(fName))) Directory.CreateDirectory(Path.GetDirectoryName(fName));

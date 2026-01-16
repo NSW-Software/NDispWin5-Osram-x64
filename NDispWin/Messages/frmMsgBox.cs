@@ -79,26 +79,38 @@ namespace NDispWin
         //}
         public void SetErrCode(TEMessage msg, string exMsg, EMsgBtn msgBtn)
         {
-            this.msg = new TEMessage(msg);
-            this.ExMsg = exMsg;
-            this.MsgBtn = msgBtn;
+            try
+            {
+                this.msg = new TEMessage(msg);
+                this.ExMsg = exMsg;
+                this.MsgBtn = msgBtn;
 
-            //GDefine.sgc2.SendAlarmSet($"{msg.Code:d4},{msg.Desc}");
-            TFSecsGem.SendAlarm_ARS(msg, true);
-            NUtils.RegistryWR Reg = new NUtils.RegistryWR("SOFTWARE");
-            Reg.WriteKey("NSWAUTOMATION_MSG", "DATETIME", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
-            Reg.WriteKey("NSWAUTOMATION_MSG", "ERRCODE", $"{msg.Code:d4}");
-            Reg.WriteKey("NSWAUTOMATION_MSG", "DESC", msg.Desc);
-            Reg.WriteKey("NSWAUTOMATION_MSG", "CACT", msg.CAct);
-            Reg.WriteKey("NSWAUTOMATION_MSG", "EXMSG", exMsg);
-            Reg.WriteKey("NSWAUTOMATION_MSG", "TYPE", msg.Type.ToString());
+                //GDefine.sgc2.SendAlarmSet($"{msg.Code:d4},{msg.Desc}");
+                TFSecsGem.SendAlarm_ARS(msg, true);
+                NUtils.RegistryWR Reg = new NUtils.RegistryWR("SOFTWARE");
+                Reg.WriteKey("NSWAUTOMATION_MSG", "DATETIME", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                Reg.WriteKey("NSWAUTOMATION_MSG", "ERRCODE", $"{msg.Code:d4}");
+                Reg.WriteKey("NSWAUTOMATION_MSG", "DESC", msg.Desc);
+                Reg.WriteKey("NSWAUTOMATION_MSG", "CACT", msg.CAct);
+                Reg.WriteKey("NSWAUTOMATION_MSG", "EXMSG", exMsg);
+                Reg.WriteKey("NSWAUTOMATION_MSG", "TYPE", msg.Type.ToString());
+            }
+            catch (Exception ex) { }
+            
         }
 
         private void frm_Msg_Load(object sender, EventArgs e)
         {
-            AppLanguage.Func2.UpdateText(this);
+            try
+            {
+                AppLanguage.Func2.UpdateText(this);
 
-            UpdateMsg();
+                UpdateMsg();
+            }catch(Exception ex) { }
+            finally
+            {
+                this.Activate();
+            }
         }
         private void frm_Msg_FormClosed(object sender, FormClosedEventArgs e)
         {
