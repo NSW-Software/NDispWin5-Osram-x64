@@ -4229,6 +4229,13 @@ namespace NDispWin
                         case GDefine.EGantryConfig.XY_ZX2Y2_Z2:
                             #region
                             {
+                                #region Unlock Door for cleaning
+                                DefineSafety.DoorLock = false;
+                                Msg doorUnlockNotify = new Msg();
+                                var waitDoorNotify = doorUnlockNotify.Show("Door Unlock before Proceeding", type: TEMessage.EType.Confirmation);
+                                DefineSafety.DoorLock = true;
+                                #endregion
+
                                 #region Move Head2 XY to Cal Pos
                                 if (!TaskDisp.TaskMoveGZZ2Up()) return false;
                                 if (!TaskGantry.SetMotionParamGXY()) return false;

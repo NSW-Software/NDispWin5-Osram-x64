@@ -291,6 +291,9 @@ namespace NDispWin
 
             UpdateProgramInfo();
             richTextBox1.Text = s;
+
+            tpPanelList.Click -= Refresh_OsramICCPanelID;
+            tpPanelList.Click += Refresh_OsramICCPanelID;
         }
         private void frm_Auto_FormClosing(object sender, FormClosingEventArgs e)
         {

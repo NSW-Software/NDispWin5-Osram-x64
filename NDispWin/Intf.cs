@@ -157,6 +157,7 @@ namespace NDispWin
             //}
             //catch { };
 
+            goto _skip;
 
             AppLanguage.Func2.WriteLangFile(new frm_MsgBox());
 
@@ -264,6 +265,8 @@ namespace NDispWin
             AppLanguage.Func2.WriteLangFile(new frmCameraSetting());
 
             AppLanguage.Func2.WriteLangFile(new frm_DispCore_Map());
+
+        _skip:
 
             DispProg.Init();
 
