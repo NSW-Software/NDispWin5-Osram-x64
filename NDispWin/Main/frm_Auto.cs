@@ -292,8 +292,8 @@ namespace NDispWin
             UpdateProgramInfo();
             richTextBox1.Text = s;
 
-            tpPanelList.Click -= Refresh_OsramICCPanelID;
-            tpPanelList.Click += Refresh_OsramICCPanelID;
+            //tpPanelList.Click -= Refresh_OsramICCPanelID;
+            //tpPanelList.Click += Refresh_OsramICCPanelID;
         }
         private void frm_Auto_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -956,24 +956,35 @@ namespace NDispWin
         }
         #endregion
 
+        bool btnStartActive = false;
         private void btn_Start_Click(object sender, EventArgs e)
         {
-            if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)
+            if (btnStartActive) return;
+            btnStartActive = true;
+            try
             {
-                if (bBurnRun)
+                if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)
                 {
-                    AutoRun_BurnRun();
+                    if (bBurnRun)
+                    {
+                        AutoRun_BurnRun();
+                    }
+                    else
+                    {
+                        Define_Run.TR_StartRun();
+                        AutoRun();
+                    }
                 }
                 else
                 {
-                    Define_Run.TR_StartRun();
-                    AutoRun();
+                    AutoRun_ManualLoad();
                 }
             }
-            else
+            finally
             {
-                AutoRun_ManualLoad();
+                btnStartActive = false;
             }
+            
         }
         private void btn_Stop_Click(object sender, EventArgs e)
         {
