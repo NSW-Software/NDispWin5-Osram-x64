@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Net;
-using System.Net.Sockets;
 using System.Net.NetworkInformation;
 using System.Threading;
-using System.Diagnostics;
+using System.Threading.Tasks;
 using ZKA;
+
+using static ZKA.MOTION_CONTROLLER;
 
 namespace ZEC3002
 {
@@ -16,7 +17,7 @@ namespace ZEC3002
         public static ZM324 zm324;
         public static ZIO3001 zio3001;
         public static ZIO3201 zio3201;
-        private static string CAN_IP = "192.168.1.100";
+        public static string CAN_IP = "192.168.1.100";
         private static bool CAN_Opened;//indicate ZEC is opened
         public static CAN_STATUS CAN_Status = CAN_STATUS.FREE;//can_status
         private static bool ZM324Device_Opened;//indicate device instance in open, open only 1x per device type
@@ -280,7 +281,7 @@ namespace ZEC3002
                         try
                         {
                             Ctrl.zm324 = new ZM324();
-                            if (!Ctrl.zm324.OpenDevice(CAN_IP))
+                            if (!ZM324_NDispWin.OpenDevice(CAN_IP))
                             {
                                 string EMsg = "[IOCTRL] ZM324 OPEN DEVICE FAIL";
                                 throw new Exception(EMsg);
@@ -303,7 +304,7 @@ namespace ZEC3002
                         try
                         {
                             Ctrl.zio3001 = new ZIO3001();
-                            if (!Ctrl.zio3001.OpenDevice(CAN_IP))
+                            if (!ZIO3001_NDispWin.OpenDevice(CAN_IP))
                             {
                                 string EMsg = "[IOCTRL] ZIO3001 OPEN DEVICE FAIL";
                                 throw new Exception(EMsg);
@@ -325,7 +326,7 @@ namespace ZEC3002
                         try
                         {
                             Ctrl.zio3201 = new ZIO3201();
-                            if (!Ctrl.zio3201.OpenDevice(CAN_IP))
+                            if (!ZIO3201_NDispWin.OpenDevice(CAN_IP))
                             {
                                 string EMsg = "[IOCTRL] ZIO3201 OPEN DEVICE FAIL";
                                 throw new Exception(EMsg);
@@ -377,22 +378,22 @@ namespace ZEC3002
                         //SetMotorParaRange(ref EIOCtrl.RYAxis);
                         //SetMotorParaRange(ref EIOCtrl.RZAxis);
 
-                        if (!Ctrl.zm324.InitMotor((uint)BoardID, ZM324.MOTOR.MOTOR1))
+                        if (!ZM324_NDispWin.InitMotor((uint)BoardID, ZM324.MOTOR.MOTOR1))
                         {
                             string EMsg = "[IOCTRL] ZM324 BOARD" + BoardID.ToString() + " INIT MOTOR 1 - FAIL";
                             throw new Exception(EMsg);
                         }
-                        if (!Ctrl.zm324.InitMotor((uint)BoardID, ZM324.MOTOR.MOTOR2))
+                        if (!ZM324_NDispWin.InitMotor((uint)BoardID, ZM324.MOTOR.MOTOR2))
                         {
                             string EMsg = "[IOCTRL] ZM324 BOARD" + BoardID.ToString() + " INIT MOTOR 2 - FAIL";
                             throw new Exception(EMsg);
                         }
-                        if (!Ctrl.zm324.InitMotor((uint)BoardID, ZM324.MOTOR.MOTOR3))
+                        if (!ZM324_NDispWin.InitMotor((uint)BoardID, ZM324.MOTOR.MOTOR3))
                         {
                             string EMsg = "[IOCTRL] ZM324 BOARD" + BoardID.ToString() + " INIT MOTOR 3 - FAIL";
                             throw new Exception(EMsg);
                         }
-                        if (!Ctrl.zm324.InitMotor((uint)BoardID, ZM324.MOTOR.MOTOR4))
+                        if (!ZM324_NDispWin.InitMotor((uint)BoardID, ZM324.MOTOR.MOTOR4))
                         {
                             string EMsg = "[IOCTRL] ZM324 BOARD" + BoardID.ToString() + " INIT MOTOR 4 - FAIL";
                             throw new Exception(EMsg);
@@ -403,7 +404,7 @@ namespace ZEC3002
                     if (DIOModel == Ctrl.TDIOModel.ZIO3001)
                     {
                         #region
-                        if (!Ctrl.zio3001.InitIO((uint)BoardID))
+                        if (!ZIO3001_NDispWin.InitIO((uint)BoardID))
                         {
                             string EMsg = "[IOCTRL] DI DEVICE ZIO3001 INIT BOARD" + BoardID.ToString() + " FAIL";
                             throw new Exception(EMsg);
@@ -414,7 +415,7 @@ namespace ZEC3002
                     if (DIOModel == Ctrl.TDIOModel.ZIO3201)
                     {
                         #region
-                        if (!Ctrl.zio3201.InitIO((uint)BoardID))
+                        if (!ZIO3201_NDispWin.InitIO((uint)BoardID))
                         {
                             string EMsg = "[IOCTRL] DI DEVICE ZIO3201 INIT BOARD" + BoardID.ToString() + " FAIL";
                             throw new Exception(EMsg);
@@ -434,13 +435,14 @@ namespace ZEC3002
         }
         public static void CloseBoard(int BoardID)
         {
+            if (!ZKAOpened[BoardID]) return;
             ZKAOpened[BoardID] = false;
 
             if (Device[BoardID] == TDIOModel.ZM324)
             {
                 try
                 {
-                    Ctrl.zm324.CloseDevice();
+                    ZM324_NDispWin.CloseDevice();
                 }
                 catch { };
                 ZM324Device_Opened = false;
@@ -451,7 +453,7 @@ namespace ZEC3002
             {
                 try
                 {
-                    Ctrl.zio3001.CloseDevice();
+                    ZIO3001_NDispWin.CloseDevice();
                 }
                 catch { };
                 ZIO3001Device_Opened = false;
@@ -462,7 +464,7 @@ namespace ZEC3002
             {
                 try
                 {
-                    Ctrl.zio3201.CloseDevice();
+                    ZIO3201_NDispWin.CloseDevice();
                 }
                 catch { };
                 ZIO3201Device_Opened = false;
@@ -634,11 +636,11 @@ namespace ZEC3002
                 switch (Input.DIOModel)
                 {
                     case TDIOModel.ZIO3001:
-                        Ctrl.zio3001.UpdateDigitalInputStatus(Input.BoardID);
+                        ZIO3001_NDispWin.UpdateDigitalInputStatus(Input.BoardID);
                         break;
                     case TDIOModel.ZIO3201:
                     default:
-                        Ctrl.zio3201.UpdateDigitalInputStatus(Input.BoardID);
+                        ZIO3201_NDispWin.UpdateDigitalInputStatus(Input.BoardID);
                         break;
                 }
 
@@ -651,11 +653,11 @@ namespace ZEC3002
                     switch (Input.DIOModel)
                     {
                         case TDIOModel.ZIO3001:
-                            CheckDone = Ctrl.zio3001.IOCheckDone(Input.BoardID);
+                            CheckDone = ZIO3001_NDispWin.IOCheckDone(Input.BoardID);
                             break;
                         case TDIOModel.ZIO3201:
                         default:
-                            CheckDone = Ctrl.zio3201.IOCheckDone(Input.BoardID);
+                            CheckDone = ZIO3201_NDispWin.IOCheckDone(Input.BoardID);
                             break;
                     }
 
@@ -671,11 +673,11 @@ namespace ZEC3002
                 switch (Input.DIOModel)
                 {
                     case TDIOModel.ZIO3001:
-                        CAN_Status = Ctrl.zio3201.GetDigitalInputStatus(Input.BoardID, Ctrl.GetZIO3201_rDIAdd(Input), out value, true);
+                        CAN_Status = ZIO3201_NDispWin.GetDigitalInputStatus(Input.BoardID, Ctrl.GetZIO3201_rDIAdd(Input), out value, true);
                         break;
                     case TDIOModel.ZIO3201:
                     default:
-                        CAN_Status = Ctrl.zio3201.GetDigitalInputStatus(Input.BoardID, Ctrl.GetZIO3201_rDIAdd(Input), out value, true);
+                        CAN_Status = ZIO3201_NDispWin.GetDigitalInputStatus(Input.BoardID, Ctrl.GetZIO3201_rDIAdd(Input), out value, true);
                         break;
                 }
                 CheckCANStatus(Input.BoardID, CAN_Status);
@@ -703,7 +705,7 @@ namespace ZEC3002
                         {
                             ZIO3001.OUTPUT DO = new ZIO3001.OUTPUT();
                             DO = Ctrl.GetZIO3001_rDOAdd(Output);
-                            Ctrl.zio3001.DigitalOut(Output.BoardID, (uint)DO, 0);
+                            ZIO3001_NDispWin.DigitalOut(Output.BoardID, (uint)DO, 0);
                             break;
                         }
                     case Ctrl.TDIOModel.ZIO3201:
@@ -711,7 +713,7 @@ namespace ZEC3002
                         {
                             //ZIO3201.OUTPUT uDO = new ZIO3201.OUTPUT();
                             ulong uDO = Ctrl.GetZIO3201_Bit(Output);
-                            Ctrl.zio3201.DigitalOut(Output.BoardID, uDO, 0);
+                            ZIO3201_NDispWin.DigitalOut(Output.BoardID, uDO, 0);
                             break;
                         }
                 }
@@ -725,11 +727,11 @@ namespace ZEC3002
                     switch (Output.DIOModel)
                     {
                         case Ctrl.TDIOModel.ZIO3001:
-                            CheckDone = Ctrl.zio3001.IOCheckDone(Output.BoardID);
+                            CheckDone = ZIO3001_NDispWin.IOCheckDone(Output.BoardID);
                             break;
                         case Ctrl.TDIOModel.ZIO3201:
                         default:
-                            CheckDone = Ctrl.zio3201.IOCheckDone(Output.BoardID);
+                            CheckDone = ZIO3201_NDispWin.IOCheckDone(Output.BoardID);
                             break;
                     }
 
@@ -748,13 +750,13 @@ namespace ZEC3002
                     case TDIOModel.ZIO3001:
                         ZIO3001.OUTPUT DO = new ZIO3001.OUTPUT();
                         DO = Ctrl.GetZIO3001_rDOAdd(Output);
-                        CAN_Status = Ctrl.zio3001.GetDigitalOutputStatus((uint)Output.BoardID, DO, out i_value, true);
+                        CAN_Status = ZIO3001_NDispWin.GetDigitalOutputStatus((uint)Output.BoardID, DO, out i_value, true);
                         break;
                     case TDIOModel.ZIO3201:
                     default:
                         ZIO3201.OUTPUT uDO = new ZIO3201.OUTPUT();
                         uDO = (ZIO3201.OUTPUT)Ctrl.GetZIO3201_rDOAdd(Output);
-                        CAN_Status = Ctrl.zio3201.GetDigitalOutputStatus((uint)Output.BoardID, uDO, out u_value, true);
+                        CAN_Status = ZIO3201_NDispWin.GetDigitalOutputStatus((uint)Output.BoardID, uDO, out u_value, true);
                         break;
                 }
                 CheckCANStatus(Output.BoardID, CAN_Status);
@@ -779,7 +781,7 @@ namespace ZEC3002
                         {
                             ZIO3001.OUTPUT DO = new ZIO3001.OUTPUT();
                             DO = Ctrl.GetZIO3001_rDOAdd(Output);
-                            Ctrl.zio3001.DigitalOut(Output.BoardID, 0, (uint)DO);
+                            ZIO3001_NDispWin.DigitalOut(Output.BoardID, 0, (uint)DO);
                             break;
                         }
                     case Ctrl.TDIOModel.ZIO3201:
@@ -787,7 +789,7 @@ namespace ZEC3002
                         {
                             //ZIO3201.OUTPUT uDO = new ZIO3201.OUTPUT();
                             ulong uDO = Ctrl.GetZIO3201_Bit(Output);
-                            Ctrl.zio3201.DigitalOut(Output.BoardID, 0, uDO);
+                            ZIO3201_NDispWin.DigitalOut(Output.BoardID, 0, uDO);
                             break;
                         }
                 }
@@ -802,11 +804,11 @@ namespace ZEC3002
                     switch (Output.DIOModel)
                     {
                         case Ctrl.TDIOModel.ZIO3001:
-                            CheckDone = Ctrl.zio3001.IOCheckDone(Output.BoardID);
+                            CheckDone = ZIO3001_NDispWin.IOCheckDone(Output.BoardID);
                             break;
                         case Ctrl.TDIOModel.ZIO3201:
                         default:
-                            CheckDone = Ctrl.zio3201.IOCheckDone(Output.BoardID);
+                            CheckDone = ZIO3201_NDispWin.IOCheckDone(Output.BoardID);
                             break;
                     }
                     if (GetTickCount() >= TOut)
@@ -824,12 +826,12 @@ namespace ZEC3002
                     case TDIOModel.ZIO3001:
                         ZIO3001.OUTPUT DO = new ZIO3001.OUTPUT();
                         DO = Ctrl.GetZIO3001_rDOAdd(Output);
-                        CAN_Status = Ctrl.zio3001.GetDigitalOutputStatus((uint)Output.BoardID, DO, out i_value, true);
+                        CAN_Status = ZIO3001_NDispWin.GetDigitalOutputStatus((uint)Output.BoardID, DO, out i_value, true);
                         break;
                     case TDIOModel.ZIO3201:
                     default:
                         ZIO3201.OUTPUT uDO = new ZIO3201.OUTPUT();
-                        CAN_Status = Ctrl.zio3201.GetDigitalOutputStatus((uint)Output.BoardID, uDO, out u_value, true);
+                        CAN_Status = ZIO3201_NDispWin.GetDigitalOutputStatus((uint)Output.BoardID, uDO, out u_value, true);
                         break;
                 }
                 CheckCANStatus(Output.BoardID, CAN_Status);
@@ -855,29 +857,29 @@ namespace ZEC3002
 
                 //Accel
                 uint MinAccel = 0;
-                zm324.GetMinProfileAccelRate((uint)Axis.BoardID, (ZM324.MOTOR)Axis.AxisID, out MinAccel, false);
+                ZM324_NDispWin.GetMinProfileAccelRate((uint)Axis.BoardID, (ZM324.MOTOR)Axis.AxisID, out MinAccel, false);
                 //CheckCANStatus(Axis.BoardID, CAN_Status);
                 Axis.MotorPara.MinAccel = MinAccel * Axis.MotorPara.DistPerPulse;
 
                 uint MaxAccel = 0;
-                zm324.GetMaxProfileAccelRate((uint)Axis.BoardID, (ZM324.MOTOR)Axis.AxisID, out MaxAccel, false);
+                ZM324_NDispWin.GetMaxProfileAccelRate((uint)Axis.BoardID, (ZM324.MOTOR)Axis.AxisID, out MaxAccel, false);
                 Axis.MotorPara.MaxAccel = MaxAccel * Axis.MotorPara.DistPerPulse; 
 
                 //Speed
                 uint MinSpeed = 0;
-                zm324.GetMinProfileSpeed((uint)Axis.BoardID, (ZM324.MOTOR)Axis.AxisID, out MinSpeed, false);
+                ZM324_NDispWin.GetMinProfileSpeed((uint)Axis.BoardID, (ZM324.MOTOR)Axis.AxisID, out MinSpeed, false);
                 Axis.MotorPara.MinSpeed = MinSpeed * Axis.MotorPara.DistPerPulse; 
 
                 uint MaxSpeed = 0;
-                zm324.GetMaxProfileSpeed((uint)Axis.BoardID, (ZM324.MOTOR)Axis.AxisID, out MaxSpeed, false);
+                ZM324_NDispWin.GetMaxProfileSpeed((uint)Axis.BoardID, (ZM324.MOTOR)Axis.AxisID, out MaxSpeed, false);
                 Axis.MotorPara.MaxSpeed = MaxSpeed * Axis.MotorPara.DistPerPulse;
 
                 uint MinConstSpeed = 0;
-                zm324.GetMinConstantSpeed((uint)Axis.BoardID, (ZM324.MOTOR)Axis.AxisID, out MinConstSpeed, false);
+                ZM324_NDispWin.GetMinConstantSpeed((uint)Axis.BoardID, (ZM324.MOTOR)Axis.AxisID, out MinConstSpeed, false);
                 Axis.MotorPara.MinConstSpeed = MinConstSpeed * Axis.MotorPara.DistPerPulse;
 
                 uint MaxConstSpeed = 0;
-                zm324.GetMaxConstantSpeed((uint)Axis.BoardID, (ZM324.MOTOR)Axis.AxisID, out MaxConstSpeed, false);
+                ZM324_NDispWin.GetMaxConstantSpeed((uint)Axis.BoardID, (ZM324.MOTOR)Axis.AxisID, out MaxConstSpeed, false);
                 Axis.MotorPara.MaxConstSpeed = MaxConstSpeed * Axis.MotorPara.DistPerPulse;
             }
         }
@@ -890,7 +892,7 @@ namespace ZEC3002
             {
                 if (Axis.DIOModel == Ctrl.TDIOModel.ZM324)
                 {
-                    if (!Ctrl.zm324.SetEnablePinHigh(Axis.BoardID, (ZM324.MOTOR)Axis.AxisID))
+                    if (!ZM324_NDispWin.SetEnablePinHigh(Axis.BoardID, (ZM324.MOTOR)Axis.AxisID))
                         throw new Exception("ZM324 - MOTOR ON FAIL");
                 }
             }
@@ -898,7 +900,7 @@ namespace ZEC3002
             {
                 if (Axis.DIOModel == Ctrl.TDIOModel.ZM324)
                 {
-                    if (!Ctrl.zm324.SetEnablePinLow(Axis.BoardID, (ZM324.MOTOR)Axis.AxisID))
+                    if (!ZM324_NDispWin.SetEnablePinLow(Axis.BoardID, (ZM324.MOTOR)Axis.AxisID))
                         throw new Exception("ZM324 - MOTOR ON FAIL");
                 }
             }
@@ -920,7 +922,7 @@ namespace ZEC3002
             {
                 if (Axis.DIOModel == Ctrl.TDIOModel.ZM324)
                 {
-                    if (!Ctrl.zm324.SetEnablePinLow(Axis.BoardID, (ZM324.MOTOR)Axis.AxisID))
+                    if (!ZM324_NDispWin.SetEnablePinLow(Axis.BoardID, (ZM324.MOTOR)Axis.AxisID))
                         throw new Exception("ZM324 - MOTOR OFF FAIL");
                 }
             }
@@ -928,7 +930,7 @@ namespace ZEC3002
             {
                 if (Axis.DIOModel == Ctrl.TDIOModel.ZM324)
                 {
-                    if (!Ctrl.zm324.SetEnablePinHigh(Axis.BoardID, (ZM324.MOTOR)Axis.AxisID))
+                    if (!ZM324_NDispWin.SetEnablePinHigh(Axis.BoardID, (ZM324.MOTOR)Axis.AxisID))
                         throw new Exception("ZM324 - MOTOR OFF FAIL");
                 }
             }
@@ -950,7 +952,7 @@ namespace ZEC3002
             Ctrl.CANMutex.WaitOne();
             try
             {
-                Ctrl.zm324.GetCurrentPosition(Axis.BoardID, (ZM324.MOTOR)Axis.AxisID, out rPos, false);
+                ZM324_NDispWin.GetCurrentPosition(Axis.BoardID, (ZM324.MOTOR)Axis.AxisID, out rPos, false);
             }
             finally
             {
@@ -972,7 +974,7 @@ namespace ZEC3002
             Ctrl.CANMutex.WaitOne();
             try
             {
-                Ctrl.zm324.SetPositionCounter(Axis.BoardID, (ZM324.MOTOR)Axis.AxisID, i_Pos);
+                ZM324_NDispWin.SetPositionCounter(Axis.BoardID, (ZM324.MOTOR)Axis.AxisID, i_Pos);
 
                 #region MotorCheckDone
                 bool CheckDone = false;
@@ -982,7 +984,7 @@ namespace ZEC3002
                     Thread.Sleep(0);
 
                     if (Axis.DIOModel == Ctrl.TDIOModel.ZM324)
-                        CheckDone = Ctrl.zm324.MotorCheckDone(Axis.BoardID, (ZM324.MOTOR)Axis.AxisID);
+                        CheckDone = ZM324_NDispWin.MotorCheckDone(Axis.BoardID, (ZM324.MOTOR)Axis.AxisID);
 
                     if (GetTickCount() >= TOut)
                     {
@@ -1035,7 +1037,7 @@ namespace ZEC3002
 
                 if (Axis.DIOModel == Ctrl.TDIOModel.ZM324)
                 {
-                    if (!Ctrl.zm324.SetTrapezoidalProfile(Axis.BoardID, (ZM324.MOTOR)Axis.AxisID, SV, DV, AC))
+                    if (!ZM324_NDispWin.SetTrapezoidalProfile(Axis.BoardID, (ZM324.MOTOR)Axis.AxisID, SV, DV, AC))
                     {
                         throw new Exception("ZM3x4 SET MOTION PARAM - FAIL");
                     }
@@ -1049,7 +1051,7 @@ namespace ZEC3002
                     Thread.Sleep(0);
 
                     if (Axis.DIOModel == Ctrl.TDIOModel.ZM324)
-                        CheckDone = Ctrl.zm324.MotorCheckDone(Axis.BoardID, (ZM324.MOTOR)Axis.AxisID);
+                        CheckDone = ZM324_NDispWin.MotorCheckDone(Axis.BoardID, (ZM324.MOTOR)Axis.AxisID);
 
                     if (GetTickCount() >= TOut)
                     {
@@ -1079,7 +1081,7 @@ namespace ZEC3002
                 int i_Pulse = (int)(Dist / Axis.MotorPara.DistPerPulse);
                 if (Axis.MotorPara.InvertDir) i_Pulse = -i_Pulse;
 
-                if (!Ctrl.zm324.ProfileMove(Axis.BoardID, (ZM324.MOTOR)Axis.AxisID,
+                if (!ZM324_NDispWin.ProfileMove(Axis.BoardID, (ZM324.MOTOR)Axis.AxisID,
                                                   ZM324.PROFILE_TYPE.TRAPEZOIDAL,
                                                   i_Pulse, 0x00, 0x00, true))
                 {
@@ -1108,7 +1110,7 @@ namespace ZEC3002
                 if (Axis.MotorPara.InvertDir) i_Tgt = -i_Tgt;
 
                 int i_Pos = 0;
-                CAN_Status = Ctrl.zm324.GetCurrentPosition(Axis.BoardID, (ZM324.MOTOR)Axis.AxisID, out i_Pos, true);
+                CAN_Status = ZM324_NDispWin.GetCurrentPosition(Axis.BoardID, (ZM324.MOTOR)Axis.AxisID, out i_Pos, true);
                 try
                 {
                     CheckCANStatus(Axis.BoardID, CAN_Status);
@@ -1117,7 +1119,7 @@ namespace ZEC3002
 
                 int i_Pulse = i_Tgt - i_Pos;
 
-                if (!Ctrl.zm324.ProfileMove(Axis.BoardID, (ZM324.MOTOR)Axis.AxisID,
+                if (!ZM324_NDispWin.ProfileMove(Axis.BoardID, (ZM324.MOTOR)Axis.AxisID,
                                                   ZM324.PROFILE_TYPE.TRAPEZOIDAL,
                                                   i_Pulse, 0x00, 0x00, true))
                 {
@@ -1147,7 +1149,7 @@ namespace ZEC3002
                 int i_Pulse = (int)(Dist / Axis.MotorPara.DistPerPulse);
                 if (Axis.MotorPara.InvertDir) i_Pulse = -i_Pulse;
 
-                zm324.ConstantSpeedMove((uint)Axis.BoardID, (ZM324.MOTOR)Axis.AxisID, i_Pulse, SP, 0x00, 0x00);
+                ZM324_NDispWin.ConstantSpeedMove((uint)Axis.BoardID, (ZM324.MOTOR)Axis.AxisID, i_Pulse, SP, 0x00, 0x00);
             }
             catch (Exception Ex)
             {
@@ -1168,7 +1170,7 @@ namespace ZEC3002
             try
             {
                 if (Axis.DIOModel == Ctrl.TDIOModel.ZM324)
-                    Ctrl.zm324.AbortMotion(Axis.BoardID, (ZM324.MOTOR)Axis.AxisID);
+                    ZM324_NDispWin.AbortMotion(Axis.BoardID, (ZM324.MOTOR)Axis.AxisID);
             }
             finally
             {
@@ -1191,7 +1193,7 @@ namespace ZEC3002
                     Thread.Sleep(0);
 
                     if (Axis.DIOModel == Ctrl.TDIOModel.ZM324)
-                        CheckDone = Ctrl.zm324.MotorCheckDone(Axis.BoardID, ZM324.MOTOR.MOTOR1);
+                        CheckDone = ZM324_NDispWin.MotorCheckDone(Axis.BoardID, ZM324.MOTOR.MOTOR1);
 
                     if (GetTickCount() >= TOut)
                     {
@@ -1214,7 +1216,7 @@ namespace ZEC3002
                     Thread.Sleep(0);
 
                     if (Axis.DIOModel == Ctrl.TDIOModel.ZM324)
-                        CheckDone = Ctrl.zm324.MotorCheckDone(Axis.BoardID, ZM324.MOTOR.MOTOR2);
+                        CheckDone = ZM324_NDispWin.MotorCheckDone(Axis.BoardID, ZM324.MOTOR.MOTOR2);
 
                     if (GetTickCount() >= TOut)
                     {
@@ -1237,7 +1239,7 @@ namespace ZEC3002
                     Thread.Sleep(0);
 
                     if (Axis.DIOModel == Ctrl.TDIOModel.ZM324)
-                        CheckDone = Ctrl.zm324.MotorCheckDone(Axis.BoardID, ZM324.MOTOR.MOTOR3);
+                        CheckDone = ZM324_NDispWin.MotorCheckDone(Axis.BoardID, ZM324.MOTOR.MOTOR3);
 
                     if (GetTickCount() >= TOut)
                     {
@@ -1260,7 +1262,7 @@ namespace ZEC3002
                     Thread.Sleep(0);
 
                     if (Axis.DIOModel == Ctrl.TDIOModel.ZM324)
-                        CheckDone = Ctrl.zm324.MotorCheckDone(Axis.BoardID, ZM324.MOTOR.MOTOR4);
+                        CheckDone = ZM324_NDispWin.MotorCheckDone(Axis.BoardID, ZM324.MOTOR.MOTOR4);
 
                     if (GetTickCount() >= TOut)
                     {
@@ -1287,22 +1289,22 @@ namespace ZEC3002
                 {
                     if (Axis.AxisID == (int)ZM324.MOTOR.MOTOR1)
                     {
-                        Busy = !Ctrl.zm324.MotorCheckDone(Axis.BoardID, ZM324.MOTOR.MOTOR1);
+                        Busy = !ZM324_NDispWin.MotorCheckDone(Axis.BoardID, ZM324.MOTOR.MOTOR1);
                     }
 
                     if (Axis.AxisID == (int)ZM324.MOTOR.MOTOR2)
                     {
-                        Busy = !Ctrl.zm324.MotorCheckDone(Axis.BoardID, ZM324.MOTOR.MOTOR2);
+                        Busy = !ZM324_NDispWin.MotorCheckDone(Axis.BoardID, ZM324.MOTOR.MOTOR2);
                     }
 
                     if (Axis.AxisID == (int)ZM324.MOTOR.MOTOR3)
                     {
-                        Busy = !Ctrl.zm324.MotorCheckDone(Axis.BoardID, ZM324.MOTOR.MOTOR3);
+                        Busy = !ZM324_NDispWin.MotorCheckDone(Axis.BoardID, ZM324.MOTOR.MOTOR3);
                     }
 
                     if (Axis.AxisID == (int)ZM324.MOTOR.MOTOR4)
                     {
-                        Busy = !Ctrl.zm324.MotorCheckDone(Axis.BoardID, ZM324.MOTOR.MOTOR4);
+                        Busy = !ZM324_NDispWin.MotorCheckDone(Axis.BoardID, ZM324.MOTOR.MOTOR4);
                     }
                 }
             }
@@ -1328,7 +1330,7 @@ namespace ZEC3002
             try
             {
                 if (Input.DIOModel == Ctrl.TDIOModel.ZM324)
-                    Ctrl.zm324.UpdateDigitalInputStatus(Input.BoardID);
+                    ZM324_NDispWin.UpdateDigitalInputStatus(Input.BoardID);
 
                 #region IOCheckDone
                 bool CheckDone = false;
@@ -1338,7 +1340,7 @@ namespace ZEC3002
                     Thread.Sleep(0);
 
                     if (Input.DIOModel == Ctrl.TDIOModel.ZM324)
-                        CheckDone = Ctrl.zm324.IOCheckDone(Input.BoardID);
+                        CheckDone = ZM324_NDispWin.IOCheckDone(Input.BoardID);
                 }
                 #endregion
 
@@ -1346,12 +1348,12 @@ namespace ZEC3002
                 if (Input.DIOModel == Ctrl.TDIOModel.ZM324)
                 {
                     if (Input.AxisID == 0)
-                        CAN_Status = Ctrl.zm324.GetDigitalInputStatus(Input.BoardID, Ctrl.GetZM324_rDIAdd(Input), out value, true);
+                        CAN_Status = ZM324_NDispWin.GetDigitalInputStatus(Input.BoardID, Ctrl.GetZM324_rDIAdd(Input), out value, true);
                     else
                         if (Input.Add == 5)
-                            CAN_Status = Ctrl.zm324.GetMotorSensorStatus(Input.BoardID, (ZM324.MOTOR)Input.AxisID, ZKA.ZM324.SENSOR.IN_POSITION, out value, false);
+                            CAN_Status = ZM324_NDispWin.GetMotorSensorStatus(Input.BoardID, (ZM324.MOTOR)Input.AxisID, ZKA.ZM324.SENSOR.IN_POSITION, out value, false);
                         else
-                            CAN_Status = Ctrl.zm324.GetMotorSensorStatus(Input.BoardID, (ZM324.MOTOR)Input.AxisID, Ctrl.GetZM324_rSDIAdd(Input), out value, true);
+                            CAN_Status = ZM324_NDispWin.GetMotorSensorStatus(Input.BoardID, (ZM324.MOTOR)Input.AxisID, Ctrl.GetZM324_rSDIAdd(Input), out value, true);
                 }
                 CheckCANStatus(Input.BoardID, CAN_Status);
 
@@ -1377,7 +1379,7 @@ namespace ZEC3002
                 {
                     ZM324.OUTPUT DO = new ZM324.OUTPUT();
                     DO = Ctrl.GetZM324_rDOAdd(Output);
-                    Ctrl.zm324.DigitalOut(Output.BoardID, (byte)DO, 0);
+                    ZM324_NDispWin.DigitalOut(Output.BoardID, (byte)DO, 0);
                 }
 
                 #region IOCheckDone
@@ -1388,7 +1390,7 @@ namespace ZEC3002
                     Thread.Sleep(0);
 
                     if (Output.DIOModel == Ctrl.TDIOModel.ZM324)
-                        CheckDone = Ctrl.zm324.IOCheckDone(Output.BoardID);
+                        CheckDone = ZM324_NDispWin.IOCheckDone(Output.BoardID);
 
                     if (GetTickCount() >= TOut)
                     {
@@ -1402,7 +1404,7 @@ namespace ZEC3002
                 #endregion
 
                 uint value = 0;
-                CAN_Status = Ctrl.zm324.GetDigitalOutputStatus((uint)Output.BoardID, Ctrl.GetZM324_rDOAdd(Output), out value, true);
+                CAN_Status = ZM324_NDispWin.GetDigitalOutputStatus((uint)Output.BoardID, Ctrl.GetZM324_rDOAdd(Output), out value, true);
                 CheckCANStatus(Output.BoardID, CAN_Status);
 
                 Output.Status = true;
@@ -1424,7 +1426,7 @@ namespace ZEC3002
                 {
                     ZM324.OUTPUT DO = new ZM324.OUTPUT();
                     DO = Ctrl.GetZM324_rDOAdd(Output);
-                    Ctrl.zm324.DigitalOut(Output.BoardID, 0, (byte)DO);
+                    ZM324_NDispWin.DigitalOut(Output.BoardID, 0, (byte)DO);
                 }
 
                 #region IOCheckDone
@@ -1435,7 +1437,7 @@ namespace ZEC3002
                     Thread.Sleep(0);
 
                     if (Output.DIOModel == Ctrl.TDIOModel.ZM324)
-                        CheckDone = Ctrl.zm324.IOCheckDone(Output.BoardID);
+                        CheckDone = ZM324_NDispWin.IOCheckDone(Output.BoardID);
 
                     if (GetTickCount() >= TOut)
                     {
@@ -1588,14 +1590,14 @@ namespace ZEC3002
                 switch (DIOModel)
                 {
                     case Ctrl.TDIOModel.ZM324:
-                        if (!Ctrl.zm324.SetPWMFrequency(BoardID, Freq))
+                        if (!ZM324_NDispWin.SetPWMFrequency(BoardID, Freq))
                         {
                             string EMsg = "ZM324 - SET FREQUENCY FAIL";
                             throw new Exception(EMsg);
                         }
                         break;
                     case Ctrl.TDIOModel.ZIO3001:
-                        if (!Ctrl.zio3001.SetPWMFrequency(BoardID, Freq))
+                        if (!ZIO3001_NDispWin.SetPWMFrequency(BoardID, Freq))
                         {
                             string EMsg = "ZIO3001 - SET FREQUENCY FAIL";
                             throw new Exception(EMsg);
@@ -1603,7 +1605,7 @@ namespace ZEC3002
                         break;
                     case Ctrl.TDIOModel.ZIO3201:
                     default:
-                        if (!Ctrl.zio3201.SetPWMFrequency(BoardID, Freq))
+                        if (!ZIO3201_NDispWin.SetPWMFrequency(BoardID, Freq))
                         {
                             string EMsg = "ZIO3201 - SET FREQUENCY FAIL";
                             throw new Exception(EMsg);
@@ -1621,14 +1623,14 @@ namespace ZEC3002
                     switch (DIOModel)
                     {
                         case Ctrl.TDIOModel.ZM324:
-                            CheckDone = Ctrl.zm324.IOCheckDone(BoardID);
+                            CheckDone = ZM324_NDispWin.IOCheckDone(BoardID);
                             break;
                         case Ctrl.TDIOModel.ZIO3001:
-                            CheckDone = Ctrl.zio3001.IOCheckDone(BoardID);
+                            CheckDone = ZIO3001_NDispWin.IOCheckDone(BoardID);
                             break;
                         case Ctrl.TDIOModel.ZIO3201:
                         default:
-                            CheckDone = Ctrl.zio3201.IOCheckDone(BoardID);
+                            CheckDone = ZIO3201_NDispWin.IOCheckDone(BoardID);
                             break;
                     }
                     if (GetTickCount() >= TOut)
@@ -1669,7 +1671,7 @@ namespace ZEC3002
                 switch (DIOModel)
                 {
                     case TDIOModel.ZIO3001:
-                        if (!Ctrl.zio3001.PWMOut(BoardID, (ZKA.ZIO3001.PWM)CH, DutyCycle))
+                        if (!ZIO3001_NDispWin.PWMOut(BoardID, (ZKA.ZIO3001.PWM)CH, DutyCycle))
                         {
                             string EMsg = "ZIO3001 - SET PWM OUT FAIL";
                             throw new Exception(EMsg);
@@ -1677,7 +1679,7 @@ namespace ZEC3002
                         break;
                     case TDIOModel.ZIO3201:
                     default:
-                        if (!Ctrl.zio3201.PWMOut(BoardID, (ZKA.ZIO3201.PWM)CH, DutyCycle))
+                        if (!ZIO3201_NDispWin.PWMOut(BoardID, (ZKA.ZIO3201.PWM)CH, DutyCycle))
                         {
                             string EMsg = "ZIO3201 - SET PWM OUT FAIL";
                             throw new Exception(EMsg);
@@ -1685,7 +1687,7 @@ namespace ZEC3002
 
                         break;
                     case TDIOModel.ZM324:
-                        if (!Ctrl.zm324.PWMOut(BoardID, (ZKA.ZM324.PWM)CH, DutyCycle))
+                        if (!ZM324_NDispWin.PWMOut(BoardID, (ZKA.ZM324.PWM)CH, DutyCycle))
                         {
                             string EMsg = "ZM324 - SET PWM OUT FAIL";
                             throw new Exception(EMsg);
@@ -1703,13 +1705,13 @@ namespace ZEC3002
                     switch (DIOModel)
                     {
                         case TDIOModel.ZIO3001:
-                            CheckDone = Ctrl.zio3001.IOCheckDone(BoardID);
+                            CheckDone = ZIO3001_NDispWin.IOCheckDone(BoardID);
                             break;
                         case TDIOModel.ZIO3201:
-                            CheckDone = Ctrl.zio3201.IOCheckDone(BoardID);
+                            CheckDone = ZIO3201_NDispWin.IOCheckDone(BoardID);
                             break;
                         case TDIOModel.ZM324:
-                            CheckDone = Ctrl.zm324.IOCheckDone(BoardID);
+                            CheckDone = ZM324_NDispWin.IOCheckDone(BoardID);
                             break;
                         default:
                             throw new Exception("DIOModel not supported.");
@@ -1751,6 +1753,732 @@ namespace ZEC3002
         {
             PWMOutput.DutyCycle = DutyCycle;
             return Ctrl.SetPWMDutyCycle(PWMOutput.BoardID, PWMOutput.DIOModel, PWMOutput.Add, DutyCycle);
+        }
+    }
+
+    public class ZM324_NDispWin
+    {
+        public static ZM324 zm324 => Ctrl.zm324;
+
+        public static bool CallDllSafe<T>(Func<T> dllcall, int timeoutMs, out T result)
+        {
+            result = default;
+            try
+            {
+                if (dllcall == null) return false;
+                var task = Task.Run(dllcall);
+                if (!task.Wait(timeoutMs))
+                {
+                    Ctrl.CloseAllBoards();
+                    return false;
+                }
+                result = task.Result;
+                return true;
+            }catch (Exception ex)
+            {
+                return false;
+            }
+            
+        }
+        public static bool CallDllSafe(Action dllcall, int timeoutMs)
+        {
+            try
+            {
+                var task = Task.Run(dllcall);
+                if (!task.Wait(timeoutMs))
+                {
+                    Ctrl.CloseAllBoards();
+                    return false;
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {  
+                return false;
+            }
+            
+        }
+        public static bool OpenDevice(string ip)
+        {
+            try
+            {
+                if (!CallDllSafe(() => zm324.OpenDevice(ip), 10000, out bool result)) return false;
+                return result;
+            }
+            catch { return false; }
+        }
+        public static bool CloseDevice()
+        {
+            try
+            {
+                if (!CallDllSafe(() => zm324.CloseDevice(), 10000)) return false;
+                return true;
+            }
+            catch { return false; }
+        }
+        public static bool InitMotor(uint boardid, ZM324.MOTOR motor)
+        {
+            try
+            {
+                if (!CallDllSafe(() => zm324.InitMotor((uint)boardid, motor), 10000, out bool result)) return false;
+                return result;
+            }
+            catch { return false; }
+        }
+
+
+        public static CAN_STATUS GetMinProfileAccelRate(uint boardId, ZM324.MOTOR axisId, out uint MinAccel, bool block)
+        {
+            MinAccel = default;
+            try
+            {
+                uint min = new uint();
+                bool finished = CallDllSafe(() =>
+                {
+                    var ok = zm324.GetMinProfileAccelRate(boardId, axisId, out uint minAccel, block);
+                    min = minAccel;
+                    return ok;
+                },
+                10000,
+                out CAN_STATUS result);
+                if (!finished) return CAN_STATUS.CONNECTION_LOST;
+                MinAccel = min;
+                return result;
+            }
+            catch { return CAN_STATUS.CONNECTION_LOST; }
+        }
+        public static CAN_STATUS GetMaxProfileAccelRate(uint boardId, ZM324.MOTOR axisId, out uint MaxAccel, bool block)
+        {
+            MaxAccel = default;
+            try
+            {
+                uint max = new uint();
+                bool finished = CallDllSafe(() =>
+                {
+                    var ok = zm324.GetMaxProfileAccelRate(boardId, axisId, out uint maxAccel, block);
+                    max = maxAccel;
+                    return ok;
+                },
+                10000,
+                out CAN_STATUS result);
+                if (!finished) return CAN_STATUS.CONNECTION_LOST;
+                MaxAccel = max;
+                return result;
+            }
+            catch { return CAN_STATUS.CONNECTION_LOST;}
+        }
+        public static CAN_STATUS GetMinProfileSpeed(uint boardId, ZM324.MOTOR axisId, out uint MinSpeed, bool block)
+        {
+            MinSpeed = default;
+            try
+            {
+                uint min = new uint();
+                bool finished = CallDllSafe(() =>
+                {
+                    var ok = zm324.GetMinProfileSpeed(boardId, axisId, out uint minSpeed, block);
+                    min = minSpeed;
+                    return ok;
+                },
+                10000,
+                out CAN_STATUS result);
+                if (!finished) return CAN_STATUS.CONNECTION_LOST;
+                MinSpeed = min;
+                return result;
+            }
+            catch { return CAN_STATUS.CONNECTION_LOST; }
+        }
+        public static CAN_STATUS GetMaxProfileSpeed(uint boardId, ZM324.MOTOR axisId, out uint MaxSpeed, bool block)
+        {
+            MaxSpeed = default;
+            try
+            {
+                uint max = new uint();
+                bool finished = CallDllSafe(() =>
+                {
+                    var ok = zm324.GetMaxProfileSpeed(boardId, axisId, out uint maxSpeed, block);
+                    max = maxSpeed;
+                    return ok;
+                },
+                10000,
+                out CAN_STATUS result);
+                if (!finished) return CAN_STATUS.CONNECTION_LOST;
+                MaxSpeed = max;
+                return result;
+            }
+            catch { return CAN_STATUS.CONNECTION_LOST; }
+        }
+
+        public static CAN_STATUS GetMinConstantSpeed(uint boardId, ZM324.MOTOR axisId, out uint MinConst, bool block)
+        {
+            MinConst = default;
+            try
+            {
+                uint min = new uint();
+                bool finished = CallDllSafe(() =>
+                {
+                    var ok = zm324.GetMinConstantSpeed(boardId, axisId, out uint minConst, block);
+                    min = minConst;
+                    return ok;
+                },
+                10000,
+                out CAN_STATUS result);
+                if (!finished) return CAN_STATUS.CONNECTION_LOST;
+                MinConst = min;
+                return result;
+            }
+            catch { return CAN_STATUS.CONNECTION_LOST; }
+        }
+        public static CAN_STATUS GetMaxConstantSpeed(uint boardId, ZM324.MOTOR axisId, out uint MaxConst, bool block)
+        {
+            MaxConst = default;
+            try
+            {
+                uint max = new uint();
+                bool finished = CallDllSafe(() =>
+                {
+                    var ok = zm324.GetMaxConstantSpeed(boardId, axisId, out uint maxConst, block);
+                    max = maxConst;
+                    return ok;
+                },
+                10000,
+                out CAN_STATUS result);
+                if (!finished) return CAN_STATUS.CONNECTION_LOST;
+                MaxConst = max;
+                return result;
+            }
+            catch { return CAN_STATUS.CONNECTION_LOST; }
+        }
+
+        public static bool SetEnablePinHigh(byte boardId, ZM324.MOTOR axisId)
+        {
+            try
+            {
+                if (!CallDllSafe(() => zm324.SetEnablePinHigh(boardId, axisId), 10000, out bool result)) return false;
+                return result;
+            }
+            catch { return false; }
+        }
+        public static bool SetEnablePinLow(byte boardId, ZM324.MOTOR axisId)
+        {
+            try
+            {
+                if (!CallDllSafe(() => zm324.SetEnablePinLow(boardId, axisId), 10000, out bool result)) return false;
+                return result;
+            }
+            catch { return false; }
+        }
+        public static CAN_STATUS GetCurrentPosition(uint boardId, ZM324.MOTOR axisId, out int RPos, bool block)
+        {
+            RPos = default;
+            try
+            {
+                int pos = new int();
+                bool finished = CallDllSafe(() =>
+                {
+                    var ok = zm324.GetCurrentPosition(boardId, axisId, out int rPos, false);
+                    pos = rPos;
+                    return ok;
+                },
+                10000,
+                out CAN_STATUS result);
+                if (!finished) return CAN_STATUS.CONNECTION_LOST;
+                RPos = pos;
+                return result;
+            }
+            catch { return CAN_STATUS.CONNECTION_LOST; }
+            
+        }
+
+        public static bool SetPositionCounter(byte boardId, ZM324.MOTOR axisId, int I_Pos) 
+        {
+            try
+            {
+                if (!CallDllSafe(() => zm324.SetPositionCounter(boardId, axisId, I_Pos), 10000, out bool result)) return false;
+                return result;
+            }
+            catch { return false; }
+        }
+
+        public static bool MotorCheckDone(byte boardId, ZM324.MOTOR axisId)
+        {
+            try
+            {
+                if (!CallDllSafe(() => zm324.MotorCheckDone(boardId, axisId), 10000, out bool result)) return false;
+                return result;
+            }catch { return false; }
+            
+        }
+        public static bool SetTrapezoidalProfile(byte boardId, ZM324.MOTOR axisId, uint init_vel, uint max_vel, uint accel)
+        {
+            try
+            {
+                if (!CallDllSafe(() => zm324.SetTrapezoidalProfile(boardId, axisId, init_vel, max_vel, accel), 10000, out bool result)) return false;
+                return result;
+            }
+            catch { return false; }
+            
+        }
+        public static bool ProfileMove(byte boardId, ZM324.MOTOR axisId, PROFILE_TYPE prof, int dist, uint hi_trig, uint low_trig, bool smooth_stop)
+        {
+            try
+            {
+                if (!CallDllSafe(() => zm324.ProfileMove(boardId, axisId, prof, dist, hi_trig, low_trig, smooth_stop), 10000, out bool result)) return false;
+                return result;
+            }
+            catch { return false; }
+        }
+
+        public static bool ConstantSpeedMove(uint boardId, ZM324.MOTOR axisId, int dist, uint speed, uint hi_trig, uint low_trig)
+        {
+            try
+            {
+                if (!CallDllSafe(() => zm324.ConstantSpeedMove(boardId, axisId, dist, speed, hi_trig, low_trig), 10000, out bool result)) return false;
+                return result;
+            }catch { return false; }
+        }
+
+        public static bool AbortMotion(byte boardId, ZM324.MOTOR axisId)
+        {
+            try
+            {
+                if (!CallDllSafe(() => zm324.AbortMotion(boardId, axisId), 10000, out bool result)) return false;
+                return result;
+            }
+            catch { return false; }
+        }
+
+        public static bool UpdateDigitalInputStatus(byte boardId)
+        {
+            try
+            {
+                if (!CallDllSafe(() => zm324.UpdateDigitalInputStatus(boardId), 10000, out bool result)) return false;
+                return result;
+            }
+            catch { return false; }
+        }
+
+        public static bool IOCheckDone(byte boardId)
+        {
+            try
+            {
+                if (!CallDllSafe(() => zm324.IOCheckDone(boardId), 10000, out bool result)) return false;
+                return result;
+            }
+            catch { return false; }
+            
+        }
+
+        public static CAN_STATUS GetDigitalInputStatus(byte boardId, ZM324.INPUT input, out uint Status, bool block)
+        {
+            Status = default;
+            try
+            {
+                uint state = new uint();
+                bool finished = CallDllSafe(() =>
+                {
+                    var ok = zm324.GetDigitalInputStatus(boardId, input, out uint status, false);
+                    state = status;
+                    return ok;
+                },
+                10000,
+                out CAN_STATUS result);
+                if (!finished) return CAN_STATUS.CONNECTION_LOST;
+                Status = state;
+                return result;
+            }
+            catch { return CAN_STATUS.CONNECTION_LOST; }
+            
+        }
+
+        public static CAN_STATUS GetMotorSensorStatus(byte boardId, ZM324.MOTOR axisId, ZM324.SENSOR sensor, out uint Value, bool block)
+        {
+            Value = default;
+            try
+            {
+                uint state = new uint();
+                bool finished = CallDllSafe(() =>
+                {
+                    var ok = zm324.GetMotorSensorStatus(boardId, axisId, sensor, out uint value, false);
+                    state = value;
+                    return ok;
+                },
+                10000,
+                out CAN_STATUS result);
+                if (!finished) return CAN_STATUS.CONNECTION_LOST;
+                Value = state;
+                return result;
+            }
+            catch { return CAN_STATUS.CONNECTION_LOST; }
+            
+        }
+
+        public static CAN_STATUS GetDigitalOutputStatus(uint boardId, ZM324.OUTPUT output, out uint Status, bool block)
+        {
+            Status = default;
+            try
+            {
+                uint state = new uint();
+                bool finished = CallDllSafe(() =>
+                {
+                    var ok = zm324.GetDigitalOutputStatus(boardId, output, out uint status, false);
+                    state = status;
+                    return ok;
+                },
+                10000,
+                out CAN_STATUS result);
+                if (!finished) return CAN_STATUS.CONNECTION_LOST;
+                Status = state;
+                return result;
+            }
+            catch { return CAN_STATUS.CONNECTION_LOST;}
+            
+        }
+
+        public static bool DigitalOut(byte boardId, byte hi_bit, byte low_bit)
+        {
+            try
+            {
+                if (!CallDllSafe(() => zm324.DigitalOut(boardId, hi_bit, low_bit), 10000, out bool result)) return false;
+                return result;
+            }
+            catch { return false; }
+            
+        }
+
+        public static bool PWMOut(byte boardId, ZM324.PWM ch, uint duty_cycle)
+        {
+            try
+            {
+                if (!CallDllSafe(() => zm324.PWMOut(boardId, ch, duty_cycle), 10000, out bool result)) return false;
+                return result;
+            }catch { return false; }
+            
+        }
+        public static bool SetPWMFrequency(uint boardId, uint frequency)
+        {
+            try
+            {
+                if (!CallDllSafe(() => zm324.SetPWMFrequency(boardId, frequency), 10000, out bool result)) return false;
+                return result;
+            }
+            catch { return false; }
+            
+        }
+
+    }
+
+    public class ZIO3001_NDispWin
+    {
+        public static ZIO3001 zio3001 => Ctrl.zio3001;
+        public static bool CallDllSafe<T>(Func<T> dllcall, int timeoutMs, out T result)
+        {
+            result = default;
+            try
+            {
+                if (dllcall == null) return false;
+                var task = Task.Run(dllcall);
+                if (!task.Wait(timeoutMs))
+                {
+                    Ctrl.CloseAllBoards();
+                    return false;
+                }
+                result = task.Result;
+                return true;
+            }catch(Exception ex)
+            {
+                return false;
+            }
+            
+        }
+        public static bool CallDllSafe(Action dllcall, int timeoutMs)
+        {
+            try
+            {
+                var task = Task.Run(dllcall);
+                if (!task.Wait(timeoutMs))
+                {
+                    Ctrl.CloseAllBoards();
+                    return false;
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+            
+        }
+        public static bool OpenDevice(string ip)
+        {
+            try
+            {
+                if (!CallDllSafe(() => zio3001.OpenDevice(ip), 10000, out bool result)) return false;
+                return result;
+            }
+            catch {  return false; }
+            
+        }
+        public static bool CloseDevice()
+        {
+            try
+            {
+                if (!CallDllSafe(() => zio3001.CloseDevice(), 10000)) return false;
+                return true;
+            }
+            catch { return false; }
+            
+        }
+        public static bool InitIO(uint boardId)
+        {
+            try
+            {
+                if (!CallDllSafe(() => zio3001.InitIO(boardId), 10000, out bool result)) return false;
+                return result;
+            }catch { return false; }
+            
+        }
+        public static bool UpdateDigitalInputStatus(uint boardId)
+        {
+            try
+            {
+                if (!CallDllSafe(() => zio3001.UpdateDigitalInputStatus(boardId), 10000, out bool result)) return false;
+                return result;
+            }
+            catch { return false; }
+            
+        }
+        public static bool IOCheckDone(uint boardId)
+        {
+            try
+            {
+                if (!CallDllSafe(() => zio3001.IOCheckDone(boardId), 10000, out bool result)) return false;
+                return result;
+            }catch{ return false; }
+            
+        }
+        public static bool DigitalOut(uint boardId, uint hi_bit, uint low_bit)
+        {
+            try
+            {
+                if (!CallDllSafe(() => zio3001.DigitalOut(boardId, hi_bit, low_bit), 10000, out bool result)) return false;
+                return result;
+            }
+            catch { return false; }
+            
+        }
+        public static CAN_STATUS GetDigitalOutputStatus(uint boardId, ZIO3001.OUTPUT output,out uint status, bool block)
+        {
+            status = default;
+            try
+            {
+                uint Status = new uint();
+                bool finished = CallDllSafe(() =>
+                {
+                    var ok = zio3001.GetDigitalOutputStatus(boardId, output, out uint value, block);
+                    Status = value;
+                    return ok;
+                },
+                10000,
+                out CAN_STATUS result);
+                if (!finished) return CAN_STATUS.CONNECTION_LOST;
+                status = Status;
+                return result;
+            }
+            catch { return CAN_STATUS.CONNECTION_LOST; }
+            
+        }
+
+        public static bool SetPWMFrequency(uint boardId, uint frequency)
+        {
+            try
+            {
+                if (!CallDllSafe(() => zio3001.SetPWMFrequency(boardId, frequency), 10000, out bool result)) return false;
+                return result;
+            }
+            catch { return false; }
+            
+        }
+
+        public static bool PWMOut(uint boardId, ZIO3001.PWM ch, uint duty_cycle)
+        {
+            try
+            {
+                if (!CallDllSafe(() => zio3001.PWMOut(boardId, ch, duty_cycle), 10000, out bool result)) return false;
+                return result;
+            }
+            catch { return false; }
+            
+        }
+
+    }
+
+    public class ZIO3201_NDispWin
+    {
+        public static ZIO3201 zio3201 => Ctrl.zio3201;
+        public static bool CallDllSafe<T>(Func<T> dllcall, int timeoutMs, out T result)
+        {
+            result = default;
+            try
+            {
+                if (dllcall == null) return false;
+                var task = Task.Run(dllcall);
+                if (!task.Wait(timeoutMs))
+                {
+                    Ctrl.CloseAllBoards();
+                    return false;
+                }
+                result = task.Result;
+                return true;
+            }catch(Exception ex)
+            {
+                return false;
+            }
+            
+        }
+        public static bool CallDllSafe(Action dllcall, int timeoutMs)
+        {
+            try
+            {
+                var task = Task.Run(dllcall);
+                if (!task.Wait(timeoutMs))
+                {
+                    Ctrl.CloseAllBoards();
+                    return false;
+                }
+                return true;
+            }catch (Exception ex)
+            {
+                return false;
+            }
+            
+        }
+        public static bool OpenDevice(string ip)
+        {
+            try
+            {
+                if (!CallDllSafe(() => zio3201.OpenDevice(ip), 10000, out bool result)) return false;
+                return result;
+            }
+            catch { return false; }
+            
+        }
+        public static bool CloseDevice() 
+        {
+            try
+            {
+                if (!CallDllSafe(() => zio3201.CloseDevice(), 10000)) return false;
+                return true;
+            }
+            catch { return false; }
+            
+        }
+
+        public static bool InitIO(uint boardId)
+        {
+            try
+            {
+                if (!CallDllSafe(() => zio3201.InitIO(boardId), 10000, out bool result)) return false;
+                return result;
+            }catch { return false; }
+            
+        }
+
+        public static bool UpdateDigitalInputStatus(uint boardId)
+        {
+            try
+            {
+                if (!CallDllSafe(() => zio3201.UpdateDigitalInputStatus(boardId), 10000, out bool result)) return false;
+                return result;
+            }
+            catch { return false; }
+            
+        }
+
+        public static bool IOCheckDone(uint boardId)
+        {
+            try
+            {
+                if (!CallDllSafe(() => zio3201.IOCheckDone(boardId), 10000, out bool result)) return false;
+                return result;
+            }
+            catch { return false; }
+            
+        }
+        public static CAN_STATUS GetDigitalInputStatus(uint boardId, ZIO3201.INPUT input, out uint status, bool block)
+        {
+            status = default;
+            try
+            {
+                uint Status = new uint();
+                bool finished = CallDllSafe(() =>
+                {
+                    var ok = zio3201.GetDigitalInputStatus(boardId, input, out uint value, block);
+                    Status = value;
+                    return ok;
+                },
+                10000,
+                out CAN_STATUS result);
+                if (!finished) return CAN_STATUS.CONNECTION_LOST;
+                status = Status;
+                return result;
+            }
+            catch { return CAN_STATUS.CONNECTION_LOST; }
+            
+        }
+
+        public static bool DigitalOut(uint boardId, ulong hi_bit, ulong low_bit)
+        {
+            try
+            {
+                if (!CallDllSafe(() => zio3201.DigitalOut(boardId, hi_bit, low_bit), 10000, out bool result)) return false;
+                return result;
+            }
+            catch { return false; }
+            
+        }
+
+        public static CAN_STATUS GetDigitalOutputStatus(uint boardId, ZIO3201.OUTPUT output, out uint status, bool block)
+        {
+            status = default;
+            try
+            {
+                uint Status = new uint();
+                bool finished = CallDllSafe(() =>
+                {
+                    var ok = zio3201.GetDigitalOutputStatus(boardId, output, out uint value, block);
+                    Status = value;
+                    return ok;
+                },
+                10000,
+                out CAN_STATUS result);
+                if (!finished) return CAN_STATUS.CONNECTION_LOST;
+                status = Status;
+                return result;
+            }
+            catch { return CAN_STATUS.CONNECTION_LOST; }
+            
+        }
+
+        public static bool SetPWMFrequency(uint boardId, uint frequency)
+        {
+            try
+            {
+                if (!CallDllSafe(() => zio3201.SetPWMFrequency(boardId, frequency), 10000, out bool result)) return false;
+                return result;
+            }
+            catch { return false; }
+            
+        }
+
+        public static bool PWMOut(uint boardId, ZIO3201.PWM ch, uint duty_cycle)
+        {
+            try
+            {
+                if (!CallDllSafe(() => zio3201.PWMOut(boardId, ch, duty_cycle), 10000, out bool result)) return false;
+                return result;
+            }
+            catch { return false; }
+            
         }
     }
 }
