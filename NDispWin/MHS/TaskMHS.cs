@@ -9,6 +9,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using System.Reflection;
+using System.Diagnostics;
 
 namespace NDispWin
 {
@@ -4189,16 +4190,31 @@ namespace NDispWin
                     {
                         TaskElev.Left.TaskRunKick = Task.Run(() => { TaskElev.Left.RunKick(ref hold); });
 
+                        var sw = new Stopwatch();
+                        sw.Restart();
                         while (true)
                         {
                             if (TaskElev.Left.TaskRunKick != null && TaskElev.Left.TaskRunKick.Status == TaskStatus.Running) break;
+                            if (sw.ElapsedMilliseconds > 3000)
+                            {
+                                Msg MsgBox = new Msg();
+                                MsgBox.Show(Messages.ELEV_PUSHER_ABNORMAL_STATE, "PUSHER START TASK TIMEOUT", EMsgBtn.smbOK);
+                                return false;
+                            }
                             Thread.Sleep(10);
-                        }; 
-
+                        };
+                        //TaskElev.Left.TaskRunKick.Wait();
+                        sw.Restart();
                         while (true)
                         {
                             if (!hold && TaskConv.In.SensPsnt) break;
                             if (TaskElev.Left.TaskRunKick.Status != TaskStatus.Running) break;
+                            if (sw.ElapsedMilliseconds > 10000)
+                            {
+                                Msg MsgBox = new Msg();
+                                MsgBox.Show(Messages.ELEV_PUSHER_ABNORMAL_STATE, "PUSHER END TASK TIMEOUT", EMsgBtn.smbOK);
+                                return false;
+                            }
                             Thread.Sleep(10);
                         }
                     }
