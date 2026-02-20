@@ -1,9 +1,11 @@
-﻿using System;
+﻿using NDispWin;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using ZKA;
@@ -1769,6 +1771,7 @@ namespace ZEC3002
                 var task = Task.Run(dllcall);
                 if (!task.Wait(timeoutMs))
                 {
+                    Log.AddToLog(dllcall.GetMethodInfo().Name.ToString() + " - Timeout. " + "Closing All Boards...");
                     Ctrl.CloseAllBoards();
                     return false;
                 }
@@ -1787,6 +1790,7 @@ namespace ZEC3002
                 var task = Task.Run(dllcall);
                 if (!task.Wait(timeoutMs))
                 {
+                    Log.AddToLog(dllcall.GetMethodInfo().Name.ToString() + " - Timeout. " + "Closing All Boards...");
                     Ctrl.CloseAllBoards();
                     return false;
                 }
@@ -2179,6 +2183,7 @@ namespace ZEC3002
                 var task = Task.Run(dllcall);
                 if (!task.Wait(timeoutMs))
                 {
+                    Log.AddToLog(dllcall.GetMethodInfo().Name.ToString() + " - Timeout. " + "Closing All Boards...");
                     Ctrl.CloseAllBoards();
                     return false;
                 }
@@ -2197,6 +2202,7 @@ namespace ZEC3002
                 var task = Task.Run(dllcall);
                 if (!task.Wait(timeoutMs))
                 {
+                    Log.AddToLog(dllcall.GetMethodInfo().Name.ToString() + " - Timeout. " + "Closing All Boards...");
                     Ctrl.CloseAllBoards();
                     return false;
                 }
@@ -2324,6 +2330,7 @@ namespace ZEC3002
                 var task = Task.Run(dllcall);
                 if (!task.Wait(timeoutMs))
                 {
+                    Log.AddToLog(dllcall.GetMethodInfo().Name.ToString() + " - Timeout. " + "Closing All Boards...");
                     Ctrl.CloseAllBoards();
                     return false;
                 }
@@ -2342,6 +2349,7 @@ namespace ZEC3002
                 var task = Task.Run(dllcall);
                 if (!task.Wait(timeoutMs))
                 {
+                    Log.AddToLog(dllcall.GetMethodInfo().Name.ToString() + " - Timeout. " + "Closing All Boards...");
                     Ctrl.CloseAllBoards();
                     return false;
                 }

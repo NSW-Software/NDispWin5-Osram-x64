@@ -8264,37 +8264,45 @@ namespace NDispWin
                             #region OSRAM_ICC
                             case ECmd.OSRAM_ICC:
                                 {
-                                    EMsg = Msg + " " + ((ECmd)CmdList.Line[Line].Cmd).ToString();
+                                    Log.AddToLog("OSRAM_ICC START" + "-" + RunMode.ToString());
+                                    try
+                                    {
+                                        EMsg = Msg + " " + ((ECmd)CmdList.Line[Line].Cmd).ToString();
 
-                                    b_Flag_ConsecutiveUnit = false;
-                                    if (LotInfo2.LotActive)
-                                    {
-                                        if (TaskDisp.VolumeOfst_Protocol == TaskDisp.EVolumeOfstProtocol.OSRAM_ICC)
+                                        b_Flag_ConsecutiveUnit = false;
+                                        if (LotInfo2.LotActive)
                                         {
-                                            string msg = "";
-                                            string tileID = DispProg.rt_Read_IDs[0, 0];
-                                            double[] newVolume = new double[2] { 0, 0 };
-                                            if (!OsramICC.Execute(tileID, LotInfo2.LotNumber, LotInfo2.Osram.ElevenSeries, LotInfo2.Osram.DAStartNumber, ref msg, ref newVolume)) goto _Pause;
-                                            TFPump.PP4.DispAmounts = new double[] { newVolume[0] + TFPump.PP4.BSuckAmounts[0], newVolume[1] + TFPump.PP4.BSuckAmounts[1] };
-                                            Event.OSRAMICC.Set($"Tile {tileID} Set Nett Volume", $"Pump1, Pump2: {newVolume[0]:f4},{newVolume[1]:f4}");
-                                        }
-                                    }
-                                    else
-                                    {
-                                        double[] newVolume = new double[2] { 0, 0 };
-                                        for (int L = Line; L < CmdList.Count; L++)
-                                        {
-                                            if (CmdList.Line[L].Cmd == ECmd.DOTS_ZPATH)
+                                            if (TaskDisp.VolumeOfst_Protocol == TaskDisp.EVolumeOfstProtocol.OSRAM_ICC)
                                             {
-                                                newVolume = new double[2] { CmdList.Line[L].DPara[18], CmdList.Line[L].DPara[19] };
-                                                LastLine = L;
-                                                break;
+                                                string msg = "";
+                                                string tileID = DispProg.rt_Read_IDs[0, 0];
+                                                double[] newVolume = new double[2] { 0, 0 };
+                                                if (!OsramICC.Execute(tileID, LotInfo2.LotNumber, LotInfo2.Osram.ElevenSeries, LotInfo2.Osram.DAStartNumber, ref msg, ref newVolume)) goto _Pause;
+                                                TFPump.PP4.DispAmounts = new double[] { newVolume[0] + TFPump.PP4.BSuckAmounts[0], newVolume[1] + TFPump.PP4.BSuckAmounts[1] };
+                                                Event.OSRAMICC.Set($"Tile {tileID} Set Nett Volume", $"Pump1, Pump2: {newVolume[0]:f4},{newVolume[1]:f4}");
                                             }
                                         }
-                                        TFPump.PP4.DispAmounts = new double[] { newVolume[0] + TFPump.PP4.BSuckAmounts[0], newVolume[1] + TFPump.PP4.BSuckAmounts[1] };
-                                        string tileID = DispProg.rt_Read_IDs[0, 0];
-                                        Event.OSRAMICC.Set($"Tile {tileID} Inactive Lot. Set Nett Volume", $"Pump1, Pump2: {newVolume[0]:f4},{newVolume[1]:f4}");
+                                        else
+                                        {
+                                            double[] newVolume = new double[2] { 0, 0 };
+                                            for (int L = Line; L < CmdList.Count; L++)
+                                            {
+                                                if (CmdList.Line[L].Cmd == ECmd.DOTS_ZPATH)
+                                                {
+                                                    newVolume = new double[2] { CmdList.Line[L].DPara[18], CmdList.Line[L].DPara[19] };
+                                                    LastLine = L;
+                                                    break;
+                                                }
+                                            }
+                                            TFPump.PP4.DispAmounts = new double[] { newVolume[0] + TFPump.PP4.BSuckAmounts[0], newVolume[1] + TFPump.PP4.BSuckAmounts[1] };
+                                            string tileID = DispProg.rt_Read_IDs[0, 0];
+                                            Event.OSRAMICC.Set($"Tile {tileID} Inactive Lot. Set Nett Volume", $"Pump1, Pump2: {newVolume[0]:f4},{newVolume[1]:f4}");
+                                        }
                                     }
+                                    finally
+                                    {
+                                        Log.AddToLog("OSRAM_ICC END" + "-" + RunMode.ToString());
+                                    }                                                                       
                                     break;
                                 }
                             #endregion
