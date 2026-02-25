@@ -9778,7 +9778,11 @@ namespace NDispWin
                                             TaskVision.PtGrey_CamLive(0);
                                     }
 
-                                    if (!ParLines.Par_Lines(ActiveLine, RunMode, f_origin_x, f_origin_y, f_origin_z)) Running = false;
+                                    if (!ParLines.Par_Lines(ActiveLine, RunMode, f_origin_x, f_origin_y, f_origin_z))
+                                    {
+                                        //Running = false;
+                                        goto _Pause;
+                                    }
                                     break;
                                 }
                             case ECmd.DOTS_ZPATH:
