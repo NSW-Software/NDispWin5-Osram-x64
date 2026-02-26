@@ -576,10 +576,24 @@ namespace NDispWin
                         Para = Para + (CmdLine.Line[i].IPara[5] > 0 ? "R " : " ");
                         if (CmdLine.Line[i].IPara[4] > 0)
                         {
-                            Para = Para + $"LWeight {CmdLine.Line[i].DPara[21]:f3} ";
+                            string unit = string.Empty;
+                            switch (CmdLine.Line[i].IPara[4])
+                            {
+                                default: break;
+                                case 1: unit = "LWeight"; break;
+                                case 2: unit = "LVolume"; break;
+                            }
+                            Para = Para + $"{unit} {CmdLine.Line[i].DPara[21]:f3} ";
                             if (CmdLine.Line[i].DPara[20] > 0) Para = Para + $", F {CmdLine.Line[i].DPara[20]:f3} ";
                             if (CmdLine.Line[i].DPara[22] > 0) Para = Para + $", L {CmdLine.Line[i].DPara[22]:f3} ";
-                            Para = Para + " mg";
+                            string siunit = string.Empty;
+                            switch (CmdLine.Line[i].IPara[4])
+                            {
+                                default: break;
+                                case 1: siunit = " mg"; break;
+                                case 2: siunit = " ul"; break;
+                            }
+                            Para = Para + siunit;
                         }
                         break;
                     #endregion
