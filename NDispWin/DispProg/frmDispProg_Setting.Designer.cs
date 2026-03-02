@@ -151,14 +151,26 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.tpAdvance = new System.Windows.Forms.TabPage();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.lblOnStartPurgePostVac = new System.Windows.Forms.Label();
+            this.label49 = new System.Windows.Forms.Label();
+            this.lblOnStartPurgeWait = new System.Windows.Forms.Label();
+            this.label59 = new System.Windows.Forms.Label();
+            this.lblOnStartPurgeTime = new System.Windows.Forms.Label();
+            this.label65 = new System.Windows.Forms.Label();
+            this.lblOnStartCleanPostVac = new System.Windows.Forms.Label();
+            this.label43 = new System.Windows.Forms.Label();
+            this.lblOnStartCleanWait = new System.Windows.Forms.Label();
+            this.label41 = new System.Windows.Forms.Label();
+            this.lblOnStartCleanTime = new System.Windows.Forms.Label();
+            this.label37 = new System.Windows.Forms.Label();
             this.cbxEvent = new System.Windows.Forms.ComboBox();
             this.label31 = new System.Windows.Forms.Label();
             this.lblOnStartCleanCount = new System.Windows.Forms.Label();
             this.label32 = new System.Windows.Forms.Label();
             this.label34 = new System.Windows.Forms.Label();
             this.label35 = new System.Windows.Forms.Label();
-            this.lblOnStartPurgeStageCount = new System.Windows.Forms.Label();
             this.lblOnStartPurgeCount = new System.Windows.Forms.Label();
+            this.lblOnStartPurgeStageCount = new System.Windows.Forms.Label();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.lblClstr2ZOfst_ = new System.Windows.Forms.Label();
             this.lblClstr2ZOfst = new System.Windows.Forms.Label();
@@ -1151,7 +1163,7 @@
             // 
             // btn_SaveBiasKernel
             // 
-            this.btn_SaveBiasKernel.Location = new System.Drawing.Point(239, 48);
+            this.btn_SaveBiasKernel.Location = new System.Drawing.Point(236, 48);
             this.btn_SaveBiasKernel.Name = "btn_SaveBiasKernel";
             this.btn_SaveBiasKernel.Size = new System.Drawing.Size(60, 23);
             this.btn_SaveBiasKernel.TabIndex = 151;
@@ -1161,7 +1173,7 @@
             // 
             // btn_LoadBiasKernel
             // 
-            this.btn_LoadBiasKernel.Location = new System.Drawing.Point(173, 48);
+            this.btn_LoadBiasKernel.Location = new System.Drawing.Point(170, 48);
             this.btn_LoadBiasKernel.Name = "btn_LoadBiasKernel";
             this.btn_LoadBiasKernel.Size = new System.Drawing.Size(60, 23);
             this.btn_LoadBiasKernel.TabIndex = 150;
@@ -1171,7 +1183,7 @@
             // 
             // btn_ClearBiasKernel
             // 
-            this.btn_ClearBiasKernel.Location = new System.Drawing.Point(107, 48);
+            this.btn_ClearBiasKernel.Location = new System.Drawing.Point(104, 48);
             this.btn_ClearBiasKernel.Name = "btn_ClearBiasKernel";
             this.btn_ClearBiasKernel.Size = new System.Drawing.Size(60, 23);
             this.btn_ClearBiasKernel.TabIndex = 149;
@@ -1193,7 +1205,7 @@
             // 
             this.lbl_BiasKernelFile.BackColor = System.Drawing.Color.White;
             this.lbl_BiasKernelFile.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbl_BiasKernelFile.Location = new System.Drawing.Point(120, 20);
+            this.lbl_BiasKernelFile.Location = new System.Drawing.Point(117, 20);
             this.lbl_BiasKernelFile.Margin = new System.Windows.Forms.Padding(2);
             this.lbl_BiasKernelFile.Name = "lbl_BiasKernelFile";
             this.lbl_BiasKernelFile.Size = new System.Drawing.Size(179, 23);
@@ -1632,21 +1644,171 @@
             // 
             this.groupBox5.AutoSize = true;
             this.groupBox5.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox5.Controls.Add(this.lblOnStartPurgePostVac);
+            this.groupBox5.Controls.Add(this.label49);
+            this.groupBox5.Controls.Add(this.lblOnStartPurgeWait);
+            this.groupBox5.Controls.Add(this.label59);
+            this.groupBox5.Controls.Add(this.lblOnStartPurgeTime);
+            this.groupBox5.Controls.Add(this.label65);
+            this.groupBox5.Controls.Add(this.lblOnStartCleanPostVac);
+            this.groupBox5.Controls.Add(this.label43);
+            this.groupBox5.Controls.Add(this.lblOnStartCleanWait);
+            this.groupBox5.Controls.Add(this.label41);
+            this.groupBox5.Controls.Add(this.lblOnStartCleanTime);
+            this.groupBox5.Controls.Add(this.label37);
             this.groupBox5.Controls.Add(this.cbxEvent);
             this.groupBox5.Controls.Add(this.label31);
             this.groupBox5.Controls.Add(this.lblOnStartCleanCount);
             this.groupBox5.Controls.Add(this.label32);
             this.groupBox5.Controls.Add(this.label34);
             this.groupBox5.Controls.Add(this.label35);
-            this.groupBox5.Controls.Add(this.lblOnStartPurgeStageCount);
             this.groupBox5.Controls.Add(this.lblOnStartPurgeCount);
+            this.groupBox5.Controls.Add(this.lblOnStartPurgeStageCount);
             this.groupBox5.Location = new System.Drawing.Point(314, 146);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.groupBox5.Size = new System.Drawing.Size(302, 141);
+            this.groupBox5.Size = new System.Drawing.Size(302, 303);
             this.groupBox5.TabIndex = 5;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "On Start";
+            // 
+            // lblOnStartPurgePostVac
+            // 
+            this.lblOnStartPurgePostVac.BackColor = System.Drawing.Color.White;
+            this.lblOnStartPurgePostVac.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblOnStartPurgePostVac.Location = new System.Drawing.Point(205, 236);
+            this.lblOnStartPurgePostVac.Margin = new System.Windows.Forms.Padding(2);
+            this.lblOnStartPurgePostVac.Name = "lblOnStartPurgePostVac";
+            this.lblOnStartPurgePostVac.Size = new System.Drawing.Size(70, 23);
+            this.lblOnStartPurgePostVac.TabIndex = 165;
+            this.lblOnStartPurgePostVac.Text = "0";
+            this.lblOnStartPurgePostVac.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblOnStartPurgePostVac.Click += new System.EventHandler(this.lblOnStartPurgePostVac_Click);
+            // 
+            // label49
+            // 
+            this.label49.Location = new System.Drawing.Point(16, 236);
+            this.label49.Margin = new System.Windows.Forms.Padding(2);
+            this.label49.Name = "label49";
+            this.label49.Size = new System.Drawing.Size(206, 23);
+            this.label49.TabIndex = 164;
+            this.label49.Text = "Purge Post Vac (ms)";
+            this.label49.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblOnStartPurgeWait
+            // 
+            this.lblOnStartPurgeWait.BackColor = System.Drawing.Color.White;
+            this.lblOnStartPurgeWait.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblOnStartPurgeWait.Location = new System.Drawing.Point(205, 209);
+            this.lblOnStartPurgeWait.Margin = new System.Windows.Forms.Padding(2);
+            this.lblOnStartPurgeWait.Name = "lblOnStartPurgeWait";
+            this.lblOnStartPurgeWait.Size = new System.Drawing.Size(70, 23);
+            this.lblOnStartPurgeWait.TabIndex = 163;
+            this.lblOnStartPurgeWait.Text = "0";
+            this.lblOnStartPurgeWait.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblOnStartPurgeWait.Click += new System.EventHandler(this.lblOnStartPurgeWait_Click);
+            // 
+            // label59
+            // 
+            this.label59.Location = new System.Drawing.Point(16, 209);
+            this.label59.Margin = new System.Windows.Forms.Padding(2);
+            this.label59.Name = "label59";
+            this.label59.Size = new System.Drawing.Size(206, 23);
+            this.label59.TabIndex = 162;
+            this.label59.Text = "Purge Wait (ms)";
+            this.label59.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblOnStartPurgeTime
+            // 
+            this.lblOnStartPurgeTime.BackColor = System.Drawing.Color.White;
+            this.lblOnStartPurgeTime.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblOnStartPurgeTime.Location = new System.Drawing.Point(205, 182);
+            this.lblOnStartPurgeTime.Margin = new System.Windows.Forms.Padding(2);
+            this.lblOnStartPurgeTime.Name = "lblOnStartPurgeTime";
+            this.lblOnStartPurgeTime.Size = new System.Drawing.Size(70, 23);
+            this.lblOnStartPurgeTime.TabIndex = 161;
+            this.lblOnStartPurgeTime.Text = "0";
+            this.lblOnStartPurgeTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblOnStartPurgeTime.Click += new System.EventHandler(this.lblOnStartPurgeTime_Click);
+            // 
+            // label65
+            // 
+            this.label65.Location = new System.Drawing.Point(16, 182);
+            this.label65.Margin = new System.Windows.Forms.Padding(2);
+            this.label65.Name = "label65";
+            this.label65.Size = new System.Drawing.Size(206, 23);
+            this.label65.TabIndex = 160;
+            this.label65.Text = "Purge Time (ms)";
+            this.label65.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblOnStartCleanPostVac
+            // 
+            this.lblOnStartCleanPostVac.BackColor = System.Drawing.Color.White;
+            this.lblOnStartCleanPostVac.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblOnStartCleanPostVac.Location = new System.Drawing.Point(206, 128);
+            this.lblOnStartCleanPostVac.Margin = new System.Windows.Forms.Padding(2);
+            this.lblOnStartCleanPostVac.Name = "lblOnStartCleanPostVac";
+            this.lblOnStartCleanPostVac.Size = new System.Drawing.Size(70, 23);
+            this.lblOnStartCleanPostVac.TabIndex = 159;
+            this.lblOnStartCleanPostVac.Text = "0";
+            this.lblOnStartCleanPostVac.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblOnStartCleanPostVac.Click += new System.EventHandler(this.lblOnStartCleanPostVac_Click);
+            // 
+            // label43
+            // 
+            this.label43.Location = new System.Drawing.Point(17, 128);
+            this.label43.Margin = new System.Windows.Forms.Padding(2);
+            this.label43.Name = "label43";
+            this.label43.Size = new System.Drawing.Size(206, 23);
+            this.label43.TabIndex = 158;
+            this.label43.Text = "Clean Post Vac (ms)";
+            this.label43.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblOnStartCleanWait
+            // 
+            this.lblOnStartCleanWait.BackColor = System.Drawing.Color.White;
+            this.lblOnStartCleanWait.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblOnStartCleanWait.Location = new System.Drawing.Point(206, 101);
+            this.lblOnStartCleanWait.Margin = new System.Windows.Forms.Padding(2);
+            this.lblOnStartCleanWait.Name = "lblOnStartCleanWait";
+            this.lblOnStartCleanWait.Size = new System.Drawing.Size(70, 23);
+            this.lblOnStartCleanWait.TabIndex = 157;
+            this.lblOnStartCleanWait.Text = "0";
+            this.lblOnStartCleanWait.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblOnStartCleanWait.Click += new System.EventHandler(this.lblOnStartCleanWait_Click);
+            // 
+            // label41
+            // 
+            this.label41.Location = new System.Drawing.Point(17, 101);
+            this.label41.Margin = new System.Windows.Forms.Padding(2);
+            this.label41.Name = "label41";
+            this.label41.Size = new System.Drawing.Size(206, 23);
+            this.label41.TabIndex = 156;
+            this.label41.Text = "Clean Wait (ms)";
+            this.label41.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblOnStartCleanTime
+            // 
+            this.lblOnStartCleanTime.BackColor = System.Drawing.Color.White;
+            this.lblOnStartCleanTime.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblOnStartCleanTime.Location = new System.Drawing.Point(206, 74);
+            this.lblOnStartCleanTime.Margin = new System.Windows.Forms.Padding(2);
+            this.lblOnStartCleanTime.Name = "lblOnStartCleanTime";
+            this.lblOnStartCleanTime.Size = new System.Drawing.Size(70, 23);
+            this.lblOnStartCleanTime.TabIndex = 155;
+            this.lblOnStartCleanTime.Text = "0";
+            this.lblOnStartCleanTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblOnStartCleanTime.Click += new System.EventHandler(this.lblOnStartCleanTime_Click);
+            // 
+            // label37
+            // 
+            this.label37.Location = new System.Drawing.Point(17, 74);
+            this.label37.Margin = new System.Windows.Forms.Padding(2);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(206, 23);
+            this.label37.TabIndex = 154;
+            this.label37.Text = "Clean Time (ms)";
+            this.label37.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // cbxEvent
             // 
@@ -1682,7 +1844,7 @@
             // 
             // label32
             // 
-            this.label32.Location = new System.Drawing.Point(5, 74);
+            this.label32.Location = new System.Drawing.Point(5, 155);
             this.label32.Margin = new System.Windows.Forms.Padding(2);
             this.label32.Name = "label32";
             this.label32.Size = new System.Drawing.Size(218, 23);
@@ -1702,7 +1864,7 @@
             // 
             // label35
             // 
-            this.label35.Location = new System.Drawing.Point(5, 101);
+            this.label35.Location = new System.Drawing.Point(5, 263);
             this.label35.Margin = new System.Windows.Forms.Padding(2);
             this.label35.Name = "label35";
             this.label35.Size = new System.Drawing.Size(218, 23);
@@ -1710,24 +1872,11 @@
             this.label35.Text = "Purge Stage (count)";
             this.label35.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // lblOnStartPurgeStageCount
-            // 
-            this.lblOnStartPurgeStageCount.BackColor = System.Drawing.Color.White;
-            this.lblOnStartPurgeStageCount.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblOnStartPurgeStageCount.Location = new System.Drawing.Point(227, 101);
-            this.lblOnStartPurgeStageCount.Margin = new System.Windows.Forms.Padding(2);
-            this.lblOnStartPurgeStageCount.Name = "lblOnStartPurgeStageCount";
-            this.lblOnStartPurgeStageCount.Size = new System.Drawing.Size(70, 23);
-            this.lblOnStartPurgeStageCount.TabIndex = 150;
-            this.lblOnStartPurgeStageCount.Text = "0";
-            this.lblOnStartPurgeStageCount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblOnStartPurgeStageCount.Click += new System.EventHandler(this.lbl_OnStartPurgeStageCount_Click);
-            // 
             // lblOnStartPurgeCount
             // 
             this.lblOnStartPurgeCount.BackColor = System.Drawing.Color.White;
             this.lblOnStartPurgeCount.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblOnStartPurgeCount.Location = new System.Drawing.Point(227, 74);
+            this.lblOnStartPurgeCount.Location = new System.Drawing.Point(227, 155);
             this.lblOnStartPurgeCount.Margin = new System.Windows.Forms.Padding(2);
             this.lblOnStartPurgeCount.Name = "lblOnStartPurgeCount";
             this.lblOnStartPurgeCount.Size = new System.Drawing.Size(70, 23);
@@ -1735,6 +1884,19 @@
             this.lblOnStartPurgeCount.Text = "0";
             this.lblOnStartPurgeCount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblOnStartPurgeCount.Click += new System.EventHandler(this.lblOnStartPurgeCount_Click);
+            // 
+            // lblOnStartPurgeStageCount
+            // 
+            this.lblOnStartPurgeStageCount.BackColor = System.Drawing.Color.White;
+            this.lblOnStartPurgeStageCount.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblOnStartPurgeStageCount.Location = new System.Drawing.Point(227, 263);
+            this.lblOnStartPurgeStageCount.Margin = new System.Windows.Forms.Padding(2);
+            this.lblOnStartPurgeStageCount.Name = "lblOnStartPurgeStageCount";
+            this.lblOnStartPurgeStageCount.Size = new System.Drawing.Size(70, 23);
+            this.lblOnStartPurgeStageCount.TabIndex = 150;
+            this.lblOnStartPurgeStageCount.Text = "0";
+            this.lblOnStartPurgeStageCount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblOnStartPurgeStageCount.Click += new System.EventHandler(this.lbl_OnStartPurgeStageCount_Click);
             // 
             // groupBox7
             // 
@@ -1802,7 +1964,7 @@
             this.groupBox8.Location = new System.Drawing.Point(6, 327);
             this.groupBox8.Name = "groupBox8";
             this.groupBox8.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.groupBox8.Size = new System.Drawing.Size(305, 89);
+            this.groupBox8.Size = new System.Drawing.Size(302, 89);
             this.groupBox8.TabIndex = 3;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Bias Kernel";
@@ -2042,5 +2204,17 @@
         private System.Windows.Forms.Label lblOnStartPurgeStageCount;
         private System.Windows.Forms.ComboBox cbxEvent;
         private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.Label lblOnStartPurgePostVac;
+        private System.Windows.Forms.Label label49;
+        private System.Windows.Forms.Label lblOnStartPurgeWait;
+        private System.Windows.Forms.Label label59;
+        private System.Windows.Forms.Label lblOnStartPurgeTime;
+        private System.Windows.Forms.Label label65;
+        private System.Windows.Forms.Label lblOnStartCleanPostVac;
+        private System.Windows.Forms.Label label43;
+        private System.Windows.Forms.Label lblOnStartCleanWait;
+        private System.Windows.Forms.Label label41;
+        private System.Windows.Forms.Label lblOnStartCleanTime;
+        private System.Windows.Forms.Label label37;
     }
 }

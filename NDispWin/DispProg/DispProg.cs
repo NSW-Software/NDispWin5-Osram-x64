@@ -758,12 +758,20 @@ namespace NDispWin
             public static int Interval = 0;//0-disable
         }
 
-        public static class OnEvent//0-OnStart,1-OnFill, 2-OnUCounter, 2-OnDCounter
+        public static class OnEvent//0-OnStart,1-OnFill, 2-OnUCounter, 3-OnDCounter
         {
-            public enum EEvent { OnStart, OnFill, OnUnitCounter, OnDispCounter, Spare_4, Spare_5, Spare_6, Spare_7, Spare_8, Spare_9};
+            public enum EEvent { OnStart, OnFill, Spare_2, Spare_3, Spare_4, Spare_5, Spare_6, Spare_7, Spare_8, Spare_9};
             //0-disable
             public static int[] PurgeCount = new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+            public static int[] PurgeTime = new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };//0 - follow common
+            public static int[] PurgeWait = new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };//0 - follow common
+            public static int[] PurgePostVac = new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };//0 - follow common
+
             public static int[] CleanCount = new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+            public static int[] CleanTime = new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };//0 - follow common
+            public static int[] CleanWait = new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };//0 - follow common
+            public static int[] CleanPostVac = new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };//0 - follow common
+
             public static int[] PurgeStageCount = new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         }
 
@@ -1583,7 +1591,13 @@ namespace NDispWin
                 writer.WriteAttributeString("name", "OnEvent");
 
                 WriteSubEntry(writer, "CleanCount", OnEvent.CleanCount);
+                WriteSubEntry(writer, "CleanTime", OnEvent.CleanTime);
+                WriteSubEntry(writer, "CleanWait", OnEvent.CleanWait);
+                WriteSubEntry(writer, "CleanPostVac", OnEvent.CleanPostVac);
                 WriteSubEntry(writer, "PurgeCount", OnEvent.PurgeCount);
+                WriteSubEntry(writer, "PurgeTime", OnEvent.CleanTime);
+                WriteSubEntry(writer, "PurgeWait", OnEvent.CleanWait);
+                WriteSubEntry(writer, "PurgePostVac", OnEvent.CleanPostVac);
                 WriteSubEntry(writer, "PurgeStageCount", OnEvent.PurgeStageCount);
 
                 writer.WriteEndElement();//end entry
@@ -2371,12 +2385,26 @@ namespace NDispWin
 
                                                     switch (attName)
                                                     {
-                                                        case "PurgeStageCount":
-                                                            OnEvent.PurgeStageCount = ReadSubEntry(reader, new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }); break;
                                                         case "CleanCount":
                                                             OnEvent.CleanCount = ReadSubEntry(reader, new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }); break;
+                                                        case "CleanTime":
+                                                            OnEvent.CleanTime = ReadSubEntry(reader, new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }); break;
+                                                        case "CleanWait":
+                                                            OnEvent.CleanWait = ReadSubEntry(reader, new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }); break;
+                                                        case "CleanPostVac":
+                                                            OnEvent.CleanPostVac = ReadSubEntry(reader, new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }); break;
+
                                                         case "PurgeCount":
                                                             OnEvent.PurgeCount = ReadSubEntry(reader, new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }); break;
+                                                        case "PurgeTime":
+                                                            OnEvent.PurgeTime = ReadSubEntry(reader, new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }); break;
+                                                        case "PurgeWait":
+                                                            OnEvent.PurgeWait = ReadSubEntry(reader, new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }); break;
+                                                        case "PurgePostVac":
+                                                            OnEvent.PurgePostVac = ReadSubEntry(reader, new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }); break;
+
+                                                        case "PurgeStageCount":
+                                                            OnEvent.PurgeStageCount = ReadSubEntry(reader, new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }); break;
                                                     }
                                                 }
                                             }
@@ -4623,12 +4651,23 @@ namespace NDispWin
 
                         if (OnEvent.CleanCount[(int)OnEvent.EEvent.OnStart] > 0)
                         {
-                            if (!TaskDisp.TaskCleanNeedle(b_Head1, b_Head2, RunMode == ERunMode.Normal)) goto _Pause;
+                            //if (!TaskDisp.TaskCleanNeedle(b_Head1, b_Head2, RunMode == ERunMode.Normal)) goto _Pause;
+                            if (!TaskDisp.TaskCleanNeedle(b_Head1, b_Head2, RunMode == ERunMode.Normal, true,
+                                OnEvent.CleanTime[(int)OnEvent.EEvent.OnStart],
+                                OnEvent.CleanWait[(int)OnEvent.EEvent.OnStart],
+                                OnEvent.CleanCount[(int)OnEvent.EEvent.OnStart],
+                                OnEvent.CleanPostVac[(int)OnEvent.EEvent.OnStart]
+                                )) goto _Pause;
                         }
 
                         if (OnEvent.PurgeCount[(int)OnEvent.EEvent.OnStart] > 0)
                         {
-                            if (!TaskDisp.TaskPurgeNeedle(b_Head1, b_Head2, RunMode == ERunMode.Normal)) goto _Pause;
+                            if (!TaskDisp.TaskPurgeNeedle(b_Head1, b_Head2, RunMode == ERunMode.Normal, true,
+                                OnEvent.PurgeTime[(int)OnEvent.EEvent.OnStart],
+                                OnEvent.PurgeWait[(int)OnEvent.EEvent.OnStart],
+                                OnEvent.PurgeCount[(int)OnEvent.EEvent.OnStart],
+                                OnEvent.PurgePostVac[(int)OnEvent.EEvent.OnStart]
+                                )) goto _Pause;
                         }
 
                         if (OnEvent.PurgeStageCount[(int)OnEvent.EEvent.OnStart] > 0)
@@ -11272,12 +11311,22 @@ namespace NDispWin
 
                                     if (OnEvent.CleanCount[(int)OnEvent.EEvent.OnFill] > 0)
                                     {
-                                        if (!TaskDisp.TaskCleanNeedle(b_Head1, b_Head2, true/*RunMode == ERunMode.Normal*/)) goto _Pause;
+                                        if (!TaskDisp.TaskCleanNeedle(b_Head1, b_Head2, true, true,
+                                            OnEvent.CleanTime[(int)OnEvent.EEvent.OnFill],
+                                            OnEvent.CleanWait[(int)OnEvent.EEvent.OnFill],
+                                            OnEvent.CleanCount[(int)OnEvent.EEvent.OnFill],
+                                            OnEvent.CleanPostVac[(int)OnEvent.EEvent.OnFill]
+                                            )) goto _Pause;
                                     }
 
                                     if (OnEvent.PurgeCount[(int)OnEvent.EEvent.OnFill] > 0)
                                     {
-                                        if (!TaskDisp.TaskPurgeNeedle(b_Head1, b_Head2, true/*RunMode == ERunMode.Normal*/)) goto _Pause;
+                                        if (!TaskDisp.TaskPurgeNeedle(b_Head1, b_Head2, true, true,
+                                            OnEvent.PurgeTime[(int)OnEvent.EEvent.OnFill],
+                                            OnEvent.PurgeWait[(int)OnEvent.EEvent.OnFill],
+                                            OnEvent.PurgeCount[(int)OnEvent.EEvent.OnFill],
+                                            OnEvent.PurgePostVac[(int)OnEvent.EEvent.OnFill]
+                                            )) goto _Pause;
                                     }
 
                                     if (OnEvent.PurgeStageCount[(int)OnEvent.EEvent.OnFill] > 0)
