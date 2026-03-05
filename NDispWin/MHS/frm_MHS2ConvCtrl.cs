@@ -131,6 +131,8 @@ namespace NDispWin
                 lbl_RightSmemaMcReady.BackColor = TaskConv.Out.Smema_DI_McReady ? Color.Lime : this.BackColor;
                 lbl_RightSmemaBdReady.BackColor = TaskConv.Out.Smema_DO_BdReady ? Color.Red : this.BackColor;
             }
+
+            lbl_StopInputCount.Text = $"x {TaskConv.StopInputCount}";
         }
 
         public bool Enable
@@ -346,6 +348,8 @@ namespace NDispWin
         {
             TaskConv.StopInput = !TaskConv.StopInput;
 
+            if (!TaskConv.StopInput) TaskConv.InputCounter = 0;
+
             switch (TaskConv.LeftMode)
             {
                 case TaskConv.ELeftMode.Smema:
@@ -552,6 +556,11 @@ namespace NDispWin
         private void lbl_RightSmemaMcReady_MouseUp(object sender, MouseEventArgs e)
         {
             TaskConv.Out.Smema_Emulate_DI_McReady = false;
+        }
+
+        private void lbl_StopInputCount_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec(TaskConv.StopInputCount.ToString() + ", StopInputCount", ref TaskConv.StopInputCount, 0, 1000);
         }
     }
 }

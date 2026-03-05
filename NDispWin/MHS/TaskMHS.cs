@@ -534,6 +534,9 @@ namespace NDispWin
         #endregion
 
         //Process Flags
+        public static int InputCounter = 0;
+        public static int StopInputCount = 0; // >1 = automatically stop input after certain board load in
+        private static bool AutoStopInput => StopInputCount > 0;
         public static bool StopInput = false;//disable input of new board
         public static bool SkipDisp = false;
         public static bool DispEndStop = false;//after dispense complete, stop
@@ -639,6 +642,7 @@ namespace NDispWin
             IniFile.WriteBool(S, "OutBdReadyWaitMcReady", TaskConv.OutBdReadyWaitMcReady);
 
             IniFile.WriteBool(S, "NewConvSequence", TaskConv.NewConvSequence);
+            //IniFile.WriteInteger(S, nameof(StopInputCount), StopInputCount);
         }
         public static void SaveRecipe()
         {
@@ -712,6 +716,7 @@ namespace NDispWin
             TaskConv.OutBdReadyWaitMcReady = IniFile.ReadBool(S, "OutBdReadyWaitMcReady", false);
 
             TaskConv.NewConvSequence = IniFile.ReadBool(S, "NewConvSequence", true);
+            //StopInputCount = IniFile.ReadInteger(S, nameof(StopInputCount), 0);
         }
 
         public static void MigrateMHSRecipe()//migrate from MHS and save to MHS2
@@ -891,6 +896,7 @@ namespace NDispWin
 
                 #region Reset Flags
                 StopInput = false;
+                InputCounter = 0;
                 SkipDisp = false;// CompleteProcess = false;
                 DispEndStop = false;// .EndBoard = false;
                                     //GDefine.AbortBoard = false;
@@ -6670,6 +6676,12 @@ namespace NDispWin
 
                             if (!Run_MoveInTo(EStation.Pre)) goto _Stop;
 
+                            if (AutoStopInput)
+                            {
+                                InputCounter++;
+                                if (InputCounter % StopInputCount == 0) StopInput = true;
+                            }
+                            
                             if (TaskMHS.CustomMode == TaskMHS.ECustomMode.OSRAMSCCSeq) StopInput = true;
 
                             _PreEnd:

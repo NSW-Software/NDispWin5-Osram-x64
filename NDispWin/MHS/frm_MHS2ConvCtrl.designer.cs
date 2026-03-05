@@ -73,6 +73,7 @@
             this.lbl_Pos2St = new System.Windows.Forms.Label();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.lbl_Out2St = new System.Windows.Forms.Label();
+            this.lbl_StopInputCount = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.gbox_Pro.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -611,10 +612,24 @@
             this.lbl_Out2St.Text = "Status";
             this.lbl_Out2St.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // lbl_StopInputCount
+            // 
+            this.lbl_StopInputCount.BackColor = System.Drawing.Color.White;
+            this.lbl_StopInputCount.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lbl_StopInputCount.Location = new System.Drawing.Point(30, 8);
+            this.lbl_StopInputCount.Margin = new System.Windows.Forms.Padding(3);
+            this.lbl_StopInputCount.Name = "lbl_StopInputCount";
+            this.lbl_StopInputCount.Size = new System.Drawing.Size(100, 40);
+            this.lbl_StopInputCount.TabIndex = 351;
+            this.lbl_StopInputCount.Text = "---";
+            this.lbl_StopInputCount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lbl_StopInputCount.Click += new System.EventHandler(this.lbl_StopInputCount_Click);
+            // 
             // frm_MHS2ConvCtrl
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(796, 351);
+            this.Controls.Add(this.lbl_StopInputCount);
             this.Controls.Add(this.pnl_PostStation);
             this.Controls.Add(this.gboxSmemaRightOut);
             this.Controls.Add(this.gboxSmemaLeftIn);
@@ -705,5 +720,6 @@
         private System.Windows.Forms.Label lbl_In2St;
         private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.Button btnLoadPos;
+        private System.Windows.Forms.Label lbl_StopInputCount;
     }
 }
