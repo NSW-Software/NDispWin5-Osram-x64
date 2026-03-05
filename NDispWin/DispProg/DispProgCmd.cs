@@ -1567,16 +1567,21 @@ namespace NDispWin
                                             Log.AddToEventLog($"Profile1,SegCount={(int)segCount}, SegSize={segSize:f3}, PPDist=[StartVol={startVolume}, Rise={sRiseSegVol}, Const={constDispVol:f4}, Fall={sFallSegVol}], Speed=[Rise={sSegRiseSpeed}, Const={LineSpeed:f3}, Fall={sSegFallSpeed}]");
 
                                             CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, Model.DnSpeed, 0, new double[6] { 0, 0, -riseGap, 0, 0, 0 }, null);
+                                            Log.AddToEventLog($"Down: {Axis[0].Name}=0, {Axis[1].Name}=0, {Axis[2].Name}={-riseGap}, {Axis[3].Name}=0, {Axis[4].Name}=0, {Axis[5].Name}=0 ; Speed={Model.DnSpeed}");
                                             CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.GPDELAY, false, Model.DnWait, 0, null, null);
+                                            Log.AddToEventLog($"DownWait: {Model.DnWait}");
                                             CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, pumpSpeed, 0, new double[6] { 0, 0, 0, 0, -startVolume, 0 }, null);
+                                            Log.AddToEventLog($"Down: {Axis[0].Name}=0, {Axis[1].Name}=0, {Axis[2].Name}=0, {Axis[3].Name}=0, {Axis[4].Name}={-startVolume}, {Axis[5].Name}=0 ; Speed={pumpSpeed}");
                                             for (int i = 0; i < segCount - 1; i++)
                                             {
                                                 CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, segRiseSpeed[i + 1], segRiseSpeed[i], new double[6] { relSegRiseDist.X, relSegRiseDist.Y, relRiseGap, 0, -riseSegVol[i], 0 }, null);
+                                                Log.AddToEventLog($"Rise[{i}]: {Axis[0].Name}={relSegRiseDist.X}, {Axis[1].Name}={relSegRiseDist.Y}, {Axis[2].Name}={relRiseGap}, {Axis[3].Name}=0, {Axis[4].Name}={-riseSegVol[i]}, {Axis[5].Name}=0 ; Start Speed={segRiseSpeed[i]} ; Speed={segRiseSpeed[i + 1]}");
                                             }
                                             CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, LineSpeed, LineSpeed, new double[6] { relConstXY.X, relConstXY.Y, 0, 0, -constDispVol, 0 }, null);
                                             for (int i = segCount - 1; i > 0; i--)
                                             {
                                                 CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, segFallSpeed[i + 1], segFallSpeed[i], new double[6] { relSegFallDist.X, relSegFallDist.Y, -relFallGap, 0, -fallSegVol[i], 0 }, null);
+                                                Log.AddToEventLog($"Fall[{i}]: {Axis[0].Name}={relSegFallDist.X}, {Axis[1].Name}={relSegFallDist.Y}, {Axis[2].Name}={-relFallGap}, {Axis[3].Name}=0, {Axis[4].Name}={-fallSegVol[i]}, {Axis[5].Name}=0 ; Start Speed={segFallSpeed[i]} ; Speed={segFallSpeed[i + 1]}");
                                             }
                                             break;
                                         }
@@ -1591,6 +1596,7 @@ namespace NDispWin
                             }
 
                             CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.GPDELAY, false, Model.PostWait, 0, null, null);
+                            Log.AddToEventLog($"PostWait: {Model.PostWait}");
 
                             #region Path CutTail
                             double cutTailLength = Line.DPara[10];
