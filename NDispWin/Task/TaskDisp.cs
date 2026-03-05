@@ -6368,6 +6368,10 @@ namespace NDispWin
             }
 
             Event.CLEAN_NEEDLE.Set();
+            if (Time == 0) Time = Needle_Clean_Time;
+            if (Delay == 0) Delay = Needle_Clean_Wait;
+            if (PostVacTime == 0) PostVacTime = Needle_Clean_PostVacTime;
+
             return TaskPurgeCleanNeedle(false, Pos, DispA, DispB, OnVac, Trig, MoveUp, Time, Delay, Count, PostVacTime);
         }
         public static bool TaskGotoCleanNeedlePromtZ(bool PromptZDown)//goto only
@@ -6407,6 +6411,10 @@ namespace NDispWin
                     break;
             }
             Event.PURGE_NEEDLE.Set();
+            if (Time == 0) Time = Needle_Purge_Time;
+            if (Delay == 0) Delay = Needle_Purge_Wait;
+            if (PostVacTime == 0) PostVacTime = Needle_Purge_PostVacTime;
+
             return TaskPurgeCleanNeedle(false, Pos, DispA, DispB, OnVac, Trig, MoveUp, Time, Delay, Count, PostVacTime);
         }
         public static bool TaskGotoPurgeNeedlePrompZ(bool PromptZDown)//goto only - no purge

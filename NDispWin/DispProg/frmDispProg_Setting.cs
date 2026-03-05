@@ -133,13 +133,17 @@ namespace NDispWin
             #region Advance
             lbl_PurgeStageCount.Text = DispProg.PurgeStage.Count.ToString();
             lbl_PurgeStageInterval.Text = DispProg.PurgeStage.Interval.ToString();
-            //lbl_OnStartPurgeStageCount2.Text = DispProg.PurgeStage.OnStartCount.ToString();
-            //lblOnStartPurgeStageCount.Text = $"{DispProg.OnStart.PurgeStageCount}";
-            //lblOnStartCleanCount.Text = $"{DispProg.OnStart.CleanCount}";
-            //lblOnStartPurgeCount.Text = $"{DispProg.OnStart.PurgeCount}";
 
             lblOnStartCleanCount.Text = $"{DispProg.OnEvent.CleanCount[iEvent]}";
+            lblOnStartCleanTime.Text = $"{DispProg.OnEvent.CleanTime[iEvent]}";
+            lblOnStartCleanWait.Text = $"{DispProg.OnEvent.CleanWait[iEvent]}";
+            lblOnStartCleanPostVac.Text = $"{DispProg.OnEvent.CleanPostVac[iEvent]}";
+
             lblOnStartPurgeCount.Text = $"{DispProg.OnEvent.PurgeCount[iEvent]}";
+            lblOnStartPurgeTime.Text = $"{DispProg.OnEvent.PurgeTime[iEvent]}";
+            lblOnStartPurgeWait.Text = $"{DispProg.OnEvent.PurgeWait[iEvent]}";
+            lblOnStartPurgePostVac.Text = $"{DispProg.OnEvent.PurgePostVac[iEvent]}";
+
             lblOnStartPurgeStageCount.Text = $"{DispProg.OnEvent.PurgeStageCount[iEvent]}";
 
             gboxTempCtrl.Visible = GDefine.TempCtrl_Type == GDefine.ETempCtrl.Autonics_TX_TK;
@@ -608,9 +612,40 @@ namespace NDispWin
             UC.AdjustExec("Disp Prog, OnStart Clean Count", ref DispProg.OnEvent.CleanCount[iEvent], 0, 5);
             UpdateDisplay();
         }
+        private void lblOnStartCleanTime_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec("Disp Prog, OnStart Clean Time", ref DispProg.OnEvent.CleanTime[iEvent], 0, 5000);
+            UpdateDisplay();
+        }
+        private void lblOnStartCleanWait_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec("Disp Prog, OnStart Clean Wait", ref DispProg.OnEvent.CleanWait[iEvent], 0, 5000);
+            UpdateDisplay();
+        }
+        private void lblOnStartCleanPostVac_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec("Disp Prog, OnStart Clean PostVac", ref DispProg.OnEvent.CleanPostVac[iEvent], 0, 5000);
+            UpdateDisplay();
+        }
+
         private void lblOnStartPurgeCount_Click(object sender, EventArgs e)
         {
             UC.AdjustExec("Disp Prog, OnStart Purge Count", ref DispProg.OnEvent.PurgeCount[iEvent], 0, 5);
+            UpdateDisplay();
+        }
+        private void lblOnStartPurgeTime_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec("Disp Prog, OnStart Purge Time", ref DispProg.OnEvent.PurgeTime[iEvent], 0, 5000);
+            UpdateDisplay();
+        }
+        private void lblOnStartPurgeWait_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec("Disp Prog, OnStart Purge Wait", ref DispProg.OnEvent.PurgeWait[iEvent], 0, 5000);
+            UpdateDisplay();
+        }
+        private void lblOnStartPurgePostVac_Click(object sender, EventArgs e)
+        {
+            UC.AdjustExec("Disp Prog, OnStart Purge PostVac", ref DispProg.OnEvent.PurgePostVac[iEvent], 0, 5000);
             UpdateDisplay();
         }
 
