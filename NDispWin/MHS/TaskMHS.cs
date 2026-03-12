@@ -6056,6 +6056,11 @@ namespace NDispWin
                                     if (!MoveInToPro()) return false;
                                     break;
                             }
+                            if (AutoStopInput)
+                            {
+                                InputCounter++;
+                                if (InputCounter % StopInputCount == 0) StopInput = true;
+                            }
                             //TaskElev.Left.TransferBusy = false;
                             #endregion
                         }
@@ -6676,11 +6681,6 @@ namespace NDispWin
 
                             if (!Run_MoveInTo(EStation.Pre)) goto _Stop;
 
-                            if (AutoStopInput)
-                            {
-                                InputCounter++;
-                                if (InputCounter % StopInputCount == 0) StopInput = true;
-                            }
                             
                             if (TaskMHS.CustomMode == TaskMHS.ECustomMode.OSRAMSCCSeq) StopInput = true;
 
