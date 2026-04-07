@@ -24093,12 +24093,13 @@ namespace NDispWin
             rt_LayoutID = CmdLine.ID;
             frm_DispCore_Map.LayoutNo = rt_LayoutID;
             rt_Layouts[rt_LayoutID] = new TLayout(CmdLine);
-            CurrMapMask(Map.PreMap[rt_LayoutID].Bin);
+            //CurrMapMask(Map.PreMap[rt_LayoutID].Bin); // Cause map to  change, Layout Premap unable to be read again
 
             rt_Start.X = rt_Layouts[rt_LayoutID].StartX;
             rt_Start.Y = rt_Layouts[rt_LayoutID].StartY;
-            RunTime.UIndex = 0;
-            RunTime.UIndex2 = 0;
+            // Resume Index change
+            //RunTime.UIndex = 0;
+            //RunTime.UIndex2 = 0;
             rt_Layouts[rt_LayoutID].ComputePos(ref rt_LayoutRelPos);
 
             CmdLine.Cmd = ECmd.NONE;
