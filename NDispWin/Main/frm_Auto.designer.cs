@@ -124,6 +124,7 @@
             this.tpageImage = new System.Windows.Forms.TabPage();
             this.imgBoxEmgu = new Emgu.CV.UI.ImageBox();
             this.tpageSecsGem = new System.Windows.Forms.TabPage();
+            this.label33 = new System.Windows.Forms.Label();
             this.dgvSubstrateStatus = new System.Windows.Forms.DataGridView();
             this.label32 = new System.Windows.Forms.Label();
             this.lblProcessState = new System.Windows.Forms.Label();
@@ -156,7 +157,6 @@
             this.pnl_Right = new System.Windows.Forms.Panel();
             this.tmr_TR_Buttons = new System.Windows.Forms.Timer(this.components);
             this.tmr_1s = new System.Windows.Forms.Timer(this.components);
-            this.label33 = new System.Windows.Forms.Label();
             this.pnl_RightTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbox_Logo)).BeginInit();
             this.pnl_RightBottom.SuspendLayout();
@@ -1096,7 +1096,7 @@
             this.groupBox1.Controls.Add(this.label18);
             this.groupBox1.Location = new System.Drawing.Point(275, 286);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(236, 304);
+            this.groupBox1.Size = new System.Drawing.Size(236, 307);
             this.groupBox1.TabIndex = 328;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Program";
@@ -1233,14 +1233,14 @@
             // 
             // label18
             // 
-            this.label18.AccessibleDescription = "Frame (count)";
+            this.label18.AccessibleDescription = "Panel (count)";
             this.label18.BackColor = System.Drawing.SystemColors.Control;
             this.label18.Location = new System.Drawing.Point(4, 108);
             this.label18.Margin = new System.Windows.Forms.Padding(1);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(114, 23);
             this.label18.TabIndex = 72;
-            this.label18.Text = "Frame (count)";
+            this.label18.Text = "Panel (count)";
             this.label18.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lbl_DispProg
@@ -1395,7 +1395,7 @@
             // label11
             // 
             this.label11.AccessibleDescription = "Gantry Status";
-            this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label11.AutoEllipsis = true;
             this.label11.BackColor = System.Drawing.SystemColors.Control;
@@ -1411,7 +1411,7 @@
             // 
             // lbl_GantrySt
             // 
-            this.lbl_GantrySt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.lbl_GantrySt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lbl_GantrySt.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lbl_GantrySt.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -1482,12 +1482,20 @@
             this.tpageSecsGem.Text = "SecsGem";
             this.tpageSecsGem.UseVisualStyleBackColor = true;
             // 
+            // label33
+            // 
+            this.label33.Location = new System.Drawing.Point(0, 0);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(100, 23);
+            this.label33.TabIndex = 0;
+            // 
             // dgvSubstrateStatus
             // 
             this.dgvSubstrateStatus.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvSubstrateStatus.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvSubstrateStatus.Location = new System.Drawing.Point(321, 48);
             this.dgvSubstrateStatus.Name = "dgvSubstrateStatus";
+            this.dgvSubstrateStatus.RowHeadersWidth = 51;
             this.dgvSubstrateStatus.Size = new System.Drawing.Size(339, 206);
             this.dgvSubstrateStatus.TabIndex = 320;
             // 
@@ -1496,7 +1504,7 @@
             this.label32.AutoSize = true;
             this.label32.Location = new System.Drawing.Point(725, 38);
             this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(82, 14);
+            this.label32.Size = new System.Drawing.Size(97, 18);
             this.label32.TabIndex = 319;
             this.label32.Text = "Process State";
             // 
@@ -1588,7 +1596,7 @@
             this.label31.AutoSize = true;
             this.label31.Location = new System.Drawing.Point(16, 148);
             this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(83, 14);
+            this.label31.Size = new System.Drawing.Size(101, 18);
             this.label31.TabIndex = 8;
             this.label31.Text = "EMPLOYEE ID";
             // 
@@ -1597,7 +1605,7 @@
             this.label30.AutoSize = true;
             this.label30.Location = new System.Drawing.Point(16, 119);
             this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(74, 14);
+            this.label30.Size = new System.Drawing.Size(90, 18);
             this.label30.TabIndex = 6;
             this.label30.Text = "OPERATION";
             // 
@@ -1606,7 +1614,7 @@
             this.label22.AutoSize = true;
             this.label22.Location = new System.Drawing.Point(16, 91);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(85, 14);
+            this.label22.Size = new System.Drawing.Size(104, 18);
             this.label22.TabIndex = 4;
             this.label22.Text = "MATERIAL NO";
             // 
@@ -1615,7 +1623,7 @@
             this.label21.AutoSize = true;
             this.label21.Location = new System.Drawing.Point(16, 59);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(46, 14);
+            this.label21.Size = new System.Drawing.Size(57, 18);
             this.label21.TabIndex = 2;
             this.label21.Text = "LOT ID";
             // 
@@ -1624,9 +1632,39 @@
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(16, 32);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(33, 14);
+            this.label8.Size = new System.Drawing.Size(40, 18);
             this.label8.TabIndex = 0;
             this.label8.Text = "PPID";
+            // 
+            // tpPanelList
+            // 
+            this.tpPanelList.AccessibleDescription = "Panel List";
+            this.tpPanelList.BackColor = System.Drawing.SystemColors.Control;
+            this.tpPanelList.Controls.Add(this.dgvPanelList);
+            this.tpPanelList.Location = new System.Drawing.Point(4, 44);
+            this.tpPanelList.Name = "tpPanelList";
+            this.tpPanelList.Padding = new System.Windows.Forms.Padding(3);
+            this.tpPanelList.Size = new System.Drawing.Size(840, 625);
+            this.tpPanelList.TabIndex = 9;
+            this.tpPanelList.Text = "Panel List";
+            // 
+            // dgvPanelList
+            // 
+            this.dgvPanelList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvPanelList.BackgroundColor = System.Drawing.SystemColors.Control;
+            this.dgvPanelList.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvPanelList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvPanelList.ColumnHeadersVisible = false;
+            this.dgvPanelList.Dock = System.Windows.Forms.DockStyle.Top;
+            this.dgvPanelList.Location = new System.Drawing.Point(3, 3);
+            this.dgvPanelList.Name = "dgvPanelList";
+            this.dgvPanelList.RowHeadersVisible = false;
+            this.dgvPanelList.RowHeadersWidth = 51;
+            this.dgvPanelList.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.dgvPanelList.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.dgvPanelList.ShowEditingIcon = false;
+            this.dgvPanelList.Size = new System.Drawing.Size(834, 394);
+            this.dgvPanelList.TabIndex = 333;
             // 
             // panel4
             // 
@@ -1662,49 +1700,49 @@
             this.tsddbtn_Language.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsddbtn_Language.Name = "tsddbtn_Language";
             this.tsddbtn_Language.ShowDropDownArrow = false;
-            this.tsddbtn_Language.Size = new System.Drawing.Size(64, 28);
+            this.tsddbtn_Language.Size = new System.Drawing.Size(75, 28);
             this.tsddbtn_Language.Text = "Language";
             this.tsddbtn_Language.Click += new System.EventHandler(this.tsddbtn_Language_Click);
             // 
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(12, 25);
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(14, 24);
             this.toolStripStatusLabel1.Text = "|";
             // 
             // tsslbl_BuzzerMute
             // 
             this.tsslbl_BuzzerMute.AccessibleDescription = "Buzzer Mute";
             this.tsslbl_BuzzerMute.Name = "tsslbl_BuzzerMute";
-            this.tsslbl_BuzzerMute.Size = new System.Drawing.Size(74, 25);
+            this.tsslbl_BuzzerMute.Size = new System.Drawing.Size(90, 24);
             this.tsslbl_BuzzerMute.Text = "Buzzer Mute";
             this.tsslbl_BuzzerMute.Click += new System.EventHandler(this.tsslbl_BuzzerMute_Click);
             // 
             // toolStripStatusLabel2
             // 
             this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            this.toolStripStatusLabel2.Size = new System.Drawing.Size(12, 25);
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(14, 24);
             this.toolStripStatusLabel2.Text = "|";
             // 
             // tsslbl_LULDoor
             // 
             this.tsslbl_LULDoor.AccessibleDescription = "LUL Door";
             this.tsslbl_LULDoor.Name = "tsslbl_LULDoor";
-            this.tsslbl_LULDoor.Size = new System.Drawing.Size(57, 25);
+            this.tsslbl_LULDoor.Size = new System.Drawing.Size(68, 24);
             this.tsslbl_LULDoor.Text = "LUL Door";
             this.tsslbl_LULDoor.Click += new System.EventHandler(this.tsslbl_LULDoor_Click);
             // 
             // tsslblDoorLock
             // 
             this.tsslblDoorLock.Name = "tsslblDoorLock";
-            this.tsslblDoorLock.Size = new System.Drawing.Size(71, 25);
+            this.tsslblDoorLock.Size = new System.Drawing.Size(84, 24);
             this.tsslblDoorLock.Text = "| Door Lock";
             this.tsslblDoorLock.Click += new System.EventHandler(this.tsslblDoorLock_Click);
             // 
             // tsslMonCamera
             // 
             this.tsslMonCamera.Name = "tsslMonCamera";
-            this.tsslMonCamera.Size = new System.Drawing.Size(83, 25);
+            this.tsslMonCamera.Size = new System.Drawing.Size(103, 24);
             this.tsslMonCamera.Text = "| Mon Camera";
             this.tsslMonCamera.Click += new System.EventHandler(this.tsslMonCamera_Click);
             // 
@@ -1745,35 +1783,6 @@
             // 
             this.tmr_1s.Interval = 1000;
             this.tmr_1s.Tick += new System.EventHandler(this.tmr_1s_Tick);
-            // 
-            // tpPanelList
-            // 
-            this.tpPanelList.AccessibleDescription = "Panel List";
-            this.tpPanelList.BackColor = System.Drawing.SystemColors.Control;
-            this.tpPanelList.Controls.Add(this.dgvPanelList);
-            this.tpPanelList.Location = new System.Drawing.Point(4, 44);
-            this.tpPanelList.Name = "tpPanelList";
-            this.tpPanelList.Padding = new System.Windows.Forms.Padding(3);
-            this.tpPanelList.Size = new System.Drawing.Size(840, 917);
-            this.tpPanelList.TabIndex = 9;
-            this.tpPanelList.Text = "Panel List";
-            // 
-            // dgvPanelList
-            // 
-            this.dgvPanelList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvPanelList.BackgroundColor = System.Drawing.SystemColors.Control;
-            this.dgvPanelList.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvPanelList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvPanelList.ColumnHeadersVisible = false;
-            this.dgvPanelList.Dock = System.Windows.Forms.DockStyle.Top;
-            this.dgvPanelList.Location = new System.Drawing.Point(3, 3);
-            this.dgvPanelList.Name = "dgvPanelList";
-            this.dgvPanelList.RowHeadersVisible = false;
-            this.dgvPanelList.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            this.dgvPanelList.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.dgvPanelList.ShowEditingIcon = false;
-            this.dgvPanelList.Size = new System.Drawing.Size(834, 394);
-            this.dgvPanelList.TabIndex = 333;
             // 
             // frm_Auto
             // 

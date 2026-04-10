@@ -12,7 +12,7 @@ namespace NDispWin
     {
         public static class PP4
         {
-            const CControl2.EHomeMode HomeMode = CControl2.EHomeMode.MODE7_AbsSearch;
+            const CControl2.EHomeMode HomeMode = CControl2.EHomeMode.MODE12_AbsSearchReFind;
             const CControl2.EHomeDir HomeDir = CControl2.EHomeDir.P;
 
             public static double DispSpeed = 1;
