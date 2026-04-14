@@ -14,7 +14,20 @@ OsKm
 8.	Volume become higher after material refill 
 9.	Frequency of software hang very high. Camera Offset, select units layout, key parameter…  
 
-ver 6.1.9.5 KN - 20260203 - 
+
+ver 6.1.9.12 KN - 20260405
+[Improve] Added TFPump.PP.Rotate early exit. Hardcode default flag as enabled. Not tested.
+
+ver 6.1.9.11 KN - 20260405
+  [Feature] Added frmAuto to display from 8 rows to 10 rows.
+  [Changes] ECmd.OSRAM_ICC TFPump.PP4.DispAmounts is only dispense amount without BackSuck.
+  [Feature] Added Manual Premap function at frmDispProg. Premap will by pass OsramICC.
+  [Changes] Change HPC3.AfFillDist from -5 to -25.
+  [Changes] Change PP4.HomeMode to CControl2.EHomeMode.MODE12_AbsSearchReFind to verify home complete.
+  [Changes] ECmd.READ_ID remove MapBin checking, ReadID must always execute.
+  [Enhance] btnEditPass1/2_Click use UseShellExec=true, suspect cause UI hang during test
+
+ver 6.1.9.5 KN - 20260203
   [Feature] Added recipe based Clean Purge Para
 
 ver 6.1.8.57 JAY - 20251111 - Gitted

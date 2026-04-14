@@ -124,6 +124,7 @@
             this.tpageImage = new System.Windows.Forms.TabPage();
             this.imgBoxEmgu = new Emgu.CV.UI.ImageBox();
             this.tpageSecsGem = new System.Windows.Forms.TabPage();
+            this.label33 = new System.Windows.Forms.Label();
             this.dgvSubstrateStatus = new System.Windows.Forms.DataGridView();
             this.label32 = new System.Windows.Forms.Label();
             this.lblProcessState = new System.Windows.Forms.Label();
@@ -156,7 +157,7 @@
             this.pnl_Right = new System.Windows.Forms.Panel();
             this.tmr_TR_Buttons = new System.Windows.Forms.Timer(this.components);
             this.tmr_1s = new System.Windows.Forms.Timer(this.components);
-            this.label33 = new System.Windows.Forms.Label();
+            this.btnPass34 = new System.Windows.Forms.Button();
             this.pnl_RightTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbox_Logo)).BeginInit();
             this.pnl_RightBottom.SuspendLayout();
@@ -183,6 +184,7 @@
             // 
             // pnl_RightTop
             // 
+            this.pnl_RightTop.Controls.Add(this.btnPass34);
             this.pnl_RightTop.Controls.Add(this.btnSECSGEM);
             this.pnl_RightTop.Controls.Add(this.btnBurnRun);
             this.pnl_RightTop.Controls.Add(this.btn_InitConveyor);
@@ -198,7 +200,7 @@
             this.pnl_RightTop.Location = new System.Drawing.Point(0, 0);
             this.pnl_RightTop.Name = "pnl_RightTop";
             this.pnl_RightTop.Padding = new System.Windows.Forms.Padding(3);
-            this.pnl_RightTop.Size = new System.Drawing.Size(171, 416);
+            this.pnl_RightTop.Size = new System.Drawing.Size(171, 440);
             this.pnl_RightTop.TabIndex = 0;
             // 
             // btnSECSGEM
@@ -1395,7 +1397,7 @@
             // label11
             // 
             this.label11.AccessibleDescription = "Gantry Status";
-            this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label11.AutoEllipsis = true;
             this.label11.BackColor = System.Drawing.SystemColors.Control;
@@ -1411,7 +1413,7 @@
             // 
             // lbl_GantrySt
             // 
-            this.lbl_GantrySt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.lbl_GantrySt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lbl_GantrySt.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lbl_GantrySt.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -1481,6 +1483,13 @@
             this.tpageSecsGem.TabIndex = 8;
             this.tpageSecsGem.Text = "SecsGem";
             this.tpageSecsGem.UseVisualStyleBackColor = true;
+            // 
+            // label33
+            // 
+            this.label33.Location = new System.Drawing.Point(0, 0);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(100, 23);
+            this.label33.TabIndex = 0;
             // 
             // dgvSubstrateStatus
             // 
@@ -1628,6 +1637,35 @@
             this.label8.TabIndex = 0;
             this.label8.Text = "PPID";
             // 
+            // tpPanelList
+            // 
+            this.tpPanelList.AccessibleDescription = "Panel List";
+            this.tpPanelList.BackColor = System.Drawing.SystemColors.Control;
+            this.tpPanelList.Controls.Add(this.dgvPanelList);
+            this.tpPanelList.Location = new System.Drawing.Point(4, 44);
+            this.tpPanelList.Name = "tpPanelList";
+            this.tpPanelList.Padding = new System.Windows.Forms.Padding(3);
+            this.tpPanelList.Size = new System.Drawing.Size(840, 625);
+            this.tpPanelList.TabIndex = 9;
+            this.tpPanelList.Text = "Panel List";
+            // 
+            // dgvPanelList
+            // 
+            this.dgvPanelList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvPanelList.BackgroundColor = System.Drawing.SystemColors.Control;
+            this.dgvPanelList.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvPanelList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvPanelList.ColumnHeadersVisible = false;
+            this.dgvPanelList.Dock = System.Windows.Forms.DockStyle.Top;
+            this.dgvPanelList.Location = new System.Drawing.Point(3, 3);
+            this.dgvPanelList.Name = "dgvPanelList";
+            this.dgvPanelList.RowHeadersVisible = false;
+            this.dgvPanelList.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.dgvPanelList.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.dgvPanelList.ShowEditingIcon = false;
+            this.dgvPanelList.Size = new System.Drawing.Size(834, 394);
+            this.dgvPanelList.TabIndex = 333;
+            // 
             // panel4
             // 
             this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
@@ -1746,34 +1784,28 @@
             this.tmr_1s.Interval = 1000;
             this.tmr_1s.Tick += new System.EventHandler(this.tmr_1s_Tick);
             // 
-            // tpPanelList
+            // btnPass34
             // 
-            this.tpPanelList.AccessibleDescription = "Panel List";
-            this.tpPanelList.BackColor = System.Drawing.SystemColors.Control;
-            this.tpPanelList.Controls.Add(this.dgvPanelList);
-            this.tpPanelList.Location = new System.Drawing.Point(4, 44);
-            this.tpPanelList.Name = "tpPanelList";
-            this.tpPanelList.Padding = new System.Windows.Forms.Padding(3);
-            this.tpPanelList.Size = new System.Drawing.Size(840, 917);
-            this.tpPanelList.TabIndex = 9;
-            this.tpPanelList.Text = "Panel List";
-            // 
-            // dgvPanelList
-            // 
-            this.dgvPanelList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvPanelList.BackgroundColor = System.Drawing.SystemColors.Control;
-            this.dgvPanelList.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvPanelList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvPanelList.ColumnHeadersVisible = false;
-            this.dgvPanelList.Dock = System.Windows.Forms.DockStyle.Top;
-            this.dgvPanelList.Location = new System.Drawing.Point(3, 3);
-            this.dgvPanelList.Name = "dgvPanelList";
-            this.dgvPanelList.RowHeadersVisible = false;
-            this.dgvPanelList.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            this.dgvPanelList.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.dgvPanelList.ShowEditingIcon = false;
-            this.dgvPanelList.Size = new System.Drawing.Size(834, 394);
-            this.dgvPanelList.TabIndex = 333;
+            this.btnPass34.AccessibleDescription = "";
+            this.btnPass34.AutoEllipsis = true;
+            this.btnPass34.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnPass34.BackColor = System.Drawing.SystemColors.Control;
+            this.btnPass34.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnPass34.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnPass34.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btnPass34.FlatAppearance.BorderSize = 2;
+            this.btnPass34.FlatAppearance.MouseDownBackColor = System.Drawing.Color.LightGray;
+            this.btnPass34.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightGray;
+            this.btnPass34.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnPass34.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnPass34.Location = new System.Drawing.Point(3, 402);
+            this.btnPass34.Name = "btnPass34";
+            this.btnPass34.Size = new System.Drawing.Size(165, 40);
+            this.btnPass34.TabIndex = 325;
+            this.btnPass34.Text = "Pass 34";
+            this.btnPass34.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnPass34.UseVisualStyleBackColor = false;
+            this.btnPass34.Click += new System.EventHandler(this.btnPass34_Click);
             // 
             // frm_Auto
             // 
@@ -1954,5 +1986,6 @@
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.DataGridView dgvSubstrateStatus;
         private System.Windows.Forms.Label label33;
+        private System.Windows.Forms.Button btnPass34;
     }
 }

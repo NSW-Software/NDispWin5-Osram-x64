@@ -42,6 +42,8 @@ namespace NDispWin
             lv_Program.Columns[1].Width = 110;
             lv_Program.Columns[2].Width = 448;
 
+            tsComboxPremap.Visible = (TaskDisp.VolumeOfst_Protocol == TaskDisp.EVolumeOfstProtocol.OSRAM_ICC);
+
             RefreshFunction();
 
             this.WindowState = FormWindowState.Maximized;
@@ -95,6 +97,8 @@ namespace NDispWin
                 case EStatus.Unknown: tslbl_Status.ForeColor = Color.Olive; break;
             }
             tslbl_Status.Text = GDefine.Status.ToString();
+
+            tsslPass34.Visible = OsramICC.Pass34;
 
             tsbtn_Lock.Checked = b_ProgEdit;
 
@@ -446,6 +450,14 @@ namespace NDispWin
                             break;
                         }
                     #endregion
+                    case DispProg.ECmd.OSRAM_ICC:
+                        #region
+                        {
+                            Cmd = Indent + Enum.GetName(typeof(DispProg.ECmd), CmdLine.Line[i].Cmd);
+                            Para = DispProg.PremapNo > 0 ? $"[Manual Premap {DispProg.PremapNo}] ": "[Enabled] ";
+                            break;
+                        }
+                    #endregion
                     case DispProg.ECmd.DO_HEIGHT:
                         #region
                         Cmd = Indent + Enum.GetName(typeof(DispProg.ECmd), CmdLine.Line[i].Cmd);
@@ -607,7 +619,8 @@ namespace NDispWin
                             //{
                             //    Para = Para + $"Def Vol1,2: {CmdLine.Line[i].DPara[18]:f3},{CmdLine.Line[i].DPara[19]:f3} ";
                             //}
-                            Para = Para + $"Current Nett Vol {(TFPump.PP4.DispAmounts[0] - TFPump.PP4.BSuckAmounts[0]):f3},{(TFPump.PP4.DispAmounts[1] - TFPump.PP4.BSuckAmounts[1]):f3}";
+                            //Para = Para + $"Current Nett Vol {(TFPump.PP4.DispAmounts[0] - TFPump.PP4.BSuckAmounts[0]):f3},{(TFPump.PP4.DispAmounts[1] - TFPump.PP4.BSuckAmounts[1]):f3}";
+                            Para = Para + $"Current Nett Vol {TFPump.PP4.DispAmounts[0]:f3},{TFPump.PP4.DispAmounts[1]:f3}";
                             break;
                         }
                     case DispProg.ECmd.MOVE:
@@ -1122,6 +1135,8 @@ namespace NDispWin
         bool isDirty = false;
         private void frmDispProg_FormClosing(object sender, FormClosingEventArgs e)
         {
+            DispProg.PremapNo = 0;
+
             if (isDirty)
             {
                 Msg MsgBox = new Msg();
@@ -1699,7 +1714,7 @@ namespace NDispWin
                     {
                         return;
                     }
-                    _SelectEdit:
+                _SelectEdit:
                     int ColIndex = hit.Item.SubItems.IndexOf(hit.SubItem);
                     if (DispProg.Script[SelProg].CmdList.Count == 0) return;
 
@@ -2664,7 +2679,6 @@ namespace NDispWin
                             return;
                             //break;
                     }
-
                 }
                 #endregion
 
@@ -3619,6 +3633,19 @@ namespace NDispWin
             return tcs.Task;
         }
 
+        private void tsComboxPremap_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tsComboxPremap_DropDownClosed(object sender, EventArgs e)
+        {
+            DispProg.PremapNo = tsComboxPremap.SelectedIndex;
+            RefreshProgramList();
+            DispProg.ClearMaps();
+            DispProg.CurrMapMask(DispProg.Map.PreMap[DispProg.PremapNo].Bin);
+            frm_Layout.Refresh();
+        }
     }
 }
  

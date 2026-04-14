@@ -30,6 +30,8 @@ namespace NDispWin
         private void InitializeComponent()
         {
             this.gbox_Pos = new System.Windows.Forms.GroupBox();
+            this.lblMPointBR = new System.Windows.Forms.Label();
+            this.lblMPointTL = new System.Windows.Forms.Label();
             this.lbl_MasterTol = new System.Windows.Forms.Label();
             this.cbMaster = new System.Windows.Forms.CheckBox();
             this.lblMasterTol = new System.Windows.Forms.Label();
@@ -91,8 +93,6 @@ namespace NDispWin
             this.btnSetRefXY = new System.Windows.Forms.Button();
             this.btnGotoRefXY = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.lblMPointTL = new System.Windows.Forms.Label();
-            this.lblMPointBR = new System.Windows.Forms.Label();
             this.gbox_Pos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbZPathDot)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -123,6 +123,28 @@ namespace NDispWin
             this.gbox_Pos.TabIndex = 174;
             this.gbox_Pos.TabStop = false;
             this.gbox_Pos.Text = "Position";
+            // 
+            // lblMPointBR
+            // 
+            this.lblMPointBR.AccessibleDescription = "";
+            this.lblMPointBR.Location = new System.Drawing.Point(43, 301);
+            this.lblMPointBR.Margin = new System.Windows.Forms.Padding(2);
+            this.lblMPointBR.Name = "lblMPointBR";
+            this.lblMPointBR.Size = new System.Drawing.Size(120, 14);
+            this.lblMPointBR.TabIndex = 207;
+            this.lblMPointBR.Text = "-999.999, -999.999";
+            this.lblMPointBR.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblMPointTL
+            // 
+            this.lblMPointTL.AccessibleDescription = "";
+            this.lblMPointTL.Location = new System.Drawing.Point(5, 40);
+            this.lblMPointTL.Margin = new System.Windows.Forms.Padding(2);
+            this.lblMPointTL.Name = "lblMPointTL";
+            this.lblMPointTL.Size = new System.Drawing.Size(120, 14);
+            this.lblMPointTL.TabIndex = 206;
+            this.lblMPointTL.Text = "-999.999, -999.999";
+            this.lblMPointTL.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lbl_MasterTol
             // 
@@ -574,7 +596,7 @@ namespace NDispWin
             this.lblHead1DefVolume.TabIndex = 189;
             this.lblHead1DefVolume.Text = "-999.999";
             this.lblHead1DefVolume.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.lblHead1DefVolume.Click += new System.EventHandler(this.lblHead1DefVolume_Click);
+            this.lblHead1DefVolume.Click += new System.EventHandler(this.lblHeadADefVolume_Click);
             // 
             // label2
             // 
@@ -584,7 +606,7 @@ namespace NDispWin
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(75, 23);
             this.label2.TabIndex = 190;
-            this.label2.Text = "Head 1";
+            this.label2.Text = "Head A";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label4
@@ -595,7 +617,7 @@ namespace NDispWin
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(76, 23);
             this.label4.TabIndex = 192;
-            this.label4.Text = "Head2";
+            this.label4.Text = "Head B";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblHead2DefVolume
@@ -609,7 +631,7 @@ namespace NDispWin
             this.lblHead2DefVolume.TabIndex = 191;
             this.lblHead2DefVolume.Text = "-999.999";
             this.lblHead2DefVolume.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.lblHead2DefVolume.Click += new System.EventHandler(this.lblHead2DefVolume_Click);
+            this.lblHead2DefVolume.Click += new System.EventHandler(this.lblHeadBDefVolume_Click);
             // 
             // lblRetGap
             // 
@@ -879,28 +901,6 @@ namespace NDispWin
             this.groupBox2.TabIndex = 207;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Reference";
-            // 
-            // lblMPointTL
-            // 
-            this.lblMPointTL.AccessibleDescription = "";
-            this.lblMPointTL.Location = new System.Drawing.Point(5, 40);
-            this.lblMPointTL.Margin = new System.Windows.Forms.Padding(2);
-            this.lblMPointTL.Name = "lblMPointTL";
-            this.lblMPointTL.Size = new System.Drawing.Size(120, 14);
-            this.lblMPointTL.TabIndex = 206;
-            this.lblMPointTL.Text = "-999.999, -999.999";
-            this.lblMPointTL.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lblMPointBR
-            // 
-            this.lblMPointBR.AccessibleDescription = "";
-            this.lblMPointBR.Location = new System.Drawing.Point(43, 301);
-            this.lblMPointBR.Margin = new System.Windows.Forms.Padding(2);
-            this.lblMPointBR.Name = "lblMPointBR";
-            this.lblMPointBR.Size = new System.Drawing.Size(120, 14);
-            this.lblMPointBR.TabIndex = 207;
-            this.lblMPointBR.Text = "-999.999, -999.999";
-            this.lblMPointBR.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // frmDispProg_ZPath
             // 

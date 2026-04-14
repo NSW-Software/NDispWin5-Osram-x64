@@ -56,6 +56,8 @@ namespace NDispWin
             lbl_InputMap_DataPath3.Text = Task_InputMap.Lumileds_SS_EMap.MapPath[2];
             tbox_Prefix3.Text = Task_InputMap.Lumileds_SS_EMap.FilenamePrefix[2];
             tbox_Suffix3.Text = Task_InputMap.Lumileds_SS_EMap.FilenameSuffix[2];
+
+            cbPass34.Checked = OsramICC.Pass34;
         }
 
         private void tmr_Display_Tick(object sender, EventArgs e)
@@ -327,49 +329,101 @@ namespace NDispWin
         }
         private void btnEditPass1_Click(object sender, EventArgs e)
         {
+            //try
+            //{
+            //    ProcessStartInfo psi = new ProcessStartInfo
+            //    {
+            //        FileName = "notepad.exe",
+            //        Arguments = OsramICC.Pass1PanelListFile,
+            //        Verb = "runas", // this is the key to run as admin
+            //        UseShellExecute = false
+            //    };
+
+            //    try
+            //    {
+            //        Process.Start(psi);
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        MessageBox.Show("Failed to open file as admin: " + ex.Message);
+            //    }
+            //}
+            //catch { MessageBox.Show("Pass 1 PanelList File not found."); }
             try
             {
-                ProcessStartInfo psi = new ProcessStartInfo
+                if (!File.Exists(OsramICC.Pass1PanelListFile))
+                {
+                    MessageBox.Show("Pass 1 PanelList File not found.");
+                    return;
+                }
+
+                var psi = new ProcessStartInfo
                 {
                     FileName = "notepad.exe",
-                    Arguments = OsramICC.Pass1PanelListFile,
-                    Verb = "runas", // this is the key to run as admin
-                    UseShellExecute = false
+                    Arguments = $"\"{OsramICC.Pass1PanelListFile}\"",
+                    Verb = "runas",
+                    UseShellExecute = true
                 };
 
-                try
-                {
-                    Process.Start(psi);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Failed to open file as admin: " + ex.Message);
-                }
+                Process.Start(psi);
             }
-            catch { MessageBox.Show("Pass 1 PanelList File not found."); }
+            catch (System.ComponentModel.Win32Exception ex)
+            {
+                MessageBox.Show("Failed to open file as admin: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Unexpected error: " + ex.Message);
+            }
         }
         private void btnEditPass2_Click(object sender, EventArgs e)
         {
+            //try
+            //{
+            //    ProcessStartInfo psi = new ProcessStartInfo
+            //    {
+            //        FileName = "notepad.exe",
+            //        Arguments = OsramICC.Pass2PanelListFile,
+            //        Verb = "runas", // this is the key to run as admin
+            //        UseShellExecute = false
+            //    };
+
+            //    try
+            //    {
+            //        Process.Start(psi);
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        MessageBox.Show("Failed to open file as admin: " + ex.Message);
+            //    }
+            //}
+            //catch { MessageBox.Show("Pass 2 PanelList File not found."); }
             try
             {
-                ProcessStartInfo psi = new ProcessStartInfo
+                if (!File.Exists(OsramICC.Pass2PanelListFile))
+                {
+                    MessageBox.Show("Pass 2 PanelList File not found.");
+                    return;
+                }
+
+                var psi = new ProcessStartInfo
                 {
                     FileName = "notepad.exe",
-                    Arguments = OsramICC.Pass2PanelListFile,
-                    Verb = "runas", // this is the key to run as admin
-                    UseShellExecute = false
+                    Arguments = $"\"{OsramICC.Pass2PanelListFile}\"",
+                    Verb = "runas",
+                    UseShellExecute = true
                 };
 
-                try
-                {
-                    Process.Start(psi);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Failed to open file as admin: " + ex.Message);
-                }
+                Process.Start(psi);
             }
-            catch { MessageBox.Show("Pass 2 PanelList File not found."); }
+            catch (System.ComponentModel.Win32Exception ex)
+            {
+                MessageBox.Show("Failed to open file as admin: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Unexpected error: " + ex.Message);
+            }
         }
 
         private void btnOsramICCTest_Click(object sender, EventArgs e)
@@ -437,6 +491,14 @@ namespace NDispWin
 
                 MessageBox.Show($"Lot File\n" + info);
             }
+        }
+
+        private void cbPass34_Click(object sender, EventArgs e)
+        {
+            OsramICC.Pass34 = cbPass34.Checked;
+            Event.OSRAMICC.Set($"Pass34", $"{OsramICC.Pass34} - Custom");
+
+            UpdateDisplay();
         }
     }
 }

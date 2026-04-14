@@ -298,7 +298,8 @@ namespace NDispWin
                                         if (!TaskDisp.CtrlWaitResponse(true, false)) return false;
                                         if (!TaskDisp.TrigOff(true, false)) return false;
                                         //if (b_Head1Run) DispProg.Stats.DispCount_Inc(0);
-                                        //if (b_Head2Run) DispProg.Stats.DispCount_Inc(1);
+                                        //if (b_
+                                        //Run) DispProg.Stats.DispCount_Inc(1);
 
                                         //int t_Start = GDefine.GetTickCount() + (int)Model.StartDelay;
 
@@ -1795,6 +1796,16 @@ namespace NDispWin
                             DispProg.PP_HeadA_DispBaseVol = VolA + DispProg.PP_HeadA_BackSuckVol;
                             double VolB = Weight[1] / TaskWeight.CurrentCal[1];
                             DispProg.PP_HeadB_DispBaseVol = VolB + DispProg.PP_HeadB_BackSuckVol;
+
+                            switch (GDefine.DispCtrlType[0])
+                            {
+                                case GDefine.EDispCtrlType.HPC3:
+                                    {
+                                        DispProg.PP_HeadA_DispBaseVol = VolA;
+                                        DispProg.PP_HeadB_DispBaseVol = VolB;
+                                        break;
+                                    }
+                            }
                         }
                         catch
                         {
@@ -2299,7 +2310,7 @@ namespace NDispWin
                     if (Math.Abs(deltaX) >= TaskDisp.Head_Ofst_XY_Tol || Math.Abs(deltaX) >= TaskDisp.Head_Ofst_XY_Tol)
                     {
                         Msg MsgBox = new Msg();
-                        EMsgRes MsgRes = MsgBox.Show("Head1 Offset Changes " + deltaX.ToString("f3") + "," + deltaY.ToString("f3") + " exceed tolerance.", "", TEMessage.EType.Notification, EMsgBtn.smbOK_Cancel);
+                        EMsgRes MsgRes = MsgBox.Show("HeadA Offset Changes " + deltaX.ToString("f3") + "," + deltaY.ToString("f3") + " exceed tolerance.", "", TEMessage.EType.Notification, EMsgBtn.smbOK_Cancel);
                         switch (MsgRes)
                         {
                             case EMsgRes.smrOK:
@@ -8464,8 +8475,8 @@ namespace NDispWin
                             return false;
                         }
 
-                        if (DispA) Event.PUMP1_DISP_SPEED_UPDATE.Set("Pump1DispSpeed", ValueA.ToString());
-                        if (DispB) Event.PUMP2_DISP_SPEED_UPDATE.Set("Pump2DispSpeed", ValueB.ToString());
+                        if (DispA) Event.PUMPA_DISP_SPEED_UPDATE.Set("PumpADispSpeed", ValueA.ToString());
+                        if (DispB) Event.PUMPB_DISP_SPEED_UPDATE.Set("PumpBDispSpeed", ValueB.ToString());
 
                         return HPC_15[0].SetDispSpeed(DispA, DispB, ValueA, ValueB);
                 }
@@ -8541,8 +8552,8 @@ namespace NDispWin
                             MsgBox.Show(Messages.DISPCTRL1_COMM_ERR, "");
                             return false;
                         }
-                        if (DispA) Event.PUMP1_DISP_TIME_UPDATE.Set("Pump1DispTime", ValueA.ToString());
-                        if (DispB) Event.PUMP2_DISP_TIME_UPDATE.Set("Pump2DispTime", ValueB.ToString());
+                        if (DispA) Event.PUMPA_DISP_TIME_UPDATE.Set("PumpADispTime", ValueA.ToString());
+                        if (DispB) Event.PUMPB_DISP_TIME_UPDATE.Set("PumpBDispTime", ValueB.ToString());
                         return HPC_15[0].SetDispAmount(DispA, DispB, ValueA, ValueB);
                 }
                 return true;
@@ -8566,7 +8577,7 @@ namespace NDispWin
                         MsgBox.Show(Messages.DISPCTRL1_COMM_ERR, "");
                         return false;
                     }
-                    if (DispB) Event.PUMP2_BACKSUCK_SPEED_UPDATE.Set("Pump2BacksukcSpeed", ValueB.ToString());
+                    if (DispB) Event.PUMPB_BACKSUCK_SPEED_UPDATE.Set("Pump2BacksukcSpeed", ValueB.ToString());
 
                     return HPC_15[0].SetBSuckSpeed(DispA, DispB, ValueA, ValueB);
             }
@@ -8585,8 +8596,8 @@ namespace NDispWin
                         MsgBox.Show(Messages.DISPCTRL1_COMM_ERR);
                         return false;
                     }
-                    if (DispA) Event.PUMP1_BACKSUCK_TIME_UPDATE.Set("Pump1BacksukcTime", ValueA.ToString());
-                    if (DispB) Event.PUMP2_BACKSUCK_TIME_UPDATE.Set("Pump2BacksukcTime", ValueB.ToString());
+                    if (DispA) Event.PUMPA_BACKSUCK_TIME_UPDATE.Set("PumpABacksukcTime", ValueA.ToString());
+                    if (DispB) Event.PUMPB_BACKSUCK_TIME_UPDATE.Set("PumpBBacksukcTime", ValueB.ToString());
                     return HPC_15[0].SetBackSuckAmount(DispA, DispB, ValueA, ValueB);
             }
             return true;
@@ -8613,9 +8624,9 @@ namespace NDispWin
                             double newValueB = ValueB * DispProg.PP_Head_VolumeRatio[1];
 
                             if (DispA)// && valueA != newValueA)
-                                Event.PUMP1_DISP_VOL_UPDATE.Set("Pump1DispVol", $"{valueA:f4} to {newValueA:f4}");
+                                Event.PUMPA_DISP_VOL_UPDATE.Set("PumpADispVol", $"{valueA:f4} to {newValueA:f4}");
                             if (DispB)// && valueB != newValueB)
-                                Event.PUMP2_DISP_VOL_UPDATE.Set("Pump2DispVol", $"{valueB:f4} to {newValueB:f4}");
+                                Event.PUMPB_DISP_VOL_UPDATE.Set("PumpBDispVol", $"{valueB:f4} to {newValueB:f4}");
 
                             bool res = HPC_15[0].SetDispAmount(DispA, DispB, newValueA, newValueB);
                             valueA = newValueA;
@@ -8740,9 +8751,9 @@ namespace NDispWin
                             double newValueB = ValueB * DispProg.PP_Head_VolumeRatio[1];
 
                             if (DispA)// && bsValueA != newValueA)
-                                Event.PUMP1_BACKSUCK_VOL_UPDATE.Set("Pump1BackSuckVol", $"{bsValueA:f4} to {newValueA:f4}");
+                                Event.PUMPA_BACKSUCK_VOL_UPDATE.Set("PumpABackSuckVol", $"{bsValueA:f4} to {newValueA:f4}");
                             if (DispB)// && bsValueB != newValueB)
-                                Event.PUMP2_BACKSUCK_VOL_UPDATE.Set("Pump2BackSuckVol", $"{bsValueB:f4} to {newValueB:f4}");
+                                Event.PUMPB_BACKSUCK_VOL_UPDATE.Set("PumpBBackSuckVol", $"{bsValueB:f4} to {newValueB:f4}");
 
                             bsValueA = newValueA;
                             bsValueB = newValueB;

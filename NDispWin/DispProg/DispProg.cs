@@ -2888,7 +2888,7 @@ namespace NDispWin
         public static ERunMode RunMode = ERunMode.Camera;
         public static ERunStationNo rt_StationNo = ERunStationNo.Station1;
         public static ERunRegion rt_RunRegion = ERunRegion.All;
-
+        
         public static bool BdReady = false;
         public static EBoardStatus BdStatus = EBoardStatus.None;
 
@@ -2902,6 +2902,7 @@ namespace NDispWin
             }
         }
 
+        public static int PremapNo = 0;
         public static bool TR_Run(bool autoRun = false)
         {
             if (Idle.Purging) Idle.StopPurge();
@@ -3131,6 +3132,7 @@ namespace NDispWin
         public static bool RefreshProg = false;
         public static bool TraceMode = false;
         public static int TracedLine = -1;//selected trace line
+
         public static void SetTracePos()
         {
             if (TracedLine == -1) return;
@@ -5332,6 +5334,7 @@ namespace NDispWin
                                 ClearMaps();
                                 CurrMapMask(Map.PreMap[layoutID].Bin);
                                 rt_Head1MapBin = rt_Head2MapBin = EMapBin.None;
+                                Log.AddToLog($"LAYOUT_PREMAP {layoutID}");
                                 break;
                             #endregion
                             case ECmd.GOTO:
@@ -8272,14 +8275,14 @@ namespace NDispWin
 
                                     EMsg = Msg + " READ_ID";
 
-                                    if (rt_Layouts[rt_LayoutID].UnitNoIsHead2(RunTime.UIndex))
-                                    {
-                                        if (rt_Head2MapBin >= EMapBin.BinNG) goto _End;
-                                    }
-                                    else
-                                    {
-                                        if (rt_Head1MapBin >= EMapBin.BinNG) goto _End;
-                                    }
+                                    //if (rt_Layouts[rt_LayoutID].UnitNoIsHead2(RunTime.UIndex))
+                                    //{
+                                    //    if (rt_Head2MapBin >= EMapBin.BinNG) goto _End;
+                                    //}
+                                    //else
+                                    //{
+                                    //    if (rt_Head1MapBin >= EMapBin.BinNG) goto _End;
+                                    //}
 
                                     b_Flag_ConsecutiveUnit = false;
 
@@ -8303,6 +8306,12 @@ namespace NDispWin
                             #region OSRAM_ICC
                             case ECmd.OSRAM_ICC:
                                 {
+                                    if (PremapNo > 0)
+                                    {
+                                        Log.AddToLog($"OSRAM_ICC Manual Select Premap {PremapNo}");
+                                        break;
+                                    }
+                                    
                                     Log.AddToLog("OSRAM_ICC START" + "-" + RunMode.ToString());
                                     try
                                     {
@@ -8317,8 +8326,9 @@ namespace NDispWin
                                                 string tileID = DispProg.rt_Read_IDs[0, 0];
                                                 double[] newVolume = new double[2] { 0, 0 };
                                                 if (!OsramICC.Execute(tileID, LotInfo2.LotNumber, LotInfo2.Osram.ElevenSeries, LotInfo2.Osram.DAStartNumber, ref msg, ref newVolume)) goto _Pause;
-                                                TFPump.PP4.DispAmounts = new double[] { newVolume[0] + TFPump.PP4.BSuckAmounts[0], newVolume[1] + TFPump.PP4.BSuckAmounts[1] };
-                                                Event.OSRAMICC.Set($"Tile {tileID} Set Nett Volume", $"Pump1, Pump2: {newVolume[0]:f4},{newVolume[1]:f4}");
+                                                //TFPump.PP4.DispAmounts = new double[] { newVolume[0] + TFPump.PP4.BSuckAmounts[0], newVolume[1] + TFPump.PP4.BSuckAmounts[1] };
+                                                TFPump.PP4.DispAmounts = new double[] { newVolume[0], newVolume[1] };
+                                                Event.OSRAMICC.Set($"Tile {tileID} Set Nett Volume", $"PumpA, PumpB: {newVolume[0]:f4},{newVolume[1]:f4}");
                                             }
                                         }
                                         else
@@ -8333,9 +8343,10 @@ namespace NDispWin
                                                     break;
                                                 }
                                             }
-                                            TFPump.PP4.DispAmounts = new double[] { newVolume[0] + TFPump.PP4.BSuckAmounts[0], newVolume[1] + TFPump.PP4.BSuckAmounts[1] };
+                                            //TFPump.PP4.DispAmounts = new double[] { newVolume[0] + TFPump.PP4.BSuckAmounts[0], newVolume[1] + TFPump.PP4.BSuckAmounts[1] };
+                                            TFPump.PP4.DispAmounts = new double[] { newVolume[0], newVolume[1] };
                                             string tileID = DispProg.rt_Read_IDs[0, 0];
-                                            Event.OSRAMICC.Set($"Tile {tileID} Inactive Lot. Set Nett Volume", $"Pump1, Pump2: {newVolume[0]:f4},{newVolume[1]:f4}");
+                                            Event.OSRAMICC.Set($"Tile {tileID} Inactive Lot. Set Nett Volume", $"PumpA, PumpB: {newVolume[0]:f4},{newVolume[1]:f4}");
                                         }
                                     }
                                     finally
@@ -23705,6 +23716,7 @@ namespace NDispWin
                         {
                             double nX = TaskGantry.GXPos();
                             double nY = TaskGantry.GYPos();
+
                             nX = nX + v_ox1;
                             nY = nY + v_oy1;
                             if (!TaskGantry.MoveAbsGXY(nX, nY, true)) goto _Stop;

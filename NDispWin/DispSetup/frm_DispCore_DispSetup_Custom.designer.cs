@@ -63,6 +63,9 @@
             this.lbl_InputMap_Protocol = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.pnlOsramICC = new System.Windows.Forms.Panel();
+            this.cbPass34 = new System.Windows.Forms.CheckBox();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.btnLotFileLoad = new System.Windows.Forms.Button();
             this.tbxOsramICCLotPath = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.btnOsramICCTest = new System.Windows.Forms.Button();
@@ -84,19 +87,17 @@
             this.label21 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btn_EditVolumeOfst = new System.Windows.Forms.Button();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.btnLotFileLoad = new System.Windows.Forms.Button();
             this.panel3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.pnl_InputMapPaths_Lmd_EMap.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.pnlOsramICC.SuspendLayout();
+            this.groupBox6.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.panel2.SuspendLayout();
-            this.groupBox6.SuspendLayout();
             this.SuspendLayout();
             // 
             // lbl_VolumeOfstProtocol
@@ -473,6 +474,7 @@
             // pnlOsramICC
             // 
             this.pnlOsramICC.AutoSize = true;
+            this.pnlOsramICC.Controls.Add(this.cbPass34);
             this.pnlOsramICC.Controls.Add(this.groupBox6);
             this.pnlOsramICC.Controls.Add(this.tbxOsramICCLotPath);
             this.pnlOsramICC.Controls.Add(this.label3);
@@ -490,6 +492,40 @@
             this.pnlOsramICC.Name = "pnlOsramICC";
             this.pnlOsramICC.Size = new System.Drawing.Size(595, 209);
             this.pnlOsramICC.TabIndex = 209;
+            // 
+            // cbPass34
+            // 
+            this.cbPass34.AutoSize = true;
+            this.cbPass34.Location = new System.Drawing.Point(504, 158);
+            this.cbPass34.Name = "cbPass34";
+            this.cbPass34.Size = new System.Drawing.Size(67, 18);
+            this.cbPass34.TabIndex = 219;
+            this.cbPass34.Text = "Pass 34";
+            this.cbPass34.UseVisualStyleBackColor = true;
+            this.cbPass34.Click += new System.EventHandler(this.cbPass34_Click);
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.AutoSize = true;
+            this.groupBox6.Controls.Add(this.btnLotFileLoad);
+            this.groupBox6.Location = new System.Drawing.Point(416, 98);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Padding = new System.Windows.Forms.Padding(3, 6, 3, 0);
+            this.groupBox6.Size = new System.Drawing.Size(82, 108);
+            this.groupBox6.TabIndex = 218;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Lot File";
+            // 
+            // btnLotFileLoad
+            // 
+            this.btnLotFileLoad.AccessibleDescription = "Load";
+            this.btnLotFileLoad.Location = new System.Drawing.Point(6, 24);
+            this.btnLotFileLoad.Name = "btnLotFileLoad";
+            this.btnLotFileLoad.Size = new System.Drawing.Size(70, 30);
+            this.btnLotFileLoad.TabIndex = 205;
+            this.btnLotFileLoad.Text = "Load";
+            this.btnLotFileLoad.UseVisualStyleBackColor = true;
+            this.btnLotFileLoad.Click += new System.EventHandler(this.btnLotFileLoad_Click);
             // 
             // tbxOsramICCLotPath
             // 
@@ -580,7 +616,7 @@
             // 
             // label1
             // 
-            this.label1.AccessibleDescription = "Input Path";
+            this.label1.AccessibleDescription = "";
             this.label1.Location = new System.Drawing.Point(5, 24);
             this.label1.Margin = new System.Windows.Forms.Padding(2);
             this.label1.Name = "label1";
@@ -715,29 +751,6 @@
             this.btn_EditVolumeOfst.UseVisualStyleBackColor = true;
             this.btn_EditVolumeOfst.Click += new System.EventHandler(this.btn_Edit_Click);
             // 
-            // groupBox6
-            // 
-            this.groupBox6.AutoSize = true;
-            this.groupBox6.Controls.Add(this.btnLotFileLoad);
-            this.groupBox6.Location = new System.Drawing.Point(416, 98);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Padding = new System.Windows.Forms.Padding(3, 6, 3, 0);
-            this.groupBox6.Size = new System.Drawing.Size(82, 108);
-            this.groupBox6.TabIndex = 218;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Lot File";
-            // 
-            // btnLotFileLoad
-            // 
-            this.btnLotFileLoad.AccessibleDescription = "Load";
-            this.btnLotFileLoad.Location = new System.Drawing.Point(6, 24);
-            this.btnLotFileLoad.Name = "btnLotFileLoad";
-            this.btnLotFileLoad.Size = new System.Drawing.Size(70, 30);
-            this.btnLotFileLoad.TabIndex = 205;
-            this.btnLotFileLoad.Text = "Load";
-            this.btnLotFileLoad.UseVisualStyleBackColor = true;
-            this.btnLotFileLoad.Click += new System.EventHandler(this.btnLotFileLoad_Click);
-            // 
             // frm_DispCore_DispSetup_Custom
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -763,12 +776,12 @@
             this.groupBox1.PerformLayout();
             this.pnlOsramICC.ResumeLayout(false);
             this.pnlOsramICC.PerformLayout();
+            this.groupBox6.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
-            this.groupBox6.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -831,5 +844,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.Button btnLotFileLoad;
+        private System.Windows.Forms.CheckBox cbPass34;
     }
 }

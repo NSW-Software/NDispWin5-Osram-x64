@@ -12,7 +12,7 @@ namespace NDispWin
     {
         public static class PP4
         {
-            const CControl2.EHomeMode HomeMode = CControl2.EHomeMode.MODE7_AbsSearch;
+            const CControl2.EHomeMode HomeMode = CControl2.EHomeMode.MODE12_AbsSearchReFind;//.MODE7_AbsSearch;
             const CControl2.EHomeDir HomeDir = CControl2.EHomeDir.P;
 
             public static double DispSpeed = 1;
@@ -92,6 +92,8 @@ namespace NDispWin
                 }
             }
 
+            static bool rotateEarlyExit = true;
+
             public static bool Ready(bool[] pumpSelect)
             {
                 if (pumpSelect[0] && TaskGantry.AxisBusy(TaskGantry.PAAxis)) return false;
@@ -121,8 +123,8 @@ namespace NDispWin
 
                 if (pumpSelect[0]) TaskGantry.SetMotionParamEx(TaskGantry.PAAxis, VelL, InitSpeed, AccDec);
                 if (pumpSelect[1]) TaskGantry.SetMotionParamEx(TaskGantry.PBAxis, VelL, InitSpeed, AccDec);
+                if (!PRotateToFill(pumpSelect, rotateEarlyExit)) return false;
 
-                if (!PRotateToFill(pumpSelect)) return false;
                 PPressOn(pumpSelect);
 
                 try
@@ -144,7 +146,7 @@ namespace NDispWin
                 PPressOff(pumpSelect);
                 PReleasePress(pumpSelect);
 
-                if (!PRotateToDisp(pumpSelect)) return false;
+                if (!PRotateToDisp(pumpSelect, rotateEarlyExit)) return false;
 
                 if (pumpSelect[0] && TaskGantry.AxisErrorPrompt(TaskGantry.PAAxis)) return false;
                 if (pumpSelect[1] && TaskGantry.AxisErrorPrompt(TaskGantry.PBAxis)) return false;
@@ -158,39 +160,63 @@ namespace NDispWin
                 }
             }
 
-            public static bool PRotateToDisp(bool[] pumpSelect)
+            public static bool PRotateToDisp(bool[] pumpSelect, bool early)
             {
                 if (pumpSelect[0])
                 {
                     TaskGantry.PASvRotDisp = true;
                     TaskGantry.PASvRotFill = false;
                 }
+
                 if (pumpSelect[1])
                 {
                     TaskGantry.PBSvRotDisp = true;
                     TaskGantry.PBSvRotFill = false;
                 }
 
-                var sw = Stopwatch.StartNew();
-                while (sw.ElapsedMilliseconds < (long)RotaryDelay) Thread.Sleep(1);
+                if (early)
+                {
+                    var timeout = (long)RotaryDelay;
+                    var sw = Stopwatch.StartNew();
 
+                    while (sw.ElapsedMilliseconds < timeout)
+                    {
+                        bool allReady = true;
+
+                        if (pumpSelect[0] && !TaskGantry.PASensDisp)
+                            allReady = false;
+
+                        if (pumpSelect[1] && !TaskGantry.PBSensDisp)
+                            allReady = false;
+
+                        if (allReady) return true;
+
+                        Thread.Sleep(5);
+                    }
+                }
+                else
+                {
+                    var sw = Stopwatch.StartNew();
+                    while (sw.ElapsedMilliseconds < (long)RotaryDelay) Thread.Sleep(1);
+                }
+
+                // Timeout handling (after loop)
                 if (pumpSelect[0] && !TaskGantry.PASensDisp)
                 {
-                    Msg MsgBox = new Msg();
-                    MsgBox.Show(Messages.PRESSCTRL_THREAD_TIMEOUT, "PumpA");
+                    new Msg().Show(Messages.PP4_ROTATE_DISP_TIMEOUT, "PumpA");
                     return false;
                 }
 
                 if (pumpSelect[1] && !TaskGantry.PBSensDisp)
                 {
-                    Msg MsgBox = new Msg();
-                    MsgBox.Show(Messages.PRESSCTRL_THREAD_TIMEOUT, "PumpB");
+                    new Msg().Show(Messages.PP4_ROTATE_DISP_TIMEOUT, "PumpB");
                     return false;
                 }
 
                 return true;
             }
-            public static bool PRotateToFill(bool[] pumpSelect)
+
+            public static bool PRotateToFill(bool[] pumpSelect, bool early)
             {
                 if (pumpSelect[0])
                 {
@@ -203,20 +229,41 @@ namespace NDispWin
                     TaskGantry.PBSvRotFill = true;
                 }
 
-                var sw = Stopwatch.StartNew();
-                while (sw.ElapsedMilliseconds < (long)RotaryDelay) Thread.Sleep(1);
+                if (early)
+                {
+                    var timeout = (long)RotaryDelay;
+                    var sw = Stopwatch.StartNew();
+
+                    while (sw.ElapsedMilliseconds < timeout)
+                    {
+                        bool allReady = true;
+
+                        if (pumpSelect[0] && !TaskGantry.PASensFill)
+                            allReady = false;
+
+                        if (pumpSelect[1] && !TaskGantry.PBSensFill)
+                            allReady = false;
+
+                        if (allReady) return true;
+
+                        Thread.Sleep(5);
+                    }
+                }
+                else
+                {
+                    var sw = Stopwatch.StartNew();
+                    while (sw.ElapsedMilliseconds < (long)RotaryDelay) Thread.Sleep(1);
+                }
 
                 if (pumpSelect[0] && !TaskGantry.PASensFill)
                 {
-                    Msg MsgBox = new Msg();
-                    MsgBox.Show(Messages.PP4_ROTATE_Fill_TIMEOUT, "PumpA");
+                    new Msg().Show(Messages.PP4_ROTATE_FILL_TIMEOUT, "PumpA");
                     return false;
                 }
 
                 if (pumpSelect[1] && !TaskGantry.PBSensFill)
                 {
-                    Msg MsgBox = new Msg();
-                    MsgBox.Show(Messages.PP4_ROTATE_Fill_TIMEOUT, "PumpB");
+                    new Msg().Show(Messages.PP4_ROTATE_FILL_TIMEOUT, "PumpB");
                     return false;
                 }
 
@@ -251,7 +298,7 @@ namespace NDispWin
                 
                 FPressCtrl.SetPress_MPa(new double[] { RemoveAirPress, RemoveAirPress });
 
-                if (!PRotateToFill(pumpSelect)) return false;
+                if (!PRotateToFill(pumpSelect, rotateEarlyExit)) return false;
                 PPressOn(pumpSelect);
 
                 if (pumpSelect[0]) TaskGantry.SetMotionParamEx(TaskGantry.PAAxis, VelL, FillSpeed, AccDec);
@@ -282,7 +329,7 @@ namespace NDispWin
                 sw = Stopwatch.StartNew();
                 while (sw.ElapsedMilliseconds < (long)MoveDelay) Thread.Sleep(1);
 
-                if (!PRotateToDisp(pumpSelect)) return false;
+                if (!PRotateToDisp(pumpSelect, rotateEarlyExit)) return false;
 
                 FPressCtrl.SetPress_MPa(FPress);
 
@@ -299,7 +346,7 @@ namespace NDispWin
 
                 FPressCtrl.SetPress_MPa(FPress);
 
-                if (!PRotateToFill(pumpSelect)) return false;
+                if (!PRotateToFill(pumpSelect, rotateEarlyExit)) return false;
                 PPressOn(pumpSelect);
 
                 if (pumpSelect[0]) TaskGantry.SetMotionParamEx(TaskGantry.PAAxis, VelL, FillSpeed, AccDec);
@@ -332,7 +379,7 @@ namespace NDispWin
                     while (sw.ElapsedMilliseconds < (long)MoveDelay) Thread.Sleep(1);
                 }
 
-                if (!PRotateToDisp(pumpSelect)) return false;
+                if (!PRotateToDisp(pumpSelect, rotateEarlyExit)) return false;
 
                 if (pumpSelect[0]) FillState[0] = EFillState.Filled;
                 if (pumpSelect[1]) FillState[1] = EFillState.Filled;
@@ -345,7 +392,7 @@ namespace NDispWin
             {
                 FPressCtrl.SetPress_MPa(FPress);
 
-                if (!PRotateToDisp(pumpSelect)) return false;
+                if (!PRotateToDisp(pumpSelect, rotateEarlyExit)) return false;
 
                 if (pumpSelect[0]) TaskGantry.SetMotionParamEx(TaskGantry.PAAxis, VelL, CleanSpeed, AccDec);
                 if (pumpSelect[1]) TaskGantry.SetMotionParamEx(TaskGantry.PBAxis, VelL, CleanSpeed, AccDec);
@@ -360,7 +407,6 @@ namespace NDispWin
                 while (sw.ElapsedMilliseconds < (long)MoveDelay) Thread.Sleep(1);
 
                 if (!PFill(pumpSelect)) return false;
-
                 return true;
             }
 
@@ -368,7 +414,7 @@ namespace NDispWin
             {
                 //1 ul = 1 mm3
                 //h=V/(πr²)
-                double length = volume_ul / (Math.PI * Math.Pow(PistonDiameter / 2, 2));
+                double length = volume_ul / (Math.PI * Math.Pow(PistonDiameter / 2, 2));    
                 return length;
             }
             public static bool CheckStrokeThenFill(bool[] pumpSelect)
@@ -408,8 +454,10 @@ namespace NDispWin
 
                 var dispSpd = DispSpeed;
                 var dispAD = DispAD;
-                var dispDist1 = LengthConversion(DispAmounts[0]);
-                var dispDist2 = LengthConversion(DispAmounts[1]);
+                //var dispDist1 = LengthConversion(DispAmounts[0]);
+                //var dispDist2 = LengthConversion(DispAmounts[1]);
+                var dispDist1 = LengthConversion(DispAmounts[0] + BSuckAmounts[0]);
+                var dispDist2 = LengthConversion(DispAmounts[1] + BSuckAmounts[1]);
 
                 var bsuckSpd = BSuckSpeed;
                 var bsuckAD = BSuckAD;

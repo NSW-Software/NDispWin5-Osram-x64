@@ -47,6 +47,7 @@
             this.tsslbl_Flowrate = new System.Windows.Forms.ToolStripStatusLabel();
             this.tslbl_ChuckVac = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsslbl_RecipeType = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslPass34 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tmr_Run = new System.Windows.Forms.Timer(this.components);
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tsdd_Station = new System.Windows.Forms.ToolStripDropDownButton();
@@ -115,6 +116,8 @@
             this.tmr_UpdateDisplay = new System.Windows.Forms.Timer(this.components);
             this.panel4 = new System.Windows.Forms.Panel();
             this.tmr15s = new System.Windows.Forms.Timer(this.components);
+            this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsComboxPremap = new System.Windows.Forms.ToolStripComboBox();
             this.cms_CopyPaste.SuspendLayout();
             this.pnl_Prog.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -220,7 +223,8 @@
             this.tsslbl_TargetWeight,
             this.tsslbl_Flowrate,
             this.tslbl_ChuckVac,
-            this.tsslbl_RecipeType});
+            this.tsslbl_RecipeType,
+            this.tsslPass34});
             this.statusStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
             this.statusStrip1.Location = new System.Drawing.Point(0, 539);
             this.statusStrip1.Name = "statusStrip1";
@@ -288,6 +292,13 @@
             this.tsslbl_RecipeType.Name = "tsslbl_RecipeType";
             this.tsslbl_RecipeType.Size = new System.Drawing.Size(30, 14);
             this.tsslbl_RecipeType.Text = "xml";
+            // 
+            // tsslPass34
+            // 
+            this.tsslPass34.BackColor = System.Drawing.Color.Orange;
+            this.tsslPass34.Name = "tsslPass34";
+            this.tsslPass34.Size = new System.Drawing.Size(53, 14);
+            this.tsslPass34.Text = "| Pass34";
             // 
             // tmr_Run
             // 
@@ -647,7 +658,9 @@
             this.tsbtn_ProgLineDel,
             this.toolStripSeparator4,
             this.tsbtn_ProgLineMoveUp,
-            this.tsbtn_ProgLineMoveDn});
+            this.tsbtn_ProgLineMoveDn,
+            this.toolStripSeparator10,
+            this.tsComboxPremap});
             this.ts_ProgEdit.Location = new System.Drawing.Point(0, 78);
             this.ts_ProgEdit.Name = "ts_ProgEdit";
             this.ts_ProgEdit.Size = new System.Drawing.Size(500, 39);
@@ -1061,6 +1074,37 @@
             this.tmr15s.Interval = 15000;
             this.tmr15s.Tick += new System.EventHandler(this.tmr15s_Tick);
             // 
+            // toolStripSeparator10
+            // 
+            this.toolStripSeparator10.Name = "toolStripSeparator10";
+            this.toolStripSeparator10.Size = new System.Drawing.Size(6, 39);
+            // 
+            // tsComboxPremap
+            // 
+            this.tsComboxPremap.Items.AddRange(new object[] {
+            "Premap (Auto)",
+            "Premap 1",
+            "Premap 2",
+            "Premap 3",
+            "Premap 4",
+            "Premap 5",
+            "Premap 5",
+            "Premap 6",
+            "Premap 7",
+            "Premap 8",
+            "Premap 9",
+            "Premap 10",
+            "Premap 11",
+            "Premap 12",
+            "Premap 13",
+            "Premap 14",
+            "Premap 15"});
+            this.tsComboxPremap.Name = "tsComboxPremap";
+            this.tsComboxPremap.Size = new System.Drawing.Size(100, 39);
+            this.tsComboxPremap.Text = "Premap (Auto)";
+            this.tsComboxPremap.DropDownClosed += new System.EventHandler(this.tsComboxPremap_DropDownClosed);
+            this.tsComboxPremap.Click += new System.EventHandler(this.tsComboxPremap_Click);
+            // 
             // frm_DispProg2
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -1197,6 +1241,9 @@
         private System.Windows.Forms.ToolStripMenuItem cmsPasteGroup;
         private System.Windows.Forms.Timer tmr15s;
         private System.Windows.Forms.ToolStripButton tsbtnMasterAlignClear;
+        private System.Windows.Forms.ToolStripStatusLabel tsslPass34;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
+        private System.Windows.Forms.ToolStripComboBox tsComboxPremap;
     }
 }
 

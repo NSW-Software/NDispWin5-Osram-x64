@@ -538,14 +538,14 @@ namespace NDispWin
             UpdateDisplay();
         }
 
-        private void lblHead1DefVolume_Click(object sender, EventArgs e)
+        private void lblHeadADefVolume_Click(object sender, EventArgs e)
         {
-            UC.AdjustExec(CmdName + ", Head1DefNettVolume", ref CmdLine.DPara[18], 0, 100);
+            UC.AdjustExec(CmdName + ", HeadADefNettVolume", ref CmdLine.DPara[18], 0, 100);
             UpdateDisplay();
         }
-        private void lblHead2DefVolume_Click(object sender, EventArgs e)
+        private void lblHeadBDefVolume_Click(object sender, EventArgs e)
         {
-            UC.AdjustExec(CmdName + ", Head2DefNettVolume", ref CmdLine.DPara[19], 0, 100);
+            UC.AdjustExec(CmdName + ", HeadBDefNettVolume", ref CmdLine.DPara[19], 0, 100);
             UpdateDisplay();
         }
         private void lblBackSuck1_Click(object sender, EventArgs e)

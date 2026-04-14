@@ -395,7 +395,7 @@ namespace NDispWin
         #endregion
         public static TEMessage PP4_PUMP_NOT_READY = new TEMessage(3900, "PP Pump Not Ready.", "Check pump.", TEMessage.EType.Error, true);
         public static TEMessage PP4_ROTATE_DISP_TIMEOUT = new TEMessage(3910, "PP Rotate Disp TimeOut.", "Check pump.", TEMessage.EType.Error, true);
-        public static TEMessage PP4_ROTATE_Fill_TIMEOUT = new TEMessage(3911, "PP Rotate Fill TimeOut.", "Check pump.", TEMessage.EType.Error, true);
+        public static TEMessage PP4_ROTATE_FILL_TIMEOUT = new TEMessage(3911, "PP Rotate Fill TimeOut.", "Check pump.", TEMessage.EType.Error, true);
 
         public static TEMessage UNKNOWN_EX_ERR = new TEMessage(3999, "Unknown Exception Error.", "Check ExMessage and feedback to NSW Automation.", TEMessage.EType.Error, false);
         #region 4000 Conv Init

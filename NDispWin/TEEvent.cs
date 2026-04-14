@@ -192,23 +192,19 @@ namespace NDispWin
         public static TEEvent CAL_LASER_CAL_VALUE_UPDATE = new TEEvent(2610, "Calibrate Laser Cal Value Update.");
         public static TEEvent CAL_LASER_CAL_VALUE_CANCEL = new TEEvent(2611, "Calibrate Laser Cal Value Cancel.");
 
-        public static TEEvent PUMP1_DISP_VOL_UPDATE = new TEEvent(2700, "Pump1 Disp Volume Update.");
-        public static TEEvent PUMP2_DISP_VOL_UPDATE = new TEEvent(2701, "Pump2 Disp Volume Update.");
-        //public static TEEvent PUMP1_DISP_BASE_VOL_UPDATE = new TEEvent(DISPCORE_EVENT_PUMP + 0, "Pump1 Disp Base Volume Update");
-        //public static TEEvent PUMP2_DISP_BASE_VOL_UPDATE = new TEEvent(DISPCORE_EVENT_PUMP + 1, "Pump2 Disp Base Volume Update");
-        //public static TEEvent PUMP1_DISP_BASE_VOL_ADJ = new TEEvent(DISPCORE_EVENT_PUMP + 2, "Pump1 Disp Volume Adjust");
-        //public static TEEvent PUMP2_DISP_BASE_VOL_ADJ = new TEEvent(DISPCORE_EVENT_PUMP + 3, "Pump2 Disp Volume Adjust");
+        public static TEEvent PUMPA_DISP_VOL_UPDATE = new TEEvent(2700, "PumpA Disp Volume Update.");
+        public static TEEvent PUMPB_DISP_VOL_UPDATE = new TEEvent(2701, "PumpB Disp Volume Update.");
 
-        public static TEEvent PUMP1_BACKSUCK_VOL_UPDATE = new TEEvent(2704, "Pump1 Backsuck Volume Update.");
-        public static TEEvent PUMP2_BACKSUCK_VOL_UPDATE = new TEEvent(2705, "Pump2 Backsuck Volume Update.");
-        public static TEEvent PUMP1_DISP_SPEED_UPDATE = new TEEvent(2706, "Pump1 Disp Speed Update.");
-        public static TEEvent PUMP2_DISP_SPEED_UPDATE = new TEEvent(2707, "Pump2 Disp Speed Update.");
-        public static TEEvent PUMP1_BACKSUCK_SPEED_UPDATE = new TEEvent(2708, "Pump1 Backsuck Speed Update.");
-        public static TEEvent PUMP2_BACKSUCK_SPEED_UPDATE = new TEEvent(2709, "Pump2 Backsuck Speed Update.");
-        public static TEEvent PUMP1_DISP_TIME_UPDATE = new TEEvent(2710, "Pump1 Disp Time Update.");
-        public static TEEvent PUMP2_DISP_TIME_UPDATE = new TEEvent(2711, "Pump2 Disp Time Update.");
-        public static TEEvent PUMP1_BACKSUCK_TIME_UPDATE = new TEEvent(2712, "Pump1 Backsuck Time Update.");
-        public static TEEvent PUMP2_BACKSUCK_TIME_UPDATE = new TEEvent(2713, "Pump2 Backsuck Time Update.");
+        public static TEEvent PUMPA_BACKSUCK_VOL_UPDATE = new TEEvent(2704, "PumpA Backsuck Volume Update.");
+        public static TEEvent PUMPB_BACKSUCK_VOL_UPDATE = new TEEvent(2705, "PumpB Backsuck Volume Update.");
+        public static TEEvent PUMPA_DISP_SPEED_UPDATE = new TEEvent(2706, "PumpA Disp Speed Update.");
+        public static TEEvent PUMPB_DISP_SPEED_UPDATE = new TEEvent(2707, "PumpB Disp Speed Update.");
+        public static TEEvent PUMPA_BACKSUCK_SPEED_UPDATE = new TEEvent(2708, "PumpA Backsuck Speed Update.");
+        public static TEEvent PUMPB_BACKSUCK_SPEED_UPDATE = new TEEvent(2709, "PumpB Backsuck Speed Update.");
+        public static TEEvent PUMPA_DISP_TIME_UPDATE = new TEEvent(2710, "PumpA Disp Time Update.");
+        public static TEEvent PUMPB_DISP_TIME_UPDATE = new TEEvent(2711, "PumpB Disp Time Update.");
+        public static TEEvent PUMPA_BACKSUCK_TIME_UPDATE = new TEEvent(2712, "PumpA Backsuck Time Update.");
+        public static TEEvent PUMPB_BACKSUCK_TIME_UPDATE = new TEEvent(2713, "PumpB Backsuck Time Update.");
 
         public static TEEvent READ_ID = new TEEvent(2810, "Read ID.");
         public static TEEvent MANUAL_ID_ENTRY = new TEEvent(2811, "Manual ID Entry.");
@@ -429,9 +425,9 @@ namespace NDispWin
                         }
                         break;
 
-                    case nameof(VID.PUMP1_WEIGHT_CAL_VALUE):
+                    case nameof(VID.PUMPA_WEIGHT_CAL_VALUE):
                         return TaskWeight.CurrentCal[0];
-                    case nameof(VID.PUMP2_WEIGHT_CAL_VALUE):
+                    case nameof(VID.PUMPB_WEIGHT_CAL_VALUE):
                         return TaskWeight.CurrentCal[1];
                     case nameof(VID.PUMP_WEIGHT_MEAS_MIN):
                         return TaskWeight.list_WM_MeasWeight.DefaultIfEmpty(0).Min(); 
@@ -444,9 +440,9 @@ namespace NDispWin
                             NSW.Net.Stats Stat = new NSW.Net.Stats();
                             return Stat.StDev(TaskWeight.list_WM_MeasWeight);
                         }
-                    case nameof(VID.PUMP1_FLOWRATE_VALUE):
+                    case nameof(VID.PUMPA_FLOWRATE_VALUE):
                         return TaskFlowRate.Value[0];
-                    case nameof(VID.PUMP2_FLOWRATE_VALUE):
+                    case nameof(VID.PUMPB_FLOWRATE_VALUE):
                         return TaskFlowRate.Value[1];
                     case nameof(VID.PUMP_WEIGHT_MEAS2_MIN):
                         return TaskWeightMeas.list_Weight.DefaultIfEmpty(0).Min();
@@ -1078,16 +1074,16 @@ namespace NDispWin
         public static TEVID TEMPCTRL3PV = new TEVID(11103, "Temperature Control PV 3.");
         public static TEVID TEMPCTRL4PV = new TEVID(11104, "Temperature Control PV 4.");
 
-        public static TEVID PUMP1_WEIGHT_CAL_VALUE = new TEVID(11110, "Pump1 Weight Calibration Value.");
-        public static TEVID PUMP2_WEIGHT_CAL_VALUE = new TEVID(11111, "Pump2 Weight Calibration Value.");
+        public static TEVID PUMPA_WEIGHT_CAL_VALUE = new TEVID(11110, "PumpA Weight Calibration Value.");
+        public static TEVID PUMPB_WEIGHT_CAL_VALUE = new TEVID(11111, "PumpB Weight Calibration Value.");
 
         public static TEVID PUMP_WEIGHT_MEAS_MIN = new TEVID(11120, "Pump Weight Meas Minimum Value.");
         public static TEVID PUMP_WEIGHT_MEAS_MAX = new TEVID(11121, "Pump Weight Meas Maximum Value.");
         public static TEVID PUMP_WEIGHT_MEAS_AVE = new TEVID(11122, "Pump Weight Meas Average Value.");
         public static TEVID PUMP_WEIGHT_MEAS_STDEV = new TEVID(11123, "Pump Weight Meas Standard Deviation Value.");
 
-        public static TEVID PUMP1_FLOWRATE_VALUE = new TEVID(11130, "Pump1 FlowRate Value.");
-        public static TEVID PUMP2_FLOWRATE_VALUE = new TEVID(11131, "Pump2 FlowRate Value.");
+        public static TEVID PUMPA_FLOWRATE_VALUE = new TEVID(11130, "PumpA FlowRate Value.");
+        public static TEVID PUMPB_FLOWRATE_VALUE = new TEVID(11131, "PumpB FlowRate Value.");
 
         public static TEVID PUMP_WEIGHT_MEAS2_MIN = new TEVID(11140, "Pump Weight Meas2 Minimum Value.");
         public static TEVID PUMP_WEIGHT_MEAS2_MAX = new TEVID(11141, "Pump Weight Meas2 Maximum Value.");

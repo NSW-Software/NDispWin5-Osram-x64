@@ -852,6 +852,8 @@ namespace NDispWin
 
     public class OsramICC
     {
+        public static bool Pass34 = false;
+
         public static bool ReadInputFile(string filename, ref double volume)
         {
 
@@ -1000,19 +1002,23 @@ namespace NDispWin
         public static TPassPanels Pass2 = new TPassPanels(Pass2PanelListFile);
 
         public static bool Execute(string tileID, string lotNo, string e11series, string dAStartNo, ref string msg, ref double[] volume)
+        //pass_index = 2,4,6.. when running Pass3 and Pass4
         {
+            int pass_index = 0;
+            if (Pass34) pass_index = 2;
+
             //Check TileID completed Pass 2 -> Prompt error
             if (!Pass2.ReadFile())
             {
                 Msg MsgBox = new Msg();
-                EMsgRes Resp = MsgBox.Show($"Pass2 Load Local fail.");
+                EMsgRes Resp = MsgBox.Show($"Pass{2 + pass_index} Load Local fail.");
                 return false;
             }
 
-            if (Pass2.PanelIDs.Contains(tileID))
+            if (Pass2.PanelIDs.Contains(tileID + (pass_index == 0?"":$"_R")))
             {
                 Msg MsgBox = new Msg();
-                EMsgRes Resp = MsgBox.Show($"TileID: {tileID} has completed Pass 2.");
+                EMsgRes Resp = MsgBox.Show($"TileID: {tileID} has completed Pass{2 + pass_index}.");
                 return false;
             }
 
@@ -1020,11 +1026,11 @@ namespace NDispWin
             if (!Pass1.ReadFile())
             {
                 Msg MsgBox = new Msg();
-                EMsgRes Resp = MsgBox.Show($"Pass1 Load Local fail.");
+                EMsgRes Resp = MsgBox.Show($"Pass{1 + pass_index} Load Local fail.");
                 return false;
             }
 
-            if (Pass1.PanelIDs.Contains(tileID))
+            if (Pass1.PanelIDs.Contains(tileID + (pass_index == 0 ? "" : $"_R")))
             {
                 string outputFile = $"{TaskDisp.OsramICC_OutputPath}\\{lotNo}.txt";
 
@@ -1048,14 +1054,14 @@ namespace NDispWin
                     EMsgRes Resp = MsgBox.Show($"TileID: {tileID} is not found in Output File: {lotNo}.txt.");
                     return false;
                 }
-                msg = $"RunPass2\nLotNumber: {lotNo}\nTileID: {tileID}\n";
-                Event.OSRAMICC.Set($"TileID: {tileID}", "Run Pass2");
-                Pass2.PanelIDs.Insert(0, tileID);
+                msg = $"RunPass{2 + pass_index}\nLotNumber: {lotNo}\nTileID: {tileID}\n";
+                Event.OSRAMICC.Set($"TileID: {tileID}", $"Run Pass{2 + pass_index}");
+                Pass2.PanelIDs.Insert(0, tileID + (pass_index == 0 ? "" : $"_R"));
                 Pass2.WriteFile();
-                DispProg.UsePreMap(2);
+                DispProg.UsePreMap(2 + pass_index);
                 DispProg.CurrMapMask(DispProg.Map.ActivePreMap.Bin);
 
-                Event.OSRAMICC.Set($"TileID: {tileID}", "Select Premap2");
+                Event.OSRAMICC.Set($"TileID: {tileID}", $"Select Premap{2 + pass_index}");
 
                 return true;
             }
@@ -1080,19 +1086,17 @@ namespace NDispWin
                 }
                 volume = new double[2] { vol, vol };
 
-                msg = $"RunPass1\n11Series: {e11series}\nDAStartNumber: {dAStartNo}\nTileID: {tileID}\n";
-                Event.OSRAMICC.Set($"TileID: {tileID}", "Run Pass1");
-                Pass1.PanelIDs.Insert(0, tileID);
+                msg = $"RunPass{1 + pass_index}\n11Series: {e11series}\nDAStartNumber: {dAStartNo}\nTileID: {tileID}\n";
+                Event.OSRAMICC.Set($"TileID: {tileID}", $"Run Pass{1 + pass_index}");
+                Pass1.PanelIDs.Insert(0, tileID + (pass_index == 0 ? "" : $"_R"));
                 Pass1.WriteFile();
-                DispProg.UsePreMap(1);
+                DispProg.UsePreMap(1 + pass_index);
                 DispProg.CurrMapMask(DispProg.Map.ActivePreMap.Bin);
 
-                Event.OSRAMICC.Set($"TileID: {tileID}", "Select Premap1");
+                Event.OSRAMICC.Set($"TileID: {tileID}", $"Select Premap{1 + pass_index}");
 
                 return true;
             }
-
-            return true;
         }
 
         public class TOsramICC_LotInfo
@@ -1125,7 +1129,7 @@ namespace NDispWin
                     OsramICC_LotInfo.Add(new TOsramICC_LotInfo(s, status));
                 }
 
-                while (OsramICC_LotInfo.Count < 48)
+                while (OsramICC_LotInfo.Count < 50)
                 {
                     OsramICC_LotInfo.Add(new TOsramICC_LotInfo("", 0));
                 }

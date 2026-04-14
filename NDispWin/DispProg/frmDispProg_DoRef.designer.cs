@@ -1044,7 +1044,7 @@
             // 
             // label24
             // 
-            this.label24.AccessibleDescription = "Min Score (%)";
+            this.label24.AccessibleDescription = "";
             this.label24.Location = new System.Drawing.Point(5, 5);
             this.label24.Margin = new System.Windows.Forms.Padding(2);
             this.label24.Name = "label24";

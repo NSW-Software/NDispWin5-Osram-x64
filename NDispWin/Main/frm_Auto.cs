@@ -356,6 +356,7 @@ namespace NDispWin
             btn_LotInfo.Visible = NDispWin.GDefine.EnableLotEntry;
             btn_LotInfo.BackColor = LotInfo2.LotActive ? Color.Lime : this.BackColor;
             btnBurnRun.Visible = NUtils.UserAcc.Active.GroupID >= 4;
+            btnPass34.BackColor = OsramICC.Pass34 ? Color.Orange : this.BackColor;
             #endregion
 
             lbl_Recipe.Text = GDefine.DeviceRecipe;
@@ -617,6 +618,15 @@ namespace NDispWin
 
                 lbl_DA_DispTotal.Text = (DispProg.PP_HeadA_DispBaseVol + DispProg.PP_HeadA_DispVol_Adj + DispProg.rt_Head1VolumeOfst - DispProg.PP_HeadA_BackSuckVol).ToString(TaskDisp.VolumeDisplayDecimalPoint);
                 lbl_DB_DispTotal.Text = (DispProg.PP_HeadB_DispBaseVol + DispProg.PP_HeadB_DispVol_Adj + DispProg.rt_Head2VolumeOfst - DispProg.PP_HeadB_BackSuckVol).ToString(TaskDisp.VolumeDisplayDecimalPoint);
+                switch (GDefine.DispCtrlType[0])
+                {
+                    case GDefine.EDispCtrlType.HPC3:
+                        {
+                            lbl_DA_DispTotal.Text = (DispProg.PP_HeadA_DispBaseVol + DispProg.PP_HeadA_DispVol_Adj + DispProg.rt_Head1VolumeOfst).ToString(TaskDisp.VolumeDisplayDecimalPoint);
+                            lbl_DB_DispTotal.Text = (DispProg.PP_HeadB_DispBaseVol + DispProg.PP_HeadB_DispVol_Adj + DispProg.rt_Head2VolumeOfst).ToString(TaskDisp.VolumeDisplayDecimalPoint);
+                            break;
+                        }
+                }
 
                 lblDADispCount.Text = Utils.GetKK(Maint.Unit.Count[0]) + " / " + Utils.GetKK(Maint.Unit.CountLimit[0]);
                 lblDBDispCount.Text = Utils.GetKK(Maint.Unit.Count[1]) + " / " + Utils.GetKK(Maint.Unit.CountLimit[1]);
@@ -1301,10 +1311,10 @@ namespace NDispWin
 
             OsramICC.ReadLotFile(lotFile);
 
-            if (OsramICC.OsramICC_LotInfo.Count != 48) return;
+            if (OsramICC.OsramICC_LotInfo.Count != 50) return;
 
             dgvPanelList.ColumnCount = 5;
-            dgvPanelList.RowCount = 9;
+            dgvPanelList.RowCount = 10;
 
             // Remove grid UI decorations
             dgvPanelList.RowHeadersVisible = false;
@@ -1324,14 +1334,14 @@ namespace NDispWin
             dgvPanelList.ClearSelection();
             dgvPanelList.Enabled = false; // Optional: disable interaction
 
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 10; i++)
             {
                 for (int j = 0; j < 5; j++)
                 {
-                    var value = OsramICC.OsramICC_LotInfo[i + (j * 8)].PanelID;
+                    var value = OsramICC.OsramICC_LotInfo[i + (j * 10)].PanelID;
                     dgvPanelList.Rows[i].Cells[j].Value = value;
 
-                    var color = OsramICC.OsramICC_LotInfo[i + (j * 8)].Status;
+                    var color = OsramICC.OsramICC_LotInfo[i + (j * 10)].Status;
                     Color cellColor;
                     switch (color)
                     {
@@ -1409,6 +1419,14 @@ namespace NDispWin
                 }
             }
             if (s.Length > 0) s += $"TOTAL: {totalWeight:f2} mg\n";
+        }
+
+        private void btnPass34_Click(object sender, EventArgs e)
+        {
+            OsramICC.Pass34 = !OsramICC.Pass34;
+            Event.OSRAMICC.Set($"Pass34", $"{OsramICC.Pass34} - Auto");
+
+            UpdateDisplay();
         }
     }
 }

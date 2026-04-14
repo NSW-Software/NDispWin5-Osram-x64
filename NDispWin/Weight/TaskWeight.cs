@@ -985,6 +985,8 @@ namespace NDispWin
                         DispProg.PP_HeadA_DispVol_Adj = 0;
                         DispProg.rt_Head1VolumeOfst = 0;
                         d_DispVol = DispProg.PP_HeadA_DispBaseVol - DispProg.PP_HeadA_BackSuckVol;
+                        if (GDefine.DispCtrlType[0] == GDefine.EDispCtrlType.HPC3)
+                            d_DispVol = DispProg.PP_HeadA_DispBaseVol;
                         d_BSVol = DispProg.PP_HeadA_BackSuckVol;
                         TaskDisp.SetDispVolume(true, false, DispProg.PP_HeadA_DispBaseVol, DispProg.PP_HeadB_DispBaseVol);
                         TaskDisp.SetBackSuckVolume(true, false, d_BSVol, d_BSVol);
@@ -994,6 +996,8 @@ namespace NDispWin
                         DispProg.PP_HeadB_DispVol_Adj = 0;
                         DispProg.rt_Head2VolumeOfst = 0;
                         d_DispVol = DispProg.PP_HeadB_DispBaseVol - DispProg.PP_HeadB_BackSuckVol;
+                        if (GDefine.DispCtrlType[0] == GDefine.EDispCtrlType.HPC3)
+                            d_DispVol = DispProg.PP_HeadB_DispBaseVol;
                         d_BSVol = DispProg.PP_HeadB_BackSuckVol;
                         TaskDisp.SetDispVolume(false, true, DispProg.PP_HeadA_DispBaseVol, DispProg.PP_HeadB_DispBaseVol);
                         TaskDisp.SetBackSuckVolume(false, true, d_BSVol, d_BSVol);
@@ -1097,12 +1101,16 @@ namespace NDispWin
                                     {
                                         d_DispVol = (Target_Weight / list_WC_MeasWeight[list_WC_MeasWeight.Count - 1]) * d_DispVol;//6.0.2
                                         DispProg.PP_HeadA_DispBaseVol = d_DispVol + d_BSVol;
+                                        if (GDefine.DispCtrlType[0] == GDefine.EDispCtrlType.HPC3)
+                                            DispProg.PP_HeadA_DispBaseVol = d_DispVol;
                                         TaskDisp.SetDispVolume(true, false, DispProg.PP_HeadA_DispBaseVol, DispProg.PP_HeadB_DispBaseVol);
                                     }
                                     else
                                     {
                                         d_DispVol = (Target_Weight / list_WC_MeasWeight[list_WC_MeasWeight.Count - 1]) * d_DispVol;//6.0.2 
                                         DispProg.PP_HeadB_DispBaseVol = d_DispVol + d_BSVol;
+                                        if (GDefine.DispCtrlType[0] == GDefine.EDispCtrlType.HPC3)
+                                            DispProg.PP_HeadB_DispBaseVol = d_DispVol;
                                         TaskDisp.SetDispVolume(false, true, DispProg.PP_HeadA_DispBaseVol, DispProg.PP_HeadB_DispBaseVol);
                                     }
                                     break;

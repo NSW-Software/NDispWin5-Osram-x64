@@ -119,6 +119,15 @@ namespace NDispWin
 
             lblCurrentNettVolume1.Text = $"{(TFPump.PP4.DispAmounts[0] - TFPump.PP4.BSuckAmounts[0]):f3}";
             lblCurrentNettVolume2.Text = $"{(TFPump.PP4.DispAmounts[1] - TFPump.PP4.BSuckAmounts[1]):f3}";
+            switch (GDefine.DispCtrlType[0])
+            {
+                case GDefine.EDispCtrlType.HPC3:
+                    {
+                        lblCurrentNettVolume1.Text = $"{(TFPump.PP4.DispAmounts[0]):f3}";
+                        lblCurrentNettVolume2.Text = $"{(TFPump.PP4.DispAmounts[1]):f3}";
+                        break;
+                    }
+            }
 
             if (HeadToCal.Contains(TaskWeight.EHeadNo.One))
                 btn_Head1.BackColor = Color.Lime;

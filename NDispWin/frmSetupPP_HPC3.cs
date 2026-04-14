@@ -304,7 +304,7 @@ namespace NDispWin
         }
         private void lblAfFillDist_Click(object sender, EventArgs e)
         {
-            UC.AdjustExec("PP AfFill Dist (mm)", ref TFPump.PP4.AfFillDist, -5, 5);
+            UC.AdjustExec("PP AfFill Dist (mm)", ref TFPump.PP4.AfFillDist, -25, 5);
             UpdateDisplay();
         }
 
