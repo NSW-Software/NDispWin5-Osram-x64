@@ -1078,7 +1078,7 @@ namespace NDispWin
                             LotInfo2.Osram.ElevenSeries = rxSplitData[6];
                             LotInfo2.Osram.Operation = rxSplitData[10];
                             LotInfo2.sOperatorID = rxSplitData[8];
-
+                            DispProg.Stats.BoardCount = 0;
                             PPChangeStatus = EPPChangeStatus.ChangedByHost;
                             Send($"{data0},SUCCESS");
                             Thread.Sleep(100);
