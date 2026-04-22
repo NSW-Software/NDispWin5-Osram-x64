@@ -1,21 +1,22 @@
-﻿using System;
+﻿using Automation.BDaq;
+using System;
+using System.CodeDom;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Drawing;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
-using System.IO;
-using System.CodeDom;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
-using Automation.BDaq;
 using System.Xml.Linq;
-using System.Drawing;
 using static NDispWin.Intf;
-using System.ComponentModel;
-using System.Globalization;
 using static System.Windows.Forms.AxHost;
 
 namespace NDispWin
@@ -509,6 +510,12 @@ namespace NDispWin
             }
         }
 
+        public static void CloseGemtaro()
+        {
+            var fileName = Path.GetFileNameWithoutExtension(@"C:\Gemtaro\Gemtaro.exe");
+            Process[] process = Process.GetProcessesByName(fileName);
+            foreach (var p in process) p.Kill();
+        }
         public static void Send(string outMsg)
         {
             string data = outMsg;

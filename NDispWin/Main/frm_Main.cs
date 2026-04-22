@@ -211,7 +211,15 @@ namespace NDispWin
             try
             {
                 if (GDefine.sgc2.EnableSECSGEMConnect2) GDefine.sgc2.Connect();
-                TFSecsGem.Connect();
+
+                Process p = new Process();
+                p.StartInfo.FileName = @"C:\Gemtaro\Gemtaro.exe";
+                p.StartInfo.WindowStyle = ProcessWindowStyle.Minimized;
+                p.EnableRaisingEvents = true;
+                p.Exited += (a, b) => TFSecsGem.CloseGemtaro();
+                p.Start();
+                p.WaitForInputIdle();
+                //TFSecsGem.Connect();
             }
             catch { }
 

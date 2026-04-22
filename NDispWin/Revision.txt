@@ -14,6 +14,13 @@ OsKm
 8.	Volume become higher after material refill 
 9.	Frequency of software hang very high. Camera Offset, select units layout, key parameter…  
 
+ver 6.1.9.14 JH [improve]
+frmMain
+> turn on Gemtaro and connect to gemtaro during Init System
+
+ver 6.1.9.13 JH [bug fix]
+DispProg
+> add in connect SecsGem
 
 ver 6.1.9.12 KN - 20260405
 [Improve] Added TFPump.PP.Rotate early exit. Hardcode default flag as enabled. Not tested.
