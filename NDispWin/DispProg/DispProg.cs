@@ -829,6 +829,11 @@ namespace NDispWin
         }
         public static void Init()
         {
+            if (!TFSecsGem.IsConnected)
+            {
+                TFSecsGem.Connect();
+            }
+                
             Initialized = false;
 
             Idle.Create();
