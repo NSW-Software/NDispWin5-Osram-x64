@@ -15,6 +15,8 @@ OsKm
 9.	Frequency of software hang very high. Camera Offset, select units layout, key parameter…  
 
 
+ver 6.1.9.15 KN - 20260427
+  [Improve] Added TFPump fillUseHome. Fill will call Home Sequence to ensure piston position if missing are recovered.
 
 ver 6.1.9.14 JH [improve]
 frmMain
