@@ -93,6 +93,7 @@ namespace NDispWin
             }
 
             static bool rotateEarlyExit = true;
+            static bool fillUseHome = true;
 
             public static bool Ready(bool[] pumpSelect)
             {
@@ -352,8 +353,16 @@ namespace NDispWin
                 if (pumpSelect[0]) TaskGantry.SetMotionParamEx(TaskGantry.PAAxis, VelL, FillSpeed, AccDec);
                 if (pumpSelect[1]) TaskGantry.SetMotionParamEx(TaskGantry.PBAxis, VelL, FillSpeed, AccDec);
 
-                if (pumpSelect[0]) TaskGantry.MovePtpAbs(TaskGantry.PAAxis, 0);
-                if (pumpSelect[1]) TaskGantry.MovePtpAbs(TaskGantry.PBAxis, 0);
+                if (fillUseHome)
+                {
+                    if (pumpSelect[0]) CommonControl.P1245.Home(TaskGantry.PAAxis, HomeMode, HomeDir);
+                    if (pumpSelect[1]) CommonControl.P1245.Home(TaskGantry.PBAxis, HomeMode, HomeDir);
+                }
+                else
+                {
+                    if (pumpSelect[0]) TaskGantry.MovePtpAbs(TaskGantry.PAAxis, 0);
+                    if (pumpSelect[1]) TaskGantry.MovePtpAbs(TaskGantry.PBAxis, 0);
+                }
 
                 if (pumpSelect[0]) TaskGantry.AxisWait(TaskGantry.PAAxis);
                 if (pumpSelect[1]) TaskGantry.AxisWait(TaskGantry.PBAxis);
@@ -363,6 +372,9 @@ namespace NDispWin
 
                 PPressOff(pumpSelect);
                 PReleasePress(pumpSelect);
+
+                if (pumpSelect[0] && TaskGantry.AxisErrorPrompt(TaskGantry.PAAxis)) return false;
+                if (pumpSelect[1] && TaskGantry.AxisErrorPrompt(TaskGantry.PBAxis)) return false;
 
                 if (AfFillDist != 0)
                 {
