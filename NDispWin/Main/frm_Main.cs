@@ -12,6 +12,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 
 using Euresys.Open_eVision_2_5;
+using Automation.BDaq;
 
 namespace NDispWin
 {
@@ -216,9 +217,10 @@ namespace NDispWin
                 p.StartInfo.FileName = @"C:\Gemtaro\Gemtaro.exe";
                 p.StartInfo.WindowStyle = ProcessWindowStyle.Minimized;
                 p.EnableRaisingEvents = true;
-                p.Exited += (a, b) => TFSecsGem.CloseGemtaro();
+                //p.Exited += (a, b) => TFSecsGem.CloseGemtaro();
                 p.Start();
                 p.WaitForInputIdle();
+                Thread.Sleep(1000);
                 //TFSecsGem.Connect();
             }
             catch { }
@@ -676,5 +678,20 @@ namespace NDispWin
             }
         }
 
+        private void frm_Main_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            TFSecsGem.CloseGemtaro();
+        }
+
+        private void timer_1SecsGem_Tick(object sender, EventArgs e)
+        {
+            if (!TFSecsGem.IsConnected)
+            {
+                TFSecsGem.Connect();
+                TFSecsGem.LocalRemote = ELocalRemote.Remote;
+                TFSecsGem.PrevControlState = TFSecsGem.ControlState;
+                TFSecsGem.ControlState = EControlState.EquipmentRemote;
+            }
         }
     }
+}

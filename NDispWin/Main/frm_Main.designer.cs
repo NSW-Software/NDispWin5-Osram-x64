@@ -64,6 +64,7 @@
             this.lbl_Status = new System.Windows.Forms.Label();
             this.tmr_Status = new System.Windows.Forms.Timer(this.components);
             this.tmr_1s = new System.Windows.Forms.Timer(this.components);
+            this.timer_1SecsGem = new System.Windows.Forms.Timer(this.components);
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.panel1.SuspendLayout();
@@ -110,21 +111,21 @@
             // tsmiRemote
             // 
             this.tsmiRemote.Name = "tsmiRemote";
-            this.tsmiRemote.Size = new System.Drawing.Size(180, 22);
+            this.tsmiRemote.Size = new System.Drawing.Size(117, 22);
             this.tsmiRemote.Text = "Remote";
             this.tsmiRemote.Click += new System.EventHandler(this.tsmiRemote_Click);
             // 
             // tsmiLocal
             // 
             this.tsmiLocal.Name = "tsmiLocal";
-            this.tsmiLocal.Size = new System.Drawing.Size(180, 22);
+            this.tsmiLocal.Size = new System.Drawing.Size(117, 22);
             this.tsmiLocal.Text = "Local";
             this.tsmiLocal.Click += new System.EventHandler(this.tsmiLocal_Click);
             // 
             // tsmiOffline
             // 
             this.tsmiOffline.Name = "tsmiOffline";
-            this.tsmiOffline.Size = new System.Drawing.Size(180, 22);
+            this.tsmiOffline.Size = new System.Drawing.Size(117, 22);
             this.tsmiOffline.Text = "Offline";
             this.tsmiOffline.Click += new System.EventHandler(this.tsmiOffline_Click);
             // 
@@ -446,6 +447,12 @@
             this.tmr_1s.Interval = 1000;
             this.tmr_1s.Tick += new System.EventHandler(this.tmr_1s_Tick);
             // 
+            // timer_1SecsGem
+            // 
+            this.timer_1SecsGem.Enabled = true;
+            this.timer_1SecsGem.Interval = 1000;
+            this.timer_1SecsGem.Tick += new System.EventHandler(this.timer_1SecsGem_Tick);
+            // 
             // frm_Main
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -459,6 +466,7 @@
             this.Text = "frm_Main2";
             this.Activated += new System.EventHandler(this.frm_Main2_Activated);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frm_Main_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frm_Main_FormClosed);
             this.Load += new System.EventHandler(this.frm_Main2_Load);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
@@ -505,5 +513,6 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripMenuItem tsmiRemote;
         private System.Windows.Forms.ToolStripMenuItem tsmiLocal;
+        private System.Windows.Forms.Timer timer_1SecsGem;
     }
 }
