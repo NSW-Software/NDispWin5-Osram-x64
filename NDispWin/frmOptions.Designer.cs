@@ -125,6 +125,7 @@
             this.btnAccessConfig = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnJog = new System.Windows.Forms.Button();
+            this.cbEnableSECSGEMConnectionChecking = new System.Windows.Forms.CheckBox();
             this.tcOptions.SuspendLayout();
             this.tpPreference.SuspendLayout();
             this.groupBox11.SuspendLayout();
@@ -879,7 +880,7 @@
             this.groupBox2.Controls.Add(this.cbEnableLotEntry);
             this.groupBox2.Location = new System.Drawing.Point(6, 6);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(741, 62);
+            this.groupBox2.Size = new System.Drawing.Size(741, 70);
             this.groupBox2.TabIndex = 0;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Lot Settings";
@@ -1215,6 +1216,7 @@
             // tpAdvance
             // 
             this.tpAdvance.BackColor = System.Drawing.Color.Transparent;
+            this.tpAdvance.Controls.Add(this.cbEnableSECSGEMConnectionChecking);
             this.tpAdvance.Controls.Add(this.cbEnableEventDebugLog);
             this.tpAdvance.Location = new System.Drawing.Point(4, 34);
             this.tpAdvance.Name = "tpAdvance";
@@ -1284,12 +1286,23 @@
             this.btnJog.UseVisualStyleBackColor = true;
             this.btnJog.Click += new System.EventHandler(this.btnJog_Click);
             // 
+            // cbEnableSECSGEMConnectionChecking
+            // 
+            this.cbEnableSECSGEMConnectionChecking.AutoSize = true;
+            this.cbEnableSECSGEMConnectionChecking.Location = new System.Drawing.Point(6, 49);
+            this.cbEnableSECSGEMConnectionChecking.Name = "cbEnableSECSGEMConnectionChecking";
+            this.cbEnableSECSGEMConnectionChecking.Size = new System.Drawing.Size(237, 18);
+            this.cbEnableSECSGEMConnectionChecking.TabIndex = 227;
+            this.cbEnableSECSGEMConnectionChecking.Text = "Enable SECSGEM Connection Checking";
+            this.cbEnableSECSGEMConnectionChecking.UseVisualStyleBackColor = true;
+            this.cbEnableSECSGEMConnectionChecking.Click += new System.EventHandler(this.cbEnableSECSGEMConnectionChecking_Click_1);
+            // 
             // frmOptions
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(796, 607);
+            this.ClientSize = new System.Drawing.Size(636, 485);
             this.Controls.Add(this.btnJog);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnAccessConfig);
@@ -1437,5 +1450,6 @@
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.CheckBox cbEnableMaterialPanelCounter;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.CheckBox cbEnableSECSGEMConnectionChecking;
     }
 }

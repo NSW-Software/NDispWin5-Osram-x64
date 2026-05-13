@@ -220,7 +220,7 @@ namespace NDispWin
                 //p.Exited += (a, b) => TFSecsGem.CloseGemtaro();
                 p.Start();
                 p.WaitForInputIdle();
-                Thread.Sleep(1000);
+                //Thread.Sleep(1000);
                 //TFSecsGem.Connect();
             }
             catch { }
@@ -685,12 +685,15 @@ namespace NDispWin
 
         private void timer_1SecsGem_Tick(object sender, EventArgs e)
         {
-            if (!TFSecsGem.IsConnected)
+            if (GDefineN.EnableSECSGEMConnectionChecking)
             {
-                TFSecsGem.Connect();
-                TFSecsGem.LocalRemote = ELocalRemote.Remote;
-                TFSecsGem.PrevControlState = TFSecsGem.ControlState;
-                TFSecsGem.ControlState = EControlState.EquipmentRemote;
+                if (!TFSecsGem.IsConnected)
+                {
+                    TFSecsGem.Connect();
+                    TFSecsGem.LocalRemote = ELocalRemote.Remote;
+                    TFSecsGem.PrevControlState = TFSecsGem.ControlState;
+                    TFSecsGem.ControlState = EControlState.EquipmentRemote;
+                }
             }
         }
     }

@@ -161,6 +161,7 @@ namespace NDispWin
         public static bool EnableMapEditLock;
         public static bool AutoPageShowImage;
         public static bool EnableEventDebugLog;
+        public static bool EnableSECSGEMConnectionChecking;
 
         public static bool EnableDoorSens
         {
@@ -206,6 +207,7 @@ namespace NDispWin
             EnableDoorLock = true;
 
             EnableEventDebugLog = IniFile.ReadBool("Advance", "EnableEventDebugLog", false);
+            EnableSECSGEMConnectionChecking = IniFile.ReadBool("Advance", "EnableSECSGEMConnectionChecking", false);
 
             Save();
         }
@@ -227,6 +229,7 @@ namespace NDispWin
             IniFile.WriteBool("Safety", "EnableDoorLock", EnableDoorLock);
 
             IniFile.WriteBool("Advance", "EnableEventDebugLog", EnableEventDebugLog);
+            IniFile.WriteBool("Advance", "EnableSECSGEMConnectionChecking", EnableSECSGEMConnectionChecking);
         }
 
         public static bool BtnStartValid()

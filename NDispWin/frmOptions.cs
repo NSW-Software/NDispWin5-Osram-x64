@@ -108,6 +108,7 @@ namespace NDispWin
             rbLoadLastRecipe.Checked = TaskDisp.LoadLastRecipe;
 
             cbEnableEventDebugLog.Checked = GDefineN.EnableEventDebugLog;
+            cbEnableSECSGEMConnectionChecking.Checked = GDefineN.EnableSECSGEMConnectionChecking;
         }
 
         private void cbox_CustomerList_SelectionChangeCommitted(object sender, EventArgs e)
@@ -593,6 +594,12 @@ namespace NDispWin
         private void cbEnableDoorLock_CheckedChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void cbEnableSECSGEMConnectionChecking_Click_1(object sender, EventArgs e)
+        {
+            GDefineN.EnableSECSGEMConnectionChecking = !GDefineN.EnableSECSGEMConnectionChecking;
+            UpdateDisplay();
         }
     }
 }
