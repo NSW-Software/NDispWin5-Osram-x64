@@ -1,20 +1,20 @@
-﻿using System;
+﻿using Emgu.CV;
+using Euresys.Open_eVision_2_5;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using System.Windows.Forms;
-using System.Diagnostics;
 using System.ComponentModel;
-using System.Threading;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.IO.Ports;
-using System.Threading.Tasks;
+using System.Linq;
 using System.Net.Sockets;
 using System.Reflection;
-
-using Euresys.Open_eVision_2_5;
-using Emgu.CV;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using static NDispWin.DispProg;
 
 namespace NDispWin
 {
@@ -821,8 +821,16 @@ namespace NDispWin
         public enum EMaintPos { Clean, Purge, Flush }
 
         public static TPos3[] Needle_Clean_Pos = new TPos3[2] { new TPos3(0, 0, 0), new TPos3(0, 0, 0) };
-        public static TPos3[] Needle_Purge_Pos = new TPos3[2] { new TPos3(0, 0, 0), new TPos3(0, 0, 0) };
+        public static TPos3[] Needle_Purge_Pos =>  GDefineN.EnableWeightPurgePosition? TaskWeight.Needle_Weight_Pos : Needle_PurgePos.Needle_Purge_Pos;
         public static TPos3[] Needle_Flush_Pos = new TPos3[2] { new TPos3(0, 0, 0), new TPos3(0, 0, 0) };
+
+        public class NeedlePurgePos
+        {
+            public NeedlePurgePos() { }
+            public TPos3[] Needle_Purge_Pos = new TPos3[2] { new TPos3(0, 0, 0), new TPos3(0, 0, 0) };
+        }
+
+        public static NeedlePurgePos Needle_PurgePos = new NeedlePurgePos();
 
         public static int Needle_Clean_UsePos = 0;
         public static int Needle_Clean_Time = 0;

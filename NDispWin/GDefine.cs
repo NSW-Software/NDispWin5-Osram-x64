@@ -162,6 +162,7 @@ namespace NDispWin
         public static bool AutoPageShowImage;
         public static bool EnableEventDebugLog;
         public static bool EnableSECSGEMConnectionChecking;
+        public static bool EnableWeightPurgePosition;
 
         public static bool EnableDoorSens
         {
@@ -208,7 +209,7 @@ namespace NDispWin
 
             EnableEventDebugLog = IniFile.ReadBool("Advance", "EnableEventDebugLog", false);
             EnableSECSGEMConnectionChecking = IniFile.ReadBool("Advance", "EnableSECSGEMConnectionChecking", false);
-
+            EnableWeightPurgePosition = IniFile.ReadBool("Advance", "EnableWeightPurgePosition", false);
             Save();
         }
         public static void Save()
@@ -230,6 +231,7 @@ namespace NDispWin
 
             IniFile.WriteBool("Advance", "EnableEventDebugLog", EnableEventDebugLog);
             IniFile.WriteBool("Advance", "EnableSECSGEMConnectionChecking", EnableSECSGEMConnectionChecking);
+            IniFile.WriteBool("Advance", "EnableWeightPurgePosition", EnableWeightPurgePosition);
         }
 
         public static bool BtnStartValid()

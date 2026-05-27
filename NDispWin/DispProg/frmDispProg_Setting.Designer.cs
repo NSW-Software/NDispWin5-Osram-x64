@@ -151,6 +151,7 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.tpAdvance = new System.Windows.Forms.TabPage();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.cbEnablePurgeRecipe = new System.Windows.Forms.CheckBox();
             this.lblOnStartPurgePostVac = new System.Windows.Forms.Label();
             this.label49 = new System.Windows.Forms.Label();
             this.lblOnStartPurgeWait = new System.Windows.Forms.Label();
@@ -1546,7 +1547,7 @@
             this.groupBox2.Controls.Add(this.btn_GotoStationZ);
             this.groupBox2.Location = new System.Drawing.Point(6, 287);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(450, 100);
+            this.groupBox2.Size = new System.Drawing.Size(450, 104);
             this.groupBox2.TabIndex = 171;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Adjust";
@@ -1604,7 +1605,7 @@
             this.groupBox4.Controls.Add(this.pnl_CalWeight);
             this.groupBox4.Location = new System.Drawing.Point(6, 163);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(614, 220);
+            this.groupBox4.Size = new System.Drawing.Size(614, 224);
             this.groupBox4.TabIndex = 1;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Setting";
@@ -1644,6 +1645,7 @@
             // 
             this.groupBox5.AutoSize = true;
             this.groupBox5.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox5.Controls.Add(this.cbEnablePurgeRecipe);
             this.groupBox5.Controls.Add(this.lblOnStartPurgePostVac);
             this.groupBox5.Controls.Add(this.label49);
             this.groupBox5.Controls.Add(this.lblOnStartPurgeWait);
@@ -1667,10 +1669,21 @@
             this.groupBox5.Location = new System.Drawing.Point(314, 146);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.groupBox5.Size = new System.Drawing.Size(302, 303);
+            this.groupBox5.Size = new System.Drawing.Size(302, 342);
             this.groupBox5.TabIndex = 5;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "On Start";
+            // 
+            // cbEnablePurgeRecipe
+            // 
+            this.cbEnablePurgeRecipe.AutoSize = true;
+            this.cbEnablePurgeRecipe.Location = new System.Drawing.Point(8, 298);
+            this.cbEnablePurgeRecipe.Name = "cbEnablePurgeRecipe";
+            this.cbEnablePurgeRecipe.Size = new System.Drawing.Size(144, 22);
+            this.cbEnablePurgeRecipe.TabIndex = 229;
+            this.cbEnablePurgeRecipe.Text = "Use Recipe Purge";
+            this.cbEnablePurgeRecipe.UseVisualStyleBackColor = true;
+            this.cbEnablePurgeRecipe.Click += new System.EventHandler(this.cbEnablePurgeRecipe_Click);
             // 
             // lblOnStartPurgePostVac
             // 
@@ -1815,7 +1828,7 @@
             this.cbxEvent.FormattingEnabled = true;
             this.cbxEvent.Location = new System.Drawing.Point(118, 21);
             this.cbxEvent.Name = "cbxEvent";
-            this.cbxEvent.Size = new System.Drawing.Size(178, 22);
+            this.cbxEvent.Size = new System.Drawing.Size(178, 26);
             this.cbxEvent.TabIndex = 6;
             this.cbxEvent.SelectionChangeCommitted += new System.EventHandler(this.cbxEvent_SelectionChangeCommitted);
             // 
@@ -1909,7 +1922,7 @@
             this.groupBox7.Controls.Add(this.lbl_DispCtrl_ForceTimeMode);
             this.groupBox7.Location = new System.Drawing.Point(314, 6);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(302, 134);
+            this.groupBox7.Size = new System.Drawing.Size(302, 138);
             this.groupBox7.TabIndex = 4;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Options";
@@ -1945,7 +1958,7 @@
             this.cbEnableProcessLog.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbEnableProcessLog.Location = new System.Drawing.Point(6, 52);
             this.cbEnableProcessLog.Name = "cbEnableProcessLog";
-            this.cbEnableProcessLog.Size = new System.Drawing.Size(131, 18);
+            this.cbEnableProcessLog.Size = new System.Drawing.Size(155, 22);
             this.cbEnableProcessLog.TabIndex = 149;
             this.cbEnableProcessLog.Text = "Enable Process Log";
             this.cbEnableProcessLog.UseVisualStyleBackColor = true;
@@ -1964,7 +1977,7 @@
             this.groupBox8.Location = new System.Drawing.Point(6, 327);
             this.groupBox8.Name = "groupBox8";
             this.groupBox8.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.groupBox8.Size = new System.Drawing.Size(302, 89);
+            this.groupBox8.Size = new System.Drawing.Size(302, 93);
             this.groupBox8.TabIndex = 3;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Bias Kernel";
@@ -1997,7 +2010,7 @@
             this.gboxTempCtrl.Controls.Add(this.lbl_PV2);
             this.gboxTempCtrl.Location = new System.Drawing.Point(6, 130);
             this.gboxTempCtrl.Name = "gboxTempCtrl";
-            this.gboxTempCtrl.Size = new System.Drawing.Size(302, 187);
+            this.gboxTempCtrl.Size = new System.Drawing.Size(302, 191);
             this.gboxTempCtrl.TabIndex = 2;
             this.gboxTempCtrl.TabStop = false;
             this.gboxTempCtrl.Text = "Temperature Ctrl";
@@ -2014,7 +2027,7 @@
             this.groupBox6.Location = new System.Drawing.Point(6, 6);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.groupBox6.Size = new System.Drawing.Size(302, 87);
+            this.groupBox6.Size = new System.Drawing.Size(302, 91);
             this.groupBox6.TabIndex = 1;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Purge Stage";
@@ -2056,6 +2069,7 @@
             this.tpAdvance.ResumeLayout(false);
             this.tpAdvance.PerformLayout();
             this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
             this.groupBox8.ResumeLayout(false);
@@ -2216,5 +2230,6 @@
         private System.Windows.Forms.Label label41;
         private System.Windows.Forms.Label lblOnStartCleanTime;
         private System.Windows.Forms.Label label37;
+        private System.Windows.Forms.CheckBox cbEnablePurgeRecipe;
     }
 }

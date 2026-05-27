@@ -14,6 +14,39 @@ OsKm
 8.	Volume become higher after material refill 
 9.	Frequency of software hang very high. Camera Offset, select units layout, key parameter…  
 
+ver 6.1.9.26 KY - 20260525 [improve]
+DispProg
+> Added a set of Clean Purge value follow by recipe to change between recipe and disp setup value
+
+frmDispProg
+> Added new checkbox to enable Purge Recipe selection
+
+TaskDisp
+> Added change between purge position and weight position
+
+frmOption
+> Added enabled weight purge position to change position between purge and weight for purge position
+
+GDefine
+> Added load and save for enable weight purge position checkbox
+
+ver 6.1.9.21 KY - 20260513 [improve]
+GDefine
+> Added Enabled SECSGEM Connection Checking for load and save to store in ini file
+
+frmOptions
+> Added SECSGEM connection checking checkbox to turn checking on and off
+
+frm_Main
+> Added SECSGEM connection checking to check is Gemtaro connect to NDispWin
+
+ver 6.1.9.18 KY - 20260508 [improve]
+DispProg
+> Remove check Gemtaro connection from Init function
+
+frm_Main
+> Added close event to trigger Gemtaro close when NDispWin close
+> Added connection checking to check Gemtaro connection and change status to remote when Gemtaro is not connect
 
 ver 6.1.9.15 KN - 20260427
   [Improve] Added TFPump fillUseHome. Fill will call Home Sequence to ensure piston position if missing are recovered.

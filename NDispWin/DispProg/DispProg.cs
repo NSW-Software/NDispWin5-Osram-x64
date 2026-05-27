@@ -762,18 +762,38 @@ namespace NDispWin
         {
             public enum EEvent { OnStart, OnFill, Spare_2, Spare_3, Spare_4, Spare_5, Spare_6, Spare_7, Spare_8, Spare_9};
             //0-disable
-            public static int[] PurgeCount = new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-            public static int[] PurgeTime = new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };//0 - follow common
-            public static int[] PurgeWait = new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };//0 - follow common
-            public static int[] PurgePostVac = new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };//0 - follow common
+            public static int[] PurgeCount => PurgeRecipe ? PurgeProfileRecipe.PurgeCount : Enumerable.Range(0, PurgeProfileRecipe.PurgeCount.Length).Select(x => TaskDisp.Needle_Purge_Count).ToArray(); 
+            public static int[] PurgeTime => PurgeRecipe ? PurgeProfileRecipe.PurgeTime : Enumerable.Range(0, PurgeProfileRecipe.PurgeTime.Length).Select(x => TaskDisp.Needle_Purge_Time).ToArray();//0 - follow common
+            public static int[] PurgeWait => PurgeRecipe ? PurgeProfileRecipe.PurgeWait : Enumerable.Range(0, PurgeProfileRecipe.PurgeWait.Length).Select(x => TaskDisp.Needle_Purge_Wait).ToArray();//0 - follow common
+            public static int[] PurgePostVac => PurgeRecipe ? PurgeProfileRecipe.PurgePostVac : Enumerable.Range(0, PurgeProfileRecipe.PurgePostVac.Length).Select(x => TaskDisp.Needle_Purge_PostVacTime).ToArray();//0 - follow common
 
-            public static int[] CleanCount = new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-            public static int[] CleanTime = new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };//0 - follow common
-            public static int[] CleanWait = new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };//0 - follow common
-            public static int[] CleanPostVac = new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };//0 - follow common
+            public static int[] CleanCount => PurgeRecipe ? PurgeProfileRecipe.CleanCount : Enumerable.Range(0, PurgeProfileRecipe.CleanCount.Length).Select(x => TaskDisp.Needle_Clean_Count).ToArray();
+            public static int[] CleanTime => PurgeRecipe ? PurgeProfileRecipe.CleanTime : Enumerable.Range(0, PurgeProfileRecipe.CleanTime.Length).Select(x => TaskDisp.Needle_Clean_Time).ToArray();//0 - follow common
+            public static int[] CleanWait => PurgeRecipe ? PurgeProfileRecipe.CleanWait : Enumerable.Range(0, PurgeProfileRecipe.CleanWait.Length).Select(x => TaskDisp.Needle_Clean_Wait).ToArray();//0 - follow common
+            public static int[] CleanPostVac => PurgeRecipe ? PurgeProfileRecipe.CleanPostVac : Enumerable.Range(0, PurgeProfileRecipe.CleanPostVac.Length).Select(x => TaskDisp.Needle_Clean_PostVacTime).ToArray();//0 - follow common
 
-            public static int[] PurgeStageCount = new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+            public static int[] PurgeStageCount => PurgeRecipe ? PurgeProfileRecipe.PurgeStageCount : Enumerable.Range(0, PurgeProfileRecipe.PurgeStageCount.Length).Select(x => 3).ToArray();//0 - follow common
+
+            public static bool PurgeRecipe = new bool();
         }
+
+        public class ProfilePurge
+        {
+            public ProfilePurge() { }
+            public int[] PurgeCount = new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+            public int[] PurgeTime = new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };//0 - follow common
+            public int[] PurgeWait = new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };//0 - follow common
+            public int[] PurgePostVac = new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };//0 - follow common
+
+            public int[] CleanCount = new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+            public int[] CleanTime = new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };//0 - follow common
+            public int[] CleanWait = new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };//0 - follow common
+            public int[] CleanPostVac = new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };//0 - follow common
+
+            public int[] PurgeStageCount = new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+        }
+
+        public static ProfilePurge PurgeProfileRecipe = new ProfilePurge();
 
         public static double PP_HeadA_Min_Volume = 0;
         public static double PP_HeadB_Min_Volume = 0;
@@ -1591,15 +1611,15 @@ namespace NDispWin
                 writer.WriteStartElement("entry");
                 writer.WriteAttributeString("name", "OnEvent");
 
-                WriteSubEntry(writer, "CleanCount", OnEvent.CleanCount);
-                WriteSubEntry(writer, "CleanTime", OnEvent.CleanTime);
-                WriteSubEntry(writer, "CleanWait", OnEvent.CleanWait);
-                WriteSubEntry(writer, "CleanPostVac", OnEvent.CleanPostVac);
-                WriteSubEntry(writer, "PurgeCount", OnEvent.PurgeCount);
-                WriteSubEntry(writer, "PurgeTime", OnEvent.CleanTime);
-                WriteSubEntry(writer, "PurgeWait", OnEvent.CleanWait);
-                WriteSubEntry(writer, "PurgePostVac", OnEvent.CleanPostVac);
-                WriteSubEntry(writer, "PurgeStageCount", OnEvent.PurgeStageCount);
+                WriteSubEntry(writer, "CleanCount", DispProg.PurgeProfileRecipe.CleanCount);
+                WriteSubEntry(writer, "CleanTime", DispProg.PurgeProfileRecipe.CleanTime);
+                WriteSubEntry(writer, "CleanWait", DispProg.PurgeProfileRecipe.CleanWait);
+                WriteSubEntry(writer, "CleanPostVac", DispProg.PurgeProfileRecipe.CleanPostVac);
+                WriteSubEntry(writer, "PurgeCount", DispProg.PurgeProfileRecipe.PurgeCount);
+                WriteSubEntry(writer, "PurgeTime", DispProg.PurgeProfileRecipe.PurgeTime);
+                WriteSubEntry(writer, "PurgeWait", DispProg.PurgeProfileRecipe.PurgeWait);
+                WriteSubEntry(writer, "PurgePostVac", DispProg.PurgeProfileRecipe.PurgePostVac);
+                WriteSubEntry(writer, "PurgeStageCount", DispProg.PurgeProfileRecipe.PurgeStageCount);
 
                 writer.WriteEndElement();//end entry
                 #endregion
@@ -2387,25 +2407,25 @@ namespace NDispWin
                                                     switch (attName)
                                                     {
                                                         case "CleanCount":
-                                                            OnEvent.CleanCount = ReadSubEntry(reader, new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }); break;
+                                                            DispProg.PurgeProfileRecipe.CleanCount = ReadSubEntry(reader, new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }); break;
                                                         case "CleanTime":
-                                                            OnEvent.CleanTime = ReadSubEntry(reader, new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }); break;
+                                                            DispProg.PurgeProfileRecipe.CleanTime = ReadSubEntry(reader, new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }); break;
                                                         case "CleanWait":
-                                                            OnEvent.CleanWait = ReadSubEntry(reader, new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }); break;
+                                                            DispProg.PurgeProfileRecipe.CleanWait = ReadSubEntry(reader, new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }); break;
                                                         case "CleanPostVac":
-                                                            OnEvent.CleanPostVac = ReadSubEntry(reader, new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }); break;
+                                                            DispProg.PurgeProfileRecipe.CleanPostVac = ReadSubEntry(reader, new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }); break;
 
                                                         case "PurgeCount":
-                                                            OnEvent.PurgeCount = ReadSubEntry(reader, new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }); break;
+                                                            DispProg.PurgeProfileRecipe.PurgeCount = ReadSubEntry(reader, new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }); break;
                                                         case "PurgeTime":
-                                                            OnEvent.PurgeTime = ReadSubEntry(reader, new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }); break;
+                                                            DispProg.PurgeProfileRecipe.PurgeTime = ReadSubEntry(reader, new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }); break;
                                                         case "PurgeWait":
-                                                            OnEvent.PurgeWait = ReadSubEntry(reader, new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }); break;
+                                                            DispProg.PurgeProfileRecipe.PurgeWait = ReadSubEntry(reader, new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }); break;
                                                         case "PurgePostVac":
-                                                            OnEvent.PurgePostVac = ReadSubEntry(reader, new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }); break;
+                                                            DispProg.PurgeProfileRecipe.PurgePostVac = ReadSubEntry(reader, new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }); break;
 
                                                         case "PurgeStageCount":
-                                                            OnEvent.PurgeStageCount = ReadSubEntry(reader, new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }); break;
+                                                            DispProg.PurgeProfileRecipe.PurgeStageCount = ReadSubEntry(reader, new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }); break;
                                                     }
                                                 }
                                             }

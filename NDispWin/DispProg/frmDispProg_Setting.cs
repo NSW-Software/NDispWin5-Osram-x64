@@ -146,6 +146,7 @@ namespace NDispWin
 
             lblOnStartPurgeStageCount.Text = $"{DispProg.OnEvent.PurgeStageCount[iEvent]}";
 
+            cbEnablePurgeRecipe.Checked = DispProg.OnEvent.PurgeRecipe;
             gboxTempCtrl.Visible = GDefine.TempCtrl_Type == GDefine.ETempCtrl.Autonics_TX_TK;
             if (GDefine.TempCtrl_Type == GDefine.ETempCtrl.Autonics_TX_TK)
             {
@@ -653,6 +654,12 @@ namespace NDispWin
         private void cbxEvent_SelectionChangeCommitted(object sender, EventArgs e)
         {
             iEvent = cbxEvent.SelectedIndex;
+            UpdateDisplay();
+        }
+
+        private void cbEnablePurgeRecipe_Click(object sender, EventArgs e)
+        {
+            DispProg.OnEvent.PurgeRecipe = !DispProg.OnEvent.PurgeRecipe;
             UpdateDisplay();
         }
     }

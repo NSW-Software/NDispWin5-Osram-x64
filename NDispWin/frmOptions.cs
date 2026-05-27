@@ -109,6 +109,7 @@ namespace NDispWin
 
             cbEnableEventDebugLog.Checked = GDefineN.EnableEventDebugLog;
             cbEnableSECSGEMConnectionChecking.Checked = GDefineN.EnableSECSGEMConnectionChecking;
+            cbEnableWeightPurgePosition.Checked = GDefineN.EnableWeightPurgePosition;
         }
 
         private void cbox_CustomerList_SelectionChangeCommitted(object sender, EventArgs e)
@@ -599,6 +600,12 @@ namespace NDispWin
         private void cbEnableSECSGEMConnectionChecking_Click_1(object sender, EventArgs e)
         {
             GDefineN.EnableSECSGEMConnectionChecking = !GDefineN.EnableSECSGEMConnectionChecking;
+            UpdateDisplay();
+        }
+
+        private void cbEnableWeightPurgePosition_Click(object sender, EventArgs e)
+        {
+            GDefineN.EnableWeightPurgePosition = !GDefineN.EnableWeightPurgePosition;
             UpdateDisplay();
         }
     }
