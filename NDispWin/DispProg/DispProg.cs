@@ -772,7 +772,7 @@ namespace NDispWin
             public static int[] CleanWait => PurgeRecipe ? PurgeProfileRecipe.CleanWait : Enumerable.Range(0, PurgeProfileRecipe.CleanWait.Length).Select(x => TaskDisp.Needle_Clean_Wait).ToArray();//0 - follow common
             public static int[] CleanPostVac => PurgeRecipe ? PurgeProfileRecipe.CleanPostVac : Enumerable.Range(0, PurgeProfileRecipe.CleanPostVac.Length).Select(x => TaskDisp.Needle_Clean_PostVacTime).ToArray();//0 - follow common
 
-            public static int[] PurgeStageCount => PurgeRecipe ? PurgeProfileRecipe.PurgeStageCount : Enumerable.Range(0, PurgeProfileRecipe.PurgeStageCount.Length).Select(x => 3).ToArray();//0 - follow common
+            public static int[] PurgeStageCount => PurgeRecipe ? PurgeProfileRecipe.PurgeStageCount : Enumerable.Range(0, PurgeProfileRecipe.PurgeStageCount.Length).Select(x => DispProg.PurgeStage.Count).ToArray();//0 - follow common
 
             public static bool PurgeRecipe = new bool();
         }

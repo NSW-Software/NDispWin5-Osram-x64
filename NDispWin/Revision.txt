@@ -14,6 +14,13 @@ OsKm
 8.	Volume become higher after material refill 
 9.	Frequency of software hang very high. Camera Offset, select units layout, key parameter…  
 
+ver 6.1.9.27 KY - 20260604 [improve]
+DispProg
+> Refactor purge stage count value based on purge stage class
+
+TFSecsGem
+> Refactor host online control state by change it to equipment remote to prevent pp select fail
+
 ver 6.1.9.26 KY - 20260525 [improve]
 DispProg
 > Added a set of Clean Purge value follow by recipe to change between recipe and disp setup value
