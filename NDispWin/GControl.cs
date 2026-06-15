@@ -201,7 +201,7 @@ namespace NDispWin
         public static bool WriteProcessLog(string content)
         {
             string lot = LotInfo2.LotNumber;
-            string id = DispProg.rt_Read_IDs[0, 0];
+            string id = DispProg.rt_Read_IDs[0, 0] is null ? "null" : DispProg.rt_Read_IDs[0, 0];
 
             string fName = lot.Length > 0 ? lot + "_" : "";
             fName += id.Length > 0 ? $"{id}" : $"{DateTime.Now:yyyyMMdd}_{DispProg.Stats.BoardCount}";

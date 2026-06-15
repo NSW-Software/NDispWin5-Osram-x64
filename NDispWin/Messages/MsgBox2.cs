@@ -400,44 +400,69 @@ namespace NDispWin
             //return frm.MsgRes;
             return Show(msg, exMsg, msgBtn);
         }
+
+        static Mutex mtx = new Mutex();
         public EMsgRes Show(TEMessage msg, string exMsg = "", EMsgBtn msgBtn = EMsgBtn.smbOK)
         {
+            mtx.WaitOne();
             try
             {
-                switch (msg.Type)
+                GLog.WriteProcessLog($"MsgBox START:: {msg} :: {exMsg} :: {msgBtn} ");
+                try
                 {
-                    default:
-                    case TEMessage.EType.Error:
-                        Event.ERROR.Set("nil", msg.Desc + "," + exMsg);
-                        break;
-                    case TEMessage.EType.Fault:
-                        Event.FAULT.Set("nil", msg.Desc + "," + exMsg);
-                        break;
-                    case TEMessage.EType.Confirmation:
-                        Event.CONFIRMATION.Set("nil", msg.Desc + "," + exMsg);
-                        break;
-                    case TEMessage.EType.Notification:
-                        Event.NOTIFICATION.Set("nil", msg.Desc + "," + exMsg);
-                        break;
-                    case TEMessage.EType.Warning:
-                        Event.WARNING.Set("nil", msg.Desc + "," + exMsg);
-                        break;
-                    case TEMessage.EType.Custom1:
-                        Event.CUSTOM1.Set("nil", msg.Desc + "," + exMsg);
-                        break;
-                    case TEMessage.EType.Custom2:
-                        Event.CUSTOM2.Set("nil", msg.Desc + "," + exMsg);
-                        break;
+                    switch (msg.Type)
+                    {
+                        default:
+                        case TEMessage.EType.Error:
+                            Event.ERROR.Set("nil", msg.Desc + "," + exMsg);
+                            break;
+                        case TEMessage.EType.Fault:
+                            Event.FAULT.Set("nil", msg.Desc + "," + exMsg);
+                            break;
+                        case TEMessage.EType.Confirmation:
+                            Event.CONFIRMATION.Set("nil", msg.Desc + "," + exMsg);
+                            break;
+                        case TEMessage.EType.Notification:
+                            Event.NOTIFICATION.Set("nil", msg.Desc + "," + exMsg);
+                            break;
+                        case TEMessage.EType.Warning:
+                            Event.WARNING.Set("nil", msg.Desc + "," + exMsg);
+                            break;
+                        case TEMessage.EType.Custom1:
+                            Event.CUSTOM1.Set("nil", msg.Desc + "," + exMsg);
+                            break;
+                        case TEMessage.EType.Custom2:
+                            Event.CUSTOM2.Set("nil", msg.Desc + "," + exMsg);
+                            break;
+                    }
                 }
-            }
-            catch (Exception ex) { }
-            
+                catch (Exception ex) { }
 
-            frm_MsgBox frm = new frm_MsgBox();
-            //frm.SetErrCode(msg.Code, exMsg, EMcState.Error, msgBtn, false);
-            frm.SetErrCode(msg, exMsg, msgBtn);
-            frm.ShowDialog();
-            return frm.MsgRes;
+                frm_MsgBox frm = new frm_MsgBox();
+                try
+                {
+                    //frm.SetErrCode(msg.Code, exMsg, EMcState.Error, msgBtn, false);
+                    frm.SetErrCode(msg, exMsg, msgBtn);
+                    frm.ShowDialog();
+                }
+                catch
+                {
+                    GLog.WriteProcessLog($"FAILS TO SHOW LOG:: {msg} :: {exMsg} :: {msgBtn} ");
+                    frm.Close();
+                    frm.Dispose();
+                }
+                GLog.WriteProcessLog($"MsgBox END:: {msg} :: {exMsg} :: {msgBtn} ");
+                return frm.MsgRes;
+            }
+            catch (Exception ex)
+            {
+                GLog.WriteProcessLog($"MsgBoxException({ex}):: {msg} :: {exMsg} :: {msgBtn} ");
+            }
+            finally
+            {
+                mtx.ReleaseMutex();
+            }
+            return EMsgRes.smrNone;
         }
     }
 

@@ -36,6 +36,7 @@ namespace NDispWin
 
             tmr_BringToFront.Enabled = true;
             tmr_BringToFront.Interval = 5000;
+            this.Focus();
         }
 
         //public void SetErrCode(int ErrCode, string ExMsg, EMcState McState, EMsgBtn Btn, bool Assist)
@@ -103,13 +104,14 @@ namespace NDispWin
         {
             try
             {
-                AppLanguage.Func2.UpdateText(this);
+                //AppLanguage.Func2.UpdateText(this);
 
                 UpdateMsg();
             }catch(Exception ex) { }
             finally
             {
                 this.Activate();
+                this.Focus();
             }
         }
         private void frm_Msg_FormClosed(object sender, FormClosedEventArgs e)
