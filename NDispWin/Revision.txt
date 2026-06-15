@@ -14,6 +14,19 @@ OsKm
 8.	Volume become higher after material refill 
 9.	Frequency of software hang very high. Camera Offset, select units layout, key parameter…  
 
+ver 6.1.9.27 RS - 20260615 [fix]
+frmMsgBox
+> temp disable Language
+> Add Focus on Load and Activate on Timer
+
+GControl
+> add write to null if it's null for Log
+> MsgBox2 add Mutex
+> MsgBox Mutex exit after 10 seconds to prevent too much process running
+
+frmAuto
+> OsramICC Lot Info Rows to 9
+
 ver 6.1.9.26 KY - 20260525 [improve]
 DispProg
 > Added a set of Clean Purge value follow by recipe to change between recipe and disp setup value

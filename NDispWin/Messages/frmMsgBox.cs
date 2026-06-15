@@ -292,6 +292,7 @@ namespace NDispWin
         private void tmr_BringToFront_Tick(object sender, EventArgs e)
         {
             BringToFront();
+            this.Activate();
         }
 
         private void btnYes_Click(object sender, EventArgs e)

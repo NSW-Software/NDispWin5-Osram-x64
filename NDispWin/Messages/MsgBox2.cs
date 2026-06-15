@@ -404,10 +404,15 @@ namespace NDispWin
         static Mutex mtx = new Mutex();
         public EMsgRes Show(TEMessage msg, string exMsg = "", EMsgBtn msgBtn = EMsgBtn.smbOK)
         {
-            mtx.WaitOne();
+            GLog.WriteProcessLog($"MsgBox PRE START:: {msg.Desc} :: {exMsg} :: {msgBtn} ");
+            if (!mtx.WaitOne(10000, false))
+            {
+                GLog.WriteProcessLog($"MsgBox CANCEL:: {msg.Desc} :: {exMsg} :: {msgBtn} ");
+                return new EMsgRes();
+            }
             try
             {
-                GLog.WriteProcessLog($"MsgBox START:: {msg} :: {exMsg} :: {msgBtn} ");
+                GLog.WriteProcessLog($"MsgBox START:: {msg.Desc} :: {exMsg} :: {msgBtn} ");
                 try
                 {
                     switch (msg.Type)
@@ -447,16 +452,16 @@ namespace NDispWin
                 }
                 catch
                 {
-                    GLog.WriteProcessLog($"FAILS TO SHOW LOG:: {msg} :: {exMsg} :: {msgBtn} ");
+                    GLog.WriteProcessLog($"FAILS TO SHOW LOG:: {msg.Desc} :: {exMsg} :: {msgBtn} ");
                     frm.Close();
                     frm.Dispose();
                 }
-                GLog.WriteProcessLog($"MsgBox END:: {msg} :: {exMsg} :: {msgBtn} ");
+                GLog.WriteProcessLog($"MsgBox END:: {msg.Desc} :: {exMsg} :: {msgBtn} ");
                 return frm.MsgRes;
             }
             catch (Exception ex)
             {
-                GLog.WriteProcessLog($"MsgBoxException({ex}):: {msg} :: {exMsg} :: {msgBtn} ");
+                GLog.WriteProcessLog($"MsgBoxException({ex}):: {msg.Desc} :: {exMsg} :: {msgBtn} ");
             }
             finally
             {
