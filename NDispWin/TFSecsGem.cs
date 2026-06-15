@@ -1196,7 +1196,7 @@ namespace NDispWin
                         }break;
                     case "Online":
                         {
-                            ControlState = EControlState.HostOnline;
+                            ControlState = EControlState.EquipmentRemote;
                         }break;
                 }
 
