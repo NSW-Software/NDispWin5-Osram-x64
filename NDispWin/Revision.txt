@@ -14,6 +14,13 @@ OsKm
 8.	Volume become higher after material refill 
 9.	Frequency of software hang very high. Camera Offset, select units layout, key parameter…  
 
+ver 6.1.9.30 KY - 20260616 [improve]
+DispProgCmd
+> Apply recipe and global clean purge value for grouppath, parlines, dotzpath function
+
+DispProg
+> Remove spare profile for OnEvent clean purge
+
 ver 6.1.9.28 RS - 20260615 [fix]
 frmMsgBox
 > temp disable Language
