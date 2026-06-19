@@ -774,7 +774,7 @@ namespace NDispWin
 
             public static int[] PurgeStageCount => PurgeRecipe ? PurgeProfileRecipe.PurgeStageCount : Enumerable.Range(0, PurgeProfileRecipe.PurgeStageCount.Length).Select(x => DispProg.PurgeStage.Count).ToArray();//0 - follow common
 
-            public static bool PurgeRecipe = new bool();
+            public static bool PurgeRecipe = true;
         }
 
         public class ProfilePurge

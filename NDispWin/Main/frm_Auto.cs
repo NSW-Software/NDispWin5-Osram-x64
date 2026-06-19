@@ -507,14 +507,15 @@ namespace NDispWin
         Mutex mtx_tmr_DateTime = new Mutex();
         private void tmr_DateTime_Tick(object sender, EventArgs e)
         {
+            lbl_DateTime.Text = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss tt");
+            lbl_AccessUser.Text = "[" + NUtils.UserAcc.Active.GroupName + "/" + NUtils.UserAcc.Active.UserName + "]";
+
             if (!mtx_tmr_DateTime.WaitOne((int)(tmr_DateTime_100.Interval * 0.1), false)) return;
             try
             {
                 if (!Visible) return;
 
-                lbl_DateTime.Text = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss tt");
-                lbl_AccessUser.Text = "[" + NUtils.UserAcc.Active.GroupName + "/" + NUtils.UserAcc.Active.UserName + "]";
-
+                
                 UpdateDisplay();
                 UpdateStatus();
                 UpdateWaitMagStatus();
@@ -572,6 +573,51 @@ namespace NDispWin
         Mutex mtx_tmr_1s = new Mutex();
         private void tmr_1s_Tick(object sender, EventArgs e)
         {
+
+            #region Progam
+            lbl_Weight.Text = DispProg.Disp_Weight[0].ToString("f4") + ", " + DispProg.Disp_Weight[1].ToString("f4");
+            lbl_Flowrate.Text = TaskWeight.CurrentCal[0].ToString("f4") + ", " + TaskWeight.CurrentCal[1].ToString("f4");
+            lbl_HeadShotCount.Text = DispProg.Stats.DispCount[0].ToString() + ", " + DispProg.Stats.DispCount[1].ToString();
+
+            lbl_FrameCount.Text = DispProg.Stats.BoardCount.ToString();
+            int t = GDefine.GetTickCount() - DispProg.Stats.StartTime;
+            lbl_Elapsed.Text = ((double)t / 60000).ToString("f1");
+            #endregion
+
+            #region Pump Info
+            double DispA_BaseVol_ul = DispProg.PP_HeadA_DispBaseVol;
+            double DispB_BaseVol_ul = DispProg.PP_HeadB_DispBaseVol;
+            lbl_DA_DispBase.Text = DispA_BaseVol_ul.ToString(TaskDisp.VolumeDisplayDecimalPoint);
+            lbl_DB_DispBase.Text = DispB_BaseVol_ul.ToString(TaskDisp.VolumeDisplayDecimalPoint);
+
+            double DispA_DispAdj_ul = DispProg.PP_HeadA_DispVol_Adj;
+            double DispB_DispAdj_ul = DispProg.PP_HeadB_DispVol_Adj;
+            lbl_DA_DispAdj.Text = DispA_DispAdj_ul.ToString(TaskDisp.VolumeDisplayDecimalPoint);
+            lbl_DB_DispAdj.Text = DispB_DispAdj_ul.ToString(TaskDisp.VolumeDisplayDecimalPoint);
+
+            double DispA_VolOfst = DispProg.rt_Head1VolumeOfst;
+            double DispB_VolOfst = DispProg.rt_Head2VolumeOfst;
+            lbl_DA_DispOfst.Text = DispA_VolOfst.ToString(TaskDisp.VolumeDisplayDecimalPoint);
+            lbl_DB_DispOfst.Text = DispB_VolOfst.ToString(TaskDisp.VolumeDisplayDecimalPoint);
+
+            lbl_DA_BackSuckVol.Text = DispProg.PP_HeadA_BackSuckVol.ToString(TaskDisp.VolumeDisplayDecimalPoint);
+            lbl_DB_BackSuckVol.Text = DispProg.PP_HeadB_BackSuckVol.ToString(TaskDisp.VolumeDisplayDecimalPoint);
+
+            lbl_DA_DispTotal.Text = (DispProg.PP_HeadA_DispBaseVol + DispProg.PP_HeadA_DispVol_Adj + DispProg.rt_Head1VolumeOfst - DispProg.PP_HeadA_BackSuckVol).ToString(TaskDisp.VolumeDisplayDecimalPoint);
+            lbl_DB_DispTotal.Text = (DispProg.PP_HeadB_DispBaseVol + DispProg.PP_HeadB_DispVol_Adj + DispProg.rt_Head2VolumeOfst - DispProg.PP_HeadB_BackSuckVol).ToString(TaskDisp.VolumeDisplayDecimalPoint);
+            switch (GDefine.DispCtrlType[0])
+            {
+                case GDefine.EDispCtrlType.HPC3:
+                    {
+                        lbl_DA_DispTotal.Text = (DispProg.PP_HeadA_DispBaseVol + DispProg.PP_HeadA_DispVol_Adj + DispProg.rt_Head1VolumeOfst).ToString(TaskDisp.VolumeDisplayDecimalPoint);
+                        lbl_DB_DispTotal.Text = (DispProg.PP_HeadB_DispBaseVol + DispProg.PP_HeadB_DispVol_Adj + DispProg.rt_Head2VolumeOfst).ToString(TaskDisp.VolumeDisplayDecimalPoint);
+                        break;
+                    }
+            }
+
+            lblDADispCount.Text = Utils.GetKK(Maint.Unit.Count[0]) + " / " + Utils.GetKK(Maint.Unit.CountLimit[0]);
+            lblDBDispCount.Text = Utils.GetKK(Maint.Unit.Count[1]) + " / " + Utils.GetKK(Maint.Unit.CountLimit[1]);
+            #endregion
             if (!mtx_tmr_1s.WaitOne((int)(tmr_1s.Interval * 0.1), false)) return;
             try
             {
@@ -587,50 +633,7 @@ namespace NDispWin
                     DispProg.Idle.RunPurge();
                 }
 
-                #region Progam
-                lbl_Weight.Text = DispProg.Disp_Weight[0].ToString("f4") + ", " + DispProg.Disp_Weight[1].ToString("f4");
-                lbl_Flowrate.Text = TaskWeight.CurrentCal[0].ToString("f4") + ", " + TaskWeight.CurrentCal[1].ToString("f4");
-                lbl_HeadShotCount.Text = DispProg.Stats.DispCount[0].ToString() + ", " + DispProg.Stats.DispCount[1].ToString();
-
-                lbl_FrameCount.Text = DispProg.Stats.BoardCount.ToString();
-                int t = GDefine.GetTickCount() - DispProg.Stats.StartTime;
-                lbl_Elapsed.Text = ((double)t / 60000).ToString("f1");
-                #endregion
-
-                #region Pump Info
-                double DispA_BaseVol_ul = DispProg.PP_HeadA_DispBaseVol;
-                double DispB_BaseVol_ul = DispProg.PP_HeadB_DispBaseVol;
-                lbl_DA_DispBase.Text = DispA_BaseVol_ul.ToString(TaskDisp.VolumeDisplayDecimalPoint);
-                lbl_DB_DispBase.Text = DispB_BaseVol_ul.ToString(TaskDisp.VolumeDisplayDecimalPoint);
-
-                double DispA_DispAdj_ul = DispProg.PP_HeadA_DispVol_Adj;
-                double DispB_DispAdj_ul = DispProg.PP_HeadB_DispVol_Adj;
-                lbl_DA_DispAdj.Text = DispA_DispAdj_ul.ToString(TaskDisp.VolumeDisplayDecimalPoint);
-                lbl_DB_DispAdj.Text = DispB_DispAdj_ul.ToString(TaskDisp.VolumeDisplayDecimalPoint);
-
-                double DispA_VolOfst = DispProg.rt_Head1VolumeOfst;
-                double DispB_VolOfst = DispProg.rt_Head2VolumeOfst;
-                lbl_DA_DispOfst.Text = DispA_VolOfst.ToString(TaskDisp.VolumeDisplayDecimalPoint);
-                lbl_DB_DispOfst.Text = DispB_VolOfst.ToString(TaskDisp.VolumeDisplayDecimalPoint);
-
-                lbl_DA_BackSuckVol.Text = DispProg.PP_HeadA_BackSuckVol.ToString(TaskDisp.VolumeDisplayDecimalPoint);
-                lbl_DB_BackSuckVol.Text = DispProg.PP_HeadB_BackSuckVol.ToString(TaskDisp.VolumeDisplayDecimalPoint);
-
-                lbl_DA_DispTotal.Text = (DispProg.PP_HeadA_DispBaseVol + DispProg.PP_HeadA_DispVol_Adj + DispProg.rt_Head1VolumeOfst - DispProg.PP_HeadA_BackSuckVol).ToString(TaskDisp.VolumeDisplayDecimalPoint);
-                lbl_DB_DispTotal.Text = (DispProg.PP_HeadB_DispBaseVol + DispProg.PP_HeadB_DispVol_Adj + DispProg.rt_Head2VolumeOfst - DispProg.PP_HeadB_BackSuckVol).ToString(TaskDisp.VolumeDisplayDecimalPoint);
-                switch (GDefine.DispCtrlType[0])
-                {
-                    case GDefine.EDispCtrlType.HPC3:
-                        {
-                            lbl_DA_DispTotal.Text = (DispProg.PP_HeadA_DispBaseVol + DispProg.PP_HeadA_DispVol_Adj + DispProg.rt_Head1VolumeOfst).ToString(TaskDisp.VolumeDisplayDecimalPoint);
-                            lbl_DB_DispTotal.Text = (DispProg.PP_HeadB_DispBaseVol + DispProg.PP_HeadB_DispVol_Adj + DispProg.rt_Head2VolumeOfst).ToString(TaskDisp.VolumeDisplayDecimalPoint);
-                            break;
-                        }
-                }
-
-                lblDADispCount.Text = Utils.GetKK(Maint.Unit.Count[0]) + " / " + Utils.GetKK(Maint.Unit.CountLimit[0]);
-                lblDBDispCount.Text = Utils.GetKK(Maint.Unit.Count[1]) + " / " + Utils.GetKK(Maint.Unit.CountLimit[1]);
-                #endregion
+                
 
                 if (TaskDisp.Material_ExpiryPreAlertTime > 0)
                 {
@@ -1338,25 +1341,32 @@ namespace NDispWin
             {
                 for (int j = 0; j < 5; j++)
                 {
-                    var value = OsramICC.OsramICC_LotInfo[i + (j * 10)].PanelID;
-                    dgvPanelList.Rows[i].Cells[j].Value = value;
-
-                    var color = OsramICC.OsramICC_LotInfo[i + (j * 10)].Status;
-                    Color cellColor;
-                    switch (color)
+                    try
                     {
-                        case 1:
-                            cellColor = Color.Yellow;
-                            break;
-                        case 2:
-                            cellColor = Color.Lime;
-                            break;
-                        default:
-                            cellColor = SystemColors.Control;
-                            break;
-                    }
+                        var value = OsramICC.OsramICC_LotInfo[i + (j * 10)].PanelID;
+                        dgvPanelList.Rows[i].Cells[j].Value = value;
 
-                    dgvPanelList.Rows[i].Cells[j].Style.BackColor = cellColor;
+                        var color = OsramICC.OsramICC_LotInfo[i + (j * 10)].Status;
+                        Color cellColor;
+                        switch (color)
+                        {
+                            case 1:
+                                cellColor = Color.Yellow;
+                                break;
+                            case 2:
+                                cellColor = Color.Lime;
+                                break;
+                            default:
+                                cellColor = SystemColors.Control;
+                                break;
+                        }
+
+                        dgvPanelList.Rows[i].Cells[j].Style.BackColor = cellColor;
+                    }catch(Exception ex)
+                    {
+                        // Do Nothing
+                    }
+                    
                 }
             }
         }
