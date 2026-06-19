@@ -760,7 +760,7 @@ namespace NDispWin
 
         public static class OnEvent//0-OnStart,1-OnFill, 2-OnUCounter, 3-OnDCounter
         {
-            public enum EEvent { OnStart, OnFill, Spare_2, Spare_3, Spare_4, Spare_5, Spare_6, Spare_7, Spare_8, Spare_9};
+            public enum EEvent { OnStart, OnFill };
             //0-disable
             public static int[] PurgeCount => PurgeRecipe ? PurgeProfileRecipe.PurgeCount : Enumerable.Range(0, PurgeProfileRecipe.PurgeCount.Length).Select(x => TaskDisp.Needle_Purge_Count).ToArray(); 
             public static int[] PurgeTime => PurgeRecipe ? PurgeProfileRecipe.PurgeTime : Enumerable.Range(0, PurgeProfileRecipe.PurgeTime.Length).Select(x => TaskDisp.Needle_Purge_Time).ToArray();//0 - follow common

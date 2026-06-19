@@ -46,8 +46,22 @@ namespace NDispWin
                                     if (!TaskDisp.TaskGotoTPos2(TaskDisp.Needle_Clean_Pos)) goto _Error;
                                     if (!TFPump.PP4.PFill(pumpToFill)) goto _Error;
 
-                                    if (!TaskDisp.TaskCleanNeedle(bHeadRun[0], bHeadRun[1], RunMode == ERunMode.Normal)) goto _Error;
-                                    if (!TaskDisp.TaskPurgeNeedle(bHeadRun[0], bHeadRun[1], RunMode == ERunMode.Normal)) goto _Error;
+                                    //if (!TaskDisp.TaskCleanNeedle(bHeadRun[0], bHeadRun[1], RunMode == ERunMode.Normal)) goto _Error;
+                                    //if (!TaskDisp.TaskPurgeNeedle(bHeadRun[0], bHeadRun[1], RunMode == ERunMode.Normal)) goto _Error;
+
+                                    if (!TaskDisp.TaskCleanNeedle(bHeadRun[0], bHeadRun[1], RunMode == ERunMode.Normal, true,
+                                        DispProg.OnEvent.CleanTime[(int)DispProg.OnEvent.EEvent.OnFill],
+                                        DispProg.OnEvent.CleanWait[(int)DispProg.OnEvent.EEvent.OnFill],
+                                        DispProg.OnEvent.CleanCount[(int)DispProg.OnEvent.EEvent.OnFill],
+                                        DispProg.OnEvent.CleanPostVac[(int)DispProg.OnEvent.EEvent.OnFill]
+                                        )) goto _Error;
+
+                                    if (!TaskDisp.TaskPurgeNeedle(bHeadRun[0], bHeadRun[1], RunMode == ERunMode.Normal, true,
+                                        DispProg.OnEvent.PurgeTime[(int)DispProg.OnEvent.EEvent.OnFill],
+                                        DispProg.OnEvent.PurgeWait[(int)DispProg.OnEvent.EEvent.OnFill],
+                                        DispProg.OnEvent.PurgeCount[(int)DispProg.OnEvent.EEvent.OnFill],
+                                        DispProg.OnEvent.PurgePostVac[(int)DispProg.OnEvent.EEvent.OnFill]
+                                        )) goto _Error;
                                 }
                             }
                             else
@@ -1167,8 +1181,22 @@ namespace NDispWin
                                         if (!TaskDisp.TaskGotoTPos2(TaskDisp.Needle_Clean_Pos)) goto _Error;
                                         if (!TFPump.PP4.PFill(pumpToFill)) goto _Error;
 
-                                        if (!TaskDisp.TaskCleanNeedle(bHeadRun[0], bHeadRun[1], RunMode == ERunMode.Normal)) goto _Error;
-                                        if (!TaskDisp.TaskPurgeNeedle(bHeadRun[0], bHeadRun[1], RunMode == ERunMode.Normal)) goto _Error;
+                                        //if (!TaskDisp.TaskCleanNeedle(bHeadRun[0], bHeadRun[1], RunMode == ERunMode.Normal)) goto _Error;
+                                        //if (!TaskDisp.TaskPurgeNeedle(bHeadRun[0], bHeadRun[1], RunMode == ERunMode.Normal)) goto _Error;
+
+                                        if (!TaskDisp.TaskCleanNeedle(bHeadRun[0], bHeadRun[1], RunMode == ERunMode.Normal, true,
+                                            DispProg.OnEvent.CleanTime[(int)DispProg.OnEvent.EEvent.OnFill],
+                                            DispProg.OnEvent.CleanWait[(int)DispProg.OnEvent.EEvent.OnFill],
+                                            DispProg.OnEvent.CleanCount[(int)DispProg.OnEvent.EEvent.OnFill],
+                                            DispProg.OnEvent.CleanPostVac[(int)DispProg.OnEvent.EEvent.OnFill]
+                                            )) goto _Error;
+
+                                        if (!TaskDisp.TaskPurgeNeedle(bHeadRun[0], bHeadRun[1], RunMode == ERunMode.Normal, true,
+                                            DispProg.OnEvent.PurgeTime[(int)DispProg.OnEvent.EEvent.OnFill],
+                                            DispProg.OnEvent.PurgeWait[(int)DispProg.OnEvent.EEvent.OnFill],
+                                            DispProg.OnEvent.PurgeCount[(int)DispProg.OnEvent.EEvent.OnFill],
+                                            DispProg.OnEvent.PurgePostVac[(int)DispProg.OnEvent.EEvent.OnFill]
+                                            )) goto _Error;
                                     }
                                 }
 
@@ -1926,8 +1954,22 @@ namespace NDispWin
                                         if (!TaskDisp.TaskGotoTPos2(TaskDisp.Needle_Clean_Pos)) goto _Error;
                                         if (!TFPump.PP4.PFill(pumpToFill)) goto _Error;
 
-                                        if (!TaskDisp.TaskCleanNeedle(bHeadRun[0], bHeadRun[1], RunMode == ERunMode.Normal)) goto _Error;
-                                        if (!TaskDisp.TaskPurgeNeedle(bHeadRun[0], bHeadRun[1], RunMode == ERunMode.Normal)) goto _Error;
+                                        //if (!TaskDisp.TaskCleanNeedle(bHeadRun[0], bHeadRun[1], RunMode == ERunMode.Normal)) goto _Error;
+                                        //if (!TaskDisp.TaskPurgeNeedle(bHeadRun[0], bHeadRun[1], RunMode == ERunMode.Normal)) goto _Error;
+
+                                        if (!TaskDisp.TaskCleanNeedle(bHeadRun[0], bHeadRun[1], RunMode == ERunMode.Normal, true,
+                                            DispProg.OnEvent.CleanTime[(int)DispProg.OnEvent.EEvent.OnFill],
+                                            DispProg.OnEvent.CleanWait[(int)DispProg.OnEvent.EEvent.OnFill],
+                                            DispProg.OnEvent.CleanCount[(int)DispProg.OnEvent.EEvent.OnFill],
+                                            DispProg.OnEvent.CleanPostVac[(int)DispProg.OnEvent.EEvent.OnFill]
+                                            )) goto _Error;
+
+                                        if (!TaskDisp.TaskPurgeNeedle(bHeadRun[0], bHeadRun[1], RunMode == ERunMode.Normal, true,
+                                            DispProg.OnEvent.PurgeTime[(int)DispProg.OnEvent.EEvent.OnFill],
+                                            DispProg.OnEvent.PurgeWait[(int)DispProg.OnEvent.EEvent.OnFill],
+                                            DispProg.OnEvent.PurgeCount[(int)DispProg.OnEvent.EEvent.OnFill],
+                                            DispProg.OnEvent.PurgePostVac[(int)DispProg.OnEvent.EEvent.OnFill]
+                                            )) goto _Error;
                                     }
                                 }
 
