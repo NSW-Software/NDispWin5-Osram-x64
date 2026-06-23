@@ -158,6 +158,7 @@ namespace NDispWin
 
         private void EnableControl(bool Enable)
         {
+            return;
             pnl_Right.Enable(Enable);
             btn_Stop.Enable(true);
 
