@@ -136,6 +136,237 @@ namespace NDispWin
                 }));
 
             };
+
+            var StatusCheck = Task.Run(() =>
+            {
+                while (true)
+                {
+                    try
+                    {
+                        GLog.WriteDebugLog("Status Check Start");
+                        UpdateWaitMagStatus();
+                        Thread.Sleep(5);
+                        UpdateSecsGem();
+                    }
+                    catch (Exception ex)
+                    {
+                        GLog.WriteDebugLog($"Status Check Exception: {ex}");
+                    }
+                    finally
+                    {
+                        GLog.WriteDebugLog("Status Check End");
+                        Thread.Sleep(5);
+                    }   
+                }
+            });
+
+            var TR = Task.Run(() =>
+            {
+                while (true)
+                {
+                    try
+                    {
+                        GLog.WriteDebugLog("TR Start");
+                        if (!Visible) return;
+
+                        if (Define_Run.PromptButtonFocus) return;
+
+                        if (Msg.Showing) return;
+
+                        if (GDefineN.BtnStartValid())
+                        {
+                            bool bStart;
+                            if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)
+                                bStart = GDefineN.DI_BtnStart;
+                            else
+                                bStart = TaskGantry.BtnStart();
+
+                            if (bStart)
+                            {
+                                if (btn_Start.Enabled) RunAuto();//btn_Start.PerformClick();
+                                                                 //btn_Start_Click(sender, e);
+                            }
+                        }
+
+                        if (GDefineN.BtnStopValid())
+                        {
+                            bool bStop;
+                            if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)
+                                bStop = GDefineN.DI_BtnStop;
+                            else
+                                bStop = TaskGantry.BtnStop();
+
+                            if (!bStop)
+                            {
+                                StopAuto();
+                                //btn_Stop.PerformClick();
+                                //btn_Stop_Click(sender, e);
+                            }
+                        }
+                    }
+                    catch(Exception ex)
+                    {
+                        GLog.WriteDebugLog($"TR Exception: {ex}");
+                    }
+                    finally 
+                    {
+                        GLog.WriteDebugLog("TR Start"); 
+                        Thread.Sleep(5);
+                    }//
+                }
+            });
+
+            var DoorCheck = Task.Run(() => 
+            {
+                while (true)
+                {
+                    try
+                    {
+                        GLog.WriteDebugLog("DoorCheck Start");
+                        int value = DispProg.Idle.Idling ? 1 : 0;
+                        if (value == 1)
+                        {
+                            if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)
+                            {
+                                if (!DefineSafety.DoorCheck_Disp(false)) return;
+                            }//
+                            Define_Run.TR_StopRun();
+                            DispProg.Idle.RunPurge();
+                        }
+
+                        if (TaskDisp.Material_ExpiryPreAlertTime > 0)
+                        {
+                            if (DateTime.Now > TaskDisp.Material_LifePreAlert_Time && TaskDisp.Material_LifePreAlert_Time != TaskDisp.Material_Life_EndTime)
+                            {
+                                btn_Stop.PerformClick();
+                                //btn_Stop_Click(sender, e);
+
+                                TaskDisp.Material_LifePreAlert_Time = TaskDisp.Material_Life_EndTime;
+                                Msg MsgBox = new Msg();
+                                EMsgRes MsgRes = MsgBox.Show(Messages.MATERIAL_EXPIRY_PREALERT, $"Material Expire in {TaskDisp.Material_ExpiryPreAlertTime} minutes.");
+                            }
+                        }
+
+                        if (LotInfo2.LotActive)
+                        {
+                            if (TaskDisp.VolumeOfst_Protocol == TaskDisp.EVolumeOfstProtocol.OSRAM_ICC) Refresh_OsramICCPanelID();
+                        }
+                    }catch(Exception ex)
+                    {
+                        GLog.WriteDebugLog($"DoorCheck Exception: {ex}");
+                    }
+                    finally
+                    {
+                        GLog.WriteDebugLog("DoorCheck End");
+                        Thread.Sleep(5);
+                    }
+                }
+            });
+
+            var Perf = Task.Run(() =>
+            {
+                while (true)
+                {
+                    GLog.WriteDebugLog("Perf Start");
+                    try
+                    {
+                        if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)
+                        {
+                            #region DownTime Stopwatch
+                            #region MHS2
+                            if (
+                                GDefineN.SystemSt == GDefineN.ESystemSt.Ready &&
+                                (GDefine.Status == EStatus.ErrorInit || NDispWin.TaskConv.Status == NDispWin.TaskConv.EConvStatus.ErrorInit)
+                                )
+                            {
+                                lbl_DownTime.Text = GDefineN.UpdateDownTime();
+                            }
+                            else
+                            {
+                                if (DLLDefine.TickCountDowntTime.IsRunning) DLLDefine.TickCountDowntTime.Stop();
+                            }
+                            #endregion
+                            #endregion
+
+                            #region Idle Time Stopwatch
+                            if (
+                                GDefineN.SystemSt == GDefineN.ESystemSt.Ready &&
+                                !DispProg.TR_IsBusy() &&
+                                (NDispWin.TaskConv.Status == NDispWin.TaskConv.EConvStatus.Ready || NDispWin.TaskConv.Status == NDispWin.TaskConv.EConvStatus.Stop) &&
+                                !Define_Run.TR_IsRunning
+                                )
+                            {
+                                lbl_DownTime.Text = GDefineN.UpdateDownTime();
+                            }
+                            else
+                            {
+                                if (DLLDefine.TickCountDowntTime.IsRunning) DLLDefine.TickCountDowntTime.Stop();
+                            }
+                            #endregion
+                        }
+
+                        if (GDefine.ConveyorType == GDefine.EConveyorType.TABLE_S320A)
+                        {
+                            #region
+                            if (
+                                GDefineN.SystemSt != GDefineN.ESystemSt.Ready &&
+                                GDefine.Status == EStatus.ErrorInit
+                                )
+                            {
+                                lbl_DownTime.Text = GDefineN.UpdateDownTime();
+                            }
+                            else
+                            {
+                                if (DLLDefine.TickCountDowntTime.IsRunning) DLLDefine.TickCountDowntTime.Stop();
+                            }
+                            if (GDefineN.SystemSt == GDefineN.ESystemSt.Ready && !DispProg.TR_IsBusy())
+                            {
+                                lbl_IdleTime.Text = GDefineN.UpdateIdleTime();
+                            }
+                            else
+                            {
+                                if (DLLDefine.TickCountIdleTime.IsRunning)
+                                {
+                                    DLLDefine.TickCountIdleTime.Stop();
+                                }
+                            }
+                            #endregion
+                        }
+
+                        if (Define_Run.TR_IsRunning)
+                        {
+                            lbl_RunTime.Text = GDefineN.UpdateRunTime(false);
+                            if (Msg.Showing)
+                            {
+                                lbl_MTTA.Text = GDefineN.UpdateMTTA();
+                            }
+                            else
+                            {
+                                if (DLLDefine.TickCountMTTATime.IsRunning)
+                                {
+                                    DLLDefine.TickCountMTTATime.Stop();
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (DLLDefine.TickCountMTTATime.IsRunning)
+                            {
+                                DLLDefine.TickCountMTTATime.Stop();
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        GLog.WriteDebugLog($"Perf Exception: {ex}");
+                    }
+                    finally 
+                    { 
+                        GLog.WriteDebugLog("Perf End");
+                        Thread.Sleep(5);
+                    }//
+                }//   
+            });
         }
 
         private void StartUp()
@@ -519,8 +750,8 @@ namespace NDispWin
                 
                 UpdateDisplay();
                 UpdateStatus();
-                UpdateWaitMagStatus();
-                UpdateSecsGem();
+                //UpdateWaitMagStatus();
+                //UpdateSecsGem();
             }
             finally { mtx_tmr_DateTime.ReleaseMutex(); }
             
@@ -528,6 +759,7 @@ namespace NDispWin
         Mutex mtx_tmr_TR_Buttons = new Mutex();
         private void tmr_TR_Buttons_Tick(object sender, EventArgs e)
         {
+            return;
             if (!mtx_tmr_TR_Buttons.WaitOne((int)(tmr_TR_Buttons.Interval * 0.1), false)) return;
             try
             {
@@ -619,6 +851,7 @@ namespace NDispWin
             lblDADispCount.Text = Utils.GetKK(Maint.Unit.Count[0]) + " / " + Utils.GetKK(Maint.Unit.CountLimit[0]);
             lblDBDispCount.Text = Utils.GetKK(Maint.Unit.Count[1]) + " / " + Utils.GetKK(Maint.Unit.CountLimit[1]);
             #endregion
+            return;
             if (!mtx_tmr_1s.WaitOne((int)(tmr_1s.Interval * 0.1), false)) return;
             try
             {
@@ -660,6 +893,7 @@ namespace NDispWin
         Mutex mtx_tmr_Perf = new Mutex();
         private void tmr_Perf_Tick(object sender, EventArgs e)
         {
+            return;
             if (!mtx_tmr_Perf.WaitOne((int)(tmr_Perf.Interval * 0.1), false)) return;
             try
             {
@@ -971,7 +1205,7 @@ namespace NDispWin
         #endregion
 
         bool btnStartActive = false;
-        private void btn_Start_Click(object sender, EventArgs e)
+        private async void btn_Start_Click(object sender, EventArgs e)
         {
             if (btnStartActive) return;
             btnStartActive = true;
@@ -1368,6 +1602,70 @@ namespace NDispWin
                         // Do Nothing
                     }
                     
+                }
+            }
+        }
+
+        public void Refresh_OsramICCPanelID()
+        {
+            string lotFile = $"{TaskDisp.OsramICC_LotPath}\\{LotInfo2.LotNumber}.txt";
+
+            OsramICC.ReadLotFile(lotFile);
+
+            if (OsramICC.OsramICC_LotInfo.Count != 50) return;
+
+            dgvPanelList.ColumnCount = 5;
+            dgvPanelList.RowCount = 10;
+
+            // Remove grid UI decorations
+            dgvPanelList.RowHeadersVisible = false;
+            dgvPanelList.ColumnHeadersVisible = false;
+            dgvPanelList.AllowUserToAddRows = false;
+            dgvPanelList.AllowUserToResizeColumns = false;
+            dgvPanelList.AllowUserToResizeRows = false;
+            dgvPanelList.ScrollBars = ScrollBars.None;
+            dgvPanelList.ReadOnly = true;
+            dgvPanelList.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            // Resize cells to fill the grid evenly
+            dgvPanelList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvPanelList.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+
+            dgvPanelList.SelectionMode = DataGridViewSelectionMode.CellSelect;
+            dgvPanelList.ClearSelection();
+            dgvPanelList.Enabled = false; // Optional: disable interaction
+
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 5; j++)
+                {
+                    try
+                    {
+                        var value = OsramICC.OsramICC_LotInfo[i + (j * 10)].PanelID;
+                        dgvPanelList.Rows[i].Cells[j].Value = value;
+
+                        var color = OsramICC.OsramICC_LotInfo[i + (j * 10)].Status;
+                        Color cellColor;
+                        switch (color)
+                        {
+                            case 1:
+                                cellColor = Color.Yellow;
+                                break;
+                            case 2:
+                                cellColor = Color.Lime;
+                                break;
+                            default:
+                                cellColor = SystemColors.Control;
+                                break;
+                        }
+
+                        dgvPanelList.Rows[i].Cells[j].Style.BackColor = cellColor;
+                    }
+                    catch (Exception ex)
+                    {
+                        // Do Nothing
+                    }
+
                 }
             }
         }

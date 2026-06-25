@@ -2916,6 +2916,7 @@ namespace NDispWin
         }
 
         public static DirectoryInfo ProcessLogDir => Directory.CreateDirectory(GDefine.DataDir.FullName + "Process\\" + DateTime.Now.ToString("yyyyMM") + "\\");
+        public static DirectoryInfo DebugLogDir => Directory.CreateDirectory(GDefine.DataDir.FullName + "Debug\\" + DateTime.Now.ToString("yyyyMM") + "\\");
     }
 
     public class UC

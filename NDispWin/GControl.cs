@@ -216,6 +216,17 @@ namespace NDispWin
 
             return true;
         }
+
+        public static bool WriteDebugLog(string content)
+        {
+            string fName = $"{DateTime.Now:yyyyMMdd}_{DispProg.Stats.BoardCount}";
+
+            string folder = Log.DebugLogDir.FullName;
+
+            GLog.WriteLog(folder + fName + ".log", $"{DispProg.RunMode}\t" + content);
+
+            return true;
+        }
     }
 
     class GControl
