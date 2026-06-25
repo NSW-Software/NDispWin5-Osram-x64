@@ -14,7 +14,11 @@ OsKm
 8.	Volume become higher after material refill 
 9.	Frequency of software hang very high. Camera Offset, select units layout, key parameter…  
 
-ver 6.1.9.34 RS - 20260625
+ver 6.1.9.35 RS - 20260625 [fix]
+frmAuto
+> Re enable EnableControl function, as too dangerous to not have it.
+
+ver 6.1.9.34 RS - 20260625 [fix]
 frmAuto
 > Add BGTask bool
 > WriteDebugLog for StartStop auto event

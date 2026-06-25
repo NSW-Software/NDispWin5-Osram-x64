@@ -397,21 +397,30 @@ namespace NDispWin
 
         private void EnableControl(bool Enable)
         {
-            return;
-            pnl_Right.Enable(Enable);
-            btn_Stop.Enable(true);
+            try
+            {
+                pnl_Right.Enable(Enable);
+                btn_Stop.Enable(true);
 
-            bool CEnabled = GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR;
-            btn_InitConveyor.Enabled = Enable && CEnabled;
+                bool CEnabled = GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR;
+                btn_InitConveyor.Enabled = Enable && CEnabled;
 
-            frmConvCtrl.Enable = Enable;
+                frmConvCtrl.Enable = Enable;
 
-            btnNewDispense.Enabled = Enable;
-            btnUnload.Enabled = Enable;
+                btnNewDispense.Enabled = Enable;
+                btnUnload.Enabled = Enable;
 
-            #region External UI
-            frm_DispTool.SetEnable(Enable);
-            #endregion
+                #region External UI
+                frm_DispTool.SetEnable(Enable);
+                #endregion
+            }catch(Exception ex)
+            {
+                GLog.WriteDebugLog($"Enable Control Excep: {ex}");
+            }
+            finally
+            {
+                GLog.WriteDebugLog($"Enable Control {Enable}");
+            }
         }
         private void UpdateTabs()
         {
