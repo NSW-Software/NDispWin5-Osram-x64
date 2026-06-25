@@ -223,6 +223,11 @@ namespace NDispWin
 
             string folder = Log.DebugLogDir.FullName;
 
+            if (!Directory.Exists(folder))
+            {
+                Directory.CreateDirectory(folder);
+            }
+
             GLog.WriteLog(folder + fName + ".log", $"{DispProg.RunMode}\t" + content);
 
             return true;

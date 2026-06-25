@@ -18,6 +18,7 @@ namespace NDispWin
 
         public static EventHandler<EventArgs> Event_StartAutoRun;
         public static EventHandler<EventArgs> Event_StopAutoRun;
+        bool BGTask = true;
 
         public static bool RunAuto()
         {
@@ -36,6 +37,8 @@ namespace NDispWin
         public frm_Auto()
         {
             InitializeComponent();
+
+            BGTask = true;
 
             this.FormBorderStyle = FormBorderStyle.None;
             this.WindowState = FormWindowState.Maximized;
@@ -68,6 +71,7 @@ namespace NDispWin
                 if (!IsHandleCreated) return;
                 this.Invoke(new Action(() =>
                 {
+                    GLog.WriteDebugLog("StartAutoRun Event");
                     if (btn_Start.InvokeRequired)
                     {
                         btn_Start.Invoke(new Action(() => btn_Start.PerformClick()));
@@ -86,6 +90,7 @@ namespace NDispWin
                 if (!IsHandleCreated) return;
                 this.Invoke(new Action(() =>
                 {
+                    GLog.WriteDebugLog("StopAutoRun Event");
                     if (btn_Stop.InvokeRequired)
                     {
                         btn_Stop.Invoke(new Action(() => btn_Stop.PerformClick()));
@@ -105,6 +110,7 @@ namespace NDispWin
                 if (!IsHandleCreated) return;
                 this.Invoke(new Action(() =>
                 {
+                    GLog.WriteDebugLog("StartAutoRun Event");
                     if (btn_Start.InvokeRequired)
                     {
                         btn_Start.Invoke(new Action(() => btn_Start.PerformClick()));
@@ -123,6 +129,7 @@ namespace NDispWin
                 if (!IsHandleCreated) return;
                 this.Invoke(new Action(() =>
                 {
+                    GLog.WriteDebugLog("StopAutoRun Event");
                     if (btn_Stop.InvokeRequired)
                     {
                         btn_Stop.Invoke(new Action(() => btn_Stop.PerformClick()));
@@ -139,11 +146,11 @@ namespace NDispWin
 
             var StatusCheck = Task.Run(() =>
             {
-                while (true)
+                while (BGTask)
                 {
                     try
                     {
-                        GLog.WriteDebugLog("Status Check Start");
+                        //GLog.WriteDebugLog("Status Check Start");
                         UpdateWaitMagStatus();
                         Thread.Sleep(5);
                         UpdateSecsGem();
@@ -154,19 +161,19 @@ namespace NDispWin
                     }
                     finally
                     {
-                        GLog.WriteDebugLog("Status Check End");
-                        Thread.Sleep(5);
+                        //GLog.WriteDebugLog("Status Check End");
+                        Thread.Sleep(100);
                     }   
                 }
             });
 
             var TR = Task.Run(() =>
             {
-                while (true)
+                while (BGTask)
                 {
                     try
                     {
-                        GLog.WriteDebugLog("TR Start");
+                        //GLog.WriteDebugLog("TR Start");
                         if (!Visible) return;
 
                         if (Define_Run.PromptButtonFocus) return;
@@ -210,19 +217,19 @@ namespace NDispWin
                     }
                     finally 
                     {
-                        GLog.WriteDebugLog("TR Start"); 
-                        Thread.Sleep(5);
+                        //GLog.WriteDebugLog("TR Start"); 
+                        Thread.Sleep(100);
                     }//
                 }
             });
 
             var DoorCheck = Task.Run(() => 
             {
-                while (true)
+                while (BGTask)
                 {
                     try
                     {
-                        GLog.WriteDebugLog("DoorCheck Start");
+                        //GLog.WriteDebugLog("DoorCheck Start");
                         int value = DispProg.Idle.Idling ? 1 : 0;
                         if (value == 1)
                         {
@@ -257,17 +264,18 @@ namespace NDispWin
                     }
                     finally
                     {
-                        GLog.WriteDebugLog("DoorCheck End");
-                        Thread.Sleep(5);
+                        //GLog.WriteDebugLog("DoorCheck End");
+                        Thread.Sleep(1000);
                     }
                 }
             });
 
             var Perf = Task.Run(() =>
             {
-                while (true)
+                return;
+                while (BGTask)
                 {
-                    GLog.WriteDebugLog("Perf Start");
+                    //GLog.WriteDebugLog("Perf Start");
                     try
                     {
                         if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)
@@ -362,8 +370,8 @@ namespace NDispWin
                     }
                     finally 
                     { 
-                        GLog.WriteDebugLog("Perf End");
-                        Thread.Sleep(5);
+                        //GLog.WriteDebugLog("Perf End");
+                        Thread.Sleep(250);
                     }//
                 }//   
             });
@@ -529,6 +537,7 @@ namespace NDispWin
         }
         private void frm_Auto_FormClosing(object sender, FormClosingEventArgs e)
         {
+            BGTask = false;
             tmr_DateTime_100.Enabled = false;
             tmr_TR_Buttons.Enabled = false;
             tmr_1s.Enabled = false;
@@ -893,7 +902,6 @@ namespace NDispWin
         Mutex mtx_tmr_Perf = new Mutex();
         private void tmr_Perf_Tick(object sender, EventArgs e)
         {
-            return;
             if (!mtx_tmr_Perf.WaitOne((int)(tmr_Perf.Interval * 0.1), false)) return;
             try
             {
@@ -1207,7 +1215,9 @@ namespace NDispWin
         bool btnStartActive = false;
         private async void btn_Start_Click(object sender, EventArgs e)
         {
+            GLog.WriteDebugLog("btn_Start Trigger");
             if (btnStartActive) return;
+            GLog.WriteDebugLog("btn_Start Start");
             btnStartActive = true;
             try
             {
@@ -1231,6 +1241,7 @@ namespace NDispWin
             finally
             {
                 btnStartActive = false;
+                GLog.WriteDebugLog("btn_Start End");
             }
             
         }
