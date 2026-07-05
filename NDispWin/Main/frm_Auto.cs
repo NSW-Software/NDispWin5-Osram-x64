@@ -19,6 +19,10 @@ namespace NDispWin
         public static EventHandler<EventArgs> Event_StartAutoRun;
         public static EventHandler<EventArgs> Event_StopAutoRun;
         bool BGTask = true;
+        private readonly EventHandler<EventArgs> _startAutoRunHandler;
+        private readonly EventHandler<EventArgs> _stopAutoRunHandler;
+        private readonly SemaphoreSlim _autoRunSemaphore = new SemaphoreSlim(1, 1);
+        private int _secsGemUpdatePending = 0;
 
         public static bool RunAuto()
         {
@@ -66,83 +70,28 @@ namespace NDispWin
 
             tsslMonCamera.Visible = GDefine.MCameraType[0] == GDefine.ECameraType.MVSGenTL || GDefine.MCameraType[1] == GDefine.ECameraType.MVSGenTL;
 
-            Event_StartAutoRun -= (a, b) =>
+            _startAutoRunHandler = (a, b) =>
             {
-                if (!IsHandleCreated) return;
-                this.Invoke(new Action(() =>
+                SafeBeginInvoke(() =>
                 {
                     GLog.WriteDebugLog("StartAutoRun Event");
-                    if (btn_Start.InvokeRequired)
-                    {
-                        btn_Start.Invoke(new Action(() => btn_Start.PerformClick()));
-                    }
-                    else
-                    {
-                        btn_Start.PerformClick();
-                    }
-                    //AutoRun();
-
-                }));
-
+                    if (btn_Start.Enabled) btn_Start.PerformClick();
+                });
             };
-            Event_StopAutoRun -= (a, b) =>
+
+            _stopAutoRunHandler = (a, b) =>
             {
-                if (!IsHandleCreated) return;
-                this.Invoke(new Action(() =>
+                SafeBeginInvoke(() =>
                 {
                     GLog.WriteDebugLog("StopAutoRun Event");
-                    if (btn_Stop.InvokeRequired)
-                    {
-                        btn_Stop.Invoke(new Action(() => btn_Stop.PerformClick()));
-                    }
-                    else
-                    {
-                        btn_Stop.PerformClick();
-                    }
-                    //AutoRun();
-
-                }));
-
+                    if (btn_Stop.Enabled) btn_Stop.PerformClick();
+                });
             };
 
-            Event_StartAutoRun += (a, b) =>
-            {
-                if (!IsHandleCreated) return;
-                this.Invoke(new Action(() =>
-                {
-                    GLog.WriteDebugLog("StartAutoRun Event");
-                    if (btn_Start.InvokeRequired)
-                    {
-                        btn_Start.Invoke(new Action(() => btn_Start.PerformClick()));
-                    }
-                    else
-                    {
-                        btn_Start.PerformClick();
-                    }
-                    //AutoRun();
-
-                }));
-
-            };
-            Event_StopAutoRun += (a, b) =>
-            {
-                if (!IsHandleCreated) return;
-                this.Invoke(new Action(() =>
-                {
-                    GLog.WriteDebugLog("StopAutoRun Event");
-                    if (btn_Stop.InvokeRequired)
-                    {
-                        btn_Stop.Invoke(new Action(() => btn_Stop.PerformClick()));
-                    }
-                    else
-                    {
-                        btn_Stop.PerformClick();
-                    }
-                    //AutoRun();
-
-                }));
-
-            };
+            Event_StartAutoRun -= _startAutoRunHandler;
+            Event_StopAutoRun -= _stopAutoRunHandler;
+            Event_StartAutoRun += _startAutoRunHandler;
+            Event_StopAutoRun += _stopAutoRunHandler;
 
             var StatusCheck = Task.Run(() =>
             {
@@ -153,7 +102,7 @@ namespace NDispWin
                         //GLog.WriteDebugLog("Status Check Start");
                         UpdateWaitMagStatus();
                         Thread.Sleep(5);
-                        UpdateSecsGem();
+                        QueueSecsGemUpdate();
                     }
                     catch (Exception ex)
                     {
@@ -386,6 +335,40 @@ namespace NDispWin
             lbl_RunTime.Text = GDefineN.UpdateRunTime(true);
         }
 
+        private void SafeBeginInvoke(Action action)
+        {
+            if (IsDisposed || !IsHandleCreated) return;
+
+            try
+            {
+                BeginInvoke(action);
+            }
+            catch (ObjectDisposedException)
+            {
+            }
+            catch (InvalidOperationException)
+            {
+            }
+        }
+
+        private void QueueSecsGemUpdate()
+        {
+            if (IsDisposed || !IsHandleCreated) return;
+            if (Interlocked.Exchange(ref _secsGemUpdatePending, 1) == 1) return;
+
+            SafeBeginInvoke(() =>
+            {
+                try
+                {
+                    UpdateSecsGem();
+                }
+                finally
+                {
+                    Interlocked.Exchange(ref _secsGemUpdatePending, 0);
+                }
+            });
+        }
+
         public NDispWin.frm_DispCore_Map frm_Map = new NDispWin.frm_DispCore_Map();
         public NDispWin.frm_DispCore_DispTools frm_DispTool = new NDispWin.frm_DispCore_DispTools();
 
@@ -547,6 +530,10 @@ namespace NDispWin
         private void frm_Auto_FormClosing(object sender, FormClosingEventArgs e)
         {
             BGTask = false;
+            Event_StartAutoRun -= _startAutoRunHandler;
+            Event_StopAutoRun -= _stopAutoRunHandler;
+            Define_Run.TR_StopRun();
+            Define_Run.StopDispTable();
             tmr_DateTime_100.Enabled = false;
             tmr_TR_Buttons.Enabled = false;
             tmr_1s.Enabled = false;
@@ -1234,18 +1221,28 @@ namespace NDispWin
                 {
                     if (bBurnRun)
                     {
-                        AutoRun_BurnRun();
+                        await AutoRun_BurnRun();
                     }
                     else
                     {
-                        Define_Run.TR_StartRun();
-                        AutoRun();
+                        if (!Define_Run.TR_StartRun())
+                        {
+                            GLog.WriteDebugLog("btn_Start Abort: TR_StartRun failed");
+                            return;
+                        }//
+                        await AutoRun();
                     }
                 }
                 else
                 {
-                    AutoRun_ManualLoad();
+                    await AutoRun_ManualLoad();
                 }
+            }
+            catch (Exception ex)
+            {
+                GLog.WriteDebugLog($"btn_Start Exception: {ex}");
+                Define_Run.TR_StopRun();
+                Define_Run.StopDispTable();
             }
             finally
             {
@@ -1278,10 +1275,9 @@ namespace NDispWin
         TaskStatus convStatus;
         TaskStatus dispStatus;
 
-        Mutex AutoIsRunning = new Mutex();
-        private async void AutoRun()
+        private async Task AutoRun()
         {
-            if (!AutoIsRunning.WaitOne(1000, false)) return;
+            if (!await _autoRunSemaphore.WaitAsync(1000)) return;
             EnableControl(false);
             try
             {
@@ -1405,7 +1401,150 @@ namespace NDispWin
                 {
                     convStatus = taskConv.Status;
                     dispStatus = taskDisp.Status;
-                }   
+                }
+                try
+                {
+                    TaskConv.In.Smema_DO_McReady = false;
+                    TaskConv.Out.Smema_DO_BdReady = false;
+
+                    if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)
+                    {
+                        TCTwrLight.SetStatus(TwrLight.Idle);
+                    }
+                    DefineSafety.DoorLock = false;
+                }catch (Exception ex)
+                {
+                    GLog.WriteDebugLog($"AutoRun: {ex}");
+                }
+                finally
+                {
+                    EnableControl(true);
+
+                    string xmlString = "";
+                    string b = TFSecsGem.EncodeBinCodeStrings(true);
+                    TFSecsGem.EncodeMap(b, ref xmlString);
+                    TFSecsGem.SaveMapping(xmlString);
+                }           
+            }
+            finally
+            { 
+                _autoRunSemaphore.Release();
+            }
+            
+        }
+        private async Task AutoRun_ManualLoad()
+        {
+            if (!DefineSafety.DoorCheck_All(true)) return;
+
+            Define_Run.TableIsRunning = true;
+
+            EnableControl(false);
+
+            TCTwrLight.SetStatus(TwrLight.Run);
+
+            try
+            {
+                var taskGeneral = Task.Run(() =>//Check StopRun conditions
+                {
+                    while (Define_Run.TableIsRunning)
+                    {
+                        if (!DefineSafety.DoorCheck_All(false))
+                        {
+                            Define_Run.StopDispTable();
+                            DefineSafety.DoorCheck_All(true);
+                        }
+                        Thread.Sleep(1000);
+                    }
+                });
+
+                await Task.Run(() =>
+                {
+                    while (Define_Run.TableIsRunning)
+                    {
+                        if (!Define_Run.RunDispTable()) return;
+                        Thread.Sleep(10);
+                    }
+                });
+            }
+            finally
+            {
+                Define_Run.StopDispTable();
+                TCTwrLight.SetStatus(TwrLight.Idle);
+
+                DefineSafety.DoorLock = false;
+
+                EnableControl(true);
+            }//
+        }
+
+        private async Task AutoRun_BurnRun()
+        {
+            EnableControl(false);
+            try
+            {
+                var taskGeneral = Task.Run(() =>//Check StopRun conditions
+                {
+                    while (Define_Run.TR_IsRunning)
+                    {
+                        if (!DefineSafety.DoorCheck_All(false))
+                        {
+                            GDefine.Status = EStatus.Stop;
+                            Define_Run.TR_StopRun();
+                            DefineSafety.DoorCheck_All(true);
+                        }
+                        Thread.Sleep(1000);
+                    }
+                });
+
+                var taskConv = Task.Run(() =>
+                {
+                    while (Define_Run.TR_IsRunning)
+                    {
+                        try
+                        {
+                            if (
+                                (NDispWin.TaskConv.Status == NDispWin.TaskConv.EConvStatus.Stop) ||
+                                (NDispWin.TaskConv.Status == NDispWin.TaskConv.EConvStatus.ErrorInit) ||
+                                (NDispWin.TaskConv.LeftMode == NDispWin.TaskConv.ELeftMode.ElevatorZ && NDispWin.TaskElev.Left.Status == NDispWin.TaskElev.EElevStatus.ErrorInit) ||
+                                (NDispWin.TaskConv.RightMode == NDispWin.TaskConv.ERightMode.ElevatorZ && NDispWin.TaskElev.Right.Status == NDispWin.TaskElev.EElevStatus.ErrorInit)
+                                )
+                            {
+                                Define_Run.TR_StopRun();
+                                return;
+                            }
+
+                            TaskConv.Run();
+                            Thread.Sleep(500);
+                        }
+                        catch
+                        {
+                            Event.DEBUG_INFO.Set("TaskConv.BurnRun", "Exception");
+                            Define_Run.TR_StopRun();
+                        }
+                    }
+                });
+
+                var taskDisp = Task.Run(() =>
+                {
+                    while (Define_Run.TR_IsRunning)
+                    {
+                        try
+                        {
+                            Define_Run.RunDispConv_BurnRun();
+                            Thread.Sleep(100);
+                        }
+                        catch
+                        {
+                            Event.DEBUG_INFO.Set("TaskDisp.BurnRun", "Exception");
+                            Define_Run.TR_StopRun();
+                        }
+                    }
+                });
+
+                await Task.WhenAll(taskConv, taskDisp);
+            }
+            finally
+            {
                 TaskConv.In.Smema_DO_McReady = false;
                 TaskConv.Out.Smema_DO_BdReady = false;
 
@@ -1416,134 +1555,7 @@ namespace NDispWin
                 DefineSafety.DoorLock = false;
 
                 EnableControl(true);
-
-                string xmlString = "";
-                string b = TFSecsGem.EncodeBinCodeStrings(true);
-                TFSecsGem.EncodeMap(b, ref xmlString);
-                TFSecsGem.SaveMapping(xmlString);
-            }
-            finally
-            {
-                AutoIsRunning.ReleaseMutex();
-            }
-            
-        }
-        private async void AutoRun_ManualLoad()
-        {
-            if (!DefineSafety.DoorCheck_All(true)) return;
-
-            Define_Run.TableIsRunning = true;
-
-            EnableControl(false);
-
-            TCTwrLight.SetStatus(TwrLight.Run);
-
-            bool keepTLState = false;
-            var taskGeneral = Task.Run(() =>//Check StopRun conditions
-            {
-                while (Define_Run.TableIsRunning)
-                {
-                    if (!DefineSafety.DoorCheck_All(false))
-                    {
-                        Define_Run.StopDispTable();
-                        keepTLState = true;
-                        DefineSafety.DoorCheck_All(true);
-                    }
-                    Thread.Sleep(1000);
-                }
-            });
-
-            await Task.Run(() =>
-            {
-                while (true)// Define_Run.TableIsRunning)//Define_Run.TR_IsRunning)
-                {
-                    if (!Define_Run.RunDispTable()) return;
-                    Thread.Sleep(10);
-                }
-            });
-
-            TCTwrLight.SetStatus(TwrLight.Idle);
-
-            DefineSafety.DoorLock = false;
-
-            EnableControl(true);
-        }
-
-        private async void AutoRun_BurnRun()
-        {
-            EnableControl(false);
-
-            var taskGeneral = Task.Run(() =>//Check StopRun conditions
-            {
-                while (Define_Run.TR_IsRunning)
-                {
-                    if (!DefineSafety.DoorCheck_All(false))
-                    {
-                        GDefine.Status = EStatus.Stop;
-                        Define_Run.TR_StopRun();
-                        DefineSafety.DoorCheck_All(true);
-                    }
-                    Thread.Sleep(1000);
-                }
-            });
-
-            var taskConv = Task.Run(() =>
-            {
-                while (Define_Run.TR_IsRunning)
-                {
-                    try
-                    {
-                        if (
-                            (NDispWin.TaskConv.Status == NDispWin.TaskConv.EConvStatus.Stop) ||
-                            (NDispWin.TaskConv.Status == NDispWin.TaskConv.EConvStatus.ErrorInit) ||
-                            (NDispWin.TaskConv.LeftMode == NDispWin.TaskConv.ELeftMode.ElevatorZ && NDispWin.TaskElev.Left.Status == NDispWin.TaskElev.EElevStatus.ErrorInit) ||
-                            (NDispWin.TaskConv.RightMode == NDispWin.TaskConv.ERightMode.ElevatorZ && NDispWin.TaskElev.Right.Status == NDispWin.TaskElev.EElevStatus.ErrorInit)
-                            )
-                        {
-                            Define_Run.TR_StopRun();
-                            return;
-                        }
-
-                        TaskConv.Run();
-                        Thread.Sleep(500);
-                    }
-                    catch
-                    {
-                        Event.DEBUG_INFO.Set("TaskConv.BurnRun", "Exception");
-                        Define_Run.TR_StopRun();
-                    }
-                }
-            });
-
-            var taskDisp = Task.Run(() =>
-            {
-                while (Define_Run.TR_IsRunning)
-                {
-                    try
-                    {
-                        Define_Run.RunDispConv_BurnRun();
-                        Thread.Sleep(100);
-                    }
-                    catch
-                    {
-                        Event.DEBUG_INFO.Set("TaskDisp.BurnRun", "Exception");
-                        Define_Run.TR_StopRun();
-                    }
-                }
-            });
-
-            await Task.Run(() => Task.WaitAll(taskConv, taskDisp));
-
-            TaskConv.In.Smema_DO_McReady = false;
-            TaskConv.Out.Smema_DO_BdReady = false;
-
-            if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)
-            {
-                TCTwrLight.SetStatus(TwrLight.Idle);
-            }
-            DefineSafety.DoorLock = false;
-
-            EnableControl(true);
+            }//
         }
 
         bool bBurnRun = false;
@@ -1655,7 +1667,7 @@ namespace NDispWin
             dgvPanelList.ClearSelection();
             dgvPanelList.Enabled = false; // Optional: disable interaction
 
-            for (int i = 0; i < 9; i++)
+            for (int i = 0; i < 10; i++)
             {
                 for (int j = 0; j < 5; j++)
                 {
@@ -1684,6 +1696,7 @@ namespace NDispWin
                     catch (Exception ex)
                     {
                         // Do Nothing
+                        GLog.WriteDebugLog($"OsramICC Excep: {ex}");
                     }
 
                 }
