@@ -194,18 +194,21 @@ namespace NDispWin
                         {
                             if (DateTime.Now > TaskDisp.Material_LifePreAlert_Time && TaskDisp.Material_LifePreAlert_Time != TaskDisp.Material_Life_EndTime)
                             {
-                                btn_Stop.PerformClick();
-                                //btn_Stop_Click(sender, e);
-
                                 TaskDisp.Material_LifePreAlert_Time = TaskDisp.Material_Life_EndTime;
-                                Msg MsgBox = new Msg();
-                                EMsgRes MsgRes = MsgBox.Show(Messages.MATERIAL_EXPIRY_PREALERT, $"Material Expire in {TaskDisp.Material_ExpiryPreAlertTime} minutes.");
+                                SafeBeginInvoke(() =>
+                                {
+                                    btn_Stop.PerformClick();
+                                    //btn_Stop_Click(sender, e);
+
+                                    Msg MsgBox = new Msg();
+                                    EMsgRes MsgRes = MsgBox.Show(Messages.MATERIAL_EXPIRY_PREALERT, $"Material Expire in {TaskDisp.Material_ExpiryPreAlertTime} minutes.");
+                                });
                             }
                         }
 
                         if (LotInfo2.LotActive)
                         {
-                            if (TaskDisp.VolumeOfst_Protocol == TaskDisp.EVolumeOfstProtocol.OSRAM_ICC) Refresh_OsramICCPanelID();
+                            if (TaskDisp.VolumeOfst_Protocol == TaskDisp.EVolumeOfstProtocol.OSRAM_ICC) SafeBeginInvoke(Refresh_OsramICCPanelID);
                         }
                     }catch(Exception ex)
                     {
@@ -1296,8 +1299,11 @@ namespace NDispWin
                         {
                             GDefine.Status = EStatus.Stop;
                             Define_Run.TR_StopRun();
-                            Msg MsgBox = new Msg();
-                            MsgBox.Show(Messages.LOW_AIR_PRESSURE);
+                            SafeBeginInvoke(() =>
+                            {
+                                Msg MsgBox = new Msg();
+                                MsgBox.Show(Messages.LOW_AIR_PRESSURE);
+                            });
                         }
 
                         if (TaskConv.Pro.Status == TaskConv.EProcessStatus.InProcess &&
@@ -1306,8 +1312,11 @@ namespace NDispWin
                         {
                             GDefine.Status = EStatus.Stop;
                             Define_Run.TR_StopRun();
-                            Msg MsgBox = new Msg();
-                            MsgBox.Show(Messages.CONV_VACUUM_LOW);
+                            SafeBeginInvoke(() =>
+                            {
+                                Msg MsgBox = new Msg();
+                                MsgBox.Show(Messages.CONV_VACUUM_LOW);
+                            });
                         }
 
                         if (TaskConv.LeftMode == TaskConv.ELeftMode.ElevatorZ)
@@ -1325,13 +1334,19 @@ namespace NDispWin
                                     if (TFSecsGem.SubstrateStatus.Values.All(s => s == "COMPLETE"))
                                     {
                                         Event.OP_LOT_END.Set("LotInfo", $"{LotInfo2.sOperatorID},{LotInfo2.LotNumber},{LotInfo2.Osram.ElevenSeries},{LotInfo2.Osram.DAStartNumber}");
-                                        Msg MsgBox = new Msg();
-                                        MsgBox.Show(Messages.LOT_END_IN_MAGAZINE_EMPTY);
+                                        SafeBeginInvoke(() =>
+                                        {
+                                            Msg MsgBox = new Msg();
+                                            MsgBox.Show(Messages.LOT_END_IN_MAGAZINE_EMPTY);
+                                        });
                                     }
                                     else
                                     {
-                                        Msg MsgBox = new Msg();
-                                        MsgBox.Show("Check Set Substrate Status.");
+                                        SafeBeginInvoke(() =>
+                                        {
+                                            Msg MsgBox = new Msg();
+                                            MsgBox.Show("Check Set Substrate Status.");
+                                        });
                                     }
 
                                 }

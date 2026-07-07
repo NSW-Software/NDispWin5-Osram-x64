@@ -14,7 +14,11 @@ OsKm
 8.	Volume become higher after material refill 
 9.	Frequency of software hang very high. Camera Offset, select units layout, key parameter…  
 
-ver 6.1.9.37 RS - 20260707
+ver 6.1.9.38 RS - 20260707 [fix]
+frmAuto
+> Add more begin safe invoke on UI related threads.
+
+ver 6.1.9.37 RS - 20260707 [fix]
 frmAuto
 > remove mtx_tmr_TR
 
