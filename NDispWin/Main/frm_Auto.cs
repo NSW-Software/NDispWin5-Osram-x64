@@ -761,51 +761,51 @@ namespace NDispWin
             finally { mtx_tmr_DateTime.ReleaseMutex(); }
             
         }
-        Mutex mtx_tmr_TR_Buttons = new Mutex();
+        //Mutex mtx_tmr_TR_Buttons = new Mutex();
         private void tmr_TR_Buttons_Tick(object sender, EventArgs e)
         {
             return;
-            if (!mtx_tmr_TR_Buttons.WaitOne((int)(tmr_TR_Buttons.Interval * 0.1), false)) return;
-            try
-            {
-                if (!Visible) return;
+            //if (!mtx_tmr_TR_Buttons.WaitOne((int)(tmr_TR_Buttons.Interval * 0.1), false)) return;
+            //try
+            //{
+            //    if (!Visible) return;
 
-                if (Define_Run.PromptButtonFocus) return;
+            //    if (Define_Run.PromptButtonFocus) return;
 
-                if (Msg.Showing) return;
+            //    if (Msg.Showing) return;
 
-                if (GDefineN.BtnStartValid())
-                {
-                    bool bStart;
-                    if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)
-                        bStart = GDefineN.DI_BtnStart;
-                    else
-                        bStart = TaskGantry.BtnStart();
+            //    if (GDefineN.BtnStartValid())
+            //    {
+            //        bool bStart;
+            //        if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)
+            //            bStart = GDefineN.DI_BtnStart;
+            //        else
+            //            bStart = TaskGantry.BtnStart();
 
-                    if (bStart)
-                    {
-                        if (btn_Start.Enabled) RunAuto();//btn_Start.PerformClick();
-                            //btn_Start_Click(sender, e);
-                    }
-                }
+            //        if (bStart)
+            //        {
+            //            if (btn_Start.Enabled) RunAuto();//btn_Start.PerformClick();
+            //                //btn_Start_Click(sender, e);
+            //        }
+            //    }
 
-                if (GDefineN.BtnStopValid())
-                {
-                    bool bStop;
-                    if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)
-                        bStop = GDefineN.DI_BtnStop;
-                    else
-                        bStop = TaskGantry.BtnStop();
+            //    if (GDefineN.BtnStopValid())
+            //    {
+            //        bool bStop;
+            //        if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)
+            //            bStop = GDefineN.DI_BtnStop;
+            //        else
+            //            bStop = TaskGantry.BtnStop();
 
-                    if (!bStop)
-                    {
-                        StopAuto();
-                        //btn_Stop.PerformClick();
-                        //btn_Stop_Click(sender, e);
-                    }
-                }
-            }
-            finally { mtx_tmr_TR_Buttons.ReleaseMutex(); }
+            //        if (!bStop)
+            //        {
+            //            StopAuto();
+            //            //btn_Stop.PerformClick();
+            //            //btn_Stop_Click(sender, e);
+            //        }
+            //    }
+            //}
+            //finally { mtx_tmr_TR_Buttons.ReleaseMutex(); }
             
         }
         Mutex mtx_tmr_1s = new Mutex();

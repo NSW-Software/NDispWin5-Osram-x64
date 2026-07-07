@@ -14,6 +14,10 @@ OsKm
 8.	Volume become higher after material refill 
 9.	Frequency of software hang very high. Camera Offset, select units layout, key parameter…  
 
+ver 6.1.9.37 RS - 20260707
+frmAuto
+> remove mtx_tmr_TR
+
 ver 6.1.9.36 RS - 20260703 [fix]
 frmAuto
 > Add EventHandler  and SemaphoreSlim to limit the thread run.
