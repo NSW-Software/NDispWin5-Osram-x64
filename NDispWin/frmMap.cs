@@ -165,6 +165,7 @@ namespace NDispWin
 
         private void pbox_Map_Paint(object sender, PaintEventArgs e)
         {
+            return;
             if (Painting) return;
 
             Painting = true;
@@ -560,6 +561,7 @@ namespace NDispWin
         int PrevBoardImageID = -1;
         private void PaintImage(object sender)
         {
+            return;
             pbox_Image.BringToFront();
 
             if (Display == EDisplay.ImgCurr)

@@ -84,6 +84,28 @@ namespace NDispWin
     {
         public static bool NewConvSequence = false;
 
+        internal static EMsgRes ShowMessageOnUiThread(TEMessage msg, string exMsg = "", EMsgBtn msgBtn = EMsgBtn.smbOK)
+        {
+            EMsgRes result = EMsgRes.smrNone;
+            Action show = () =>
+            {
+                Msg MsgBox = new Msg();
+                result = MsgBox.Show(msg, exMsg, msgBtn);
+            };
+
+            Form uiForm = Application.OpenForms.Cast<Form>().FirstOrDefault(f => f.IsHandleCreated && !f.IsDisposed);
+            if (uiForm != null && uiForm.InvokeRequired)
+            {
+                uiForm.Invoke(show);
+            }
+            else
+            {
+                show();
+            }
+
+            return result;
+        }
+
         #region Status
         public enum EConvStatus
         {
@@ -4203,8 +4225,7 @@ namespace NDispWin
                             if (TaskElev.Left.TaskRunKick != null && TaskElev.Left.TaskRunKick.Status == TaskStatus.Running) break;
                             if (sw.ElapsedMilliseconds > 3000)
                             {
-                                Msg MsgBox = new Msg();
-                                MsgBox.Show(Messages.ELEV_PUSHER_ABNORMAL_STATE, "PUSHER START TASK TIMEOUT", EMsgBtn.smbOK);
+                                ShowMessageOnUiThread(Messages.ELEV_PUSHER_ABNORMAL_STATE, "PUSHER START TASK TIMEOUT", EMsgBtn.smbOK);
                                 return false;
                             }
                             Thread.Sleep(10);
@@ -4217,8 +4238,7 @@ namespace NDispWin
                             if (TaskElev.Left.TaskRunKick.Status != TaskStatus.Running) break;
                             if (sw.ElapsedMilliseconds > 10000)
                             {
-                                Msg MsgBox = new Msg();
-                                MsgBox.Show(Messages.ELEV_PUSHER_ABNORMAL_STATE, "PUSHER END TASK TIMEOUT", EMsgBtn.smbOK);
+                                ShowMessageOnUiThread(Messages.ELEV_PUSHER_ABNORMAL_STATE, "PUSHER END TASK TIMEOUT", EMsgBtn.smbOK);
                                 return false;
                             }
                             Thread.Sleep(10);
@@ -4265,8 +4285,7 @@ namespace NDispWin
                         In.Smema_DO_McReady = false;
                         Conv.Stop();
 
-                        Msg MsgBox = new Msg();
-                        EMsgRes MsgRes = MsgBox.Show(Messages.CONV_MOVE_TIMEOUT, "BUF1", EMsgBtn.smbRetry_Stop_Cancel);
+                        EMsgRes MsgRes = ShowMessageOnUiThread(Messages.CONV_MOVE_TIMEOUT, "BUF1", EMsgBtn.smbRetry_Stop_Cancel);
                         switch (MsgRes)
                         {
                             case EMsgRes.smrRetry: goto _RetryLoad;
@@ -4330,8 +4349,7 @@ namespace NDispWin
                         In.Smema_DO_McReady = false;
                         Conv.Stop();
 
-                        Msg MsgBox = new Msg();
-                        EMsgRes MsgRes = MsgBox.Show(Messages.CONV_MOVE_TIMEOUT, "BUF2", EMsgBtn.smbRetry_Stop_Cancel);
+                        EMsgRes MsgRes = ShowMessageOnUiThread(Messages.CONV_MOVE_TIMEOUT, "BUF2", EMsgBtn.smbRetry_Stop_Cancel);
                         switch (MsgRes)
                         {
                             case EMsgRes.smrRetry: goto _RetryLoad;
@@ -4396,8 +4414,7 @@ namespace NDispWin
                         In.Smema_DO_McReady = false;
                         Conv.Stop();
 
-                        Msg MsgBox = new Msg();
-                        EMsgRes MsgRes = MsgBox.Show(Messages.CONV_MOVE_TIMEOUT, "PRE", EMsgBtn.smbRetry_Stop_Cancel);
+                        EMsgRes MsgRes = ShowMessageOnUiThread(Messages.CONV_MOVE_TIMEOUT, "PRE", EMsgBtn.smbRetry_Stop_Cancel);
                         switch (MsgRes)
                         {
                             case EMsgRes.smrRetry: goto _RetryLoad;
@@ -4488,8 +4505,7 @@ namespace NDispWin
                         In.Smema_DO_McReady = false;
                         Conv.Stop();
 
-                        Msg MsgBox = new Msg();
-                        EMsgRes MsgRes = MsgBox.Show(Messages.CONV_MOVE_TIMEOUT, "PRO", EMsgBtn.smbRetry_Stop_Cancel);
+                        EMsgRes MsgRes = ShowMessageOnUiThread(Messages.CONV_MOVE_TIMEOUT, "PRO", EMsgBtn.smbRetry_Stop_Cancel);
                         switch (MsgRes)
                         {
                             case EMsgRes.smrRetry: goto _RetryLoad;
@@ -4590,8 +4606,7 @@ namespace NDispWin
                         In.Smema_DO_McReady = false;
                         Conv.Stop();
 
-                        Msg MsgBox = new Msg();
-                        EMsgRes MsgRes = MsgBox.Show(Messages.CONV_MOVE_TIMEOUT, "POS", EMsgBtn.smbRetry_Stop_Cancel);
+                        EMsgRes MsgRes = ShowMessageOnUiThread(Messages.CONV_MOVE_TIMEOUT, "POS", EMsgBtn.smbRetry_Stop_Cancel);
                         switch (MsgRes)
                         {
                             case EMsgRes.smrRetry: goto _RetryLoad;
@@ -4668,8 +4683,7 @@ namespace NDispWin
                     if (Environment.TickCount >= TOut)
                     {
                         Conv.Stop();
-                        Msg MsgBox = new Msg();
-                        EMsgRes MsgRes = MsgBox.Show(Messages.CONV_MOVE_TIMEOUT, "IN", EMsgBtn.smbOK_Retry_Cancel);
+                        EMsgRes MsgRes = ShowMessageOnUiThread(Messages.CONV_MOVE_TIMEOUT, "IN", EMsgBtn.smbOK_Retry_Cancel);
                         switch (MsgRes)
                         {
                             case EMsgRes.smrRetry: goto _Retry;
@@ -4717,8 +4731,7 @@ namespace NDispWin
                     {
                         if (!Conv.Stop()) goto _Error;
 
-                        Msg MsgBox = new Msg();
-                        EMsgRes MsgRes = MsgBox.Show(Messages.CONV_MOVE_TIMEOUT, "OUT", EMsgBtn.smbRetry_Stop);
+                        EMsgRes MsgRes = ShowMessageOnUiThread(Messages.CONV_MOVE_TIMEOUT, "OUT", EMsgBtn.smbRetry_Stop);
                         switch (MsgRes)
                         {
                             case EMsgRes.smrRetry: goto _Retry;
@@ -7516,9 +7529,8 @@ namespace NDispWin
                         if (!Left.DoorIsClosed(false))
                         {
                             ForceStop(ElevIO.LZAxis);
-                            Msg MsgBox = new Msg();
                         _Retry:
-                            EMsgRes Res = MsgBox.Show(Messages.LEFT_ELEV_DOOR_OPEN, "", EMsgBtn.smbRetry_Cancel);
+                            EMsgRes Res = TaskConv.ShowMessageOnUiThread(Messages.LEFT_ELEV_DOOR_OPEN, "", EMsgBtn.smbRetry_Cancel);
                             if (TimeOut > 0 && Res == EMsgRes.smrRetry)
                             {
                                 if (!Left.DoorIsClosed(false)) goto _Retry;
@@ -7585,9 +7597,8 @@ namespace NDispWin
                         if (!Right.DoorIsClosed(false))
                         {
                             ForceStop(ElevIO.RZAxis);
-                            Msg MsgBox = new Msg();
                         _Retry:
-                            EMsgRes Res = MsgBox.Show(Messages.RIGHT_ELEV_DOOR_OPEN, "", EMsgBtn.smbRetry_Cancel);
+                            EMsgRes Res = TaskConv.ShowMessageOnUiThread(Messages.RIGHT_ELEV_DOOR_OPEN, "", EMsgBtn.smbRetry_Cancel);
                             if (TimeOut > 0 && Res == EMsgRes.smrRetry)
                             {
                                 if (!Left.DoorIsClosed(false)) goto _Retry;
@@ -7846,8 +7857,7 @@ namespace NDispWin
                                 if (!Left.DoorIsClosed(false))
                                 {
                                     ForceStop(ElevIO.LZAxis);
-                                    Msg MsgBox = new Msg();
-                                    EMsgRes Res = MsgBox.Show(Messages.LEFT_ELEV_DOOR_OPEN, "", EMsgBtn.smbOK_Retry);
+                                    EMsgRes Res = TaskConv.ShowMessageOnUiThread(Messages.LEFT_ELEV_DOOR_OPEN, "", EMsgBtn.smbOK_Retry);
                                     if (Res == EMsgRes.smrRetry) goto _Retry;
                                     ElevStatus[(int)TElevator.Left] = EElevStatus.ErrorInit;
                                     return false;
@@ -7902,8 +7912,7 @@ namespace NDispWin
                                 if (!Left.DoorIsClosed(false))
                                 {
                                     ForceStop(ElevIO.LZAxis);
-                                    Msg MsgBox = new Msg();
-                                    EMsgRes Res = MsgBox.Show(Messages.LEFT_ELEV_DOOR_OPEN, "", EMsgBtn.smbOK);
+                                    EMsgRes Res = TaskConv.ShowMessageOnUiThread(Messages.LEFT_ELEV_DOOR_OPEN, "", EMsgBtn.smbOK);
                                     if (Res == EMsgRes.smrRetry) goto _Retry;
                                     ElevStatus[(int)TElevator.Left] = EElevStatus.ErrorInit;
                                     return false;
@@ -8179,8 +8188,7 @@ namespace NDispWin
                                     {
                                         if (Left.SensPusherHome)
                                         {
-                                            Msg MsgBox = new Msg();
-                                            EMsgRes MsgRes = MsgBox.Show(Messages.ELEV_PUSHER_ABNORMAL_STATE);
+                                            EMsgRes MsgRes = TaskConv.ShowMessageOnUiThread(Messages.ELEV_PUSHER_ABNORMAL_STATE);
                                             goto _Error;
                                         }
 
@@ -8195,8 +8203,7 @@ namespace NDispWin
                                             Left.OutPusherRun = false;
                                             Left.OutPusherRet = false;
 
-                                            Msg MsgBox = new Msg();
-                                            EMsgRes MsgRes = MsgBox.Show(Messages.ELEV_PUSHER_ABNORMAL_STATE);
+                                            EMsgRes MsgRes = TaskConv.ShowMessageOnUiThread(Messages.ELEV_PUSHER_ABNORMAL_STATE);
                                             goto _Error;
                                         }
                                         break;
@@ -8235,8 +8242,7 @@ namespace NDispWin
 
                                 if (Left.SensPusherHome)
                                 {
-                                    Msg MsgBox = new Msg();
-                                    EMsgRes MsgRes = MsgBox.Show(Messages.ELEV_PUSHER_ABNORMAL_STATE);
+                                    EMsgRes MsgRes = TaskConv.ShowMessageOnUiThread(Messages.ELEV_PUSHER_ABNORMAL_STATE);
                                     goto _Error;
                                 }
 
@@ -8260,8 +8266,7 @@ namespace NDispWin
                                             TaskConv.Conv.Stop();
                                             PusherStop();
 
-                                            Msg MsgBox = new Msg();
-                                            EMsgRes MsgRes = MsgBox.Show(Messages.ELEV_PUSHER_ABNORMAL_STATE);
+                                            EMsgRes MsgRes = TaskConv.ShowMessageOnUiThread(Messages.ELEV_PUSHER_ABNORMAL_STATE);
                                             goto _Error;
                                         }
 
@@ -8279,8 +8284,7 @@ namespace NDispWin
                                                 TaskConv.Conv.Stop();
                                                 PusherStop();
 
-                                                Msg MsgBox = new Msg();
-                                                EMsgRes MsgRes = MsgBox.Show(Messages.ELEV_PUSHER_ABNORMAL_STATE);
+                                                EMsgRes MsgRes = TaskConv.ShowMessageOnUiThread(Messages.ELEV_PUSHER_ABNORMAL_STATE);
                                                 goto _Error;
                                             }
                                             break;
@@ -8310,8 +8314,7 @@ namespace NDispWin
                                             hold = true;
                                             //EMsgBtn msgBtn = EMsgBtn.smbRetry_Stop;
                                             //if (TaskConv.In.SensPsnt) msgBtn = EMsgBtn.smbStop;
-                                            Msg MsgBox = new Msg();
-                                            EMsgRes MsgRes = MsgBox.Show(Messages.ELEV_PUSHER_JAM, "", EMsgBtn.smbRetry_Stop);
+                                            EMsgRes MsgRes = TaskConv.ShowMessageOnUiThread(Messages.ELEV_PUSHER_JAM, "", EMsgBtn.smbRetry_Stop);
                                             hold = false;
                                             switch (MsgRes)
                                             {
@@ -8405,8 +8408,7 @@ namespace NDispWin
                                 bAbnormalPusher = !Left.SensPusherLimit && Left.SensPusherHome;
                                 if (bAbnormalPusher)
                                 {
-                                    Msg MsgBox = new Msg();
-                                    EMsgRes MsgRes = MsgBox.Show(Messages.ELEV_PUSHER_ABNORMAL_STATE);
+                                    EMsgRes MsgRes = TaskConv.ShowMessageOnUiThread(Messages.ELEV_PUSHER_ABNORMAL_STATE);
                                     return false;
                                 }
 
@@ -8450,8 +8452,7 @@ namespace NDispWin
                                     bAbnormalPusher = !Left.SensPusherLimit && Left.SensPusherHome;
                                     if (bAbnormalPusher)
                                     {
-                                        Msg MsgBox = new Msg();
-                                        EMsgRes MsgRes = MsgBox.Show(Messages.ELEV_PUSHER_ABNORMAL_STATE);
+                                        EMsgRes MsgRes = TaskConv.ShowMessageOnUiThread(Messages.ELEV_PUSHER_ABNORMAL_STATE);
                                         goto _Error;
                                     }
                                 }
@@ -8728,8 +8729,7 @@ namespace NDispWin
                     {
                         if (Prompt)
                         {
-                            Msg MsgBox = new Msg();
-                            EMsgRes Res = MsgBox.Show(Messages.LEFT_ELEV_DOOR_OPEN, "", EMsgBtn.smbRetry_Cancel);
+                            EMsgRes Res = TaskConv.ShowMessageOnUiThread(Messages.LEFT_ELEV_DOOR_OPEN, "", EMsgBtn.smbRetry_Cancel);
                             if (Res == EMsgRes.smrRetry) goto _Retry;
                         }
                         return false;
@@ -9208,7 +9208,7 @@ namespace NDispWin
                                         TaskConv.StopInput = true;
                                         Event.OP_LOT_END.Set("LotInfo", $"{LotInfo2.sOperatorID},{LotInfo2.LotNumber},{LotInfo2.Osram.ElevenSeries},{LotInfo2.Osram.DAStartNumber}");
                                         SendRetry = 0;
-                                        MsgBox.Show(Messages.LOT_END_IN_MAGAZINE_EMPTY);
+                                        TaskConv.ShowMessageOnUiThread(Messages.LOT_END_IN_MAGAZINE_EMPTY);
                                         goto _End;
                                 }
                             }
@@ -9367,8 +9367,7 @@ namespace NDispWin
                                 if (!Right.DoorIsClosed(false))
                                 {
                                     ForceStop(ElevIO.RZAxis);
-                                    Msg MsgBox = new Msg();
-                                    EMsgRes Res = MsgBox.Show(Messages.RIGHT_ELEV_DOOR_OPEN, "", EMsgBtn.smbOK_Retry);
+                                    EMsgRes Res = TaskConv.ShowMessageOnUiThread(Messages.RIGHT_ELEV_DOOR_OPEN, "", EMsgBtn.smbOK_Retry);
                                     if (Res == EMsgRes.smrRetry) goto _Retry;
                                     ElevStatus[(int)TElevator.Right] = EElevStatus.ErrorInit;
                                     return false;
@@ -9414,8 +9413,7 @@ namespace NDispWin
                                 if (!Right.DoorIsClosed(false))
                                 {
                                     ForceStop(ElevIO.RZAxis);
-                                    Msg MsgBox = new Msg();
-                                    EMsgRes Res = MsgBox.Show(Messages.RIGHT_ELEV_DOOR_OPEN, "", EMsgBtn.smbOK_Retry);
+                                    EMsgRes Res = TaskConv.ShowMessageOnUiThread(Messages.RIGHT_ELEV_DOOR_OPEN, "", EMsgBtn.smbOK_Retry);
                                     if (Res == EMsgRes.smrRetry) goto _Retry;
                                     ElevStatus[(int)TElevator.Right] = EElevStatus.ErrorInit;
                                     return false;
@@ -9731,8 +9729,7 @@ namespace NDispWin
                     {
                         if (Prompt)
                         {
-                            Msg MsgBox = new Msg();
-                            EMsgRes Res = MsgBox.Show(Messages.RIGHT_ELEV_DOOR_OPEN, "", EMsgBtn.smbRetry_Cancel);
+                            EMsgRes Res = TaskConv.ShowMessageOnUiThread(Messages.RIGHT_ELEV_DOOR_OPEN, "", EMsgBtn.smbRetry_Cancel);
                             if (Res == EMsgRes.smrRetry) goto _Retry;
                         }
                         return false;

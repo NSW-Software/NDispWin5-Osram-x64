@@ -23,6 +23,8 @@ namespace NDispWin
         private readonly EventHandler<EventArgs> _stopAutoRunHandler;
         private readonly SemaphoreSlim _autoRunSemaphore = new SemaphoreSlim(1, 1);
         private int _secsGemUpdatePending = 0;
+        private DateTime _lastSubstrateGridRefresh = DateTime.MinValue;
+        private const int SubstrateGridRefreshIntervalMs = 1000;
 
         public static bool RunAuto()
         {
@@ -102,7 +104,7 @@ namespace NDispWin
                         //GLog.WriteDebugLog("Status Check Start");
                         UpdateWaitMagStatus();
                         Thread.Sleep(5);
-                        QueueSecsGemUpdate();
+                        //QueueSecsGemUpdate();
                     }
                     catch (Exception ex)
                     {
@@ -111,7 +113,7 @@ namespace NDispWin
                     finally
                     {
                         //GLog.WriteDebugLog("Status Check End");
-                        Thread.Sleep(100);
+                        Thread.Sleep(1000);
                     }   
                 }
             });
@@ -208,7 +210,7 @@ namespace NDispWin
 
                         if (LotInfo2.LotActive)
                         {
-                            if (TaskDisp.VolumeOfst_Protocol == TaskDisp.EVolumeOfstProtocol.OSRAM_ICC) SafeBeginInvoke(Refresh_OsramICCPanelID);
+                            //if (TaskDisp.VolumeOfst_Protocol == TaskDisp.EVolumeOfstProtocol.OSRAM_ICC) SafeBeginInvoke(Refresh_OsramICCPanelID);
                         }
                     }catch(Exception ex)
                     {
@@ -359,11 +361,16 @@ namespace NDispWin
             if (IsDisposed || !IsHandleCreated) return;
             if (Interlocked.Exchange(ref _secsGemUpdatePending, 1) == 1) return;
 
+            return;
             SafeBeginInvoke(() =>
             {
                 try
                 {
                     UpdateSecsGem();
+                }
+                catch (Exception ex)
+                {
+                    GLog.WriteDebugLog($"UpdateSecsGem Exception: {ex}");
                 }
                 finally
                 {
@@ -742,7 +749,11 @@ namespace NDispWin
                 if (TFSecsGem.Eq.ProcessState != EProcessState.Idle) { TFSecsGem.Eq.ProcessState = EProcessState.Idle; }
             }
 
-            RefreshSubstrateGrid();
+            if ((DateTime.Now - _lastSubstrateGridRefresh).TotalMilliseconds >= SubstrateGridRefreshIntervalMs)
+            {
+                _lastSubstrateGridRefresh = DateTime.Now;
+                RefreshSubstrateGrid();
+            }//
         }
         Mutex mtx_tmr_DateTime = new Mutex();
         private void tmr_DateTime_Tick(object sender, EventArgs e)
@@ -1655,6 +1666,7 @@ namespace NDispWin
 
         public void Refresh_OsramICCPanelID()
         {
+            return;
             string lotFile = $"{TaskDisp.OsramICC_LotPath}\\{LotInfo2.LotNumber}.txt";
 
             OsramICC.ReadLotFile(lotFile);
@@ -1726,7 +1738,7 @@ namespace NDispWin
         {
             dgvSubstrateStatus.AutoGenerateColumns = true;
 
-            var displayList = TFSecsGem.SubstrateStatus
+            var displayList = TFSecsGem.SubstrateStatus//.ToArray()
                 .Select(kv => new SubstrateDisplay { ID = kv.Key, Status = kv.Value })
                 .ToList();
 
