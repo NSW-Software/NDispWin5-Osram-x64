@@ -56,9 +56,18 @@ namespace NDispWin
             return true;
         }
 
+        /// <summary>
+        /// The one form that is guaranteed to live on the application UI thread. Worker threads
+        /// marshal onto this rather than picking an arbitrary entry out of Application.OpenForms,
+        /// which is not thread safe and may hand back a form owned by another thread.
+        /// </summary>
+        public static Form UiForm { get; private set; }
+
         public frm_Main()
         {
             InitializeComponent();
+
+            UiForm = this;
 
             IsMdiContainer = true;
 
@@ -143,6 +152,9 @@ namespace NDispWin
                 Enabled = false;
                 StartUp();
                 Enabled = true;
+
+                //Handle exists by Load: start watching the UI thread for freezes.
+                UiWatchdog.Start(this);
             }
             AppLanguage.Func2.UpdateText(this);
         }
@@ -680,6 +692,7 @@ namespace NDispWin
 
         private void frm_Main_FormClosed(object sender, FormClosedEventArgs e)
         {
+            UiWatchdog.Stop();
             TFSecsGem.CloseGemtaro();
         }
 

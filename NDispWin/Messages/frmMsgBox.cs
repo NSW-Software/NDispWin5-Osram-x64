@@ -116,11 +116,27 @@ namespace NDispWin
         }
         private void frm_Msg_FormClosed(object sender, FormClosedEventArgs e)
         {
+            //Safety net: if the form is torn down without FormClosing (or FormClosing threw)
+            //the queue count must still come back down, or Msg.Showing latches true forever.
+            ReleaseMsgCount();
             this.Dispose();
         }
         private void frm_Msg_FormClosing(object sender, FormClosingEventArgs e)
         {
             tmr_BringToFront.Enabled = false;
+            //Decrement here, not in the button handlers, so that closing via the title bar X,
+            //Alt+F4, an owner form closing, or an exception still clears Msg.Showing.
+            ReleaseMsgCount();
+        }
+
+        //Guards Msg.MsgInQue against double counting; incremented once in UpdateMsg().
+        bool msgCounted = false;
+        private void ReleaseMsgCount()
+        {
+            if (!msgCounted) return;
+            msgCounted = false;
+            Msg.MsgInQue--;
+            //AssistCount is a cumulative performance counter (see GDefineN SysAssist) - not reversed here.
         }
         private void frm_Msg_Shown(object sender, EventArgs e)
         {
@@ -189,6 +205,7 @@ namespace NDispWin
             }
 
             Msg.MsgInQue++;
+            msgCounted = true;
             if (Assist) Msg.AssistCount++;
 
             Log.AddToLog($"{msg.Code:D4}\t{msg.Desc}\t{ExMsg}");// ErrCode.ToString("0000") + (char)9 + CurrentMsgInfo.Desc + (char)9 + ExMsg);
@@ -205,7 +222,7 @@ namespace NDispWin
             Log.AddToLog($"{msg.Code:D4}\tOK");//ErrCode.ToString("0000") + (char)9 + "OK");
             TCTwrLight.SetStatus(TwrLight.Idle);//IO.SetState(EMcState.Idle);
             MsgRes = EMsgRes.smrOK;
-            Msg.MsgInQue--;
+            //MsgInQue is decremented by ReleaseMsgCount() on close.
             Close();
         }
         private void Yes()
@@ -215,7 +232,7 @@ namespace NDispWin
             Log.AddToLog($"{msg.Code:D4}\tYes");//(ErrCode.ToString("0000") + (char)9 + "Yes");
             TCTwrLight.SetStatus(TwrLight.Idle);//IO.SetState(EMcState.Idle);
             MsgRes = EMsgRes.smrYes;
-            Msg.MsgInQue--;
+            //MsgInQue is decremented by ReleaseMsgCount() on close.
             Close();
         }
         private void No()
@@ -225,7 +242,7 @@ namespace NDispWin
             Log.AddToLog($"{msg.Code:D4}\tNo");//(ErrCode.ToString("0000") + (char)9 + "No");
             TCTwrLight.SetStatus(TwrLight.Idle);//IO.SetState(EMcState.Idle);
             MsgRes = EMsgRes.smrNo;
-            Msg.MsgInQue--;
+            //MsgInQue is decremented by ReleaseMsgCount() on close.
             Close();
         }
         private void Retry()
@@ -235,7 +252,7 @@ namespace NDispWin
             Log.AddToLog($"{msg.Code:D4}\tRetry");//(ErrCode.ToString("0000") + (char)9 + "Retry");
             TCTwrLight.SetStatus(TwrLight.Run);//IO.SetState(EMcState.Last);
             MsgRes = EMsgRes.smrRetry;
-            Msg.MsgInQue--;
+            //MsgInQue is decremented by ReleaseMsgCount() on close.
             Close();
         }
         private void Stop()
@@ -245,7 +262,7 @@ namespace NDispWin
             Log.AddToLog($"{msg.Code:D4}\tStop");//(ErrCode.ToString("0000") + (char)9 + "Stop");
             TCTwrLight.SetStatus(TwrLight.Idle);//IO.SetState(EMcState.Idle);
             MsgRes = EMsgRes.smrStop;
-            Msg.MsgInQue--;
+            //MsgInQue is decremented by ReleaseMsgCount() on close.
             Close();
         }
         private void Cancel()
@@ -255,7 +272,7 @@ namespace NDispWin
             Log.AddToLog($"{msg.Code:D4}\tCancel");//(ErrCode.ToString("0000") + (char)9 + "Cancel");
             TCTwrLight.SetStatus(TwrLight.Idle);//IO.SetState(EMcState.Idle);
             MsgRes = EMsgRes.smrCancel;
-            Msg.MsgInQue--;
+            //MsgInQue is decremented by ReleaseMsgCount() on close.
             Close();
         }
 

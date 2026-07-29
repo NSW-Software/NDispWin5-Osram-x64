@@ -401,11 +401,26 @@ namespace NDispWin
             return Show(msg, exMsg, msgBtn);
         }
 
+        //Mutex (not SemaphoreSlim/lock) on purpose: ShowDialog below pumps the message loop, so
+        //the UI thread can legitimately re-enter Show while it already owns this. Mutex is
+        //re-entrant per thread; a non-reentrant primitive would hard-deadlock the UI thread.
         static Mutex mtx = new Mutex();
         public EMsgRes Show(TEMessage msg, string exMsg = "", EMsgBtn msgBtn = EMsgBtn.smbOK)
         {
             GLog.WriteProcessLog($"MsgBox PRE START:: {msg.Desc} :: {exMsg} :: {msgBtn} ");
-            if (!mtx.WaitOne(10000, false))
+
+            bool owned = false;
+            try
+            {
+                owned = mtx.WaitOne(10000, false);
+            }
+            catch (AbandonedMutexException)
+            {
+                //A thread died owning it. WaitOne has still handed us ownership - keep going,
+                //otherwise the mutex would be leaked and every later message box would stall 10s.
+                owned = true;
+            }
+            if (!owned)
             {
                 GLog.WriteProcessLog($"MsgBox CANCEL:: {msg.Desc} :: {exMsg} :: {msgBtn} ");
                 return new EMsgRes();
@@ -465,7 +480,7 @@ namespace NDispWin
             }
             finally
             {
-                mtx.ReleaseMutex();
+                try { mtx.ReleaseMutex(); } catch { }
             }
             return EMsgRes.smrNone;
         }

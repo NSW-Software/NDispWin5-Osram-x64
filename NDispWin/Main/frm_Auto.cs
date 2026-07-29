@@ -125,11 +125,13 @@ namespace NDispWin
                     try
                     {
                         //GLog.WriteDebugLog("TR Start");
-                        if (!Visible) return;
+                        //Skip this cycle only. Never 'return' here: that exits the lambda and
+                        //kills the physical Start/Stop button poller for the life of this form.
+                        if (!Visible) continue;
 
-                        if (Define_Run.PromptButtonFocus) return;
+                        if (Define_Run.PromptButtonFocus) continue;
 
-                        if (Msg.Showing) return;
+                        if (Msg.Showing) continue;
 
                         if (GDefineN.BtnStartValid())
                         {
@@ -186,7 +188,9 @@ namespace NDispWin
                         {
                             if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)
                             {
-                                if (!DefineSafety.DoorCheck_Disp(false)) return;
+                                //Door open: skip the idle purge this cycle only.
+                                //'return' here would kill the whole DoorCheck loop permanently.
+                                if (!DefineSafety.DoorCheck_Disp(false)) continue;
                             }//
                             Define_Run.TR_StopRun();
                             DispProg.Idle.RunPurge();
@@ -1142,52 +1146,60 @@ namespace NDispWin
                         {
                             Enabled = false;
 
-                            GDefineN.PerformanceReset();
-                            DispProg.Stats.Reset();
-
-                            btn_LotInfo.Text = "Loading Recipe";
-                            btn_LotInfo.ForeColor = Color.Lime;
-                            LotInfo2.LoadRecipe = false;
-
-                            string RecipeName = LotInfo2._SProgramRecipe;
-                            if (RecipeName.Length == 0)
+                            //try/finally: without it an exception below (recipe load, file access)
+                            //leaves this form Enabled=false permanently - the window still paints
+                            //and the pump still runs, so it looks alive while ignoring every click.
+                            try
                             {
-                                Event.OP_DISP_AUTO_LOAD_DEVICE_INVALID.Set();
-                                Msg MsgBox = new Msg();
-                                MsgBox.Show("Auto Load - Invalid Recipe.");
-                            }
-                            else
-                            if (RecipeName.Length >= 0)
-                            {
-                                string Filename = GDefine.DevicePath + RecipeName + "." + GDefine.DeviceRecipeExt;
+                                GDefineN.PerformanceReset();
+                                DispProg.Stats.Reset();
 
-                                if (!File.Exists(Filename))
+                                btn_LotInfo.Text = "Loading Recipe";
+                                btn_LotInfo.ForeColor = Color.Lime;
+                                LotInfo2.LoadRecipe = false;
+
+                                string RecipeName = LotInfo2._SProgramRecipe;
+                                if (RecipeName.Length == 0)
                                 {
-                                    Event.OP_DISP_AUTO_LOAD_DEVICE_NO_FOUND.Set("Name", Filename);
+                                    Event.OP_DISP_AUTO_LOAD_DEVICE_INVALID.Set();
                                     Msg MsgBox = new Msg();
-                                    MsgBox.Show("Auto Load - Recipe not found.");
+                                    MsgBox.Show("Auto Load - Invalid Recipe.");
                                 }
                                 else
+                                if (RecipeName.Length >= 0)
                                 {
-                                    GDefine.DeviceRecipe = RecipeName;
-                                    GDefine.LoadDevice(GDefine.DeviceRecipe);
-                                }
-                            }
+                                    string Filename = GDefine.DevicePath + RecipeName + "." + GDefine.DeviceRecipeExt;
 
-                            if (LotInfo2.MatLife > 0)
-                            {
-                                TaskDisp.Material_EnableTimer = LotInfo2.MatLife > 0;
+                                    if (!File.Exists(Filename))
+                                    {
+                                        Event.OP_DISP_AUTO_LOAD_DEVICE_NO_FOUND.Set("Name", Filename);
+                                        Msg MsgBox = new Msg();
+                                        MsgBox.Show("Auto Load - Recipe not found.");
+                                    }
+                                    else
+                                    {
+                                        GDefine.DeviceRecipe = RecipeName;
+                                        GDefine.LoadDevice(GDefine.DeviceRecipe);
+                                    }
+                                }
+
                                 if (LotInfo2.MatLife > 0)
                                 {
-                                    TaskDisp.Material_Life_EndTime = DateTime.Now.AddMinutes(LotInfo2.MatLife);
-                                    TaskDisp.Material_LifePreAlert_Time = TaskDisp.Material_Life_EndTime.AddMinutes((double)-TaskDisp.Material_ExpiryPreAlertTime);
+                                    TaskDisp.Material_EnableTimer = LotInfo2.MatLife > 0;
+                                    if (LotInfo2.MatLife > 0)
+                                    {
+                                        TaskDisp.Material_Life_EndTime = DateTime.Now.AddMinutes(LotInfo2.MatLife);
+                                        TaskDisp.Material_LifePreAlert_Time = TaskDisp.Material_Life_EndTime.AddMinutes((double)-TaskDisp.Material_ExpiryPreAlertTime);
+                                    }
                                 }
+
+                                btn_LotInfo.Text = "Lot Info";
+                                btn_LotInfo.ForeColor = Color.Blue;
                             }
-
-                            btn_LotInfo.Text = "Lot Info";
-                            btn_LotInfo.ForeColor = Color.Blue;
-
-                            Enabled = true;
+                            finally
+                            {
+                                Enabled = true;
+                            }
                         }
                         break;
                 }
@@ -1215,10 +1227,18 @@ namespace NDispWin
             tmr_TR_Buttons.Enabled = false;
             Enabled = false;
 
-            Define_Run.InitConv(true);
-
-            Enabled = true;
-            tmr_TR_Buttons.Enabled = true;
+            //try/finally: without it an exception in InitConv leaves this form Enabled=false
+            //permanently - the window still paints and the pump still runs, so it looks alive
+            //while ignoring every click.
+            try
+            {
+                Define_Run.InitConv(true);
+            }
+            finally
+            {
+                Enabled = true;
+                tmr_TR_Buttons.Enabled = true;
+            }
         }
         #endregion
 

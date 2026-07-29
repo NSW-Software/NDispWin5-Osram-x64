@@ -2743,11 +2743,54 @@ namespace NDispWin
 
     public class Log
     {
+        //Max time any thread (including the UI thread) may block waiting for a log file.
+        //Losing a log line is always preferable to freezing the machine.
+        private const int LogMutexTimeoutMs = 2000;
+
+        /// <summary>
+        /// Appends one line to LogFile. Never blocks longer than LogMutexTimeoutMs and never
+        /// leaves the mutex owned, whatever the file system does.
+        /// </summary>
+        private static void AppendLine(Mutex mtx, string LogDir, string LogFile, string S)
+        {
+            bool owned = false;
+            try
+            {
+                try
+                {
+                    owned = mtx.WaitOne(LogMutexTimeoutMs, false);
+                }
+                catch (AbandonedMutexException)
+                {
+                    //A previous owner died holding it. We now own it - carry on.
+                    owned = true;
+                }
+                if (!owned) return;//Drop the line rather than stall the caller.
+
+                if (!Directory.Exists(LogDir)) { Directory.CreateDirectory(LogDir); }
+
+                using (FileStream F = new FileStream(LogFile, FileMode.Append, FileAccess.Write, FileShare.Write))
+                using (StreamWriter W = new StreamWriter(F))
+                {
+                    W.WriteLine(S);
+                }
+            }
+            catch
+            {
+                //Logging must never propagate into machine control code.
+            }
+            finally
+            {
+                if (owned)
+                {
+                    try { mtx.ReleaseMutex(); } catch { }
+                }
+            }
+        }
+
         private static Mutex logMutex = new Mutex();
         public static void AddToLog(string S)
         {
-            logMutex.WaitOne();
-
             string Date = DateTime.Now.Date.ToString("yyyyMMdd");
             string Time = DateTime.Now.ToString("HH:mm:ss tt");
             string MM = DateTime.Now.Month.ToString("00");
@@ -2756,22 +2799,14 @@ namespace NDispWin
             string LogDir = GDefine.DataPath + "\\Log\\" + YYYY + MM + "\\";
             string LogFile = LogDir + Date + ".log";
 
-            if (!Directory.Exists(LogDir)) { Directory.CreateDirectory(LogDir); }
             S = Date + (char)9 + Time + (char)9 + S;
 
-            FileStream F = new FileStream(LogFile, FileMode.Append, FileAccess.Write, FileShare.Write);
-            StreamWriter W = new StreamWriter(F);
-            W.WriteLine(S);
-            W.Close();
-
-            logMutex.ReleaseMutex();
+            AppendLine(logMutex, LogDir, LogFile, S);
         }
 
         private static Mutex logEventMutex = new Mutex();
         public static void AddToEventLog(string S)
         {
-            logEventMutex.WaitOne();
-
             string Date = DateTime.Now.Date.ToString("yyyyMMdd");
             string Time = DateTime.Now.ToString("HH:mm:ss tt");
             string MM = DateTime.Now.Month.ToString("00");
@@ -2779,15 +2814,9 @@ namespace NDispWin
             string LogDir = GDefine.DataPath + "\\Event\\" + YYYY + MM + "\\";
             string LogFile = LogDir + "Event_" + Date + ".log";
 
-            if (!Directory.Exists(LogDir)) { Directory.CreateDirectory(LogDir); }
             S = Date + (char)9 + Time + (char)9 + S;
 
-            FileStream F = new FileStream(LogFile, FileMode.Append, FileAccess.Write, FileShare.Write);
-            StreamWriter W = new StreamWriter(F);
-            W.WriteLine(S);
-            W.Close();
-
-            logEventMutex.ReleaseMutex();
+            AppendLine(logEventMutex, LogDir, LogFile, S);
         }
         public static void AddToEventLog(int EventCode, string Desc, string Para = "")
         {

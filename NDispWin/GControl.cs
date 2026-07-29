@@ -175,16 +175,21 @@ namespace NDispWin
 
     class GLog
     {
-        static ReaderWriterLockSlim Slim = new ReaderWriterLockSlim();
+        //SupportsRecursion: a thread that is already inside WriteLog (e.g. an exception handler
+        //that logs) must not throw LockRecursionException.
+        static ReaderWriterLockSlim Slim = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
+        //Never block a caller - especially the UI thread - longer than this for a log line.
+        const int LockTimeoutMs = 2000;
         public static bool WriteLog(string fileName, string content)
         {
             content = content.Replace("\r", "").Replace("\n", "");
 
+            bool entered = false;
             try
             {
-                if (Slim.IsWriteLockHeld) Slim.ExitWriteLock();
+                entered = Slim.TryEnterWriteLock(LockTimeoutMs);
+                if (!entered) return false;//Drop the line rather than stall the caller.
 
-                Slim.EnterWriteLock();
                 var f = new FileStream(fileName, FileMode.Append, FileAccess.Write, FileShare.Write);
                 using (StreamWriter w = new StreamWriter(f)) w.WriteLine($"{DateTime.Now:O}\t{content}");
             }
@@ -194,7 +199,12 @@ namespace NDispWin
             }
             finally
             {
-                Slim.ExitWriteLock();
+                //Only exit the lock we actually took, otherwise ExitWriteLock throws out of the
+                //finally block and escapes this method.
+                if (entered)
+                {
+                    try { Slim.ExitWriteLock(); } catch { }
+                }//
             }
             return true;
         }
@@ -231,6 +241,178 @@ namespace NDispWin
             GLog.WriteLog(folder + fName + ".log", $"{DispProg.RunMode}\t" + content);
 
             return true;
+        }
+    }
+
+    /// <summary>
+    /// Detects when the UI (message-pump) thread stops responding and records it via
+    /// GLog.WriteDebugLog, so a hard freeze leaves a timestamped trail instead of going silent.
+    ///
+    /// How it works: a background thread asks the UI thread to stamp a "pong" time roughly once a
+    /// second (BeginInvoke). If the UI thread is blocked - a synchronous socket send, a stuck lock,
+    /// an un-closable modal - it never runs the pong, the gap grows, and the watchdog logs it.
+    /// The watchdog never blocks the UI thread and never throws into it.
+    /// </summary>
+    static class UiWatchdog
+    {
+        static Control _ui;
+        static Thread _monitor;
+        static volatile bool _run;
+        static long _lastPongTicks;
+        static int _pingPending;
+
+        //Latest UI snapshot. Composed on the UI thread (see Pong), consumed by the monitor thread.
+        //_uiKey is the change-trigger; _uiLine is what gets logged (adds the active form for context).
+        static volatile string _uiKey = "";
+        static volatile string _uiLine = "";
+
+        //How often we ping, how long a gap counts as "stalled", and how often we re-log while it
+        //stays stalled. Threshold is deliberately generous so a merely busy UI is not flagged.
+        const int PingIntervalMs = 1000;
+        const int StallThresholdMs = 5000;
+        const int RepeatLogMs = 10000;
+        //Snapshot logging: only on change, coalesced, plus a heartbeat so the log has a baseline.
+        const int SnapshotMinIntervalMs = 2000;
+        const int SnapshotHeartbeatMs = 3600000;//1 h
+        const int MaxFormsLogged = 12;
+
+        public static void Start(Control ui)
+        {
+            if (_monitor != null) return;      //already running
+            _ui = ui;
+            _lastPongTicks = DateTime.UtcNow.Ticks;
+            _run = true;
+            _monitor = new Thread(Loop) { IsBackground = true, Name = "UiWatchdog" };
+            _monitor.Start();
+        }
+
+        public static void Stop()
+        {
+            _run = false;
+        }
+
+        //Runs on the UI thread; records that the pump is alive and captures the UI state.
+        static void Pong()
+        {
+            Interlocked.Exchange(ref _lastPongTicks, DateTime.UtcNow.Ticks);
+            Interlocked.Exchange(ref _pingPending, 0);
+
+            try { ComposeSnapshot(); }
+            catch { }//Diagnostics must never disturb the UI thread.
+        }
+
+        /// <summary>
+        /// Builds the UI state line. MUST run on the UI thread: Application.OpenForms is not safe
+        /// to enumerate from another thread, and Enabled/Visible/Modal are control state.
+        ///
+        /// Catches the failure mode where the message pump is alive (no "Not Responding") but input
+        /// is ignored, because a form is stuck Enabled=false or an unseen modal owns input.
+        /// </summary>
+        static void ComposeSnapshot()
+        {
+            StringBuilder sb = new StringBuilder("UI STATE: ");
+            int n = 0;
+            bool any = false;
+            foreach (Form f in Application.OpenForms)
+            {
+                if (n >= MaxFormsLogged) { sb.Append(", ..."); break; }
+                if (any) sb.Append(", ");
+                any = true;
+                n++;
+
+                sb.Append(f.Name)
+                  .Append("(E=").Append(f.Enabled ? "1" : "0")
+                  .Append(",V=").Append(f.Visible ? "1" : "0");
+                if (f.Modal) sb.Append(",MODAL");
+                sb.Append(")");
+            }
+            if (!any) sb.Append("<none>");
+
+            //MsgInQue belongs to the key: a live modal with MsgInQue=0 means UpdateMsg() threw.
+            sb.Append(" MsgInQue=").Append(Msg.MsgInQue);
+
+            string key = sb.ToString();
+
+            //ActiveForm changes on every focus shift, so it is context only - never a trigger,
+            //otherwise normal operation would flood the log.
+            Form active = Form.ActiveForm;
+            _uiKey = key;
+            _uiLine = key + " | active=" + (active == null ? "<none>" : active.Name);
+        }
+
+        static void Loop()
+        {
+            bool stalled = false;
+            DateTime stallSince = DateTime.MinValue;
+            DateTime lastLog = DateTime.MinValue;
+
+            string lastKey = null;
+            DateTime lastSnapLog = DateTime.MinValue;
+
+            while (_run)
+            {
+                try
+                {
+                    //Queue at most one outstanding ping so a long freeze cannot pile up work.
+                    if (_ui != null && _ui.IsHandleCreated && !_ui.IsDisposed)
+                    {
+                        if (Interlocked.Exchange(ref _pingPending, 1) == 0)
+                        {
+                            try { _ui.BeginInvoke((Action)Pong); }
+                            catch { Interlocked.Exchange(ref _pingPending, 0); }
+                        }
+                    }
+
+                    long last = Interlocked.Read(ref _lastPongTicks);
+                    double gapMs = (DateTime.UtcNow - new DateTime(last, DateTimeKind.Utc)).TotalMilliseconds;
+
+                    if (gapMs >= StallThresholdMs)
+                    {
+                        if (!stalled)
+                        {
+                            stalled = true;
+                            stallSince = DateTime.UtcNow.AddMilliseconds(-gapMs);
+                            lastLog = DateTime.MinValue;
+                        }
+                        if ((DateTime.UtcNow - lastLog).TotalMilliseconds >= RepeatLogMs)
+                        {
+                            lastLog = DateTime.UtcNow;
+                            GLog.WriteDebugLog($"UI WATCHDOG: UI thread unresponsive for ~{gapMs / 1000.0:f1} s (no message pump).");
+                        }
+                    }
+                    else if (stalled)
+                    {
+                        stalled = false;
+                        double totalS = (DateTime.UtcNow - stallSince).TotalSeconds;
+                        GLog.WriteDebugLog($"UI WATCHDOG: UI thread responsive again after ~{totalS:f1} s.");
+                    }
+
+                    #region UI state snapshot
+                    //Logged only when the state actually changes (coalesced), plus an hourly
+                    //heartbeat - so a healthy machine writes a handful of lines per shift.
+                    string key = _uiKey;
+                    if (key.Length > 0)
+                    {
+                        bool changed = key != lastKey;
+                        bool heartbeat = (DateTime.UtcNow - lastSnapLog).TotalMilliseconds >= SnapshotHeartbeatMs;
+                        bool settled = (DateTime.UtcNow - lastSnapLog).TotalMilliseconds >= SnapshotMinIntervalMs;
+
+                        if ((changed && settled) || heartbeat)
+                        {
+                            lastKey = key;
+                            lastSnapLog = DateTime.UtcNow;
+                            GLog.WriteDebugLog(_uiLine);
+                        }
+                    }
+                    #endregion
+                }
+                catch
+                {
+                    //Watchdog must never take the app down.
+                }
+
+                Thread.Sleep(PingIntervalMs);
+            }
         }
     }
 

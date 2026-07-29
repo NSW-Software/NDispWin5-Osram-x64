@@ -93,14 +93,27 @@ namespace NDispWin
                 result = MsgBox.Show(msg, exMsg, msgBtn);
             };
 
-            Form uiForm = Application.OpenForms.Cast<Form>().FirstOrDefault(f => f.IsHandleCreated && !f.IsDisposed);
-            if (uiForm != null && uiForm.InvokeRequired)
+            //Always marshal onto the main form. Application.OpenForms was previously scanned from
+            //this worker thread: that enumeration is not thread safe, and the first match could be
+            //a form owned by another thread - Invoke would then block on a thread that may itself
+            //be waiting on us, deadlocking both.
+            Form uiForm = frm_Main.UiForm;
+            try
             {
-                uiForm.Invoke(show);
+                if (uiForm != null && uiForm.IsHandleCreated && !uiForm.IsDisposed && uiForm.InvokeRequired)
+                {
+                    uiForm.Invoke(show);
+                }
+                else
+                {
+                    show();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                show();
+                //Never let a marshalling failure abort the handler sequence that asked the question.
+                GLog.WriteDebugLog($"ShowMessageOnUiThread Exception: {ex}");
+                result = EMsgRes.smrNone;
             }
 
             return result;

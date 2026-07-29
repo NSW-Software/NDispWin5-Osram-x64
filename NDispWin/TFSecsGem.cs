@@ -108,6 +108,7 @@ namespace NDispWin
 
             try
             {
+                if (!IsConnected) return;
                 SocketPacket SocPkt = (SocketPacket)asyn.AsyncState;
 
                 // Complete the BeginReceive() asynchronous call by EndReceive() method
@@ -165,6 +166,11 @@ namespace NDispWin
             {
                 // Create the socket instance
                 socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
+                // Send() below is synchronous and is reached from Event.Set() on the UI thread.
+                // Without a timeout, a host that stops reading (TCP zero window) or a half-open
+                // link blocks that thread forever and freezes the whole application.
+                socket.SendTimeout = 3000;
 
                 // Cet the remote IP address
                 IPAddress ip = System.Net.IPAddress.Parse(ServerIPAddress);
@@ -519,7 +525,17 @@ namespace NDispWin
         public static void Send(string outMsg)
         {
             string data = outMsg;
-            client.SendFrame(data);
+            if (!IsConnected) return;
+            //Reached from Event.Set(), i.e. from every machine sequence and from UI timers.
+            //A SECS/GEM link problem must never abort the caller.
+            try
+            {
+                client.SendFrame(data);
+            }//
+            catch (Exception ex)
+            {
+                Log.SecsGem.WriteByMonthDay($"Send failed: {ex.Message}");
+            }
         }
 
         static ReaderWriterLockSlim slim = new ReaderWriterLockSlim();
