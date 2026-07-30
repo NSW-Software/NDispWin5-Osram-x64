@@ -274,7 +274,9 @@ namespace NDispWin
         //Snapshot logging: only on change, coalesced, plus a heartbeat so the log has a baseline.
         const int SnapshotMinIntervalMs = 2000;
         const int SnapshotHeartbeatMs = 3600000;//1 h
-        const int MaxFormsLogged = 12;
+        //24, not 12: at 12 the 29-Jul-2026 snapshots truncated with "..." and hid the camera and
+        //monitor forms - exactly the ones needed to explain the freeze.
+        const int MaxFormsLogged = 24;
 
         public static void Start(Control ui)
         {

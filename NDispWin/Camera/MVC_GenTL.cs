@@ -245,9 +245,9 @@ namespace MVC
         }
         public void CloseDevice()
         {
-            //Reset flow flag bit
-            m_bGrabbing = false;
-            if (m_hReceiveThread != null) m_hReceiveThread.Abort();//Join();
+            //Reset flow flag bit, then wait (bounded) for the grab loop to leave the driver before
+            //releasing its buffer below - freeing it under a live native read would be worse.
+            StopReceiveThread(nameof(CloseDevice));
 
             if (m_BufForDriver != IntPtr.Zero)
             {
@@ -266,6 +266,55 @@ namespace MVC
         MyCamera.MV_FRAME_OUT stFrameInfo = new MyCamera.MV_FRAME_OUT();
 
         MyCamera.MV_CC_INPUT_FRAME_INFO stInputFrameInfo = new MyCamera.MV_CC_INPUT_FRAME_INFO();
+
+        //Max time a caller (usually the UI thread) waits for the receive thread to finish.
+        //The grab loop polls m_bGrabbing and MV_CC_GetImageBuffer_NET has a 500 ms timeout,
+        //so a healthy thread exits well inside this.
+        const int ReceiveThreadJoinMs = 2000;
+
+        /// <summary>
+        /// Stops the receive thread and waits a bounded time for it to exit.
+        ///
+        /// Deliberately Join(timeout) and NOT Abort(): Abort() blocks the calling thread until the
+        /// exception can be delivered, and it can never be delivered while the target sits in the
+        /// native MV_CC_GetImageBuffer_NET call. Every StopGrab/CloseDevice caller here is a UI
+        /// event handler, so an undeliverable Abort() freezes the whole application. A plain
+        /// Join() (no timeout) has the same defect. Bounding the wait is what actually matters.
+        ///
+        /// If the wait times out the thread is abandoned - the camera will not recover until the
+        /// process restarts, but the UI stays alive, which is the point.
+        /// </summary>
+        private bool StopReceiveThread(string caller)
+        {
+            m_bGrabbing = false;
+
+            Thread t = m_hReceiveThread;
+            if (t == null) return true;
+
+            bool exited;
+            try
+            {
+                exited = t.Join(ReceiveThreadJoinMs);
+            }
+            catch (Exception ex)
+            {
+                NDispWin.Event.CAMERA_INFO.Set(caller, $"{m_CamName} Join failed. {ex.Message}");
+                return false;
+            }
+
+            if (exited)
+            {
+                m_hReceiveThread = null;
+            }
+            else
+            {
+                //Left running on purpose. It still holds lockObject, so a later StartGrab will not
+                //acquire images - but nothing blocks the UI thread.
+                NDispWin.Event.CAMERA_INFO.Set(caller, $"{m_CamName} ReceiveThread did not exit in {ReceiveThreadJoinMs} ms - abandoned (stuck in camera driver).");
+            }
+
+            return exited;
+        }
 
         public void ReceiveThreadProcess()
         {
@@ -413,11 +462,14 @@ namespace MVC
             int nRet = m_MyCamera.MV_CC_StartGrabbing_NET();
             if (MyCamera.MV_OK != nRet)
             {
-                m_bGrabbing = false;
-                m_hReceiveThread.Abort();
+                //Note: the old code called m_hReceiveThread.Abort() here, which also threw
+                //NullReferenceException on the very first call - the field is only assigned below.
+                StopReceiveThread(nameof(StartGrab));
                 throw new Exception(GetErrorMsg("Start Grabbing Fail!", nRet));
             }
-            m_hReceiveThread = new Thread(ReceiveThreadProcess);
+            //IsBackground: if this thread ever gets stuck in the driver it must not be able to hold
+            //the process open on exit (a foreground thread would).
+            m_hReceiveThread = new Thread(ReceiveThreadProcess) { IsBackground = true, Name = $"MVCGenTLRx_{m_CamName}" };
             m_hReceiveThread.Start();
 
             return true;
@@ -426,9 +478,9 @@ namespace MVC
         {
             if (!m_bGrabbing) return true;
 
-            //Set flag bit false
-            m_bGrabbing = false;
-            if (m_hReceiveThread != null) m_hReceiveThread.Abort();
+            //Clear the flag and wait (bounded) for the grab loop to leave the native driver call,
+            //so MV_CC_StopGrabbing_NET below is not issued while a read is still in flight.
+            StopReceiveThread(nameof(StopGrab));
 
             //Stop Grabbing
             int nRet = m_MyCamera.MV_CC_StopGrabbing_NET();
@@ -478,8 +530,7 @@ namespace MVC
             nRet = m_MyCamera.MV_CC_StartGrabbing_NET();
             if (MyCamera.MV_OK != nRet)
             {
-                m_bGrabbing = false;
-                m_hReceiveThread.Abort();
+                StopReceiveThread(nameof(StartGrab2));
                 throw new Exception(GetErrorMsg("Start Grabbing Fail!", nRet));
             }
         }
