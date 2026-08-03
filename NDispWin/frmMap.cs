@@ -165,7 +165,7 @@ namespace NDispWin
 
         private void pbox_Map_Paint(object sender, PaintEventArgs e)
         {
-            return;
+            //return;
             if (Painting) return;
 
             Painting = true;

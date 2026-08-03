@@ -104,7 +104,7 @@ namespace NDispWin
                         //GLog.WriteDebugLog("Status Check Start");
                         UpdateWaitMagStatus();
                         Thread.Sleep(5);
-                        //QueueSecsGemUpdate();
+                        QueueSecsGemUpdate();
                     }
                     catch (Exception ex)
                     {
@@ -214,7 +214,7 @@ namespace NDispWin
 
                         if (LotInfo2.LotActive)
                         {
-                            //if (TaskDisp.VolumeOfst_Protocol == TaskDisp.EVolumeOfstProtocol.OSRAM_ICC) SafeBeginInvoke(Refresh_OsramICCPanelID);
+                            if (TaskDisp.VolumeOfst_Protocol == TaskDisp.EVolumeOfstProtocol.OSRAM_ICC) SafeBeginInvoke(Refresh_OsramICCPanelID);
                         }
                     }catch(Exception ex)
                     {
@@ -365,7 +365,7 @@ namespace NDispWin
             if (IsDisposed || !IsHandleCreated) return;
             if (Interlocked.Exchange(ref _secsGemUpdatePending, 1) == 1) return;
 
-            return;
+            //return;
             SafeBeginInvoke(() =>
             {
                 try
@@ -1686,7 +1686,7 @@ namespace NDispWin
 
         public void Refresh_OsramICCPanelID()
         {
-            return;
+            //return;
             string lotFile = $"{TaskDisp.OsramICC_LotPath}\\{LotInfo2.LotNumber}.txt";
 
             OsramICC.ReadLotFile(lotFile);
