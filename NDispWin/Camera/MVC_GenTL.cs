@@ -251,7 +251,11 @@ namespace MVC
 
             if (m_BufForDriver != IntPtr.Zero)
             {
-                Marshal.Release(m_BufForDriver);
+                //FreeHGlobal to match AllocHGlobal, and null it so a second CloseDevice cannot
+                //double-free.
+                Marshal.FreeHGlobal(m_BufForDriver);
+                m_BufForDriver = IntPtr.Zero;
+                m_nBufSizeForDriver = 0;
             }
 
             //Close Device
@@ -284,9 +288,16 @@ namespace MVC
         /// If the wait times out the thread is abandoned - the camera will not recover until the
         /// process restarts, but the UI stays alive, which is the point.
         /// </summary>
+        //Identifies a generation of the receive thread. An abandoned thread must not resume when a
+        //later StartGrab sets m_bGrabbing back to true - it checks its own generation and exits.
+        private int m_grabGeneration = 0;
+
         private bool StopReceiveThread(string caller)
         {
             m_bGrabbing = false;
+            //Supersede the current generation so any thread still running (including one we are
+            //about to abandon) stops at its next loop check.
+            Interlocked.Increment(ref m_grabGeneration);
 
             Thread t = m_hReceiveThread;
             if (t == null) return true;
@@ -302,27 +313,102 @@ namespace MVC
                 return false;
             }
 
-            if (exited)
+            //Drop the reference either way. An abandoned thread is never joined again, and the
+            //next StartGrab must not inherit it.
+            m_hReceiveThread = null;
+
+            if (!exited)
             {
-                m_hReceiveThread = null;
-            }
-            else
-            {
-                //Left running on purpose. It still holds lockObject, so a later StartGrab will not
-                //acquire images - but nothing blocks the UI thread.
                 NDispWin.Event.CAMERA_INFO.Set(caller, $"{m_CamName} ReceiveThread did not exit in {ReceiveThreadJoinMs} ms - abandoned (stuck in camera driver).");
             }
 
             return exited;
         }
 
+        //Every lock wait is bounded. An abandoned receive thread can sit inside the driver holding
+        //lockObject for minutes; nothing - least of all the UI thread - may wait on that
+        //indefinitely. Losing a frame is always preferable to freezing the application.
+        const int GrabLockTimeoutMs = 250;   //receive loop: short, so it re-checks m_bGrabbing often
+        const int UiLockTimeoutMs = 1500;    //callers: well under the 5 s watchdog threshold
+
+        int m_displayPending = 0;
+
+        /// <summary>
+        /// Hands a frame to the ImageBox without ever blocking the caller.
+        ///
+        /// Emgu's ImageBox.Image setter performs a SYNCHRONOUS Control.Invoke when called off the
+        /// UI thread. Doing that from the receive loop while holding lockObject deadlocks against
+        /// any UI-thread code that wants lockObject (ReceiveProcess/RegisterPictureBox) - this is
+        /// the 2026-08-01 and 2026-08-02 freeze. The frame is therefore posted with BeginInvoke,
+        /// outside the lock, and dropped if the UI has not consumed the previous one: a live view
+        /// may skip frames, it may not stall the grab thread.
+        /// </summary>
+        private void PushToDisplay(Image<Gray, Byte> img)
+        {
+            if (img == null) return;
+
+            ImageBox box = m_emguBox;
+            if (box == null || box.IsDisposed || !box.IsHandleCreated) { TryDispose(img); return; }
+
+            if (Interlocked.Exchange(ref m_displayPending, 1) == 1) { TryDispose(img); return; }
+
+            try
+            {
+                box.BeginInvoke((MethodInvoker)(() =>
+                {
+                    try
+                    {
+                        if (box.IsDisposed) { TryDispose(img); return; }
+                        var old = box.Image;
+                        box.Image = img;
+                        if (old != null) old.Dispose();
+                        box.Invalidate();
+                    }
+                    catch { TryDispose(img); }
+                    finally { Interlocked.Exchange(ref m_displayPending, 0); }
+                }));
+            }
+            catch
+            {
+                //Handle destroyed between the check and the post.
+                Interlocked.Exchange(ref m_displayPending, 0);
+                TryDispose(img);
+            }
+        }
+
+        private static void TryDispose(IDisposable d)
+        {
+            try { if (d != null) d.Dispose(); } catch { }
+        }
+
+        /// <summary>True when a usable ImageBox is bound, so a display copy is worth making.</summary>
+        private bool HasLiveView()
+        {
+            ImageBox box = m_emguBox;
+            return box != null && !box.IsDisposed && box.IsHandleCreated;
+        }
+
         public void ReceiveThreadProcess()
+        {
+            ReceiveThreadProcess(Volatile.Read(ref m_grabGeneration));
+        }
+
+        private void ReceiveThreadProcess(int generation)
         {
             int nRet = MyCamera.MV_OK;
 
-            while (m_bGrabbing)
+            //Exit as soon as this generation is superseded, even if m_bGrabbing has since been set
+            //true again by a later StartGrab.
+            while (m_bGrabbing && generation == Volatile.Read(ref m_grabGeneration))
             {
-                lock (lockObject)
+                //Handed to the UI *after* the lock is released - see PushToDisplay.
+                Image<Gray, Byte> display = null;
+
+                //Bounded: if an abandoned earlier generation of this thread is still stuck in the
+                //driver holding lockObject, do not block here forever - re-check m_bGrabbing and
+                //exit cleanly instead.
+                if (!Monitor.TryEnter(lockObject, GrabLockTimeoutMs)) { Thread.Sleep(5); continue; }
+                try
                 {
                     nRet = m_MyCamera.MV_CC_GetImageBuffer_NET(ref stFrameInfo, 500);
                     if (nRet == MyCamera.MV_OK)
@@ -333,7 +419,11 @@ namespace MVC
                             {
                                 if (m_BufForDriver != IntPtr.Zero)
                                 {
-                                    Marshal.Release(m_BufForDriver);
+                                    //FreeHGlobal, not Release: this buffer comes from AllocHGlobal
+                                    //below. Marshal.Release treats the pointer as a COM IUnknown*
+                                    //and calls through a vtable that does not exist, and never
+                                    //frees the memory.
+                                    Marshal.FreeHGlobal(m_BufForDriver);
                                     m_BufForDriver = IntPtr.Zero;
                                 }
 
@@ -376,15 +466,13 @@ namespace MVC
                             {
                                 int stride = stDisplayInfo.nWidth + (stDisplayInfo.nWidth % 4);
 
-                                mImage = new Image<Gray, byte>(stDisplayInfo.nWidth, stDisplayInfo.nHeight, stride, stDisplayInfo.pData);
-                                if (m_emguBox != null)
+                                //Own the pixels - the wrapper points at the driver buffer, freed below.
+                                using (var wrap = new Image<Gray, byte>(stDisplayInfo.nWidth, stDisplayInfo.nHeight, stride, stDisplayInfo.pData))
                                 {
-                                    m_emguBox.Image?.Dispose();
-                                    m_emguBox.Image = mImage.Copy();
-                                    m_emguBox.Invalidate();
+                                    mImage = wrap.Copy();
                                 }
-                                //m_emguBox.Image = mImage;
-                                //m_emguBox.Invalidate();
+                                //Render after unlocking; skip the copy if nothing is displaying.
+                                display = HasLiveView() ? mImage.Copy() : null;
                             }
                             catch (Exception ex)
                             {
@@ -400,13 +488,33 @@ namespace MVC
                         //if (m_bGrabbing) NDispWin.Event.CAMERA_INFO.Set(MethodBase.GetCurrentMethod().Name.ToString(), GetErrorMsg("Get Image Buffer Fail.!", nRet));
                     }
                 }
+                finally { Monitor.Exit(lockObject); }
+
+                //Outside the lock on purpose: this may marshal to the UI thread, and holding
+                //lockObject while waiting on the UI thread is exactly the deadlock being fixed.
+                PushToDisplay(display);
             }
         }
-        public void ReceiveProcess()
+        /// <summary>
+        /// Single synchronous grab. Reached from the UI thread (GrabOneImage) and from the dispense
+        /// thread (DispProg board capture), so the lock wait is bounded - an abandoned receive
+        /// thread stuck in the driver must never hang either of them.
+        ///
+        /// Returns true ONLY if a frame was actually acquired. Callers use this to decide whether
+        /// stDisplayInfo holds a fresh frame; reporting success on a failed grab would let vision
+        /// run on the previous board's image.
+        /// </summary>
+        public bool ReceiveProcess()
         {
             int nRet = MyCamera.MV_OK;
+            Image<Gray, Byte> display = null;
 
-            lock (lockObject)
+            if (!Monitor.TryEnter(lockObject, UiLockTimeoutMs))
+            {
+                NDispWin.Event.CAMERA_INFO.Set(nameof(ReceiveProcess), $"{m_CamName} camera busy - lock not acquired in {UiLockTimeoutMs} ms.");
+                return false;
+            }
+            try
             {
                 nRet = m_MyCamera.MV_CC_GetImageBuffer_NET(ref stFrameInfo, 1000);
                 if (nRet == MyCamera.MV_OK)
@@ -427,9 +535,16 @@ namespace MVC
                         {
                             int stride = stDisplayInfo.nWidth + (stDisplayInfo.nWidth % 4);
 
-                                mImage = new Image<Gray, byte>(stDisplayInfo.nWidth, stDisplayInfo.nHeight, stride, stDisplayInfo.pData);
-                                m_emguBox.Image = mImage;
-                                m_emguBox.Invalidate();
+                            //Own the pixels: the wrapper below points at the driver buffer, which is
+                            //freed a few lines down. Callers read mImage after this returns, so it
+                            //must not be a view onto freed memory.
+                            using (var wrap = new Image<Gray, byte>(stDisplayInfo.nWidth, stDisplayInfo.nHeight, stride, stDisplayInfo.pData))
+                            {
+                                mImage = wrap.Copy();
+                            }
+                            //Second copy only when something is actually displaying - in Auto the
+                            //dispense thread grabs with no ImageBox bound.
+                            display = HasLiveView() ? mImage.Copy() : null;
                         }
                         catch (Exception ex)
                         {
@@ -445,6 +560,10 @@ namespace MVC
                     //if (m_bGrabbing) NDispWin.Event.CAMERA_INFO.Set(MethodBase.GetCurrentMethod().Name.ToString(), GetErrorMsg("Get Image Buffer Fail.!", nRet));
                 }
             }
+            finally { Monitor.Exit(lockObject); }
+
+            PushToDisplay(display);
+            return nRet == MyCamera.MV_OK;
         }
 
         public bool StartGrab()
@@ -469,7 +588,8 @@ namespace MVC
             }
             //IsBackground: if this thread ever gets stuck in the driver it must not be able to hold
             //the process open on exit (a foreground thread would).
-            m_hReceiveThread = new Thread(ReceiveThreadProcess) { IsBackground = true, Name = $"MVCGenTLRx_{m_CamName}" };
+            int gen = Interlocked.Increment(ref m_grabGeneration);
+            m_hReceiveThread = new Thread(() => ReceiveThreadProcess(gen)) { IsBackground = true, Name = $"MVCGenTLRx_{m_CamName}" };
             m_hReceiveThread.Start();
 
             return true;
@@ -508,10 +628,18 @@ namespace MVC
                 m_bGrabbing = false;
                 throw new Exception(GetErrorMsg("Start Grabbing Fail!", nRet));
             }
-            ReceiveProcess();
+            //One retry: a bounded lock wait can lose to a stalled driver, and a single retry avoids
+            //an operator prompt for a transient stall. mImage is filled by ReceiveProcess itself
+            //(owned copy), so nothing is rebuilt from the freed driver buffer here.
+            bool got = ReceiveProcess();
+            if (!got) got = ReceiveProcess();
 
-            int stride = stDisplayInfo.nWidth + (stDisplayInfo.nWidth % 4);
-            mImage = new Image<Gray, byte>(stDisplayInfo.nWidth, stDisplayInfo.nHeight, stride, stDisplayInfo.pData);
+            if (!got)
+            {
+                //Never fall through with the previous board's image - vision would align on it.
+                m_MyCamera.MV_CC_StopGrabbing_NET();
+                throw new Exception($"{MethodBase.GetCurrentMethod().Name} {m_CamName} Grab One Image Fail - camera busy or no frame.");
+            }
 
             nRet = m_MyCamera.MV_CC_StopGrabbing_NET();
             if (nRet != MyCamera.MV_OK)
@@ -652,9 +780,18 @@ namespace MVC
         ImageBox m_emguBox = new ImageBox();
         public void RegisterPictureBox(ImageBox imageBox)
         {
-            lock (lockObject)
+            //Bounded: never wait on a stuck grab just to swap the target box.
+            if (Monitor.TryEnter(lockObject, UiLockTimeoutMs))
             {
+                try { m_emguBox = imageBox; }
+                finally { Monitor.Exit(lockObject); }
+            }
+            else
+            {
+                //A single reference write; doing it unlocked is safe enough and far better than
+                //hanging the caller.
                 m_emguBox = imageBox;
+                NDispWin.Event.CAMERA_INFO.Set(nameof(RegisterPictureBox), $"{m_CamName} camera busy - assigned without lock.");
             }
         }
 

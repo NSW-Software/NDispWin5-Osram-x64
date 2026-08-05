@@ -1112,33 +1112,50 @@ namespace NDispWin
         }
         public static List<TOsramICC_LotInfo> OsramICC_LotInfo = new List<TOsramICC_LotInfo>();
 
-        public static bool ReadLotFile(string filename)
+        /// <summary>
+        /// Parses the lot file into a NEW list, touching no shared state. Safe to call from a
+        /// worker thread - unlike ReadLotFile, which clears and rebuilds the shared
+        /// OsramICC_LotInfo that UI code (frm_DispCore_DispSetup_Custom) indexes directly.
+        /// Returns null if the file could not be read.
+        /// </summary>
+        public static List<TOsramICC_LotInfo> ParseLotFile(string filename)
         {
-            OsramICC_LotInfo.Clear();
-            List<string> panelIDs;
+            var result = new List<TOsramICC_LotInfo>();
             try
             {
                 string list = File.ReadAllText(filename);
-                panelIDs = list.Split(new[] { ',', '\t', '\r' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()).ToList();
+                var panelIDs = list.Split(new[] { ',', '\t', '\r' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()).ToList();
 
                 foreach (string s in panelIDs)
                 {
                     int status = 0;
                     if (Pass1.PanelIDs.Contains(s)) status = 1;
                     if (Pass2.PanelIDs.Contains(s)) status = 2;
-                    OsramICC_LotInfo.Add(new TOsramICC_LotInfo(s, status));
+                    result.Add(new TOsramICC_LotInfo(s, status));
                 }
 
-                while (OsramICC_LotInfo.Count < 50)
+                while (result.Count < 50)
                 {
-                    OsramICC_LotInfo.Add(new TOsramICC_LotInfo("", 0));
+                    result.Add(new TOsramICC_LotInfo("", 0));
                 }
             }
-            catch (Exception ex)
+            catch
             {
-               // MessageBox.Show(ex.Message.ToString());
-                return false;
+                return null;
             }
+            return result;
+        }
+
+        public static bool ReadLotFile(string filename)
+        {
+            //Clear first, unconditionally - the list must not retain stale data whether the read
+            //passes or fails.
+            OsramICC_LotInfo.Clear();
+
+            var parsed = ParseLotFile(filename);
+            if (parsed == null) return false;
+
+            OsramICC_LotInfo.AddRange(parsed);
             return true;
         }
     }

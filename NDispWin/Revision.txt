@@ -14,6 +14,31 @@ OsKm
 8.	Volume become higher after material refill 
 9.	Frequency of software hang very high. Camera Offset, select units layout, key parameter…  
 
+ver 6.1.9.43 RS - 20260805 [fix]
+MVC_GenTL
+> Frame copied inside lockObject, pushed to ImageBox outside it via BeginInvoke - the synchronous Emgu setter inside the lock deadlocked against UI-thread ReceiveProcess
+> All lock waits bounded: TryEnter 250ms grab loop, 1500ms callers
+> ReceiveProcess now returns whether a frame was acquired, not just whether the lock was taken
+> GrabOneImage retries once then throws instead of using a stale frame for vision
+> Receive thread generation token so an abandoned thread cannot resume on next StartGrab
+> Marshal.Release to Marshal.FreeHGlobal (pointer came from AllocHGlobal); null after free
+> mImage is now an owned copy, closing use-after-free of the freed driver buffer
+> Skip display copy when no ImageBox is bound
+
+frmAuto
+> PanelList lot file read moved to DoorCheck worker via OsramICC.ParseLotFile, with pending guard - File.ReadAllText on the UI thread blocked ~20s on an unreachable share
+> SetupPanelGrid runs once; AllowUserToAddRows before RowCount fixes Rows[9] exception
+> Refresh_OsramICCPanelID writes only changed cells
+> RefreshSubstrateGrid takes ToArray snapshot and rebinds only on change
+
+frmMap
+> try/finally ensures Painting = false, so one paint exception no longer stops the map forever
+> Removed per-unit Pen/Brush allocation; paint exception log rate limited TaskVolOfst_Custom
+> Added ParseLotFile (worker safe, no shared state); ReadLotFile keeps clear-first contract
+
+Vision forms
+> Removed duplicate frmMVCGenTLCamera field initializers that orphaned an undisposed Form
+
 ver 6.1.9.42 RS - 20260803 [fix]
 frmAuto
 > Re Enable SECGEM and PanelList

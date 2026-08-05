@@ -13,7 +13,8 @@ namespace NDispWin
     public partial class frm_DispProg_View : Form
     {
         frmJogControl frmJogControl = new frmJogControl();
-        frmMVCGenTLCamera TaskVisionfrmMVCGenTLCamera = new frmMVCGenTLCamera();
+        //No initializer - the constructor creates it. See frm_DispCore_JogGantryVision.
+        frmMVCGenTLCamera TaskVisionfrmMVCGenTLCamera;
 
         public bool ShowSetBtn = true;
         public bool ShowCamOfstBtn = false;

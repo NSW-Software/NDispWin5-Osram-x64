@@ -11,7 +11,8 @@ namespace NDispWin
 {
     public partial class frmVisionFailMsg2 : Form
     {
-        frmMVCGenTLCamera TaskVisionfrmMVCGenTLCamera = new frmMVCGenTLCamera();
+        //No initializer - the constructor creates it. See frm_DispCore_JogGantryVision.
+        frmMVCGenTLCamera TaskVisionfrmMVCGenTLCamera;
 
         public string Message = "";
         public bool ShowAccept = false;

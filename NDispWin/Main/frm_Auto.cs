@@ -214,7 +214,9 @@ namespace NDispWin
 
                         if (LotInfo2.LotActive)
                         {
-                            if (TaskDisp.VolumeOfst_Protocol == TaskDisp.EVolumeOfstProtocol.OSRAM_ICC) SafeBeginInvoke(Refresh_OsramICCPanelID);
+                            //Reads the lot file on THIS worker thread and posts only the parsed
+                            //result; guarded so a slow read cannot flood the UI message queue.
+                            if (TaskDisp.VolumeOfst_Protocol == TaskDisp.EVolumeOfstProtocol.OSRAM_ICC) QueuePanelRefresh();
                         }
                     }catch(Exception ex)
                     {
@@ -1684,22 +1686,26 @@ namespace NDispWin
             }
         }
 
-        public void Refresh_OsramICCPanelID()
+        //One-time layout for dgvPanelList. Doing this every refresh reset RowCount (recreating all
+        //rows) and re-ran AutoSizeRowsMode.AllCells - the most expensive resize mode - once a
+        //second, for a grid whose shape never changes.
+        private bool _panelGridReady = false;
+        private void SetupPanelGrid()
         {
-            //return;
-            string lotFile = $"{TaskDisp.OsramICC_LotPath}\\{LotInfo2.LotNumber}.txt";
+            if (_panelGridReady) return;
 
-            OsramICC.ReadLotFile(lotFile);
-
-            if (OsramICC.OsramICC_LotInfo.Count != 50) return;
-
+            //Order matters: AllowUserToAddRows must be cleared BEFORE RowCount. It defaults to true,
+            //so setting RowCount=10 first yields 9 real rows + the new-row placeholder; removing the
+            //placeholder afterwards then makes Rows[9] invalid. That threw ArgumentOutOfRangeException
+            //on every tick (see "OsramICC Excep" in the 2026-07-09 logs).
+            dgvPanelList.AllowUserToAddRows = false;
             dgvPanelList.ColumnCount = 5;
             dgvPanelList.RowCount = 10;
 
             // Remove grid UI decorations
             dgvPanelList.RowHeadersVisible = false;
             dgvPanelList.ColumnHeadersVisible = false;
-            dgvPanelList.AllowUserToAddRows = false;
+            //dgvPanelList.AllowUserToAddRows = false;
             dgvPanelList.AllowUserToResizeColumns = false;
             dgvPanelList.AllowUserToResizeRows = false;
             dgvPanelList.ScrollBars = ScrollBars.None;
@@ -1714,41 +1720,89 @@ namespace NDispWin
             dgvPanelList.ClearSelection();
             dgvPanelList.Enabled = false; // Optional: disable interaction
 
-            for (int i = 0; i < 10; i++)
+            _panelGridReady = true;
+        }
+
+        /// <summary>
+        /// Paints the panel map from a snapshot already read on a worker thread. UI thread only, and
+        /// deliberately does NO file I/O - ReadLotFile uses File.ReadAllText with no timeout, which
+        /// blocks for ~20 s if OsramICC_LotPath points at an unreachable share.
+        /// Writes only cells whose value or colour actually changed.
+        /// </summary>
+        private void Refresh_OsramICCPanelID(OsramICC.TOsramICC_LotInfo[] snapshot)
+        {
+            if (snapshot == null || snapshot.Length < 50) return;
+
+            try
             {
-                for (int j = 0; j < 5; j++)
+                SetupPanelGrid();
+
+                for (int i = 0; i < 10; i++)
                 {
-                    try
+                    for (int j = 0; j < 5; j++)
                     {
-                        var value = OsramICC.OsramICC_LotInfo[i + (j * 10)].PanelID;
-                        dgvPanelList.Rows[i].Cells[j].Value = value;
+                        var info = snapshot[i + (j * 10)];
+                        if (info == null) continue;
 
-                        var color = OsramICC.OsramICC_LotInfo[i + (j * 10)].Status;
-                        Color cellColor;
-                        switch (color)
+                        var cell = dgvPanelList.Rows[i].Cells[j];
+
+                        if (!string.Equals(cell.Value as string, info.PanelID))
+                            cell.Value = info.PanelID;
+
+                        Color want;
+                        switch (info.Status)
                         {
-                            case 1:
-                                cellColor = Color.Yellow;
-                                break;
-                            case 2:
-                                cellColor = Color.Lime;
-                                break;
-                            default:
-                                cellColor = SystemColors.Control;
-                                break;
+                            case 1: want = Color.Yellow; break;
+                            case 2: want = Color.Lime; break;
+                            default: want = SystemColors.Control; break;
                         }
-
-                        dgvPanelList.Rows[i].Cells[j].Style.BackColor = cellColor;
+                        if (cell.Style.BackColor != want) cell.Style.BackColor = want;
                     }
-                    catch (Exception ex)
-                    {
-                        // Do Nothing
-                        GLog.WriteDebugLog($"OsramICC Excep: {ex}");
-                    }
-
                 }
             }
+            catch (Exception ex)
+            {
+                GLog.WriteDebugLog($"OsramICC Excep: {ex}");
+            }
         }
+
+        //Guards the panel-map post the same way _secsGemUpdatePending guards the SECS/GEM one.
+        //Without it the 1 Hz DoorCheck loop posts faster than a slow refresh drains, and the UI
+        //message queue grows without bound.
+        private int _panelRefreshPending = 0;
+
+        /// <summary>
+        /// Called on the DoorCheck worker thread. Does the file read here, then posts only the
+        /// parsed result to the UI thread.
+        /// </summary>
+        private void QueuePanelRefresh()
+        {
+            if (IsDisposed || !IsHandleCreated) return;
+            if (Interlocked.Exchange(ref _panelRefreshPending, 1) == 1) return;
+
+            OsramICC.TOsramICC_LotInfo[] snapshot = null;
+            try
+            {
+                string lotFile = $"{TaskDisp.OsramICC_LotPath}\\{LotInfo2.LotNumber}.txt";
+                //ParseLotFile, not ReadLotFile: this runs on a worker thread and must not mutate the
+                //shared OsramICC_LotInfo that frm_DispCore_DispSetup_Custom indexes without guards.
+                var parsed = OsramICC.ParseLotFile(lotFile);
+                if (parsed != null && parsed.Count >= 50)
+                    snapshot = parsed.Take(50).ToArray();
+            }//
+            catch (Exception ex)
+            {
+                GLog.WriteDebugLog($"OsramICC ReadLotFile Excep: {ex}");
+            }//
+
+            if (snapshot == null) { Interlocked.Exchange(ref _panelRefreshPending, 0); return; }
+
+            SafeBeginInvoke(() =>
+            {
+                try { Refresh_OsramICCPanelID(snapshot); }
+                finally { Interlocked.Exchange(ref _panelRefreshPending, 0); }
+            });
+        }//
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
@@ -1758,13 +1812,33 @@ namespace NDispWin
         {
             dgvSubstrateStatus.AutoGenerateColumns = true;
 
-            var displayList = TFSecsGem.SubstrateStatus//.ToArray()
-                .Select(kv => new SubstrateDisplay { ID = kv.Key, Status = kv.Value })
-                .ToList();
+            //ToArray() is REQUIRED, not decoration. SubstrateStatus is a plain Dictionary written by
+            //the SECS receive callback (TFSecsGem), the dispense thread (DispProg) and lot entry.
+            //Enumerating it live threw "Collection was modified" on ~49% of calls in testing, which
+            //silently stopped this grid updating. ToArray() takes an atomic-enough snapshot.
+            List<SubstrateDisplay> displayList;
+            try
+            {
+                displayList = TFSecsGem.SubstrateStatus.ToArray()
+                    .Select(kv => new SubstrateDisplay { ID = kv.Key, Status = kv.Value })
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                //Even ToArray() can lose a race while the dictionary resizes; skip this refresh.
+                GLog.WriteDebugLog($"RefreshSubstrateGrid Excep: {ex.Message}");
+                return;
+            }
+
+            //Only rebind when the content actually changed - a rebind rebuilds every row.
+            string key = string.Join("|", displayList.Select(d => d.ID + "=" + d.Status));
+            if (key == _substrateGridKey) return;
+            _substrateGridKey = key;
 
             dgvSubstrateStatus.DataSource = null; // Clear old data
             dgvSubstrateStatus.DataSource = displayList;
         }
+        private string _substrateGridKey = null;
 
         public class SubstrateDisplay
         {

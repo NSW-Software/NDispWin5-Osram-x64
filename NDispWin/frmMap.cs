@@ -156,6 +156,10 @@ namespace NDispWin
         EDisplay Display = EDisplay.ImgCurr;
 
         bool Painting = false;
+        DateTime _lastPaintExLog = DateTime.MinValue;
+        //Shared, never disposed on purpose - previously a new SolidBrush was allocated per unit
+        //per repaint.
+        static readonly Brush MoveToBrush = new SolidBrush(Color.Navy);
 
         bool DrawRC = false;
         bool DrawUnitNo = false;
@@ -169,6 +173,11 @@ namespace NDispWin
             if (Painting) return;
 
             Painting = true;
+            //try/finally: Painting was previously cleared only at the very end. Any exception in
+            //between (bad LayoutNo index, null map, a GDI failure) left it stuck true and the map
+            //never repainted again for the life of this form.
+            try
+            {
 
             lbl_ReadID.Text = DispProg.rt_Read_IDs[0, 0] + (DispProg.rt_Singulated?" Singulated":"");
 
@@ -202,13 +211,14 @@ namespace NDispWin
                 int X = LayoutInfo[LayoutNo].UX[i];
                 int Y = LayoutInfo[LayoutNo].UY[i];
 
-                Pen Pen = new Pen(Color.Transparent);
-                Pen = DispProg.MapColor.Pen[(byte)MapBin[i]];
+                //Was: new Pen(Color.Transparent) then immediately overwritten - one leaked GDI
+                //handle per unit per repaint, twice a second, on two map instances.
+                Pen Pen = DispProg.MapColor.Pen[(byte)MapBin[i]];
                 SBrush = DispProg.MapColor.SBrush[(byte)MapBin[i]];
 
                 if (b_MoveTo)
                 {
-                    SBrush = new SolidBrush(Color.Navy);
+                    SBrush = MoveToBrush;
                 }
 
                 if (LocalLayout[LayoutNo].UnitNoIsNeedle2(i) && DispProg.Pump_Type == TaskDisp.EPumpType.PP2D)
@@ -371,11 +381,25 @@ namespace NDispWin
 
             if (MouseDn)
             {
-                Pen Pen = new Pen(Color.Black);
-                e.Graphics.DrawRectangle(Pen, SelectRect);
+                using (Pen Pen = new Pen(Color.Black))
+                    e.Graphics.DrawRectangle(Pen, SelectRect);
             }
 
-            Painting = false;
+            }
+            catch (Exception ex)
+            {
+                //Rate limited: a persistently failing paint fires twice a second on each of the two
+                //map instances, which would otherwise flood the debug log.
+                if ((DateTime.Now - _lastPaintExLog).TotalSeconds >= 30)
+                {
+                    _lastPaintExLog = DateTime.Now;
+                    GLog.WriteDebugLog($"Map Paint Excep: {ex}");
+                }
+            }
+            finally
+            {
+                Painting = false;
+            }
         }
 
         List<int> SelectedIndex = new List<int>();

@@ -12,7 +12,10 @@ namespace NDispWin
     partial class frm_DispCore_JogGantryVision : Form
     {
         frmJogControl frmJogControl = new frmJogControl();
-        frmMVCGenTLCamera TaskVisionfrmMVCGenTLCamera = new frmMVCGenTLCamera();
+        //No initializer: the constructor creates the instance. Initializing here as well built a
+        //second Form that was immediately orphaned and never disposed - each one keeps a live
+        //SystemEvents.UserPreferenceChanged subscription for the life of the process.
+        frmMVCGenTLCamera TaskVisionfrmMVCGenTLCamera;
 
         public EForceGantryMode ForceGantryMode = EForceGantryMode.None;
 
