@@ -14,6 +14,10 @@ OsKm
 8.	Volume become higher after material refill 
 9.	Frequency of software hang very high. Camera Offset, select units layout, key parameter…  
 
+ver 6.1.9.44 RS - 20260806 [fix]
+Camera.cs
+> Doesnt initialize object until connect
+
 ver 6.1.9.43 RS - 20260805 [fix]
 MVC_GenTL
 > Frame copied inside lockObject, pushed to ImageBox outside it via BeginInvoke - the synchronous Emgu setter inside the lock deadlocked against UI-thread ReceiveProcess

@@ -148,7 +148,7 @@ namespace NDispWin
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         public static extern bool SetDllDirectory(string lpPathName);
 
-        IManagedCamera m_Camera = null;
+        IManagedCamera m_Camera;
 
         public int m_iCamWidthMax = 1280;
         public int m_iCamHeightMax = 1024;
@@ -165,17 +165,20 @@ namespace NDispWin
 
         public Emgu.CV.UI.ImageBox imgBoxEmgu;
         public ImageEmgu m_ImageEmgu = new ImageEmgu();
-        ManagedImage m_imageMono = new ManagedImage();
+        ManagedImage m_imageMono;
 
         public FlirCamera()
         {
-            if (SpinnakerCameraSystem.system == null) SpinnakerCameraSystem.Init();
+            //Spinnaker is initialised on demand in Connect(). Keep the ctor free of Spinnaker
+            //types so TaskVision's static initialiser cannot fail when the SDK is not installed.
         }
 
         public void SetImageData(ImageEmgu pImagerEmgu)
         {
             if (m_Camera == null)
                 return;
+
+            if (m_imageMono == null) m_imageMono = new ManagedImage();
 
             unsafe
             {
@@ -246,6 +249,8 @@ namespace NDispWin
         }
         public void Connect(string ipAddress)
         {
+            if (SpinnakerCameraSystem.system == null) SpinnakerCameraSystem.Init();
+
             int iIndex = 0;
             foreach (IManagedCamera managedCamera in SpinnakerCameraSystem.camList)
             {
