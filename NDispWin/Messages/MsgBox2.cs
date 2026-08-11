@@ -458,21 +458,34 @@ namespace NDispWin
                 }
                 catch (Exception ex) { }
 
+                //Disposed unconditionally: ShowDialog does not dispose the form on return (unlike
+                //Application.Run), and a live frm_MsgBox keeps statusStrip1's lazily-built
+                //ToolStripDropDownMenu/ToolStripOverflow subscribed to
+                //SystemEvents.UserPreferenceChanged for the rest of the process. Those accounted
+                //for 49 of the 67 subscriptions in the 2026-01-22 hang dump.
                 frm_MsgBox frm = new frm_MsgBox();
+                EMsgRes res;
                 try
                 {
-                    //frm.SetErrCode(msg.Code, exMsg, EMcState.Error, msgBtn, false);
-                    frm.SetErrCode(msg, exMsg, msgBtn);
-                    frm.ShowDialog();
+                    try
+                    {
+                        //frm.SetErrCode(msg.Code, exMsg, EMcState.Error, msgBtn, false);
+                        frm.SetErrCode(msg, exMsg, msgBtn);
+                        frm.ShowDialog();
+                    }
+                    catch
+                    {
+                        GLog.WriteProcessLog($"FAILS TO SHOW LOG:: {msg.Desc} :: {exMsg} :: {msgBtn} ");
+                        frm.Close();
+                    }
+                    res = frm.MsgRes;
                 }
-                catch
+                finally
                 {
-                    GLog.WriteProcessLog($"FAILS TO SHOW LOG:: {msg.Desc} :: {exMsg} :: {msgBtn} ");
-                    frm.Close();
                     frm.Dispose();
                 }
                 GLog.WriteProcessLog($"MsgBox END:: {msg.Desc} :: {exMsg} :: {msgBtn} ");
-                return frm.MsgRes;
+                return res;
             }
             catch (Exception ex)
             {

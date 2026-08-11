@@ -1110,35 +1110,51 @@ namespace NDispWin
                 Status = status;
             }
         }
-        public static List<TOsramICC_LotInfo> OsramICC_LotInfo = new List<TOsramICC_LotInfo>();
+        //volatile: published by the background reader in ReadLotFile, read by the UI thread when it
+        //renders the panel grid. Treat the list as immutable once assigned.
+        public static volatile List<TOsramICC_LotInfo> OsramICC_LotInfo = new List<TOsramICC_LotInfo>();
 
+        //Called from a background reader thread (frm_Auto.AutoRun) while the UI thread renders from
+        //OsramICC_LotInfo. So the list is built locally and published by a single reference
+        //assignment - that is atomic, so a reader always sees either the whole old list or the whole
+        //new one, never a half-rebuilt one. The previous in-place Clear()/Add() would have torn.
         public static bool ReadLotFile(string filename)
         {
-            OsramICC_LotInfo.Clear();
-            List<string> panelIDs;
+            List<TOsramICC_LotInfo> lotInfo = new List<TOsramICC_LotInfo>();
             try
             {
                 string list = File.ReadAllText(filename);
-                panelIDs = list.Split(new[] { ',', '\t', '\r' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()).ToList();
+                List<string> panelIDs = list.Split(new[] { ',', '\t', '\r' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()).ToList();
+
+                //Snapshot into sets once instead of a List.Contains per panel: 50 lookups over lists
+                //that can hold thousands of IDs, and the dispense thread Inserts into them while we
+                //read. Copying up front is both faster and a much smaller window on that race.
+                HashSet<string> pass1 = new HashSet<string>(Pass1.PanelIDs);
+                HashSet<string> pass2 = new HashSet<string>(Pass2.PanelIDs);
 
                 foreach (string s in panelIDs)
                 {
                     int status = 0;
-                    if (Pass1.PanelIDs.Contains(s)) status = 1;
-                    if (Pass2.PanelIDs.Contains(s)) status = 2;
-                    OsramICC_LotInfo.Add(new TOsramICC_LotInfo(s, status));
+                    if (pass1.Contains(s)) status = 1;
+                    if (pass2.Contains(s)) status = 2;
+                    lotInfo.Add(new TOsramICC_LotInfo(s, status));
                 }
 
-                while (OsramICC_LotInfo.Count < 50)
+                while (lotInfo.Count < 50)
                 {
-                    OsramICC_LotInfo.Add(new TOsramICC_LotInfo("", 0));
+                    lotInfo.Add(new TOsramICC_LotInfo("", 0));
                 }
             }
             catch (Exception ex)
             {
-               // MessageBox.Show(ex.Message.ToString());
+                //Was swallowed silently, so an unreachable share looked like nothing was wrong.
+                //Keep the previous list rather than clearing it - a momentary glitch should not
+                //blank the operator's panel grid.
+                GLog.WriteDebugLog($"OsramICC.ReadLotFile failed ({filename}): {ex.Message}");
                 return false;
             }
+
+            OsramICC_LotInfo = lotInfo;
             return true;
         }
     }

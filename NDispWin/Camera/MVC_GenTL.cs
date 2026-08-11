@@ -322,6 +322,11 @@ namespace MVC
 
             while (m_bGrabbing)
             {
+                //Filled inside the lock from the driver buffer, handed to the ImageBox after the
+                //lock is released - see the push below.
+                Image<Gray, byte> display = null;
+                ImageBox displayBox = null;
+
                 lock (lockObject)
                 {
                     nRet = m_MyCamera.MV_CC_GetImageBuffer_NET(ref stFrameInfo, 500);
@@ -377,14 +382,10 @@ namespace MVC
                                 int stride = stDisplayInfo.nWidth + (stDisplayInfo.nWidth % 4);
 
                                 mImage = new Image<Gray, byte>(stDisplayInfo.nWidth, stDisplayInfo.nHeight, stride, stDisplayInfo.pData);
-                                if (m_emguBox != null)
-                                {
-                                    m_emguBox.Image?.Dispose();
-                                    m_emguBox.Image = mImage.Copy();
-                                    m_emguBox.Invalidate();
-                                }
-                                //m_emguBox.Image = mImage;
-                                //m_emguBox.Invalidate();
+                                displayBox = m_emguBox;
+                                //Copy while still under the lock: pData is the driver buffer, freed
+                                //by MV_CC_FreeImageBuffer_NET below.
+                                if (displayBox != null) display = mImage.Copy();
                             }
                             catch (Exception ex)
                             {
@@ -400,11 +401,35 @@ namespace MVC
                         //if (m_bGrabbing) NDispWin.Event.CAMERA_INFO.Set(MethodBase.GetCurrentMethod().Name.ToString(), GetErrorMsg("Get Image Buffer Fail.!", nRet));
                     }
                 }
+
+                //Outside lockObject on purpose. Emgu's ImageBox.set_Image marshals synchronously to
+                //the UI thread; doing that while holding lockObject deadlocked against the UI thread
+                //waiting for the same lock in RegisterPictureBox / ReceiveProcess - the two
+                //2026-08-07 hang dumps.
+                if (display != null)
+                {
+                    try
+                    {
+                        displayBox.Image?.Dispose();
+                        displayBox.Image = display;
+                        displayBox.Invalidate();
+                    }
+                    catch (Exception ex)
+                    {
+                        display.Dispose();
+                        NDispWin.Event.CAMERA_INFO.Set(MethodBase.GetCurrentMethod().Name.ToString(), m_CamName + " " + ex.Message.ToString());
+                    }
+                }
             }
         }
         public void ReceiveProcess()
         {
             int nRet = MyCamera.MV_OK;
+
+            //Filled inside the lock from the driver buffer, handed to the ImageBox after the lock
+            //is released - see the push below.
+            Image<Gray, byte> display = null;
+            ImageBox displayBox = null;
 
             lock (lockObject)
             {
@@ -427,9 +452,11 @@ namespace MVC
                         {
                             int stride = stDisplayInfo.nWidth + (stDisplayInfo.nWidth % 4);
 
-                                mImage = new Image<Gray, byte>(stDisplayInfo.nWidth, stDisplayInfo.nHeight, stride, stDisplayInfo.pData);
-                                m_emguBox.Image = mImage;
-                                m_emguBox.Invalidate();
+                            mImage = new Image<Gray, byte>(stDisplayInfo.nWidth, stDisplayInfo.nHeight, stride, stDisplayInfo.pData);
+                            displayBox = m_emguBox;
+                            //Copy while still under the lock: pData is the driver buffer, freed by
+                            //MV_CC_FreeImageBuffer_NET below.
+                            if (displayBox != null) display = mImage.Copy();
                         }
                         catch (Exception ex)
                         {
@@ -443,6 +470,22 @@ namespace MVC
                 else
                 {
                     //if (m_bGrabbing) NDispWin.Event.CAMERA_INFO.Set(MethodBase.GetCurrentMethod().Name.ToString(), GetErrorMsg("Get Image Buffer Fail.!", nRet));
+                }
+            }
+
+            //Outside lockObject - see the note in ReceiveThreadProcess.
+            if (display != null)
+            {
+                try
+                {
+                    displayBox.Image?.Dispose();
+                    displayBox.Image = display;
+                    displayBox.Invalidate();
+                }
+                catch (Exception ex)
+                {
+                    display.Dispose();
+                    NDispWin.Event.CAMERA_INFO.Set(MethodBase.GetCurrentMethod().Name.ToString(), m_CamName + " " + ex.Message.ToString());
                 }
             }
         }
