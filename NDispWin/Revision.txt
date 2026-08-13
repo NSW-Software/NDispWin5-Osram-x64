@@ -14,6 +14,24 @@ OsKm
 8.	Volume become higher after material refill 
 9.	Frequency of software hang very high. Camera Offset, select units layout, key parameter…  
 
+ver 6.1.9.45 RS - 20260812 [improve]
+DispProgCmd.cs
+> add log for DOTS_ZPATH
+
+ver 6.1.9.44 RS - 20260811 [fix]
+Camera.cs
+> Revert Camera.cs changes
+
+MVC_GenTL.cs
+> Imagebox Marshals Synchronously
+> Only update image after lock released
+
+TaskVolOfst_Custom.cs
+> Update Osram ICC to only overwrite after it finish decoding. instead of keep updating it.
+
+MsgBox2.cs
+> Add Dispose
+
 ver 6.1.9.43 RS - 20260807 [fix]
 Camera.cs
 > Doesnt initialize object until connect

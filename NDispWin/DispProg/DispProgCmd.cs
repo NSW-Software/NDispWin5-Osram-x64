@@ -2162,6 +2162,8 @@ namespace NDispWin
                                 }
 
                                 string tempLog = "";
+                                tempLog += $"C,R={DispProg.RunTime.Head_CR[0].X},{DispProg.RunTime.Head_CR[0].Y}\t";
+                                tempLog += $"C2,R2={DispProg.RunTime.Head_CR[1].X},{DispProg.RunTime.Head_CR[1].Y}\t";
                                 tempLog += $"DispVol(ul),{DispProg.PP_HeadA_DispBaseVol},{DispProg.PP_HeadB_DispBaseVol}/n";
                                 tempLog += $"BSVol(ul),{DispProg.PP_HeadA_BackSuckVol},{DispProg.PP_HeadB_BackSuckVol}/n";
                                 tempLog += $"DispPulse(mm),{dispPulse[0]:f3},{dispPulse[1]:f3}/n";
