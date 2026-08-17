@@ -212,10 +212,15 @@ namespace NDispWin
                             }
                         }
 
-                        if (LotInfo2.LotActive)
-                        {
-                            if (TaskDisp.VolumeOfst_Protocol == TaskDisp.EVolumeOfstProtocol.OSRAM_ICC) SafeBeginInvoke(Refresh_OsramICCPanelID);
-                        }
+                        //The OsramICC panel-list refresh used to be posted from here every second.
+                        //It reads {OsramICC_LotPath}\<LOT>.txt, which is a WAN share, with a bare
+                        //File.ReadAllText that has no timeout - and SafeBeginInvoke has no
+                        //coalescing guard, so each second the UI stayed blocked queued another copy
+                        //and each copy did its own blocking read. That runaway is what froze the
+                        //screen while the hardware kept running (785.9 s on 2026-08-14).
+                        //The lot file is written when the lot is created and does not change while
+                        //the lot runs, so it is now read ONCE from btn_LotInfo_Click. Do not
+                        //reinstate a poll here.
                     }catch(Exception ex)
                     {
                         GLog.WriteDebugLog($"DoorCheck Exception: {ex}");
@@ -1128,6 +1133,15 @@ namespace NDispWin
                     {
                         frm_LotEntryOsramICC frm = new frm_LotEntryOsramICC();
                         frm.ShowDialog();
+
+                        //Single ICC refresh for this lot, replacing the 1 Hz poll that used to run
+                        //from the DoorCheck loop. The lot file is written when the lot is created
+                        //and does not change while the lot runs, so once is enough. Guarded on
+                        //LotActive so cancelling lot entry reads nothing.
+                        //Note: this is one blocking WAN read on the UI thread. Bounded to a single
+                        //read per lot rather than a self-amplifying queue, but a dead share will
+                        //still hold the UI here for the length of one read.
+                        if (LotInfo2.LotActive) Refresh_OsramICCPanelID();
                         break;
                     }
                 default:
@@ -1623,6 +1637,7 @@ namespace NDispWin
 
         public void Refresh_OsramICCPanelID(object sender, EventArgs e)
         {
+            return;
             string lotFile = $"{TaskDisp.OsramICC_LotPath}\\{LotInfo2.LotNumber}.txt";
 
             OsramICC.ReadLotFile(lotFile);

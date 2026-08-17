@@ -1114,16 +1114,25 @@ namespace NDispWin
         //renders the panel grid. Treat the list as immutable once assigned.
         public static volatile List<TOsramICC_LotInfo> OsramICC_LotInfo = new List<TOsramICC_LotInfo>();
 
-        //Called from a background reader thread (frm_Auto.AutoRun) while the UI thread renders from
-        //OsramICC_LotInfo. So the list is built locally and published by a single reference
+        //Called from the IccReader background task in frm_Auto.AutoRun while the UI thread renders
+        //from OsramICC_LotInfo. So the list is built locally and published by a single reference
         //assignment - that is atomic, so a reader always sees either the whole old list or the whole
         //new one, never a half-rebuilt one. The previous in-place Clear()/Add() would have torn.
+        //
+        //MUST NOT be called on the UI thread: filename is on an operator-configured shared drive
+        //and File.ReadAllText has no timeout, so a share that stops answering blocks here for as
+        //long as SMB/TCP takes to give up.
         public static bool ReadLotFile(string filename)
         {
             List<TOsramICC_LotInfo> lotInfo = new List<TOsramICC_LotInfo>();
+            var sw = System.Diagnostics.Stopwatch.StartNew();
             try
             {
                 string list = File.ReadAllText(filename);
+                //Names the blocking call in the log the next time the share goes slow, so a stall
+                //no longer has to be inferred from a crash dump captured after the fact.
+                if (sw.ElapsedMilliseconds > 1000)
+                    GLog.WriteDebugLog($"OsramICC.ReadLotFile SLOW: {sw.ElapsedMilliseconds} ms ({filename})");
                 List<string> panelIDs = list.Split(new[] { ',', '\t', '\r' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()).ToList();
 
                 //Snapshot into sets once instead of a List.Contains per panel: 50 lookups over lists
@@ -1150,7 +1159,7 @@ namespace NDispWin
                 //Was swallowed silently, so an unreachable share looked like nothing was wrong.
                 //Keep the previous list rather than clearing it - a momentary glitch should not
                 //blank the operator's panel grid.
-                GLog.WriteDebugLog($"OsramICC.ReadLotFile failed ({filename}): {ex.Message}");
+                GLog.WriteDebugLog($"OsramICC.ReadLotFile failed after {sw.ElapsedMilliseconds} ms ({filename}): {ex.Message}");
                 return false;
             }
 

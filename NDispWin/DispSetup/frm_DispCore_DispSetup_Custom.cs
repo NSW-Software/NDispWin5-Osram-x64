@@ -475,7 +475,13 @@ namespace NDispWin
                 string fileName = ofd.FileName;
 
                 double d = 0;
-                OsramICC.ReadLotFile(fileName);
+                //Still a blocking WAN-share read on the UI thread, but operator-initiated and
+                //one-shot rather than a 1 Hz poll. Marked so that if it is ever the thing holding
+                //the UI, the watchdog names it instead of leaving it to be guessed.
+                using (UiMark.Mark("DispSetup.btnLotFileLoad -> OsramICC.ReadLotFile"))
+                {
+                    OsramICC.ReadLotFile(fileName);
+                }
 
                 string info = "";
                 for (int i = 0; i < 8; i++)

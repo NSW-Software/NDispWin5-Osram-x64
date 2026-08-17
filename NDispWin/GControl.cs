@@ -253,6 +253,78 @@ namespace NDispWin
     /// an un-closable modal - it never runs the pong, the gap grows, and the watchdog logs it.
     /// The watchdog never blocks the UI thread and never throws into it.
     /// </summary>
+    /// <summary>
+    /// Breadcrumb naming whatever the UI thread is currently inside, so <see cref="UiWatchdog"/>
+    /// can attribute a stall to a specific call.
+    ///
+    /// Twelve crash dumps from this machine have every thread healthy, because all of them were
+    /// captured after the freeze had cleared - so a dump cannot answer "what was the UI thread
+    /// stuck in?". This can, for the cost of one string assignment per marked region, with no
+    /// thread suspension and nothing to switch on.
+    ///
+    /// Only the UI thread writes; the watchdog thread reads. A call from any other thread is
+    /// ignored, so a helper that is sometimes invoked off the UI thread cannot corrupt the mark.
+    /// Nesting works by save/restore in the returned scope.
+    /// </summary>
+    public static class UiMark
+    {
+        static volatile string _what = "";
+        static long _enteredTicks;
+        static int _uiThreadId = -1;
+
+        internal static void BindUiThread(int managedThreadId)
+        {
+            _uiThreadId = managedThreadId;
+        }
+
+        static bool OnUiThread
+        {
+            get { return _uiThreadId >= 0 && Thread.CurrentThread.ManagedThreadId == _uiThreadId; }
+        }
+
+        /// <summary>using (UiMark.Mark("tmr_1s_Tick")) { ... }</summary>
+        public static Scope Mark(string what)
+        {
+            return new Scope(what, OnUiThread);
+        }
+
+        /// <summary>What the UI thread is inside and for how long, or null if nothing is marked.</summary>
+        internal static string Describe()
+        {
+            string what = _what;
+            if (string.IsNullOrEmpty(what)) return null;
+            long t = Interlocked.Read(ref _enteredTicks);
+            if (t == 0) return what;
+            double s = (DateTime.UtcNow - new DateTime(t, DateTimeKind.Utc)).TotalSeconds;
+            return $"{what} entered {s:f1} s ago";
+        }
+
+        public struct Scope : IDisposable
+        {
+            readonly string _prev;
+            readonly long _prevTicks;
+            readonly bool _active;
+
+            internal Scope(string what, bool active)
+            {
+                _active = active;
+                if (!active) { _prev = null; _prevTicks = 0; return; }
+
+                _prev = _what;
+                _prevTicks = Interlocked.Read(ref _enteredTicks);
+                _what = what;
+                Interlocked.Exchange(ref _enteredTicks, DateTime.UtcNow.Ticks);
+            }
+
+            public void Dispose()
+            {
+                if (!_active) return;
+                _what = _prev ?? "";
+                Interlocked.Exchange(ref _enteredTicks, _prevTicks);
+            }
+        }
+    }
+
     static class UiWatchdog
     {
         static Control _ui;
@@ -274,6 +346,11 @@ namespace NDispWin
         //Snapshot logging: only on change, coalesced, plus a heartbeat so the log has a baseline.
         const int SnapshotMinIntervalMs = 2000;
         const int SnapshotHeartbeatMs = 3600000;//1 h
+        //Self-capture a dump once a stall passes this. Well above the transient 6-12 s stalls so a
+        //busy shift does not fill the disk, well below the multi-minute ones worth investigating.
+        const int DumpThresholdMs = 30000;
+        //Keep the newest few only. These are large, and the machine's data drive is not.
+        const int MaxStallDumps = 5;
         //24, not 12: at 12 the 29-Jul-2026 snapshots truncated with "..." and hid the camera and
         //monitor forms - exactly the ones needed to explain the freeze.
         const int MaxFormsLogged = 24;
@@ -282,6 +359,8 @@ namespace NDispWin
         {
             if (_monitor != null) return;      //already running
             _ui = ui;
+            //Start runs on the UI thread (frm_Main2_Load), so this is the thread to attribute.
+            UiMark.BindUiThread(Thread.CurrentThread.ManagedThreadId);
             _lastPongTicks = DateTime.UtcNow.Ticks;
             _run = true;
             _monitor = new Thread(Loop) { IsBackground = true, Name = "UiWatchdog" };
@@ -291,6 +370,70 @@ namespace NDispWin
         public static void Stop()
         {
             _run = false;
+        }
+
+        [DllImport("dbghelp.dll", SetLastError = true)]
+        static extern bool MiniDumpWriteDump(IntPtr hProcess, uint processId, SafeHandle hFile,
+            uint dumpType, IntPtr exceptionParam, IntPtr userStreamParam, IntPtr callbackParam);
+
+        //MiniDumpWithPrivateReadWriteMemory(0x0400) | MiniDumpWithDataSegs(0x0001) |
+        //MiniDumpWithHandleData(0x0004). Enough for ClrMD to walk managed stacks, and a small
+        //fraction of the 2.2 GB a full-memory dump produced on this process.
+        const uint MiniDumpType = 0x0400 | 0x0001 | 0x0004;
+
+        /// <summary>
+        /// Writes a dump of this process from the watchdog thread while the UI thread is stuck.
+        /// Runs on the monitor thread - the whole point is that the UI thread cannot help here.
+        /// </summary>
+        static void WriteStallDump(double gapMs)
+        {
+            try
+            {
+                //OFF unless the marker file exists. MiniDumpWriteDump suspends every other thread
+                //while it writes, and during these stalls the gantry is still moving - so this must
+                //never fire unattended on a running machine. Drop an empty EnableStallDump.txt next
+                //to the exe when someone is actually hunting a freeze, and delete it afterwards.
+                if (!File.Exists(Path.Combine(GDefine.AppPath, "EnableStallDump.txt"))) return;
+
+                DirectoryInfo dir = Log.DebugLogDir;
+                if (dir == null) return;
+
+                string folder = Path.Combine(dir.FullName, "StallDumps");
+                Directory.CreateDirectory(folder);
+
+                //Prune before writing, so the cap holds even if a previous run left files behind.
+                try
+                {
+                    FileInfo[] old = new DirectoryInfo(folder).GetFiles("*.dmp");
+                    if (old.Length >= MaxStallDumps)
+                    {
+                        Array.Sort(old, (a, b) => a.LastWriteTimeUtc.CompareTo(b.LastWriteTimeUtc));
+                        for (int i = 0; i <= old.Length - MaxStallDumps; i++)
+                        {
+                            try { old[i].Delete(); } catch { }
+                        }
+                    }
+                }
+                catch { }
+
+                string file = Path.Combine(folder, $"UIStall_{DateTime.Now:yyyyMMdd_HHmmss}.dmp");
+
+                using (System.Diagnostics.Process p = System.Diagnostics.Process.GetCurrentProcess())
+                using (FileStream fs = new FileStream(file, FileMode.Create, FileAccess.Write))
+                {
+                    bool ok = MiniDumpWriteDump(p.Handle, (uint)p.Id, fs.SafeFileHandle,
+                        MiniDumpType, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+
+                    GLog.WriteDebugLog(ok
+                        ? $"UI WATCHDOG: stall dump written at ~{gapMs / 1000.0:f1} s -> {file}"
+                        : $"UI WATCHDOG: stall dump FAILED (win32 {Marshal.GetLastWin32Error()}) -> {file}");
+                }
+            }
+            catch (Exception ex)
+            {
+                //Diagnostics must never take the process down.
+                GLog.WriteDebugLog($"UI WATCHDOG: stall dump exception: {ex.Message}");
+            }
         }
 
         //Runs on the UI thread; records that the pump is alive and captures the UI state.
@@ -350,6 +493,8 @@ namespace NDispWin
 
             string lastKey = null;
             DateTime lastSnapLog = DateTime.MinValue;
+            bool dumpedThisStall = false;
+            string blamedMark = null;   //the mark seen at the first log of this stall
 
             while (_run)
             {
@@ -375,18 +520,36 @@ namespace NDispWin
                             stalled = true;
                             stallSince = DateTime.UtcNow.AddMilliseconds(-gapMs);
                             lastLog = DateTime.MinValue;
+                            dumpedThisStall = false;
+                            blamedMark = null;
                         }
                         if ((DateTime.UtcNow - lastLog).TotalMilliseconds >= RepeatLogMs)
                         {
                             lastLog = DateTime.UtcNow;
-                            GLog.WriteDebugLog($"UI WATCHDOG: UI thread unresponsive for ~{gapMs / 1000.0:f1} s (no message pump).");
+                            //Names the blocking call instead of leaving it to be inferred later.
+                            string mark = UiMark.Describe();
+                            if (blamedMark == null) blamedMark = mark ?? "(nothing marked)";
+                            GLog.WriteDebugLog($"UI WATCHDOG: UI thread unresponsive for ~{gapMs / 1000.0:f1} s (no message pump)."
+                                + (mark != null ? $" last UI mark: {mark}" : " last UI mark: (nothing marked)"));
+                        }
+
+                        //Capture the process *while* it is still stuck. Operator-triggered dumps
+                        //have consistently arrived after the stall cleared - the 2026-08-14 one was
+                        //written 26 min late - so they never contained the blocking stack.
+                        if (!dumpedThisStall && gapMs >= DumpThresholdMs)
+                        {
+                            dumpedThisStall = true;
+                            WriteStallDump(gapMs);
                         }
                     }
                     else if (stalled)
                     {
                         stalled = false;
+                        dumpedThisStall = false;
                         double totalS = (DateTime.UtcNow - stallSince).TotalSeconds;
-                        GLog.WriteDebugLog($"UI WATCHDOG: UI thread responsive again after ~{totalS:f1} s.");
+                        GLog.WriteDebugLog($"UI WATCHDOG: UI thread responsive again after ~{totalS:f1} s."
+                            + (blamedMark != null ? $" blocked in: {blamedMark}" : ""));
+                        blamedMark = null;
                     }
 
                     #region UI state snapshot
