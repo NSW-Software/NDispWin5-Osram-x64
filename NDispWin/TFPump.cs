@@ -31,7 +31,8 @@ namespace NDispWin
             public static double PistonStroke = 42;//mm
             public static double RemoveAirPos = 5;
             public static double RemoveAirPress = 0.05;
-            public static double AfFillDist = -1;
+			public static double B4FillDist = 0;
+			public static double AfFillDist = -1;
 
             public static double ProcessAmount = 90;//%
             public static double ProcessTimeOut = 60;//s
@@ -345,7 +346,22 @@ namespace NDispWin
                 if (pumpSelect[0]) FillState[0] = EFillState.Filling;
                 if (pumpSelect[1]) FillState[1] = EFillState.Filling;
 
-                FPressCtrl.SetPress_MPa(FPress);
+				if (B4FillDist != 0)
+				{
+					if (pumpSelect[0]) TaskGantry.SetMotionParamEx(TaskGantry.PAAxis, VelL, AfFillSpeed, AccDec);
+					if (pumpSelect[1]) TaskGantry.SetMotionParamEx(TaskGantry.PBAxis, VelL, AfFillSpeed, AccDec);
+
+					if (pumpSelect[0]) TaskGantry.MovePtpAbs(TaskGantry.PAAxis, B4FillDist);
+					if (pumpSelect[1]) TaskGantry.MovePtpAbs(TaskGantry.PBAxis, B4FillDist);
+
+					if (pumpSelect[0]) TaskGantry.AxisWait(TaskGantry.PAAxis);
+					if (pumpSelect[1]) TaskGantry.AxisWait(TaskGantry.PBAxis);
+
+					var sw2 = Stopwatch.StartNew();
+					while (sw2.ElapsedMilliseconds < (long)MoveDelay) Thread.Sleep(1);
+				}
+
+				FPressCtrl.SetPress_MPa(FPress);
 
                 if (!PRotateToFill(pumpSelect, rotateEarlyExit)) return false;
                 PPressOn(pumpSelect);

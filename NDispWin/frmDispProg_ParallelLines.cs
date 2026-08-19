@@ -116,15 +116,23 @@ namespace NDispWin
 
             string sRise = "";
             string sFall = "";
-            for (int i = 0; i<10; i++)
+            for (int i = 0; i < 10; i++)
             {
                 sRise += $"{CmdLine.DPara[i + 50]:f2}\n";
-                sFall += $"{CmdLine.DPara[i + 60]:f2}\n";
+                if (i > (int)CmdLine.DPara[25] - 1) break;
             }
-            rtbRiseRatio.Text = sRise;
+			for (int i = 0; i < 10; i++)
+			{
+				sFall += $"{CmdLine.DPara[i + 60]:f2}\n";
+				if (i > (int)CmdLine.DPara[25] - 1) break;
+			}
+
+			rtbRiseRatio.Text = sRise;
             rtbFallRatio.Text = sFall;
 
-            lblCutTailLength.Text = CmdLine.DPara[10].ToString("f3");
+            lblRiseLGCompStart.Text = CmdLine.DPara[14].ToString("f3");
+
+			lblCutTailLength.Text = CmdLine.DPara[10].ToString("f3");
             lblCutTailSpeed.Text = CmdLine.DPara[11].ToString("f3");
             lblCutTailHeight.Text = CmdLine.DPara[12].ToString("f3");
             lblCutTailType.Text = CmdLine.DPara[13].ToString("f0");
@@ -159,7 +167,9 @@ namespace NDispWin
                 if (dF == 0) CmdLine.DPara[i + 60] = 1.0;
             }
 
-            UpdateDisplay();
+            if (CmdLine.DPara[14] == 0) CmdLine.DPara[14] = 1;
+
+			UpdateDisplay();
         }
         private void frmDispProg_ParallelLines_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -587,5 +597,17 @@ namespace NDispWin
             UC.AdjustExec(CmdName + ", StartEndOffset", ref CmdLine.DPara[9], -0.5, 0.5);
             UpdateDisplay();
         }
-    }
+
+		private void lblRiseLGCompStart_Click(object sender, EventArgs e)
+		{
+			UC.AdjustExec(CmdName + ", Rise Start Linear Gradient Comp", ref CmdLine.DPara[14], 0.5, 1.5);
+			UpdateDisplay();
+		}
+
+
+		private void label27_Click(object sender, EventArgs e)
+		{
+
+		}
+	}
 }

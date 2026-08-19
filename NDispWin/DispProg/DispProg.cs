@@ -458,7 +458,7 @@ namespace NDispWin
             IPara[0..9]     [ModelNo, .1., Disp, VHType, UseWeight, Reverse, EndDisp, .7., .8., ProfMode]
             IPara[10..19]   [.10., IndFirstLine, IndLastLine, .13., .14., .15., .16., .17., .18., .19.]
             DPara[0..9]     [StartLen, EndLen, RelStartGap, RelEndGap, LineTimeRatio, .5., StartOfst, EndOfst, StartVolume, StartEndOfst]
-            DPara[10..19]   [CutTailLength, Speed, Height, Type, ..]
+            DPara[10..19]   [CutTailLength, Speed, Height, Type, RSLGC(Rise Start Linear Gradient), LGCRE, ..]
             DPara[20..29]   [FirstLineMass, LineMass, LastLineMass, MaxLineSpeed, .24., SegCount, SegSize, .RiseGap., .FallGap., .29.]
             DPara[50..59]   [StartSegRatio..]
             DPara[60..69]   [EndSegRatio..]
@@ -1553,13 +1553,14 @@ namespace NDispWin
                 WriteSubEntry(writer, "InitSpeed", TFPump.PP4.InitSpeed);
                 WriteSubEntry(writer, "CleanSpeed", TFPump.PP4.CleanSpeed);
                 WriteSubEntry(writer, "FillSpeed", TFPump.PP4.FillSpeed);
-                WriteSubEntry(writer, "AfFillSpeed", TFPump.PP4.AfFillSpeed);
+				WriteSubEntry(writer, "AfFillSpeed", TFPump.PP4.AfFillSpeed);
 
                 WriteSubEntry(writer, "PistonDiameter", TFPump.PP4.PistonDiameter);
-        WriteSubEntry(writer, "PistonStroke", TFPump.PP4.PistonStroke);
+                WriteSubEntry(writer, "PistonStroke", TFPump.PP4.PistonStroke);
                 WriteSubEntry(writer, "RemoveAirPos", TFPump.PP4.RemoveAirPos);
                 WriteSubEntry(writer, "RemoveAirPress", TFPump.PP4.RemoveAirPress);
-                WriteSubEntry(writer, "AfFillDist", TFPump.PP4.AfFillDist);
+				WriteSubEntry(writer, "B4FillDist", TFPump.PP4.B4FillDist);
+				WriteSubEntry(writer, "AfFillDist", TFPump.PP4.AfFillDist);
 
                 WriteSubEntry(writer, "ProcessAmount", TFPump.PP4.ProcessAmount);
                 WriteSubEntry(writer, "ProcessTimeOut", TFPump.PP4.ProcessTimeOut);
@@ -2132,13 +2133,14 @@ namespace NDispWin
                                                         case "InitSpeed": TFPump.PP4.InitSpeed = ReadSubEntry(reader, (double)2.5); break;
                                                         case "CleanSpeed": TFPump.PP4.CleanSpeed = ReadSubEntry(reader, (double)5); break;
                                                         case "FillSpeed": TFPump.PP4.FillSpeed = ReadSubEntry(reader, (double)2.5); break;
-                                                        case "AfFillSpeed": TFPump.PP4.AfFillSpeed = ReadSubEntry(reader, (double)2.5); break;
+														case "AfFillSpeed": TFPump.PP4.AfFillSpeed = ReadSubEntry(reader, (double)2.5); break;
                                                         case "PistonDiameter": TFPump.PP4.PistonDiameter = ReadSubEntry(reader, (double)4); break;
                                                         case "PistonStroke": TFPump.PP4.PistonStroke = ReadSubEntry(reader, (double)42); break;
                                                         case "RemoveAirPos": TFPump.PP4.RemoveAirPos = ReadSubEntry(reader, (double)5); break;
                                                         case "RemoveAirPress": TFPump.PP4.RemoveAirPress = ReadSubEntry(reader, (double)0.1); break;
-                                                        case "AfFillDist": TFPump.PP4.AfFillDist = ReadSubEntry(reader, (double)5); break;
-                                                        case "ProcessAmount": TFPump.PP4.ProcessAmount = ReadSubEntry(reader, (double)90); break;
+														case "B4FillDist": TFPump.PP4.B4FillDist = ReadSubEntry(reader, (double)0); break;
+														case "AfFillDist": TFPump.PP4.AfFillDist = ReadSubEntry(reader, (double)5); break;
+														case "ProcessAmount": TFPump.PP4.ProcessAmount = ReadSubEntry(reader, (double)90); break;
                                                         case "ProcessTimeOut": TFPump.PP4.ProcessTimeOut = ReadSubEntry(reader, (double)60); break;
                                                         case "MoveDelay": TFPump.PP4.MoveDelay = ReadSubEntry(reader, 10); break;
                                                         case "PressOnDelay": TFPump.PP4.PressOnDelay = ReadSubEntry(reader, 500); break;

@@ -69,9 +69,10 @@ namespace NDispWin
             lblPistStroke.Text = $"{TFPump.PP4.PistonStroke} mm";
             lblPistOverFlow.Text = $"{TFPump.PP4.RemoveAirPos} mm";
             lblRemoveAirPress.Text = $"{TFPump.PP4.RemoveAirPress} MPa";
-            lblAfFillDist.Text = $"{TFPump.PP4.AfFillDist} mm";
+			lblB4FillDist.Text = $"{TFPump.PP4.B4FillDist} mm";
+			lblAfFillDist.Text = $"{TFPump.PP4.AfFillDist} mm";
 
-            lblProcAmt.Text = $"{TFPump.PP4.ProcessAmount} %";
+			lblProcAmt.Text = $"{TFPump.PP4.ProcessAmount} %";
             lblProcTimeout.Text = $"{TFPump.PP4.ProcessTimeOut} s";
 
             lblMoveDelay.Text = $"{TFPump.PP4.MoveDelay} ms";
@@ -467,5 +468,15 @@ namespace NDispWin
         {
 
         }
-    }
+
+		private void tpParameters_Click(object sender, EventArgs e)
+		{
+
+		}
+		private void lblB4FillDist_Click(object sender, EventArgs e)
+		{
+			UC.AdjustExec("PP B4Fill Dist (mm)", ref TFPump.PP4.B4FillDist, -2, 2);
+			UpdateDisplay();
+		}
+	}
 }
