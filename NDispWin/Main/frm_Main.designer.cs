@@ -64,7 +64,6 @@
             this.lbl_Status = new System.Windows.Forms.Label();
             this.tmr_Status = new System.Windows.Forms.Timer(this.components);
             this.tmr_1s = new System.Windows.Forms.Timer(this.components);
-            this.timer_1SecsGem = new System.Windows.Forms.Timer(this.components);
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.panel1.SuspendLayout();
@@ -91,7 +90,7 @@
             // tsslSECSGEMConnect2
             // 
             this.tsslSECSGEMConnect2.Name = "tsslSECSGEMConnect2";
-            this.tsslSECSGEMConnect2.Size = new System.Drawing.Size(59, 25);
+            this.tsslSECSGEMConnect2.Size = new System.Drawing.Size(71, 24);
             this.tsslSECSGEMConnect2.Text = "SECSGEM";
             this.tsslSECSGEMConnect2.Click += new System.EventHandler(this.tsslSECSGEMConnect_Click);
             // 
@@ -105,34 +104,34 @@
             this.tsdControlState.Image = ((System.Drawing.Image)(resources.GetObject("tsdControlState.Image")));
             this.tsdControlState.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsdControlState.Name = "tsdControlState";
-            this.tsdControlState.Size = new System.Drawing.Size(55, 28);
+            this.tsdControlState.Size = new System.Drawing.Size(63, 28);
             this.tsdControlState.Text = "Offline";
             // 
             // tsmiRemote
             // 
             this.tsmiRemote.Name = "tsmiRemote";
-            this.tsmiRemote.Size = new System.Drawing.Size(117, 22);
+            this.tsmiRemote.Size = new System.Drawing.Size(141, 26);
             this.tsmiRemote.Text = "Remote";
             this.tsmiRemote.Click += new System.EventHandler(this.tsmiRemote_Click);
             // 
             // tsmiLocal
             // 
             this.tsmiLocal.Name = "tsmiLocal";
-            this.tsmiLocal.Size = new System.Drawing.Size(117, 22);
+            this.tsmiLocal.Size = new System.Drawing.Size(141, 26);
             this.tsmiLocal.Text = "Local";
             this.tsmiLocal.Click += new System.EventHandler(this.tsmiLocal_Click);
             // 
             // tsmiOffline
             // 
             this.tsmiOffline.Name = "tsmiOffline";
-            this.tsmiOffline.Size = new System.Drawing.Size(117, 22);
+            this.tsmiOffline.Size = new System.Drawing.Size(141, 26);
             this.tsmiOffline.Text = "Offline";
             this.tsmiOffline.Click += new System.EventHandler(this.tsmiOffline_Click);
             // 
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(12, 25);
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(14, 24);
             this.toolStripStatusLabel1.Text = "|";
             // 
             // tmr_EMO
@@ -204,13 +203,13 @@
             // tslblUser
             // 
             this.tslblUser.Name = "tslblUser";
-            this.tslblUser.Size = new System.Drawing.Size(142, 14);
+            this.tslblUser.Size = new System.Drawing.Size(142, 18);
             this.tslblUser.Text = "[User]";
             // 
             // tslblDateTime
             // 
             this.tslblDateTime.Name = "tslblDateTime";
-            this.tslblDateTime.Size = new System.Drawing.Size(142, 14);
+            this.tslblDateTime.Size = new System.Drawing.Size(142, 18);
             this.tslblDateTime.Text = "DateTime";
             // 
             // toolStripSeparator2
@@ -447,12 +446,6 @@
             this.tmr_1s.Interval = 1000;
             this.tmr_1s.Tick += new System.EventHandler(this.tmr_1s_Tick);
             // 
-            // timer_1SecsGem
-            // 
-            this.timer_1SecsGem.Enabled = true;
-            this.timer_1SecsGem.Interval = 1000;
-            this.timer_1SecsGem.Tick += new System.EventHandler(this.timer_1SecsGem_Tick);
-            // 
             // frm_Main
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -513,6 +506,5 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripMenuItem tsmiRemote;
         private System.Windows.Forms.ToolStripMenuItem tsmiLocal;
-        private System.Windows.Forms.Timer timer_1SecsGem;
     }
 }

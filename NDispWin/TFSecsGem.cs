@@ -163,6 +163,9 @@ namespace NDispWin
             }
             try
             {
+                try { socket?.Close(); } catch { }
+                socket = null;
+
                 // Create the socket instance
                 socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
@@ -493,6 +496,7 @@ namespace NDispWin
             {
                 Log.SecsGem.WriteByMonthDay("Disconnecting");
                 LocalRemote = ELocalRemote.Local;
+                OnlineOffline = EOnlineOffline.Offline;
                 client.Disconnect();
                 Stop();
             }
@@ -503,11 +507,13 @@ namespace NDispWin
         }
         public static bool IsConnected
         {
-            get
-            {
-                if (!client.IsConnected) OnlineOffline = EOnlineOffline.Offline;
-                return client.IsConnected;
-            }
+            get { return client.IsConnected; }
+        }
+
+        public static void SetRemoteOnline()
+        {
+            Eq.OnlineOffline = EOnlineOffline.Online;
+            Eq.LocalRemote = ELocalRemote.Remote;
         }
 
         public static void CloseGemtaro()
@@ -530,6 +536,7 @@ namespace NDispWin
         private static void OnDisconnectedEvent()
         {
             Log.SecsGem.WriteByMonthDay("Disconnected.");
+            OnlineOffline = EOnlineOffline.Offline;
         }
         private static void OnFrameSendEvent()
         {
@@ -598,8 +605,8 @@ namespace NDispWin
                     case nameof(StreamFunc.RONL):
                         {
                             if (!IsConnected) Send(nameof(StreamFunc.S1F0));
-                            OnlineOffline = EOnlineOffline.Online;
-                            Event.SECSGEM_EQ_SET_ONLINE.Set();
+                            if (GDefineN.EnableSECSGEMConnectionChecking) SetRemoteOnline();
+                            else Eq.OnlineOffline = EOnlineOffline.Online;
                             break;
                         }
                     case "REOFL":

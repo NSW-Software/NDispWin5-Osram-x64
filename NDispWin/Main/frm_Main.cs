@@ -443,6 +443,26 @@ namespace NDispWin
 
             tsdControlState.Text = TFSecsGem.OnlineOffline == EOnlineOffline.Offline ? "Offline" : TFSecsGem.LocalRemote == ELocalRemote.Local ? "Local" : "Remote";
             tsdControlState.BackColor = TFSecsGem.OnlineOffline == EOnlineOffline.Offline ? Color.Red : TFSecsGem.LocalRemote == ELocalRemote.Local ? Color.Yellow: Color.Lime;
+
+            SecsGemConnectionWatchdog();
+        }
+
+        private int secsGemReconnectTick = 0;
+
+        private void SecsGemConnectionWatchdog()
+        {
+            if (!GDefineN.EnableSECSGEMConnectionChecking) { secsGemReconnectTick = 0; return; }
+            if (TFSecsGem.client.IsConnected) { secsGemReconnectTick = 0; return; }
+
+            if (++secsGemReconnectTick < 5) return;
+            secsGemReconnectTick = 0;
+
+            try
+            {
+                TFSecsGem.Connect();
+                if (TFSecsGem.client.IsConnected) TFSecsGem.SetRemoteOnline();
+            }
+            catch { }
         }
 
         private void tsbDevice_Click(object sender, EventArgs e)
@@ -577,8 +597,7 @@ namespace NDispWin
         }
         private void tsmiRemote_Click(object sender, EventArgs e)
         {
-            TFSecsGem.Eq.OnlineOffline = EOnlineOffline.Online;
-            TFSecsGem.Eq.LocalRemote = ELocalRemote.Remote;
+            TFSecsGem.SetRemoteOnline();
         }
 
         private void statusStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -681,20 +700,6 @@ namespace NDispWin
         private void frm_Main_FormClosed(object sender, FormClosedEventArgs e)
         {
             TFSecsGem.CloseGemtaro();
-        }
-
-        private void timer_1SecsGem_Tick(object sender, EventArgs e)
-        {
-            if (GDefineN.EnableSECSGEMConnectionChecking)
-            {
-                if (!TFSecsGem.IsConnected)
-                {
-                    TFSecsGem.Connect();
-                    TFSecsGem.LocalRemote = ELocalRemote.Remote;
-                    TFSecsGem.PrevControlState = TFSecsGem.ControlState;
-                    TFSecsGem.ControlState = EControlState.EquipmentRemote;
-                }
-            }
         }
     }
 }
