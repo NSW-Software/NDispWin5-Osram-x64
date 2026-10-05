@@ -23,7 +23,7 @@ namespace NDispWin
             GControl.LogForm(this);
             AutoSize = true;
 
-            gbProfile1.Location = gbProfile0.Location;
+            gbProfilen.Location = gbProfile0.Location;
         }
 
         private void UpdateDisplay()
@@ -41,9 +41,11 @@ namespace NDispWin
 
             lblProfile.Text = $"{CmdLine.IPara[9]}";
             gbProfile0.Visible = CmdLine.IPara[9] == 0;
-            gbProfile1.Visible = CmdLine.IPara[9] == 1;
+            gbProfilen.Visible = CmdLine.IPara[9] == 1 || CmdLine.IPara[9] == 2;
+            gbProfilen.Text = $"Profile {CmdLine.IPara[9]}";
 
-            switch (CmdLine.IPara[4])
+
+			switch (CmdLine.IPara[4])
             {
                 case 0: lblUnit.Text = "Not used"; break;
                 case 1: lblUnit.Text = "Weight (mg)"; break;
@@ -104,7 +106,7 @@ namespace NDispWin
             lblFirstLineWeight.Text = CmdLine.DPara[20] > 0 ? $"{CmdLine.DPara[20]:f3}": $"({CmdLine.DPara[21]:f3})";
             lblLastLineWeight.Text = CmdLine.DPara[22] > 0 ? $"{CmdLine.DPara[22]:f3}" : $"({CmdLine.DPara[21]:f3})";
 
-            lblSegCount.Text = $"{(int)CmdLine.DPara[25]}";
+			lblSegCount.Text = $"{(int)CmdLine.DPara[25]}";
             lblSegSize.Text = $"{CmdLine.DPara[26]:f3}";
             lblStartVol2.Text = $"{CmdLine.DPara[8]:f3}";
             lblRiseGap.Text = $"{CmdLine.DPara[27]:f2}";
@@ -119,18 +121,19 @@ namespace NDispWin
             for (int i = 0; i < 10; i++)
             {
                 sRise += $"{CmdLine.DPara[i + 50]:f2}\n";
-                if (i > (int)CmdLine.DPara[25] - 1) break;
+                if (CmdLine.IPara[9] == 2) break;
+                if (i >= (int)CmdLine.DPara[25] - 1) break;
             }
 			for (int i = 0; i < 10; i++)
 			{
 				sFall += $"{CmdLine.DPara[i + 60]:f2}\n";
-				if (i > (int)CmdLine.DPara[25] - 1) break;
+				if (CmdLine.IPara[9] == 2) break;
+				if (i >= (int)CmdLine.DPara[25] - 1) break;
 			}
 
 			rtbRiseRatio.Text = sRise;
             rtbFallRatio.Text = sFall;
-
-            lblRiseLGCompStart.Text = CmdLine.DPara[14].ToString("f3");
+			lblRiseLGCompStart.Text = CmdLine.DPara[14].ToString("f3");
 
 			lblCutTailLength.Text = CmdLine.DPara[10].ToString("f3");
             lblCutTailSpeed.Text = CmdLine.DPara[11].ToString("f3");
@@ -600,14 +603,8 @@ namespace NDispWin
 
 		private void lblRiseLGCompStart_Click(object sender, EventArgs e)
 		{
-			UC.AdjustExec(CmdName + ", Rise Start Linear Gradient Comp", ref CmdLine.DPara[14], 0.5, 1.5);
+			UC.AdjustExec(CmdName + ", Rise Linear Gradient Comp Start Ratio", ref CmdLine.DPara[14], 0.5, 1.5);
 			UpdateDisplay();
-		}
-
-
-		private void label27_Click(object sender, EventArgs e)
-		{
-
 		}
 	}
 }

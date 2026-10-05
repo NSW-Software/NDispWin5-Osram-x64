@@ -91,7 +91,7 @@ namespace NDispWin
 			this.label5 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
 			this.lblProfile = new System.Windows.Forms.Label();
-			this.gbProfile1 = new System.Windows.Forms.GroupBox();
+			this.gbProfilen = new System.Windows.Forms.GroupBox();
 			this.lblRiseLGCompStart = new System.Windows.Forms.Label();
 			this.label22 = new System.Windows.Forms.Label();
 			this.lblStartEndOfst = new System.Windows.Forms.Label();
@@ -115,7 +115,7 @@ namespace NDispWin
 			this.groupBox1.SuspendLayout();
 			this.gbox_Pos.SuspendLayout();
 			this.gbProfile0.SuspendLayout();
-			this.gbProfile1.SuspendLayout();
+			this.gbProfilen.SuspendLayout();
 			this.groupBox4.SuspendLayout();
 			this.groupBox3.SuspendLayout();
 			this.SuspendLayout();
@@ -712,10 +712,10 @@ namespace NDispWin
 			this.gbProfile0.Location = new System.Drawing.Point(8, 245);
 			this.gbProfile0.Name = "gbProfile0";
 			this.gbProfile0.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
-			this.gbProfile0.Size = new System.Drawing.Size(428, 217);
+			this.gbProfile0.Size = new System.Drawing.Size(428, 251);
 			this.gbProfile0.TabIndex = 162;
 			this.gbProfile0.TabStop = false;
-			this.gbProfile0.Text = "Profile0";
+			this.gbProfile0.Text = "Profile 0";
 			// 
 			// cbEndDisp
 			// 
@@ -926,40 +926,40 @@ namespace NDispWin
 			this.lblProfile.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			this.lblProfile.Click += new System.EventHandler(this.lblProfile_Click);
 			// 
-			// gbProfile1
+			// gbProfilen
 			// 
-			this.gbProfile1.AutoSize = true;
-			this.gbProfile1.Controls.Add(this.lblRiseLGCompStart);
-			this.gbProfile1.Controls.Add(this.label22);
-			this.gbProfile1.Controls.Add(this.lblStartEndOfst);
-			this.gbProfile1.Controls.Add(this.label25);
-			this.gbProfile1.Controls.Add(this.lblMaxSpeed);
-			this.gbProfile1.Controls.Add(this.label21);
-			this.gbProfile1.Controls.Add(this.lblStartVol2);
-			this.gbProfile1.Controls.Add(this.label11);
-			this.gbProfile1.Controls.Add(this.lblFallGap);
-			this.gbProfile1.Controls.Add(this.lblRiseGap);
-			this.gbProfile1.Controls.Add(this.groupBox4);
-			this.gbProfile1.Controls.Add(this.label29);
-			this.gbProfile1.Controls.Add(this.groupBox3);
-			this.gbProfile1.Controls.Add(this.label20);
-			this.gbProfile1.Controls.Add(this.label24);
-			this.gbProfile1.Controls.Add(this.lblSegSize);
-			this.gbProfile1.Controls.Add(this.label23);
-			this.gbProfile1.Controls.Add(this.lblSegCount);
-			this.gbProfile1.Location = new System.Drawing.Point(442, 245);
-			this.gbProfile1.Name = "gbProfile1";
-			this.gbProfile1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
-			this.gbProfile1.Size = new System.Drawing.Size(428, 250);
-			this.gbProfile1.TabIndex = 168;
-			this.gbProfile1.TabStop = false;
-			this.gbProfile1.Text = "Profile1";
+			this.gbProfilen.AutoSize = true;
+			this.gbProfilen.Controls.Add(this.lblRiseLGCompStart);
+			this.gbProfilen.Controls.Add(this.label22);
+			this.gbProfilen.Controls.Add(this.lblStartEndOfst);
+			this.gbProfilen.Controls.Add(this.label25);
+			this.gbProfilen.Controls.Add(this.lblMaxSpeed);
+			this.gbProfilen.Controls.Add(this.label21);
+			this.gbProfilen.Controls.Add(this.lblStartVol2);
+			this.gbProfilen.Controls.Add(this.label11);
+			this.gbProfilen.Controls.Add(this.lblFallGap);
+			this.gbProfilen.Controls.Add(this.lblRiseGap);
+			this.gbProfilen.Controls.Add(this.groupBox4);
+			this.gbProfilen.Controls.Add(this.label29);
+			this.gbProfilen.Controls.Add(this.groupBox3);
+			this.gbProfilen.Controls.Add(this.label20);
+			this.gbProfilen.Controls.Add(this.label24);
+			this.gbProfilen.Controls.Add(this.lblSegSize);
+			this.gbProfilen.Controls.Add(this.label23);
+			this.gbProfilen.Controls.Add(this.lblSegCount);
+			this.gbProfilen.Location = new System.Drawing.Point(442, 245);
+			this.gbProfilen.Name = "gbProfilen";
+			this.gbProfilen.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
+			this.gbProfilen.Size = new System.Drawing.Size(428, 251);
+			this.gbProfilen.TabIndex = 168;
+			this.gbProfilen.TabStop = false;
+			this.gbProfilen.Text = "Profile 1";
 			// 
 			// lblRiseLGCompStart
 			// 
 			this.lblRiseLGCompStart.BackColor = System.Drawing.SystemColors.Window;
 			this.lblRiseLGCompStart.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.lblRiseLGCompStart.Location = new System.Drawing.Point(247, 210);
+			this.lblRiseLGCompStart.Location = new System.Drawing.Point(203, 210);
 			this.lblRiseLGCompStart.Margin = new System.Windows.Forms.Padding(2);
 			this.lblRiseLGCompStart.Name = "lblRiseLGCompStart";
 			this.lblRiseLGCompStart.Size = new System.Drawing.Size(75, 23);
@@ -974,9 +974,9 @@ namespace NDispWin
 			this.label22.Location = new System.Drawing.Point(5, 210);
 			this.label22.Margin = new System.Windows.Forms.Padding(2);
 			this.label22.Name = "label22";
-			this.label22.Size = new System.Drawing.Size(233, 23);
+			this.label22.Size = new System.Drawing.Size(194, 23);
 			this.label22.TabIndex = 188;
-			this.label22.Text = "Start Liinear Gradient Comp Ratio";
+			this.label22.Text = "Linear Gradient Comp Start Ratio";
 			this.label22.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
 			// lblStartEndOfst
@@ -1203,7 +1203,7 @@ namespace NDispWin
 			this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.ClientSize = new System.Drawing.Size(879, 730);
 			this.ControlBox = false;
-			this.Controls.Add(this.gbProfile1);
+			this.Controls.Add(this.gbProfilen);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.lblProfile);
 			this.Controls.Add(this.label5);
@@ -1237,8 +1237,8 @@ namespace NDispWin
 			this.gbox_Pos.PerformLayout();
 			this.gbProfile0.ResumeLayout(false);
 			this.gbProfile0.PerformLayout();
-			this.gbProfile1.ResumeLayout(false);
-			this.gbProfile1.PerformLayout();
+			this.gbProfilen.ResumeLayout(false);
+			this.gbProfilen.PerformLayout();
 			this.groupBox4.ResumeLayout(false);
 			this.groupBox3.ResumeLayout(false);
 			this.ResumeLayout(false);
@@ -1310,8 +1310,8 @@ namespace NDispWin
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lblProfile;
-        private System.Windows.Forms.GroupBox gbProfile1;
-        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.GroupBox gbProfilen;
+		private System.Windows.Forms.Label label20;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Label lblRiseGap;
         private System.Windows.Forms.RichTextBox rtbRiseRatio;

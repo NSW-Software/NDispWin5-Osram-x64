@@ -1152,7 +1152,7 @@ namespace NDispWin
                 double maxSpeed = Line.DPara[23];
                 double startEndOfst = Line.DPara[9];
 
-                if (profMode == 1)
+                if (profMode == 1 || profMode == 2)
                 {
                     speedAdjust = 0;
                     startLength = 0;
@@ -1307,7 +1307,7 @@ namespace NDispWin
                 TPos2 relEndOfstXY = new TPos2(endOfst / lineLength * relLineEndXY.X, endOfst / lineLength * relLineEndXY.Y);
 
 
-                if (profMode == 1)
+                if (profMode == 1 || profMode == 2)
                 {
                     absStart = new TPos2(absStart.X + relStartOfstXY.X, absStart.Y + relStartOfstXY.Y);
                     absEnd = new TPos2(absEnd.X - relEndOfstXY.X, absEnd.Y - relEndOfstXY.Y);
@@ -1326,7 +1326,7 @@ namespace NDispWin
 
                 //if (profMode == 0)
                 TPos2 GXY = new TPos2(absStart.X + relStartOfstXY.X, absStart.Y + relStartOfstXY.Y);
-                if (profMode == 1)
+                if (profMode == 1 || profMode == 2)
                 {
                     GXY = new TPos2(absStart.X, absStart.Y);
                 }
@@ -1482,7 +1482,7 @@ namespace NDispWin
                                         {
                                             LineSpeed = (lineLength - endLength) / time;
                                         }
-                                        Log.AddToEventLog($"DispVol(ul) {vol}, BSuck(ul) {DispProg.PP_HeadA_BackSuckVol}, LineTime {time}, LineSpeed {LineSpeed}");
+                                        Log.AddToEventLog($"DispVol(ul) {vol}, BSuck(ul) {DispProg.PP_HeadA_BackSuckVol}, LineTime {time:f4}, LineSpeed {LineSpeed:f4}");
                                         if (LineSpeed > 150) throw new Exception("Auto Line Speed over 150mm/s. Run Aborted.");
                                         break;
                                     }
@@ -1528,8 +1528,9 @@ namespace NDispWin
                                             break;
                                         }
                                     case 1:
-                                        {
-                                            LineSpeed = Math.Min(LineSpeed, maxSpeed);
+									case 2:
+										{
+											LineSpeed = Math.Min(LineSpeed, maxSpeed);
 
                                             double nettDispVol = DispProg.PP_HeadA_DispBaseVol;// + DispProg.PP_HeadA_BackSuckVol;
                                             double dispLen = TFPump.PP4.LengthConversion(nettDispVol);
@@ -1546,15 +1547,25 @@ namespace NDispWin
                                             double[] fallSegVol = new double[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
                                             double relFallGap = fallGap / segCount;
 
+                                            bool bGradualRFRatio = profMode == 2;
+                                            if (bGradualRFRatio)
+                                            {
+                                                double dRiseSegChange = (1 - Line.DPara[50]) / segCount;
+												double dFallSegChange = (1 - Line.DPara[60]) / segCount;
+												for (int i = 1; i < segCount; i++)
+                                                {
+                                                    riseSegVolRatio[i] = riseSegVolRatio[0] + dRiseSegChange;
+													fallSegVolRatio[i] = fallSegVolRatio[0] + dFallSegChange;
+												}
+											}
+											
                                             string sRiseSegVol = "";
                                             string sFallSegVol = "";
-                                            //double dRiseStartLGCRatio = 1;
-											double dRiseEndLGCRatio = 1;
+											double dRiseLGCStartRatio = Line.DPara[14];
 
-                                            //Math.Abs(TaskGantry.PAPos)
                                             //TFPump.PP4.PistonStroke
                                             double dStrokeRatio = TFPump.PP4.PistonStroke - (Math.Abs(TaskGantry.PAPos)) / TFPump.PP4.PistonStroke;
-                                            double dRSLGR =  Line.DPara[14] * dStrokeRatio;//LinearGradientRatio(LGR)
+                                            double dRSLGR = dRiseLGCStartRatio * dStrokeRatio;//LinearGradientCompStartRatio(LGCSR)
 
 											for (int i = 0; i < segCount; i++)
                                             {
@@ -1602,7 +1613,9 @@ namespace NDispWin
                                             constLineLength = lineLength - (segSize * (segCount - 1) *2);
                                             relConstXY = new TPos2(constLineLength / lineLength * relLineEndXY.X, constLineLength / lineLength * relLineEndXY.Y);
 
-                                            Log.AddToEventLog($"Profile1,SegCount={(int)segCount}, SegSize={segSize:f3}, PPDist=[StartVol={startVolume}, Rise={sRiseSegVol}, Const={constDispVol:f4}, Fall={sFallSegVol}], Speed=[Rise={sSegRiseSpeed}, Const={LineSpeed:f3}, Fall={sSegFallSpeed}]");
+                                            Log.AddToEventLog($"Profile {profMode},SegCount={(int)segCount}, SegSize={segSize:f3}");
+                                            Log.AddToEventLog($"Dist PPDist={dispLen}=[Start={startVolume}, Rise={sRiseSegVol}, Const={constDispVol:f4}, Fall={sFallSegVol}]");
+											Log.AddToEventLog($"Speed =[Rise={sSegRiseSpeed}, Const={LineSpeed:f3}, Fall={sSegFallSpeed}]");
 
                                             CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, Model.DnSpeed, 0, new double[6] { 0, 0, -riseGap, 0, 0, 0 }, null);
                                             Log.AddToEventLog($"Down: {Axis[0].Name}=0, {Axis[1].Name}=0, {Axis[2].Name}={-riseGap}, {Axis[3].Name}=0, {Axis[4].Name}=0, {Axis[5].Name}=0 ; Speed={Model.DnSpeed}");
@@ -1611,17 +1624,17 @@ namespace NDispWin
                                             CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, pumpSpeed, 0, new double[6] { 0, 0, 0, 0, -startVolume, 0 }, null);
 											Log.AddToEventLog($"Down: {Axis[0].Name}=0, {Axis[1].Name}=0, {Axis[2].Name}=0, {Axis[3].Name}=0, {Axis[4].Name}={-startVolume}, {Axis[5].Name}=0 ; Speed={pumpSpeed}");
 
-											Log.AddToEventLog($"Rise Start Linear Gradient Comp Ratio: {dRSLGR:f3}");
-											for (int i = 0; i < segCount - 1; i++)
+											Log.AddToEventLog($"Rise Linear Gradient Comp Start Ratio: {dRSLGR:f3}");
+											for (int i = 0; i < segCount; i++)
                                             {
                                                 CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, segRiseSpeed[i + 1], segRiseSpeed[i], new double[6] { relSegRiseDist.X, relSegRiseDist.Y, relRiseGap, 0, -riseSegVol[i], 0 }, null);
-                                                Log.AddToEventLog($"Rise[{i}]: {Axis[0].Name}={relSegRiseDist.X}, {Axis[1].Name}={relSegRiseDist.Y}, {Axis[2].Name}={relRiseGap}, {Axis[3].Name}=0, {Axis[4].Name}={-riseSegVol[i]}, {Axis[5].Name}=0 ; Start Speed={segRiseSpeed[i]} ; Speed={segRiseSpeed[i + 1]}");
+                                                Log.AddToEventLog($"Rise[{i}]: {Axis[0].Name}={relSegRiseDist.X:f3}, {Axis[1].Name}={relSegRiseDist.Y:f3}, {Axis[2].Name}={relRiseGap:f3}, {Axis[3].Name}=0, {Axis[4].Name}={-riseSegVol[i]:f5}, {Axis[5].Name}=0 ; Start Speed={segRiseSpeed[i]:f3} ; Speed={segRiseSpeed[i + 1]:f3}");
                                             }
                                             CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, LineSpeed, LineSpeed, new double[6] { relConstXY.X, relConstXY.Y, 0, 0, -constDispVol, 0 }, null);
-                                            for (int i = segCount - 1; i > 0; i--)
+                                            for (int i = segCount - 1; i >= 0; i--)
                                             {
                                                 CommonControl.P1245.PathAddCmd(Axis, CControl2.EPath_MoveCmd.Rel6DDirect, false, segFallSpeed[i + 1], segFallSpeed[i], new double[6] { relSegFallDist.X, relSegFallDist.Y, -relFallGap, 0, -fallSegVol[i], 0 }, null);
-                                                Log.AddToEventLog($"Fall[{i}]: {Axis[0].Name}={relSegFallDist.X}, {Axis[1].Name}={relSegFallDist.Y}, {Axis[2].Name}={-relFallGap}, {Axis[3].Name}=0, {Axis[4].Name}={-fallSegVol[i]}, {Axis[5].Name}=0 ; Start Speed={segFallSpeed[i]} ; Speed={segFallSpeed[i + 1]}");
+                                                Log.AddToEventLog($"Fall[{i}]: {Axis[0].Name}={relSegFallDist.X:f3}, {Axis[1].Name}={relSegFallDist.Y:f3}, {Axis[2].Name}={-relFallGap:f3}, {Axis[3].Name}=0, {Axis[4].Name}={-fallSegVol[i]:f5}, {Axis[5].Name}=0 ; Start Speed={segFallSpeed[i]:f3} ; Speed={segFallSpeed[i + 1]:f3}");
                                             }
                                             break;
                                         }

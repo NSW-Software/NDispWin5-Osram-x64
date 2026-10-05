@@ -1418,9 +1418,9 @@ namespace NDispWin
 
                     double w = 0;
                     if (vhType == EVHType.Hort)
-                        w += layout.URowCount * Line.DPara[21];
+                        w += (layout.URowCount - 2) * Line.DPara[21];
                     else
-                        w += layout.UColCount * Line.DPara[21];
+                        w += (layout.UColCount - 2) * Line.DPara[21];
 
                     if (Line.IPara[11] > 0) w += (Line.DPara[20] - Line.DPara[21]);//Individual 1st line
                     if (Line.IPara[12] > 0) w += (Line.DPara[22] - Line.DPara[21]);//Individual last line
@@ -1438,5 +1438,10 @@ namespace NDispWin
 
             UpdateDisplay();
         }
-    }
+
+		private void richTextBox1_TextChanged(object sender, EventArgs e)
+		{
+
+		}
+	}
 }

@@ -14,11 +14,20 @@ OsKm
 8.	Volume become higher after material refill 
 9.	Frequency of software hang very high. Camera Offset, select units layout, key parameter…  
 
+ver 6.1.9.36 KN - 20261005
+[Feature] Added frmAuto PAR_LINES.Profile 2 for GradualRFRatio to linearize the compensation - req Harin
+
+ver 6.1.9.35 KN - 20261002
+[BugFix] frm_ParLines display rise/fall lines display according to count
+[BugFix] Customize frmAuto PAR_LINES total weight calculation to OSPG/Harin request
+[Feature] Added GradualRFRatio, auto gradual Rise and Fall ratios.
+[Improve] Limit PAR_LINES log file pos decimal to 3dp/4dp.
+
 ver 6.1.9.33 KY - 20260909 [BugFix]
 > Fixed SECSGEM status to turn remote and online status when connect or reconnect
 
 ver 6.1.9.32 KN - 20260820
-[BigFix] frm_ParLines display rise/fall ratio according the count
+[BugFix] frm_ParLines display rise/fall ratio according the count
 [Feature] added to ParLines Linear Gradient Compensation Ratio
 [Feature] Added to B4FillDist, move piston before fill
 

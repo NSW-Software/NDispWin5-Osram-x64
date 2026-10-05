@@ -453,19 +453,19 @@ namespace NDispWin
             GROUP_DISP = 460,
 
             PAR_LINES = 461,
-            /* Parameters
+			/* Parameters
             ID              nil
             IPara[0..9]     [ModelNo, .1., Disp, VHType, UseWeight, Reverse, EndDisp, .7., .8., ProfMode]
             IPara[10..19]   [.10., IndFirstLine, IndLastLine, .13., .14., .15., .16., .17., .18., .19.]
             DPara[0..9]     [StartLen, EndLen, RelStartGap, RelEndGap, LineTimeRatio, .5., StartOfst, EndOfst, StartVolume, StartEndOfst]
-            DPara[10..19]   [CutTailLength, Speed, Height, Type, RSLGC(Rise Start Linear Gradient), LGCRE, ..]
+            DPara[10..19]   [CutTailLength, Speed, Height, Type, RSLGC(Rise Start Linear Gradient), .., ..]
             DPara[20..29]   [FirstLineMass, LineMass, LastLineMass, MaxLineSpeed, .24., SegCount, SegSize, .RiseGap., .FallGap., .29.]
             DPara[50..59]   [StartSegRatio..]
             DPara[60..69]   [EndSegRatio..]
             X[0..99]        [XStart, XFirstStart, XLastStart, ..]
             Y[0..99]        [YStart, YFirstStart, YLastStart, ..]
             */
-            DOTS_ZPATH = 462,
+			DOTS_ZPATH = 462,
             /* Parameters
             ID              nil
             IPara[0..9]     [ModelNo, .1., Disp, .3., TailOff, Square, .6., .7., .8., .9.]
