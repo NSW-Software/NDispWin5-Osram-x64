@@ -538,6 +538,7 @@ namespace NDispWin
         public static int StopInputCount = 0; // >1 = automatically stop input after certain board load in
         private static bool AutoStopInput => StopInputCount > 0;
         public static bool StopInput = false;//disable input of new board
+        public static bool StopInputLotEnd = false;//end lot and stop when line empty after input stopped (pusher send fail)
         public static bool SkipDisp = false;
         public static bool DispEndStop = false;//after dispense complete, stop
         public static bool UnloadStop = false;//after unload stop
@@ -896,6 +897,7 @@ namespace NDispWin
 
                 #region Reset Flags
                 StopInput = false;
+                StopInputLotEnd = false;
                 InputCounter = 0;
                 SkipDisp = false;// CompleteProcess = false;
                 DispEndStop = false;// .EndBoard = false;
@@ -6884,10 +6886,13 @@ namespace NDispWin
                     && Pro.Status == EProcessStatus.Empty
                     && Out.Status == EProcessStatus.Empty)
                 {
-                    if (StopInput)
+                    if (StopInput && StopInputLotEnd)
                     {
-                        //GDefine.StopInput = false;
-                        //Status = EConvStatus.Stop;
+                        StopInputLotEnd = false;
+                        Status = EConvStatus.Stop;
+                        Event.OP_LOT_END.Set("LotInfo", $"{LotInfo2.sOperatorID},{LotInfo2.LotNumber},{LotInfo2.Osram.ElevenSeries},{LotInfo2.Osram.DAStartNumber}");
+                        Msg MsgBox = new Msg();
+                        MsgBox.Show(Messages.LOT_END_IN_MAGAZINE_EMPTY);
                     }
                     if (TaskConv.LeftMode == ELeftMode.ElevatorZ)
                     {
@@ -9204,11 +9209,10 @@ namespace NDispWin
                                         SendRetry = 0;
                                         break;
                                     default:
-                                        TaskConv.Status = TaskConv.EConvStatus.Stop;
+                                        //stop loader only, machine continue process remaining boards, lot end when line empty
                                         TaskConv.StopInput = true;
-                                        Event.OP_LOT_END.Set("LotInfo", $"{LotInfo2.sOperatorID},{LotInfo2.LotNumber},{LotInfo2.Osram.ElevenSeries},{LotInfo2.Osram.DAStartNumber}");
+                                        TaskConv.StopInputLotEnd = true;
                                         SendRetry = 0;
-                                        MsgBox.Show(Messages.LOT_END_IN_MAGAZINE_EMPTY);
                                         goto _End;
                                 }
                             }

@@ -1030,6 +1030,7 @@ namespace NDispWin
                         break;
                 }
             }
+            if (!NDispWin.TaskConv.StopInput) NDispWin.TaskConv.StopInputLotEnd = false;
 
             if (GDefine.ConveyorType == GDefine.EConveyorType.CONVEYOR)
             {
